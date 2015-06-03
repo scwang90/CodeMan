@@ -64,7 +64,7 @@ public class TableBuilder {
 			table.remark = resultSet.getString("REMARKS");
 			table.className = this.converter.converterClassName(table.name);
 			if (table.remark == null || table.remark.trim().length()==0) {
-				table.remark = table.remark;
+				table.remark = "数据库表"+table.name;
 			}
 			table.columns = buildColumns(table.name);
 			tables.add(table);
@@ -88,7 +88,7 @@ public class TableBuilder {
 			column.fieldName_u = StringUtil.upperFirst(column.fieldName);
 			column.fieldName_l = StringUtil.lowerFirst(column.fieldName);
 			if (column.remark == null || column.remark.trim().length()==0) {
-				column.remark = column.remark;
+				column.remark = "数据库列"+column.name;
 			}
 			columns.add(column);
 		}

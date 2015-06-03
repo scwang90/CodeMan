@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<c3p0-config>
+	<default-config>
+		<property name="user">9jio</property>
+		<property name="password">1234</property>
+		<property name="driverClass">com.mysql.jdbc.Driver </property>
+		<property name="jdbcUrl">jdbc:mysql://222.85.149.6:3306/ddydbak</property>
+		<property name="initialPoolSize">10</property>
+		<property name="maxIdleTime">30</property>
+		<property name="maxPoolSize">100</property>
+		<property name="minPoolSize">10</property>
+	</default-config>
+	<named-config name="samename">
+		<property name="user">9jio</property>
+		<property name="password">1234</property>
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+		<property name="jdbcUrl">jdbc:mysql://222.85.149.6:3306/samename</property>
+		<property name="initialPoolSize">10</property>
+		<property name="maxIdleTime">30</property>
+		<property name="maxPoolSize">100</property>
+		<property name="minPoolSize">10</property>
+	</named-config>
+	<named-config name="OpenWBS">
+		<property name="user">sa</property>
+		<property name="password">jsjxy2013</property>
+		<property name="driverClass">net.sourceforge.jtds.jdbc.Driver</property>
+		<property name="jdbcUrl">jdbc:jtds:sqlserver://222.85.149.6:77;DatabaseName=OpenWBS</property>
+		<property name="initialPoolSize">10</property>
+		<property name="maxIdleTime">30</property>
+		<property name="maxPoolSize">100</property>
+		<property name="minPoolSize">10</property>
+	</named-config>
+	<named-config name="OpenWBS-old">
+		<property name="user">sa</property>
+		<property name="password">jsjxy2013</property>
+		<property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+		<property name="jdbcUrl">jdbc:sqlserver://222.85.149.6:77;databaseName=OpenWBS</property>
+		<property name="initialPoolSize">10</property>
+		<property name="maxIdleTime">30</property>
+		<property name="maxPoolSize">100</property>
+		<property name="minPoolSize">10</property>
+	</named-config>
+</c3p0-config> 

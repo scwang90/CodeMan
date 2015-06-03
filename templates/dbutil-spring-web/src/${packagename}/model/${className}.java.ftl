@@ -1,8 +1,16 @@
 package ${packagename}.model;
 
+<#list table.columns as column>
+<#if column.name!=column.fieldName>
+<#assign needColumn=false>
+</#if>
+</#list>
+
 import ${packagename}.annotations.dbmodel.Id;
 import ${packagename}.annotations.dbmodel.Table;
-
+<#if needColumn!false>
+import ${packagename}.annotations.dbmodel.Column;
+</#if>
 /**
  * ${table.remark}
  * @author ${author}
@@ -16,6 +24,7 @@ public class ${className}{
 	/**
 	 * ${column.remark}
 	 */
+	<#if column.name!=column.fieldName>Column("${column.name}")</#if>
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 

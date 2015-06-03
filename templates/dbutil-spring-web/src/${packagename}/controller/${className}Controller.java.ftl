@@ -7,7 +7,7 @@ import ${packagename}.controller.base.GeneralController;
 import ${packagename}.model.${className};
 
 /**
- * ${table.remark} Controller
+ * ${table.remark}Controller
  * @author ${author}
  */
 @Controller

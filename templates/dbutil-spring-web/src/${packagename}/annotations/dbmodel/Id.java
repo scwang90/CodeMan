@@ -31,9 +31,4 @@ public @interface Id {
 	 * 列名.
 	 */
 	public String value() default "";
-	/**
-	 * 列名.高优先级
-	 * @return the string
-	 */
-	public String column() default "";
 }

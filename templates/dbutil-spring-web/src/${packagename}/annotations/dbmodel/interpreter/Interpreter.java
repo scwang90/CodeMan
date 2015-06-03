@@ -38,14 +38,14 @@ public class Interpreter {
 		// TODO Auto-generated method stub
 		if (field.isAnnotationPresent(Column.class)) {
 			Column column = field.getAnnotation(Column.class);
-			if (AfStringUtil.isNotEmpty(column.name())) {
-				return column.name();
+			if (AfStringUtil.isNotEmpty(column.value())) {
+				return column.value();
 			}
 		}
 		if (field.isAnnotationPresent(Id.class)) {
 			Id id = field.getAnnotation(Id.class);
-			if (AfStringUtil.isNotEmpty(id.column())) {
-				return id.column();
+			if (AfStringUtil.isNotEmpty(id.value())) {
+				return id.value();
 			}
 		}
 		return field.getName();
@@ -74,11 +74,11 @@ public class Interpreter {
 		// TODO Auto-generated method stub
 		Field field = getIdField(clazz);
 		if (field != null) {
-			String id = field.getAnnotation(Id.class).column();
-			if (id == null || id.trim().length() == 0) {
-				id = field.getName();
+			Id id = field.getAnnotation(Id.class);
+			if (id == null || id.value().trim().length() == 0) {
+				return field.getName();
 			}
-			return id;
+			return id.value();
 		}
 		return "ID";
 	}

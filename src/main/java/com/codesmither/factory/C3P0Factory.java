@@ -22,7 +22,12 @@ public class C3P0Factory {
 
 	// 在静态代码块中创建数据库连接池
 	static {
-		dataSource = new ComboPooledDataSource();
+		String name = ConfigFactory.getDbConfigName();
+		if (name != null && name.trim().length() > 0) {
+			dataSource = new ComboPooledDataSource(name);
+		}else {
+			dataSource = new ComboPooledDataSource();
+		}
 	}
 
 	/**

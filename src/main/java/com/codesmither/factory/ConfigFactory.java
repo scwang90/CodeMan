@@ -6,6 +6,8 @@ import java.util.Properties;
 
 public class ConfigFactory {
 
+	private static String dbConfigName;
+
 	private static String tablePrefix = "";
 	private static String tableSuffix = "";
 	private static String tableDivision = "";
@@ -31,22 +33,34 @@ public class ConfigFactory {
 	private static void loadConfig(String path) throws IOException {
 		// TODO Auto-generated method stub
 		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
-		Properties properties = new Properties();
-		properties.load(stream);
-
-		tablePrefix   = properties.getProperty("codesmither.table.prefix");
-		tableSuffix   = properties.getProperty("codesmither.table.suffix");
-		tableDivision = properties.getProperty("codesmither.table.division");
+		Properties propty = new Properties();
+		propty.load(stream);
 		
-		templatePath   = properties.getProperty("codesmither.template.path");
-		templateCharset   = properties.getProperty("codesmither.template.charset");
-
-		targetPath = properties.getProperty("codesmither.target.path");
-		targetCharset = properties.getProperty("codesmither.target.charset");
-		targetProjectName = properties.getProperty("codesmither.target.project.name");
-		targetProjectAuthor = properties.getProperty("codesmither.target.project.author");
-		targetProjectPackage = properties.getProperty("codesmither.target.project.packagename");
+		String prefix = "codesmither.";
 		
+		dbConfigName = propty.getProperty(prefix+"database.config.name",dbConfigName);
+		
+		tablePrefix   = propty.getProperty(prefix+"table.prefix",tablePrefix);
+		tableSuffix   = propty.getProperty(prefix+"table.suffix",tableSuffix);
+		tableDivision = propty.getProperty(prefix+"table.division",tableDivision);
+		
+		templatePath   = propty.getProperty(prefix+"template.path",templatePath);
+		templateCharset   = propty.getProperty(prefix+"template.charset",templateCharset);
+
+		targetPath = propty.getProperty(prefix+"target.path",targetPath);
+		targetCharset = propty.getProperty(prefix+"target.charset",targetCharset);
+		targetProjectName = propty.getProperty(prefix+"target.project.name",targetProjectName);
+		targetProjectAuthor = propty.getProperty(prefix+"target.project.author",targetProjectAuthor);
+		targetProjectPackage = propty.getProperty(prefix+"target.project.packagename",targetProjectPackage);
+		
+	}
+
+	public static String getDbConfigName() {
+		return dbConfigName;
+	}
+
+	public static void setDbConfigName(String dbConfigName) {
+		ConfigFactory.dbConfigName = dbConfigName;
 	}
 
 	public static String getTargetProjectPackage() {
