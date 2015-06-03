@@ -21,7 +21,11 @@ import ${packagename}.annotations.dbmodel.interpreter.Interpreter;
 import ${packagename}.factory.C3P0Factory;
 import ${packagename}.util.AfReflecter;
 import ${packagename}.util.AfStackTrace;
-
+/**
+ * DbUtil 对 BaseDao 接口的实现
+ * @author 树朾
+ * @param <T>
+ */
 public class BaseDaoDbUtilImpl<T> implements MultiDao<T> {
 
 	protected class Model {

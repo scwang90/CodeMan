@@ -2,7 +2,7 @@ package ${packagename}.model;
 
 <#list table.columns as column>
 <#if column.name!=column.fieldName>
-<#assign needColumn=false>
+<#assign needColumn=true>
 </#if>
 </#list>
 
@@ -24,7 +24,7 @@ public class ${className}{
 	/**
 	 * ${column.remark}
 	 */
-	<#if column.name!=column.fieldName>Column("${column.name}")</#if>
+	<#if column.name!=column.fieldName>@Column("${column.name}")</#if>
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 

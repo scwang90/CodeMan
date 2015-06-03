@@ -8,6 +8,10 @@ public class ConfigConverter extends Converter{
 	public String tablePrefix = ConfigFactory.getTablePrefix();
 	public String tableSuffix = ConfigFactory.getTableSuffix();
 	public String tableDivision = ConfigFactory.getTableDivision();
+
+	public String columnPrefix = ConfigFactory.getColumnPrefix();
+	public String columnSuffix = ConfigFactory.getColumnSuffix();
+	public String columnDivision = ConfigFactory.getColumnDivision();
 	
 	public String converterClassName(String tableName) {
 		// TODO Auto-generated method stub
@@ -28,12 +32,29 @@ public class ConfigConverter extends Converter{
 				tableName += StringUtil.upperFirst(div);
 			}
 		}
-		return StringUtil.upperFirst(tableName);
+		return super.converterClassName(tableName);
 	}
 
 	public String converterFieldName(String columnName) {
 		// TODO Auto-generated method stub
-		return StringUtil.lowerFirst(columnName);
+		if (columnPrefix != null) {
+			if (columnName.startsWith(columnPrefix)) {
+				columnName = columnName.substring(columnPrefix.length());
+			}
+		}
+		if (columnSuffix != null) {
+			if (columnName.endsWith(columnSuffix)) {
+				columnName = columnName.substring(0,columnName.length()-columnPrefix.length()-1);
+			}
+		}
+		if (columnDivision != null) {
+			String[] divs = columnName.split(columnDivision);
+			columnName = "";
+			for (String div : divs) {
+				columnName += StringUtil.upperFirst(div);
+			}
+		}
+		return super.converterFieldName(columnName);
 	}
 
 }

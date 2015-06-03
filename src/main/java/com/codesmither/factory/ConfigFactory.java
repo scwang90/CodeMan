@@ -11,12 +11,16 @@ public class ConfigFactory {
 	private static String tablePrefix = "";
 	private static String tableSuffix = "";
 	private static String tableDivision = "";
+
+	private static String columnPrefix = "";
+	private static String columnSuffix = "";
+	private static String columnDivision = "";
 	
 	private static String templatePath = "templates/dbutil-spring-web";
-	private static String templateCharset;
+	private static String templateCharset = "UTF-8";
 	
 	private static String targetPath = "target/project";
-	private static String targetCharset;
+	private static String targetCharset = "UTF-8";
 	private static String targetProjectName = "TargetProject";
 	private static String targetProjectAuthor = "scwang";
 	private static String targetProjectPackage = "com.codesmither";
@@ -39,10 +43,14 @@ public class ConfigFactory {
 		String prefix = "codesmither.";
 		
 		dbConfigName = propty.getProperty(prefix+"database.config.name",dbConfigName);
-		
-		tablePrefix   = propty.getProperty(prefix+"table.prefix",tablePrefix);
-		tableSuffix   = propty.getProperty(prefix+"table.suffix",tableSuffix);
-		tableDivision = propty.getProperty(prefix+"table.division",tableDivision);
+
+		tablePrefix   = propty.getProperty(prefix+"database.table.prefix",tablePrefix);
+		tableSuffix   = propty.getProperty(prefix+"database.table.suffix",tableSuffix);
+		tableDivision = propty.getProperty(prefix+"database.table.division",tableDivision);
+
+		columnPrefix   = propty.getProperty(prefix+"database.column.prefix",columnPrefix);
+		columnSuffix   = propty.getProperty(prefix+"database.column.suffix",columnSuffix);
+		columnDivision = propty.getProperty(prefix+"database.column.division",columnDivision);
 		
 		templatePath   = propty.getProperty(prefix+"template.path",templatePath);
 		templateCharset   = propty.getProperty(prefix+"template.charset",templateCharset);
@@ -142,5 +150,30 @@ public class ConfigFactory {
 	public static void setTableDivision(String tableDivision) {
 		ConfigFactory.tableDivision = tableDivision;
 	}
+
+	public static String getColumnPrefix() {
+		return columnPrefix;
+	}
+
+	public static void setColumnPrefix(String columnPrefix) {
+		ConfigFactory.columnPrefix = columnPrefix;
+	}
+
+	public static String getColumnSuffix() {
+		return columnSuffix;
+	}
+
+	public static void setColumnSuffix(String columnSuffix) {
+		ConfigFactory.columnSuffix = columnSuffix;
+	}
+
+	public static String getColumnDivision() {
+		return columnDivision;
+	}
+
+	public static void setColumnDivision(String columnDivision) {
+		ConfigFactory.columnDivision = columnDivision;
+	}
+
 	
 }

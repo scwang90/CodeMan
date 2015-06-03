@@ -6,6 +6,7 @@ public class Model {
 	public String author;
 	public String packagename;
 	public String projectName;
+	public String charset;
 	
 	public String getProjectName() {
 		return projectName;
@@ -74,5 +75,13 @@ public class Model {
 	public void bindTable(Table table) {
 		this.table = table;
 		this.className = table.className;
+	}
+
+	public String getCharset() {
+		return charset;
+	}
+
+	public void setCharset(String charset) {
+		this.charset = charset;
 	}
 }

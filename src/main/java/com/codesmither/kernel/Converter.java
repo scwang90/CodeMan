@@ -6,12 +6,20 @@ public class Converter {
 
 	public String converterClassName(String tableName) {
 		// TODO Auto-generated method stub
-		return StringUtil.upperFirst(tableName);
+		String classname = StringUtil.upperFirst(tableName);
+		if (JavaKeyword.isJavaKeyword(classname)) {
+			classname = classname + "Ex";
+		}
+		return classname;
 	}
 
 	public String converterFieldName(String columnName) {
 		// TODO Auto-generated method stub
-		return StringUtil.lowerFirst(columnName);
+		String fieldName = StringUtil.lowerFirst(columnName);
+		if (JavaKeyword.isJavaKeyword(fieldName)) {
+			fieldName = fieldName + "Ex";
+		}
+		return fieldName;
 	}
 
 	public String converterfieldType(int columnType) {
