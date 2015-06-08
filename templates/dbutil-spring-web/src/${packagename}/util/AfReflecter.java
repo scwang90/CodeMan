@@ -3,13 +3,15 @@ package ${packagename}.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 /**
  * java 反射工具类
- * @author SCWANG
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 public class AfReflecter {
 
@@ -87,7 +89,46 @@ public class AfReflecter {
 		}
 		return fields.toArray(new Field[0]);
 	}
-	
+
+	/**
+	 * 利用反射设置 获取type的method的Annotation(包括父类)
+	 * @param type
+	 * @param method
+	 * @param annot
+	 * @return method or null
+	 */
+	public static <T extends  Annotation> T getMethodAnnotation(Class<?> type, String method,  Class<T> annot) {
+		// TODO Auto-generated method stub
+		while (!type.equals(Object.class)) {
+			for (Method dmethod : type.getDeclaredMethods()) {
+				if (dmethod.getName().equals(method)) {
+					if (dmethod.isAnnotationPresent(annot)) {
+						return dmethod.getAnnotation(annot);
+					}
+				}
+			}
+			type = type.getSuperclass();
+		}
+		return null;
+	}	
+	/**
+	 * 利用反射设置 获取type的method(包括父类)
+	 * @param type
+	 * @param method
+	 * @return method or null
+	 */
+	public static Method getMethod(Class<?> type, String method) {
+		// TODO Auto-generated method stub
+		while (!type.equals(Object.class)) {
+			for (Method dmethod : type.getDeclaredMethods()) {
+				if (dmethod.getName().equals(method)) {
+					return dmethod;
+				}
+			}
+			type = type.getSuperclass();
+		}
+		return null;
+	}	
 	/**
 	 * 利用反射设置 获取type的field(包括父类)
 	 * @param type
@@ -226,10 +267,6 @@ public class AfReflecter {
 	 * @param obj
 	 * @param field 支持‘.’路径 如 person.name
 	 * @return
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	 * @throws Exception 数组越界
 	 */
 	public static boolean setMemberNoException(Object obj,String field,Object value) {
 		try {
@@ -261,10 +298,6 @@ public class AfReflecter {
 	 * @param obj
 	 * @param field 支持‘.’路径 如 person.name
 	 * @return
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	 * @throws Exception 数组越界
 	 */
 	public static Object getMemberNoException(Object obj,String field) {
 		try {
@@ -298,10 +331,6 @@ public class AfReflecter {
 	 * @param obj
 	 * @param field 支持‘.’路径 如 person.name
 	 * @return
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	 * @throws Exception 数组越界
 	 */
 	public static <T> T  getMemberNoException(Object obj,String field,Class<T> clazz) {
 		try {

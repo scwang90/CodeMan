@@ -24,6 +24,8 @@ import java.lang.annotation.Target;
 /**
  * The Interface Column.
  * 表示列
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 @Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

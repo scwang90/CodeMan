@@ -1,7 +1,12 @@
 package ${packagename}.dao.base;
 
 import java.util.List;
-
+/**
+ * 多功能Dao层接口
+ * @param <T>
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
+ */
 public interface MultiDao<T> extends BaseDao<T>{
 
 	public int deleteWhere(String where) throws Exception ;

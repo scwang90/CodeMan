@@ -2,6 +2,7 @@ package com.codesmither.model;
 
 public class Model {
 	public Table table;
+	public DatabaseJdbc jdbc;
 	public String className;
 	public String author;
 	public String packagename;
@@ -83,5 +84,13 @@ public class Model {
 
 	public void setCharset(String charset) {
 		this.charset = charset;
+	}
+
+	public DatabaseJdbc getJdbc() {
+		return jdbc;
+	}
+
+	public void setJdbc(DatabaseJdbc jdbc) {
+		this.jdbc = jdbc;
 	}
 }

@@ -14,9 +14,10 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /**
+ * Jackson工具类
  * Helper class for parsing to and from json for API calls
- * 
- * @author s0pau
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 public class JacksonUtil {
 	

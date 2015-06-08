@@ -29,6 +29,8 @@ public class C3P0Factory {
 			dataSource = new ComboPooledDataSource();
 		}
 	}
+	
+	
 
 	/**
 	 * @Method: getConnection
@@ -47,6 +49,26 @@ public class C3P0Factory {
 			threadLocal.set(conn);
 		}
 		return conn;
+	}
+
+	public static String getJdbcUrl() {
+		// TODO Auto-generated method stub
+		return dataSource.getJdbcUrl();
+	}
+
+	public static String getDriverClass() {
+		// TODO Auto-generated method stub
+		return dataSource.getDriverClass();
+	}
+
+	public static String getPassword() {
+		// TODO Auto-generated method stub
+		return dataSource.getPassword();
+	}
+
+	public static String getUser() {
+		// TODO Auto-generated method stub
+		return dataSource.getUser();
 	}
 
 	/**

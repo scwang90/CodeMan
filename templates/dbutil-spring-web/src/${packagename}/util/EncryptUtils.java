@@ -2,8 +2,9 @@ package ${packagename}.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 /**
- * 
- * @author SCWANG
+ * MD5-SHA 编码器
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 public class EncryptUtils {  
     /** 

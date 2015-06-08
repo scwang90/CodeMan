@@ -13,7 +13,8 @@ import ${packagename}.annotations.dbmodel.Table;
 import ${packagename}.util.AfStringUtil;
 /**
  * db.annotation 解释器
- * @author scwang
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}  
  */
 public class Interpreter {
 	

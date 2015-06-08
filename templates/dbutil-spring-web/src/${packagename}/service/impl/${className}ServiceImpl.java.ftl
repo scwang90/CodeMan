@@ -2,17 +2,18 @@ package ${packagename}.service.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import ${packagename}.model.${className};
 import ${packagename}.service.${className}Service;
 import ${packagename}.util.Page;
 
 /**
- * ${table.remark}Service接口层
- * @author Administrator
+ * ${table.remark}的Service接实现
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}     
  */
-@Repository
+@Service
 public class ${className}ServiceImpl extends BaseServiceImpl<${className}> implements ${className}Service{
 
 	@Override

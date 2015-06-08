@@ -37,19 +37,12 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>4.0.0.RELEASE</version>
+			<version>4.1.6.RELEASE</version>
 		</dependency>
-
-		<!-- aspectj相关jar包,spring AOP就是用aspectj来实现的，是依赖关系 -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>1.7.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.7.4</version>
+ 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>4.1.6.RELEASE</version>
 		</dependency>
 
 		<!-- jsp 依赖 -->
@@ -74,6 +67,12 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1</version>
+			<scope>test</scope>
+		</dependency>
         
     	<!-- jackson -->
 		<dependency>
@@ -86,14 +85,6 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.4.1</version>
 		</dependency>
-		
-		<!-- dao日志依赖 -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.12</version>
-		</dependency>
-
 
 	</dependencies>
 

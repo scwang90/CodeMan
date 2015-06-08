@@ -2,6 +2,8 @@ package ${packagename}.util;
 
 /**
  * Service层公用的Exception.
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 public class ServiceException extends Exception {
 

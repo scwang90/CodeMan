@@ -11,7 +11,14 @@ import ${packagename}.dao.base.BaseDao;
 import ${packagename}.service.BaseService;
 import ${packagename}.util.AfReflecter;
 import ${packagename}.util.Page;
+import ${packagename}.util.ServiceException;
 
+/**
+ * 通用Service层实现基类
+ * @param <T>
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
+ */
 public class BaseServiceImpl<T> implements BaseService<T>{
 
 	@Autowired
@@ -34,13 +41,18 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	@Override
 	public int update(T model) throws Exception {
 		// TODO Auto-generated method stub
-		model = checkNullField(findById(getModelID(model)), model);
+		T old = findById(getModelID(model));
+		if (old == null) {
+			throw new ServiceException("请求更新记录不存在或已经被删除！");
+		}
+		model = checkNullField(old, model);
 		return baseDao.update(model);
 	}
 
-	public int delete(Object model) throws Exception{
+	@Override
+	public int delete(Object id) throws Exception {
 		// TODO Auto-generated method stub
-		return baseDao.delete(model);
+		return baseDao.delete(id);
 	}
 
 	@Override

@@ -11,6 +11,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 登陆验证过滤器
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
+ */
 public class AuthFilter implements Filter {
 
 	@Override
@@ -27,7 +32,7 @@ public class AuthFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) sresponse;
 		String url = request.getRequestURI();
 		
-		System.out.println();
+		//System.out.println();
 		System.out.println("filter url ---"+url);
 
 		// 判断是否存在login.jsp

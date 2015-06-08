@@ -8,11 +8,10 @@ import javax.sql.DataSource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
- * @ClassName: JdbcUtils2
- * @Description: 数据库连接工具类
- * @author: 孤傲苍狼
- * @date: 2014-10-4 下午6:04:36
- *
+ * @ClassName: C3P0Factory
+ * @Description: 数据库连接工厂类
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 public class C3P0Factory {
 
@@ -23,23 +22,15 @@ public class C3P0Factory {
 	// 在静态代码块中创建数据库连接池
 	static {
 		// 通过代码创建C3P0数据库连接池
-		/*
-		 * ds = new ComboPooledDataSource();
-		 * ds.setDriverClass("com.mysql.jdbc.Driver");
-		 * ds.setJdbcUrl("jdbc:mysql://localhost:3306/jdbcstudy");
-		 * ds.setUser("root"); ds.setPassword("XDP"); ds.setInitialPoolSize(10);
-		 * ds.setMinPoolSize(5); ds.setMaxPoolSize(20);
-		 */
-
-		// 通过读取C3P0的xml配置文件创建数据源，C3P0的xml配置文件c3p0-config.xml必须放在src目录下
-		// ds = new ComboPooledDataSource();//使用C3P0的默认配置来创建数据源
-		dataSource = new ComboPooledDataSource("myApp");// 使用C3P0的命名配置来创建数据源
+		dataSource = new ComboPooledDataSource();
+		// 使用C3P0的命名配置来创建数据源
+		//dataSource = new ComboPooledDataSource("myApp");
 	}
 
 	/**
 	 * @Method: getConnection
 	 * @Description: 从数据源中获取数据库连接
-	 * @Anthor:孤傲苍狼
+	 * @Anthor:${author}
 	 * @return Connection
 	 * @throws SQLException
 	 */
@@ -59,7 +50,7 @@ public class C3P0Factory {
 	 * @throws SQLException
 	 * @Method: startTransaction
 	 * @Description: 开启事务
-	 * @Anthor:孤傲苍狼
+	 * @Anthor:${author}
 	 */
 	public static void startTransaction() throws SQLException {
 		// 开启事务
@@ -70,7 +61,7 @@ public class C3P0Factory {
 	 * @throws SQLException
 	 * @Method: rollback
 	 * @Description:回滚事务
-	 * @Anthor:孤傲苍狼
+	 * @Anthor:${author}
 	 *
 	 */
 	public static void rollback() throws SQLException {
@@ -86,8 +77,7 @@ public class C3P0Factory {
 	 * @throws SQLException
 	 * @Method: commit
 	 * @Description:提交事务
-	 * @Anthor:孤傲苍狼
-	 *
+	 * @Anthor:${author}
 	 */
 	public static void commit() throws SQLException {
 		// 从当前线程中获取Connection
@@ -102,7 +92,7 @@ public class C3P0Factory {
 	 * @throws SQLException 
 	 * @Method: close
 	 * @Description:关闭数据库连接(注意，并不是真的关闭，而是把连接还给数据库连接池)
-	 * @Anthor:孤傲苍狼
+	 * @Anthor:${author}
 	 *
 	 */
 	public static void close() throws SQLException {
@@ -118,7 +108,7 @@ public class C3P0Factory {
 	/**
 	 * @Method: getDataSource
 	 * @Description: 获取数据源
-	 * @Anthor:孤傲苍狼
+	 * @Anthor:${author}
 	 * @return DataSource
 	 */
 	public static DataSource getDataSource() {

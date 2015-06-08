@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  * @Description: 数据分页列表信息
- * @Author: scwang
- * @Version: V1.0, 2015-3-9 上午10:34:45
- * @Modified: 初次创建Page类
  * @param <T> 数据实体类
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 public abstract class Page<T>{
 	

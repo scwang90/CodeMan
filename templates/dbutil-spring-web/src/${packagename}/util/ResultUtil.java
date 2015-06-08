@@ -1,5 +1,10 @@
 package ${packagename}.util;
 
+/**
+ * Controller 返回实体类
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
+ */
 public class ResultUtil {
 
 	private boolean result;

@@ -23,6 +23,8 @@ import java.lang.annotation.Target;
 /**
  * The Interface Id.
  * 主键
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 @Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

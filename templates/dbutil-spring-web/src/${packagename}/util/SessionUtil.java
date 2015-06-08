@@ -1,8 +1,9 @@
 package ${packagename}.util;
 
 /**
- * 获取Session
- * @Author SCWANG
+ * 获取Session工具类
+ * @author ${author}
+ * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")} 
  */
 public class SessionUtil {
 
