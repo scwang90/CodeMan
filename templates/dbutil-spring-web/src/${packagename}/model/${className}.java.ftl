@@ -24,7 +24,7 @@ public class ${className}{
 	<#list table.columns as column>
 	/**
 	 * ${column.remark}
-	 */<#if column.name!=column.fieldName>\u000A@Column("${column.name}")\u000A</#if>
+	 */<#if column.name!=column.fieldName>${"\n"}	@Column("${column.name}")</#if>
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 
