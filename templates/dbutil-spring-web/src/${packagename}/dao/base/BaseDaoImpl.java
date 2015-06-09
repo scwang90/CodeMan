@@ -1,8 +1,8 @@
 package ${packagename}.dao.base;
 
-import java.util.Date;
+//import java.util.Date;
 
-import ${packagename}.util.AfReflecter;
+//import ${packagename}.util.AfReflecter;
 /**
  * 通用Dao实现基类
  * @param <T>

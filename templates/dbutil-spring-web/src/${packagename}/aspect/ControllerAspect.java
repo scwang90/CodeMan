@@ -7,8 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import ${packagename}.annotations.Intent;
+import ${packagename}.model.entity.RestfulEntity;
 import ${packagename}.util.AfReflecter;
-import ${packagename}.util.ResultUtil;
 import ${packagename}.util.ServiceException;
 
 /**
@@ -40,18 +40,18 @@ public class ControllerAspect {
 		try {
 			result = point.proceed();
 		} catch (ServiceException e) {
-			return ResultUtil.getFailure(e.getMessage());
+			return RestfulEntity.getFailure(e.getMessage());
 		} catch (Throwable e) {
 			e.printStackTrace();
-			return ResultUtil.getFailure(intent+"失败"+"-"+e.getMessage());
+			return RestfulEntity.getFailure(intent+"失败"+"-"+e.getMessage());
 		}
 		if(result == null){
-			return ResultUtil.getSuccess(intent+"成功");
+			return RestfulEntity.getSuccess(intent+"成功");
 		}else if ("null".equals(result)) {
 			result = null;
 		}
 		
-		return ResultUtil.getSuccess(result);
+		return RestfulEntity.getSuccess(result);
 	}
 
 }
