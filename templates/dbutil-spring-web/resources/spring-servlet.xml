@@ -12,7 +12,7 @@
           http://www.springframework.org/schema/mvc
    		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
+    
     <!-- 扫描注解Bean -->
     <context:component-scan base-package="${packagename}"/>
     
@@ -26,33 +26,5 @@
         <property name="prefix" value="/views/"/>
         <property name="suffix" value=".jsp"/>
 	</bean>
-
-    <!-- 开启AOP监听 只对当前配置文件有效 -->
-	<aop:aspectj-autoproxy expose-proxy="true"/>
-	
-    <!-- 开启AOP切面日志 -->
-    <bean id="loggingaspect"
-        class="${packagename}.aspect.LoggingAspect"></bean>
-    <aop:config>
-        <!-- 切入点配置 -->
-        <aop:pointcut expression="execution(* ${packagename}.controller.*.*(..))" id="ptc-controller"/>
-        <aop:pointcut expression="execution(* ${packagename}.service.*.*(..))" id="ptc-service"/>
-        <aop:pointcut expression="execution(* ${packagename}.dao.*.*(..))" id="ptc-dao"/>
-        <!-- 日志切面 -->
-        <aop:aspect ref="loggingaspect">
-            <aop:before method="before" pointcut-ref="ptc-controller"/>
-            <aop:after-returning method="returned" pointcut-ref="ptc-controller" returning="result"/>
-            <aop:after-throwing method="throwed" pointcut-ref="ptc-controller" throwing="ex"/>
-            
-            <aop:before method="before" pointcut-ref="ptc-service"/>
-            <aop:after-returning method="returned" pointcut-ref="ptc-service" returning="result"/>
-            <aop:after-throwing method="throwed" pointcut-ref="ptc-service" throwing="ex"/>
-            
-            <aop:before method="before" pointcut-ref="ptc-dao"/>
-            <aop:after-returning method="returned" pointcut-ref="ptc-dao" returning="result"/>
-            <aop:after-throwing method="throwed" pointcut-ref="ptc-dao" throwing="ex"/>
-
-		</aop:aspect>
-    </aop:config>
 
 </beans>

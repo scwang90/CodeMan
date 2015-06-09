@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+          http://www.springframework.org/schema/mvc
+   		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="converter-bytearray" />
+				<ref bean="converter-string" />
+				<ref bean="converter-resource" />
+				<ref bean="converter-xml-source" />
+				<ref bean="converter-all-encompassing-fForm" />
+				<ref bean="converter-xml-Jaxb2root-element" />
+				<ref bean="converter-json-mapping-jackson" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="converter-bytearray"
+		class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/octet-stream</value>
+				<value>*/*</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="converter-string"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+				<value>*/*</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="converter-resource"
+		class="org.springframework.http.converter.ResourceHttpMessageConverter">
+		<property name="supportedMediaTypes" value="*/*" />
+	</bean>
+	<bean id="converter-xml-source"
+		class="org.springframework.http.converter.xml.SourceHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/xml;charset=UTF-8</value>
+				<value>application/xml;charset=UTF-8</value>
+				<value>application/*+xml;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="converter-all-encompassing-fForm"
+		class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/x-www-form-urlencoded</value>
+				<value>multipart/form-data</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="converter-xml-Jaxb2root-element"
+		class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/xml;charset=UTF-8</value>
+				<value>application/xml;charset=UTF-8</value>
+				<value>application/*+xml;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="converter-json-mapping-jackson"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes" >
+			<list>
+				<value>text/json;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
+				<value>application/*+json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 
+	org.springframework.http.converter.ByteArrayHttpMessageConverter@443d9eba [application/octet-stream, */*]
+	org.springframework.http.converter.StringHttpMessageConverter@297fe856	[text/plain;charset=ISO-8859-1, */*]
+	org.springframework.http.converter.ResourceHttpMessageConverter@c6e7b63 [*/*]
+	org.springframework.http.converter.xml.SourceHttpMessageConverter@2966a6f5 [application/xml, text/xml, application/*+xml]
+	org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter@125b340f [application/x-www-form-urlencoded, multipart/form-data]
+	org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter@21b6ce33 [application/xml, text/xml, application/*+xml]
+	org.springframework.http.converter.json.MappingJackson2HttpMessageConverter@689b878f [application/json;charset=UTF-8, application/*+json;charset=UTF-8]
+	 -->
+</beans>
