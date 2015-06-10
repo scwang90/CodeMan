@@ -39,6 +39,7 @@
 		<property name="supportedMediaTypes">
 			<list>
 				<value>text/plain;charset=UTF-8</value>
+				<value>text/html;charset=UTF-8</value>
 				<value>*/*</value>
 			</list>
 		</property>

@@ -82,7 +82,7 @@ public class GeneralController<T> extends BaseController{
 	 */
 	@Intent("获取全部%s列表")
 	public Object getAll() throws Exception {
-		return new Page<T>(service.findAll()){};
+		return service.findAll();
 	}
 
 	/**

@@ -1,8 +1,7 @@
 package ${packagename}.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import ${packagename}.annotations.Intent;
 import ${packagename}.controller.base.GeneralController;
@@ -13,11 +12,12 @@ import ${packagename}.model.${className};
  * @author ${author}
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}     
  */
-@Controller
+@RestController
 @Intent("${table.remark}")
 @RequestMapping("${className}")
 public class ${className}Controller extends GeneralController<${className}>{
 
+	
 	/**
 	 * 添加信息
 	 * @param model
@@ -25,9 +25,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@ResponseBody
-	@RequestMapping("add")
-	public Object add(${className} model) throws Exception {
+	@RequestMapping("Add")
+	public Object add(@RequestBody ${className} model) throws Exception {
 		// TODO Auto-generated method stub
 		return super.add(model);
 	}
@@ -39,9 +38,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@ResponseBody
-	@RequestMapping("update")
-	public Object update(${className} model) throws Exception {
+	@RequestMapping("Update")
+	public Object update(@RequestBody ${className} model) throws Exception {
 		// TODO Auto-generated method stub
 		return super.update(model);
 	}
@@ -53,9 +51,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@ResponseBody
-	@RequestMapping("getByID")
-	public Object getByID(String ID) throws Exception {
+	@RequestMapping("Get/{ID}")
+	public Object getByID(@PathVariable String ID) throws Exception {
 		// TODO Auto-generated method stub
 		return super.getByID(ID);
 	}
@@ -66,8 +63,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@ResponseBody
-	@RequestMapping("delete")
+	@RequestMapping("Delete/{ID}")
 	public Object delete(String ID) throws Exception {
 		// TODO Auto-generated method stub
 		return super.delete(ID);
@@ -79,8 +75,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@ResponseBody
-	@RequestMapping("countAll")
+	@RequestMapping("CountAll")
 	public Object countAll() throws Exception {
 		// TODO Auto-generated method stub
 		return super.countAll();
@@ -92,11 +87,10 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@ResponseBody
-	@RequestMapping("getAll")
-	public Object getAll() throws Exception {
+	@RequestMapping("GetList")
+	public Object getList() throws Exception {
 		// TODO Auto-generated method stub
-		return super.getAll();
+		return super.getList();
 	}
 
 	/**
@@ -107,9 +101,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@ResponseBody
-	@RequestMapping("getListByPage")
-	public Object getListByPage(int pageSize, int pageNo) throws Exception {
+	@RequestMapping("GetList/{pageSize}/{pageNo}")
+	public Object getListByPage(@PathVariable int pageSize,@PathVariable int pageNo) throws Exception {
 		// TODO Auto-generated method stub
 		return super.getListByPage(pageSize, pageNo);
 	}
