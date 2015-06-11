@@ -2,6 +2,9 @@ package ${packagename}.controller.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.datastatistics.annotations.Intent;
+import com.datastatistics.service.BaseService;
+
 import ${packagename}.annotations.Intent;
 import ${packagename}.service.BaseService;
 import ${packagename}.util.Page;
@@ -14,7 +17,6 @@ import ${packagename}.util.Page;
  */
 public class GeneralController<T> extends BaseController{
 	
-
 	@Autowired
 	BaseService<T> service;
 
@@ -81,7 +83,7 @@ public class GeneralController<T> extends BaseController{
 	 * @throws Exception 
 	 */
 	@Intent("获取全部%s列表")
-	public Object getAll() throws Exception {
+	public Object getList() throws Exception {
 		return service.findAll();
 	}
 
@@ -96,5 +98,5 @@ public class GeneralController<T> extends BaseController{
 	public Object getListByPage(int pageSize,int pageNo) throws Exception {
 		return service.listByPage(pageSize, pageNo);
 	}
-
+	
 }

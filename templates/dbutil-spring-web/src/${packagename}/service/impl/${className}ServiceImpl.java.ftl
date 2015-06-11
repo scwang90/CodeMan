@@ -29,9 +29,9 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 	}
 
 	@Override
-	public int delete(Object model) throws Exception {
+	public int delete(Object id) throws Exception {
 		// TODO Auto-generated method stub
-		return super.delete(model);
+		return super.delete(id);
 	}
 
 	@Override

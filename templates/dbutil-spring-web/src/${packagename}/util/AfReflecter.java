@@ -142,10 +142,10 @@ public class AfReflecter {
 				return type.getDeclaredField(field);
 			} catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			type = type.getSuperclass();
 		}
