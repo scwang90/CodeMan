@@ -2,9 +2,6 @@ package ${packagename}.controller.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.datastatistics.annotations.Intent;
-import com.datastatistics.service.BaseService;
-
 import ${packagename}.annotations.Intent;
 import ${packagename}.service.BaseService;
 import ${packagename}.util.Page;
