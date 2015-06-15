@@ -126,7 +126,7 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 		// TODO Auto-generated method stub
 		StringBuffer buffer = new StringBuffer();
 		for (Field field : fields) {
-			buffer.append(Interpreter.getColumnName(field));
+			buffer.append("`"+Interpreter.getColumnName(field)+"`");
 			buffer.append(",");
 		}
 		buffer.setLength(buffer.length() - 1);
@@ -145,7 +145,7 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 		// TODO Auto-generated method stub
 		StringBuffer buffer = new StringBuffer();
 		for (Field field : fields) {
-			buffer.append(Interpreter.getColumnName(field));
+			buffer.append("`"+Interpreter.getColumnName(field)+"`");
 			buffer.append("=?,");
 		}
 		buffer.setLength(buffer.length() - 1);
