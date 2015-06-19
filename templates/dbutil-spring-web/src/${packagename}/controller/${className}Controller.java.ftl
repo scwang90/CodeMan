@@ -66,7 +66,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("Delete/{ID}")
-	public Object delete(String ID) throws Exception {
+	public Object delete(@PathVariable String ID) throws Exception {
 		// TODO Auto-generated method stub
 		return super.delete(ID);
 	}
