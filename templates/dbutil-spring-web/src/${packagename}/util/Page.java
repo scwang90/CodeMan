@@ -2,6 +2,7 @@ package ${packagename}.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * @Description: 数据分页列表信息
  * @param <T> 数据实体类

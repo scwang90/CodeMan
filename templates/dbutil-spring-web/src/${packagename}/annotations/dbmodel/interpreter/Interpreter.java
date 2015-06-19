@@ -11,6 +11,7 @@ import ${packagename}.annotations.dbmodel.DbIgnore;
 import ${packagename}.annotations.dbmodel.Id;
 import ${packagename}.annotations.dbmodel.Table;
 import ${packagename}.util.AfStringUtil;
+
 /**
  * db.annotation 解释器
  * @author ${author}

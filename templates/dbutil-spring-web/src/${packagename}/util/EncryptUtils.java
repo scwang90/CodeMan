@@ -1,6 +1,7 @@
 package ${packagename}.util;  
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 /**
  * MD5-SHA 编码器
  * @author ${author}

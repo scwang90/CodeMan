@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ${packagename}.dao.base.BaseDaoImpl;
 import ${packagename}.dao.${className}Dao;
 import ${packagename}.model.${className};
+
 /**
  * ${table.remark}的Dao实现
  * @author ${author}

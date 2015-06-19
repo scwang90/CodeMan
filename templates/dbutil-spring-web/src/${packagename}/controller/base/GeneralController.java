@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ${packagename}.annotations.Intent;
 import ${packagename}.service.BaseService;
-import ${packagename}.util.Page;
 
 /**
  * Controller 层通用处理事务基类

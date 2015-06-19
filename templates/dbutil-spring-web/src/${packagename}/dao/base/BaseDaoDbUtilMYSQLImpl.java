@@ -21,6 +21,7 @@ import ${packagename}.annotations.dbmodel.interpreter.Interpreter;
 import ${packagename}.factory.C3P0Factory;
 import ${packagename}.util.AfReflecter;
 import ${packagename}.util.AfStackTrace;
+
 /**
  * DbUtil - MYSQL 对 MultiDao 接口的实现
  * @param <T>
@@ -321,7 +322,11 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{where}", String.valueOf(where));
-		sql = sql.replace("@{order}", String.valueOf(order));
+		if (where.toLowerCase().indexOf("order by ") < 0) {
+			sql = sql.replace("@{order}", String.valueOf(order));
+		}else {
+			sql = sql.replace("@{order}", "");
+		}
 		return qr.query(sql, beanListHandler);
 	}
 
@@ -335,7 +340,11 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 		sql = sql.replace("@{where}", String.valueOf(where));
 		sql = sql.replace("@{start}", String.valueOf(start));
 		sql = sql.replace("@{limit}", String.valueOf(limit));
-		sql = sql.replace("@{order}", String.valueOf(order));
+		if (where.toLowerCase().indexOf("order by ") < 0) {
+			sql = sql.replace("@{order}", String.valueOf(order));
+		}else {
+			sql = sql.replace("@{order}", "");
+		}
 		return qr.query(sql, beanListHandler);
 	}
 

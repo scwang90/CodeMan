@@ -5,8 +5,6 @@ import static java.lang.System.out;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 
-import com.datastatistics.util.JacksonUtil;
-
 import ${packagename}.util.JacksonUtil;
 
 /**

@@ -17,11 +17,4 @@ public class BaseController {
 //		model.addAttribute("title", title);
 	}
 
-//	protected String success(Object message){
-//		return ResultUtil.getSuccess(message);
-//	}
-//	
-//	protected String failure(Object message){
-//		return ResultUtil.getFailure(message);
-//	}
 }
