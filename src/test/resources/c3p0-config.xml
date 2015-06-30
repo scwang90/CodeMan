@@ -30,6 +30,16 @@
 		<property name="maxPoolSize">100</property>
 		<property name="minPoolSize">10</property>
 	</named-config>
+	<named-config name="MicroSiteBuilder">
+		<property name="user">gyuser</property>
+		<property name="password">gynews</property>
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+		<property name="jdbcUrl">jdbc:mysql://90.90.90.114:3306/micrositebuilder</property>
+		<property name="initialPoolSize">10</property>
+		<property name="maxIdleTime">30</property>
+		<property name="maxPoolSize">100</property>
+		<property name="minPoolSize">10</property>
+	</named-config>
 	<named-config name="OpenWBS">
 		<property name="user">sa</property>
 		<property name="password">jsjxy2013</property>

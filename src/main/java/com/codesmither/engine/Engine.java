@@ -3,7 +3,6 @@ package com.codesmither.engine;
 import java.io.File;
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.util.List;
 
 import com.codesmither.factory.C3P0Factory;
 import com.codesmither.factory.ConfigFactory;
@@ -12,7 +11,6 @@ import com.codesmither.kernel.Converter;
 import com.codesmither.kernel.ModelBuilder;
 import com.codesmither.kernel.TableBuilder;
 import com.codesmither.model.Model;
-import com.codesmither.model.Table;
 
 public class Engine {
 
@@ -47,8 +45,8 @@ public class Engine {
 		ModelBuilder modelBuilder = new ModelBuilder();
 		TableBuilder tableBuilder = new TableBuilder(connection,converter );
 		Model model = modelBuilder.build();
-		List<Table> tables = tableBuilder.build();
-		TextTransfer transfer = new TextTransfer(tables,model,ftemplates,ftarget);
+		model.tables = tableBuilder.build();
+		TextTransfer transfer = new TextTransfer(model,ftemplates,ftarget);
 		while (transfer.hasTask()) {
 			print.println(transfer.doTask());
 		}

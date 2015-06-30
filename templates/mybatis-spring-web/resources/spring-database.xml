@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+          http://www.springframework.org/schema/mvc
+   		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:c3p0.properties"/>
+
+	<!-- c3p0 connection pool configuration -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!-- 数据库驱动 -->
+		<property name="driverClass" value="${r'${c3p0.driverClass}'}" />
+		<!-- 连接URL串 -->
+		<property name="jdbcUrl" value="${r'${c3p0.jdbcUrl}'}" />
+		<!-- 连接用户名 -->
+		<property name="user" value="${r'${c3p0.user}'}" />
+		<!-- 连接密码 -->
+		<property name="password" value="${r'${c3p0.password}'}" />
+		<!-- 初始化连接池时连接数量为5个 -->
+		<property name="initialPoolSize" value="5" />
+		<!-- 允许最小连接数量为5个 -->
+		<property name="minPoolSize" value="5" />
+		<!-- 允许最大连接数量为20个 -->
+		<property name="maxPoolSize" value="20" />
+		<!-- 允许连接池最大生成100个PreparedStatement对象 -->
+		<property name="maxStatements" value="100" />
+		<!-- 连接有效时间，连接超过3600秒未使用，则该连接丢弃 -->
+		<property name="maxIdleTime" value="3600" />
+		<!-- 连接用完时，一次产生的新连接步进值为2 -->
+		<property name="acquireIncrement" value="2" />
+		<!-- 获取连接失败后再尝试10次，再失败则返回DAOException异常 -->
+		<property name="acquireRetryAttempts" value="10" />
+		<!-- 获取下一次连接时最短间隔600毫秒，有助于提高性能 -->
+		<property name="acquireRetryDelay" value="600" />
+		<!-- 检查连接的有效性，此处小弟不是很懂什么意思 -->
+		<property name="testConnectionOnCheckin" value="true" />
+		<!-- 每个1200秒检查连接对象状态 -->
+		<property name="idleConnectionTestPeriod" value="1200" />
+		<!-- 获取新连接的超时时间为10000毫秒 -->
+		<property name="checkoutTimeout" value="10000" />
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<#list tables as table>
+	<bean id="${table.classNameCamel}Mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+        <property name="mapperInterface" value="${packagename}.mapper.${table.className}Mapper" />  
+    </bean>
+	</#list>
+
+</beans>

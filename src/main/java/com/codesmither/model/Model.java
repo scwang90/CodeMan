@@ -1,13 +1,26 @@
 package com.codesmither.model;
 
+import java.util.List;
+
 public class Model {
+	
 	public Table table;
+	public List<Table> tables;
 	public DatabaseJdbc jdbc;
 	public String className;
+	public String tableName;
 	public String author;
 	public String packagename;
 	public String projectName;
 	public String charset;
+	
+	public List<Table> getTables() {
+		return tables;
+	}
+	
+	public void setTables(List<Table> tables) {
+		this.tables = tables;
+	}
 	
 	public String getProjectName() {
 		return projectName;
@@ -75,6 +88,7 @@ public class Model {
 	
 	public void bindTable(Table table) {
 		this.table = table;
+		this.tableName = table.name;
 		this.className = table.className;
 	}
 

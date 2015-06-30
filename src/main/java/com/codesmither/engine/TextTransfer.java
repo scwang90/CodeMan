@@ -29,10 +29,10 @@ public class TextTransfer {
 	private Model model;
 	private String packagepath;
 	
-	public TextTransfer(List<Table> tables,Model model, File fsrc, File ftarget) {
+	public TextTransfer(Model model, File fsrc, File ftarget) {
 		// TODO Auto-generated constructor stub
 		this.model = model;
-		this.tables = tables;
+		this.tables = model.tables;
 		this.fsrc = fsrc.getAbsolutePath();
 		this.ftarget = ftarget.getAbsolutePath();
 		this.packagepath = model.packagename.replace(".", File.separatorChar+"");

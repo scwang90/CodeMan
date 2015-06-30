@@ -50,26 +50,47 @@ public class TableBuilder {
 
 	public List<Table> build() throws SQLException {
 		databaseMetaData = this.connection.getMetaData();
-		ResultSet resultSet = databaseMetaData.getTables(null, "%", "%",
+		ResultSet tableset = databaseMetaData.getTables(null, "%", "%",
 				new String[] { "TABLE" });
-		return buildTables(resultSet);
+		return buildTables(tableset);
 	}
 
-	private List<Table> buildTables(ResultSet resultSet) throws SQLException {
+	private List<Table> buildTables(ResultSet tableset) throws SQLException {
 		// TODO Auto-generated method stub
 		List<Table> tables = new ArrayList<Table>();
-		while (resultSet.next()) {
+		while (tableset.next()) {
 			Table table = new Table();
-			table.name = resultSet.getString("TABLE_NAME");
-			table.remark = resultSet.getString("REMARKS");
+			table.name = tableset.getString("TABLE_NAME");
+			table.remark = tableset.getString("REMARKS");
 			table.className = this.converter.converterClassName(table.name);
+			table.classNameCamel = StringUtil.lowerFirst(table.className);
+			table.classNameUpper = table.className.toUpperCase();
+			table.classNameLower = table.className.toLowerCase();
 			if (table.remark == null || table.remark.trim().length()==0) {
 				table.remark = "数据库表"+table.name;
 			}
 			table.columns = buildColumns(table.name);
+			table.idColumn = buildIdColumn(table.name);
+			for (TableColumn column : table.columns) {
+				if (column.name.equals(table.idColumn.name)) {
+					table.idColumn = column;
+					break;
+				}
+			}
 			tables.add(table);
 		}
 		return tables;
+	}
+
+	private TableColumn buildIdColumn(String tableName) throws SQLException{
+		// TODO Auto-generated method stub
+		TableColumn column = new TableColumn();
+		ResultSet keyset = databaseMetaData.getPrimaryKeys(null, null, tableName);
+		while (keyset.next()) {
+			column.name = keyset.getString("COLUMN_NAME");
+			break;
+		}
+		return column;
 	}
 
 	private List<TableColumn> buildColumns(String tableName) throws SQLException {
@@ -85,8 +106,8 @@ public class TableBuilder {
 			column.remark = resultSet.getString("REMARKS");
 			column.fieldName = this.converter.converterFieldName(column.name);
 			column.fieldType = this.converter.converterfieldType(column.typeInt);
-			column.fieldName_u = StringUtil.upperFirst(column.fieldName);
-			column.fieldName_l = StringUtil.lowerFirst(column.fieldName);
+			column.fieldNameUpper = StringUtil.upperFirst(column.fieldName);
+			column.fieldNameLower = StringUtil.lowerFirst(column.fieldName);
 			if (column.remark == null || column.remark.trim().length()==0) {
 				column.remark = "数据库列"+column.name;
 			}

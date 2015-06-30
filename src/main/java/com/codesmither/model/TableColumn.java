@@ -14,8 +14,8 @@ public class TableColumn {
 	public int lenght;//列长度
 	public int typeInt;//数据库列类型
 	public String fieldName;//java 字段
-	public String fieldName_u;// 首字母大写
-	public String fieldName_l;// 首字母小写
+	public String fieldNameUpper;// 首字母大写
+	public String fieldNameLower;// 首字母小写
 	public String fieldType;//java 字段类型
 	public String getName() {
 		return name;
@@ -54,16 +54,16 @@ public class TableColumn {
 		this.fieldName = fieldName;
 	}
 	public String getFieldName_u() {
-		return fieldName_u;
+		return fieldNameUpper;
 	}
 	public void setFieldName_u(String fieldName_u) {
-		this.fieldName_u = fieldName_u;
+		this.fieldNameUpper = fieldName_u;
 	}
 	public String getFieldName_l() {
-		return fieldName_l;
+		return fieldNameLower;
 	}
 	public void setFieldName_l(String fieldName_l) {
-		this.fieldName_l = fieldName_l;
+		this.fieldNameLower = fieldName_l;
 	}
 	public String getFieldType() {
 		return fieldType;
