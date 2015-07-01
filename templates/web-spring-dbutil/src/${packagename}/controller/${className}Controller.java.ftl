@@ -1,5 +1,6 @@
 package ${packagename}.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ${packagename}.annotations.Intent;
 import ${packagename}.controller.base.GeneralController;
 import ${packagename}.model.${className};
+import ${packagename}.service.${className}Service;
 
 /**
  * ${table.remark} 的Controller层实现
@@ -19,6 +21,8 @@ import ${packagename}.model.${className};
 @RequestMapping("${className}")
 public class ${className}Controller extends GeneralController<${className}>{
 
+	@Autowired
+	${className}Service service;
 	
 	/**
 	 * 添加信息
@@ -30,7 +34,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@RequestMapping("Add")
 	public Object add(@RequestBody ${className} model) throws Exception {
 		// TODO Auto-generated method stub
-		return super.add(model);
+		service.insert(model);
+		return null;
 	}
 
 	/**
@@ -43,7 +48,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@RequestMapping("Update")
 	public Object update(@RequestBody ${className} model) throws Exception {
 		// TODO Auto-generated method stub
-		return super.update(model);
+		service.update(model);
+		return null;
 	}
 
 	/**
@@ -56,7 +62,11 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@RequestMapping("Get/{ID}")
 	public Object getByID(@PathVariable String ID) throws Exception {
 		// TODO Auto-generated method stub
-		return super.getByID(ID);
+		Object model = service.findById(ID);
+		if (model == null) {
+			return "null";
+		}
+		return model;
 	}
 
 	/**
@@ -68,7 +78,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@RequestMapping("Delete/{ID}")
 	public Object delete(@PathVariable String ID) throws Exception {
 		// TODO Auto-generated method stub
-		return super.delete(ID);
+		service.delete(ID);
+		return null;
 	}
 
 	/**
@@ -80,7 +91,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@RequestMapping("CountAll")
 	public Object countAll() throws Exception {
 		// TODO Auto-generated method stub
-		return super.countAll();
+		return service.countAll();
 	}
 
 	/**
@@ -92,7 +103,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@RequestMapping("GetList")
 	public Object getList() throws Exception {
 		// TODO Auto-generated method stub
-		return super.getList();
+		return service.findAll();
 	}
 
 	/**
@@ -106,8 +117,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@RequestMapping("GetList/{pageSize}/{pageNo}")
 	public Object getListByPage(@PathVariable int pageSize,@PathVariable int pageNo) throws Exception {
 		// TODO Auto-generated method stub
-		return super.getListByPage(pageSize, pageNo);
+		return service.listByPage(pageSize, pageNo);
 	}
-
 
 }

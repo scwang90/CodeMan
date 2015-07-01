@@ -98,7 +98,6 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 */
 	@Select("SELECT * FROM ${table.name} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	public List<${className}> findByPage(@Param("order") String order,@Param("limit") int limit,@Param("limit") int start) throws Exception;
-	
 	/**
 	 * 选择性删除
 	 * @param where
@@ -106,7 +105,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @throws Exception
 	 */
 	@Delete("DELETE FROM ${table.name} ${r"${where}"}")
-	public int deleteWhere(@Param("where") String where) throws Exception ;
+	public int deleteWhere(@Param("where") String where) throws Exception;
 	/**
 	 * 根据属性值删除
 	 * @param propertyName
@@ -132,7 +131,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @throws Exception
 	 */
 	@Select("SELECT COUNT(*) FROM WHERE ${r"${propertyName}"}=${r"#{value}"}")
-	public int countByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value) throws Exception ;
+	public int countByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value) throws Exception;
 	/**
 	 * 选择性查询
 	 * @param where
@@ -140,7 +139,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @throws Exception
 	 */
 	@Select("SELECT * FROM ${table.name} ${r"${where}"} ${r"${order}"}")
-	public List<${className}> findWhere(@Param("order") String order,@Param("where") String where) throws Exception ;
+	public List<${className}> findWhere(@Param("order") String order,@Param("where") String where) throws Exception;
 	/**
 	 * 选择性分页查询
 	 * @param where

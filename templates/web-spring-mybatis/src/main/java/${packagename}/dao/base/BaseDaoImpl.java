@@ -10,10 +10,10 @@ import ${packagename}.util.AfReflecter;
 /**
  * 通用Dao实现基类
  * @param <T>
- * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @author 树朾
+ * @date 2015-06-29 18:20:50 中国标准时间 
  */
-public class BaseDaoImpl<T> extends BaseDaoDbUtilMYSQLImpl<T> implements BaseDao<T>{
+public class BaseDaoImpl<T> extends BaseDaoMybatisMYSQLImpl<T> implements BaseDao<T>{
 
 	public BaseDaoImpl() {
 		// TODO Auto-generated constructor stub
