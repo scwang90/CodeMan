@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ${packagename}.model.${className};
 import ${packagename}.util.JacksonUtil;
+
 /**
  * ${table.remark} 的Controller层测试类
  * @author ${author}
@@ -58,5 +59,4 @@ public class ${className}ControllerTester {
 		System.out.println(JacksonUtil.toJson(result));
 	}
 
-	
 }

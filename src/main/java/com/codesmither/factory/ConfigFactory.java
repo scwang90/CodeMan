@@ -175,5 +175,4 @@ public class ConfigFactory {
 		ConfigFactory.columnDivision = columnDivision;
 	}
 
-	
 }
