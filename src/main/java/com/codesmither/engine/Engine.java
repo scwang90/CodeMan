@@ -37,7 +37,7 @@ public class Engine {
 			throw new Exception("源项目不存在！");
 		}
 		if (!ftarget.exists() && !ftarget.mkdirs()) {
-			throw new Exception("创建目标项目失败！");
+			throw new Exception("创建目标项目失败！");        
 		}
 
 		Connection connection = C3P0Factory.getConnection();
