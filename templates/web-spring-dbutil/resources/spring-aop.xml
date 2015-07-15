@@ -10,12 +10,12 @@
           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
           http://www.springframework.org/schema/mvc
-   		  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+          http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 开启AOP监听 只对当前配置文件有效 -->
-	<aop:aspectj-autoproxy expose-proxy="true"/>
-	
+    <aop:aspectj-autoproxy expose-proxy="true"/>
+
     <!-- 开启AOP切面日志 -->
     <bean id="loggingaspect"
         class="${packagename}.aspect.LoggingAspect"></bean>
@@ -37,7 +37,7 @@
             <aop:before method="before" pointcut-ref="ptc-dao"/>
             <aop:after-returning method="returned" pointcut-ref="ptc-dao" returning="result"/>
             <aop:after-throwing method="throwed" pointcut-ref="ptc-dao" throwing="ex"/>
-		</aop:aspect>
+        </aop:aspect>
     </aop:config>
 
 </beans>

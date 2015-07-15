@@ -137,6 +137,10 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	public List<T> findByPropertyName(String propertyName, Object value)
 			throws Exception {
 		// TODO Auto-generated method stub
+		if (value instanceof java.util.Date) {
+			java.util.Date date = (java.util.Date) value;
+			value = new java.sql.Date(date.getTime());
+		}
 		return multiDao.findByPropertyName(order, propertyName, value);
 	}
 
