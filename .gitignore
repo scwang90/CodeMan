@@ -1,2 +1,4 @@
 /bin/
 /target/
+/src/test/resources/c3p0-config.xml
+/src/test/resources/config.properties

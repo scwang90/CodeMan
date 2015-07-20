@@ -10,6 +10,7 @@ import ${packagename}.annotations.dbmodel.interpreter.Interpreter;
 import ${packagename}.dao.base.BaseDao;
 import ${packagename}.service.BaseService;
 import ${packagename}.util.AfReflecter;
+import ${packagename}.util.JacksonUtil;
 import ${packagename}.util.Page;
 import ${packagename}.util.ServiceException;
 
@@ -126,6 +127,7 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 		// TODO Auto-generated method stub
 		try {
 			Class<?> clazz = model.getClass();
+			old = (T) JacksonUtil.toObject(JacksonUtil.toJson(old), clazz);
 			for (Field field : clazz.getDeclaredFields()) {
 				field.setAccessible(true);
 				Object nfield = field.get(model);

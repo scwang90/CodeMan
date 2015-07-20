@@ -25,7 +25,7 @@ public class LoggingAspect {
 			// TODO: handle exception
 			out.print("[");
 			for (Object object : point.getArgs()) {
-				out.print(object.toString()+",");
+				out.print(object+",");
 			}
 			out.print("\b]");
 		}
