@@ -97,7 +97,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @throws Exception
 	 */
 	@Select("SELECT * FROM ${table.name} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
-	public List<${className}> findByPage(@Param("order") String order,@Param("limit") int limit,@Param("limit") int start) throws Exception;
+	public List<${className}> findByPage(@Param("order") String order,@Param("limit") int limit,@Param("start") int start) throws Exception;
 	/**
 	 * 选择性删除
 	 * @param where
@@ -149,7 +149,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @throws Exception
 	 */
 	@Select("SELECT * FROM ${table.name} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
-	public List<${className}> findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("limit") int start) throws Exception;
+	public List<${className}> findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start) throws Exception;
 	/**
 	 * 根据属性查询
 	 * @param propertyName
