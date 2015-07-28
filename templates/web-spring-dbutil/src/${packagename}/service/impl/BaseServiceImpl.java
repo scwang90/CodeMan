@@ -123,6 +123,7 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	 * @param old
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	protected T checkNullField(T old, T model) {
 		// TODO Auto-generated method stub
 		try {
