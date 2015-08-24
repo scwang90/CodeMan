@@ -46,6 +46,11 @@ public class ${className}DaoTester {
 		Object result = dao.countAll();
 		System.out.println(JacksonUtil.toJson(result));
 	}
-	
-	
+
+	@Test
+	public void findByPage() throws Exception {
+		Object result = dao.findByPage(5, 0);
+		System.out.println(JacksonUtil.toJson(result));
+	}
+
 }

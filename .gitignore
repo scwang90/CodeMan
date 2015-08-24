@@ -1,4 +1,9 @@
 /bin/
 /target/
+/CodeSmither.iml
+/.idea
+/src/main/resources/c3p0.properties
+/src/main/resources/config.properties
 /src/test/resources/c3p0-config.xml
 /src/test/resources/config.properties
+

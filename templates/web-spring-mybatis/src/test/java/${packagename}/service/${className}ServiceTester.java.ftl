@@ -46,6 +46,11 @@ public class ${className}ServiceTester {
 		Object result = service.countAll();
 		System.out.println(JacksonUtil.toJson(result));
 	}
-	
-	
+
+	@Test
+	public void findByPage() throws Exception {
+		Object result = service.findByPage(5,0);
+		System.out.println(JacksonUtil.toJson(result));
+	}
+
 }

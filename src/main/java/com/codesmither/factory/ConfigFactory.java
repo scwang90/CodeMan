@@ -40,26 +40,24 @@ public class ConfigFactory {
 		Properties propty = new Properties();
 		propty.load(stream);
 		
-		String prefix = "codesmither.";
+		dbConfigName = propty.getProperty("codesmither.database.config.name",dbConfigName);
+
+		tablePrefix   = propty.getProperty("codesmither.database.table.prefix",tablePrefix);
+		tableSuffix   = propty.getProperty("codesmither.database.table.suffix",tableSuffix);
+		tableDivision = propty.getProperty("codesmither.database.table.division",tableDivision);
+
+		columnPrefix   = propty.getProperty("codesmither.database.column.prefix",columnPrefix);
+		columnSuffix   = propty.getProperty("codesmither.database.column.suffix",columnSuffix);
+		columnDivision = propty.getProperty("codesmither.database.column.division",columnDivision);
 		
-		dbConfigName = propty.getProperty(prefix+"database.config.name",dbConfigName);
+		templatePath   = propty.getProperty("codesmither.template.path",templatePath);
+		templateCharset   = propty.getProperty("codesmither.template.charset",templateCharset);
 
-		tablePrefix   = propty.getProperty(prefix+"database.table.prefix",tablePrefix);
-		tableSuffix   = propty.getProperty(prefix+"database.table.suffix",tableSuffix);
-		tableDivision = propty.getProperty(prefix+"database.table.division",tableDivision);
-
-		columnPrefix   = propty.getProperty(prefix+"database.column.prefix",columnPrefix);
-		columnSuffix   = propty.getProperty(prefix+"database.column.suffix",columnSuffix);
-		columnDivision = propty.getProperty(prefix+"database.column.division",columnDivision);
-		
-		templatePath   = propty.getProperty(prefix+"template.path",templatePath);
-		templateCharset   = propty.getProperty(prefix+"template.charset",templateCharset);
-
-		targetPath = propty.getProperty(prefix+"target.path",targetPath);
-		targetCharset = propty.getProperty(prefix+"target.charset",targetCharset);
-		targetProjectName = propty.getProperty(prefix+"target.project.name",targetProjectName);
-		targetProjectAuthor = propty.getProperty(prefix+"target.project.author",targetProjectAuthor);
-		targetProjectPackage = propty.getProperty(prefix+"target.project.packagename",targetProjectPackage);
+		targetPath = propty.getProperty("codesmither.target.path",targetPath);
+		targetCharset = propty.getProperty("codesmither.target.charset",targetCharset);
+		targetProjectName = propty.getProperty("codesmither.target.project.name",targetProjectName);
+		targetProjectAuthor = propty.getProperty("codesmither.target.project.author",targetProjectAuthor);
+		targetProjectPackage = propty.getProperty("codesmither.target.project.packagename",targetProjectPackage);
 		
 	}
 
