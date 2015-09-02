@@ -83,7 +83,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 		int limit = pageSize; 
 		int start = pageNo*pageSize;
 		int totalRecord = dao.countAll();
-		int totalPage = 1+totalRecord/pageSize;
+		int totalPage = 1 + (totalRecord - 1) / pageSize;
 		
 		List<${className}> list = dao.findByPage(limit, start);
 		
