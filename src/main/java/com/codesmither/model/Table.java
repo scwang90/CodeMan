@@ -4,18 +4,18 @@ import java.util.List;
 
 public class Table {
 
-	public String className;// Ô­ÀàÃû³Æ
-	public String classNameCamel;// ÂæÍÕ·åÀàÃû
-	public String classNameUpper;// ÀàÃûÈ«´óĞ´
-	public String classNameLower;// ÀàÃûÈ«Ğ¡Ğ´
+	public String className;// åŸç±»åç§°
+	public String classNameCamel;// éª†é©¼å³°ç±»å
+	public String classNameUpper;// ç±»åå…¨å¤§å†™
+	public String classNameLower;// ç±»åå…¨å°å†™
 
-	public String name;// Ô­±íÃû³Æ
-	// public String tableName_u;// ´óĞ´±íÃû³Æ
-	// public String tableName_l;// Ğ¡Ğ´±íÃû³Æ
+	public String name;// åŸè¡¨åç§°
+	// public String tableName_u;// å¤§å†™è¡¨åç§°
+	// public String tableName_l;// å°å†™è¡¨åç§°
 
-	public String remark;// ×Ö¶Î×¢ÊÍ
+	public String remark;// å­—æ®µæ³¨é‡Š
 
-	public TableColumn idColumn; // IDÁĞ
+	public TableColumn idColumn; // IDåˆ—
 
 	public String getClassNameCamel() {
 		return classNameCamel;
@@ -41,14 +41,14 @@ public class Table {
 		this.classNameLower = classNameLower;
 	}
 
-	// public String modelPackage;// pojo°üÃû³Æ
-	// public String daoPackage;// dao°üÃû³Æ
-	// public String daoImplPackage;// imp°üÃû³Æ
-	// public String servicePackage;// ext°üÃû³Æ
-	// public String serviceImplPackage;// xml°üÃû³Æ
-	// public List<TableIndex> tableIndexs;// ±íË÷Òı
-	// public List<TableBind> tableBinds;// ±íÖ÷Íâ¼ü
-	public List<TableColumn> columns;// ±í×Ö¶Î
+	// public String modelPackage;// pojoåŒ…åç§°
+	// public String daoPackage;// daoåŒ…åç§°
+	// public String daoImplPackage;// impåŒ…åç§°
+	// public String servicePackage;// extåŒ…åç§°
+	// public String serviceImplPackage;// xmlåŒ…åç§°
+	// public List<TableIndex> tableIndexs;// è¡¨ç´¢å¼•
+	// public List<TableBind> tableBinds;// è¡¨ä¸»å¤–é”®
+	public List<TableColumn> columns;// è¡¨å­—æ®µ
 
 	public TableColumn getIdColumn() {
 		return idColumn;
@@ -90,12 +90,12 @@ public class Table {
 		this.columns = columns;
 	}
 
-	// public Set<String> importPojos;// ĞèÒªµ¼ÈëµÄPOJO
+	// public Set<String> importPojos;// éœ€è¦å¯¼å…¥çš„POJO
 
-	// public String stringCarrayNames1;// ","Æ´½Ó´óĞ´×Ö¶Î
+	// public String stringCarrayNames1;// ","æ‹¼æ¥å¤§å†™å­—æ®µ
 	// public String stringCarrayNames2;// int id ,String userCord ,..
-	// public String stringCarrayNames3;// ","Æ´½ÓÔ­×Ö¶Î
-	// public String stringCarrayNames4;// "#{%s},"Æ´½ÓĞ¡Ğ´×Ö¶Î
-	// public String stringCarrayNames5;// "%s=#{%s},"Æ´½ÓÔ­×Ö¶Î-Ğ¡Ğ´×Ö¶Î
+	// public String stringCarrayNames3;// ","æ‹¼æ¥åŸå­—æ®µ
+	// public String stringCarrayNames4;// "#{%s},"æ‹¼æ¥å°å†™å­—æ®µ
+	// public String stringCarrayNames5;// "%s=#{%s},"æ‹¼æ¥åŸå­—æ®µ-å°å†™å­—æ®µ
 
 }

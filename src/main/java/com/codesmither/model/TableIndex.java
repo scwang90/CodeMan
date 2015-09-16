@@ -4,19 +4,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ±íË÷Òı
+ * è¡¨ç´¢å¼•
  * @author Administrator
  */
 public class TableIndex {
-	public String indexName; // Ë÷ÒıÃû³Æ
-	public List<String> carrayNames;// Ô­¹ØÁª×Ö¶Î
-	public List<String> carrayNames_d;// ´óĞ´¹ØÁª×Ö¶Î
-	public List<String> carrayNames_x;// Ğ¡Ğ´¹ØÁª×Ö¶Î
-	public List<Map<String, String>> carrayNameMaps;// Ô­×Ö¶Î+Ğ¡Ğ´×Ö¶Î
-	public String stringCarrayNames1;// Ö±½ÓÆ´½Ó´óĞ´×Ö¶Î
-	public String stringCarrayNames2;// ","Æ´½Ó´óĞ´×Ö¶Î
-	public String stringCarrayNames3;// ÀàĞÍ+ ","Æ´½Ó´óĞ´×Ö¶Î
-	public String stringCarrayNames4;// ","Æ´½ÓĞ¡Ğ´×Ö¶Î
-	public String stringCarrayNames5;// sqlMapÖĞsqlÓÃµÄ Ô­×Ö¶Î-Ğ¡Ğ´×Ö¶Î
-	public boolean unique; // ÊÇ·ñÎ¨Ò»Ë÷Òı
+	public String indexName; // ç´¢å¼•åç§°
+	public List<String> carrayNames;// åŸå…³è”å­—æ®µ
+	public List<String> carrayNames_d;// å¤§å†™å…³è”å­—æ®µ
+	public List<String> carrayNames_x;// å°å†™å…³è”å­—æ®µ
+	public List<Map<String, String>> carrayNameMaps;// åŸå­—æ®µ+å°å†™å­—æ®µ
+	public String stringCarrayNames1;// ç›´æ¥æ‹¼æ¥å¤§å†™å­—æ®µ
+	public String stringCarrayNames2;// ","æ‹¼æ¥å¤§å†™å­—æ®µ
+	public String stringCarrayNames3;// ç±»å‹+ ","æ‹¼æ¥å¤§å†™å­—æ®µ
+	public String stringCarrayNames4;// ","æ‹¼æ¥å°å†™å­—æ®µ
+	public String stringCarrayNames5;// sqlMapä¸­sqlç”¨çš„ åŸå­—æ®µ-å°å†™å­—æ®µ
+	public boolean unique; // æ˜¯å¦å”¯ä¸€ç´¢å¼•
 }

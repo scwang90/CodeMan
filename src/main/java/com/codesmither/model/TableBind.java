@@ -1,20 +1,20 @@
 package com.codesmither.model;
 
 /**
- * ±íµÄÖ÷Íâ¼ü¹ØÏµ
+ * è¡¨çš„ä¸»å¤–é”®å…³ç³»
  * @author Administrator
  */
 public class TableBind {
 
-	public String className;// Ô­ÀàÃû³Æ
-	public String className_d;// ´óĞ´ÀàÃû³Æ
-	public String className_x;// Ğ¡Ğ´ÀàÃû³Æ
+	public String className;// åŸç±»åç§°
+	public String className_d;// å¤§å†™ç±»åç§°
+	public String className_x;// å°å†™ç±»åç§°
 	
-	public String keyName;// ¼üÃû³Æ
-	public String keyType;// ¼üÀàĞÍ
-	public String tableName_d;// ´óĞ´±íÃû³Æ
-	public String tableName_x;// Ğ¡Ğ´±íÃû³Æ
-	public String carrayName_d;// ´óĞ´×Ö¶ÎÃû³Æ
-	public String carrayName_x;// Ğ¡Ğ´×Ö¶ÎÃû³Æ
+	public String keyName;// é”®åç§°
+	public String keyType;// é”®ç±»å‹
+	public String tableName_d;// å¤§å†™è¡¨åç§°
+	public String tableName_x;// å°å†™è¡¨åç§°
+	public String carrayName_d;// å¤§å†™å­—æ®µåç§°
+	public String carrayName_x;// å°å†™å­—æ®µåç§°
 
 }

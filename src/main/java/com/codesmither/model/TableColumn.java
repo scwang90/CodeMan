@@ -1,22 +1,22 @@
 package com.codesmither.model;
 
 /**
- * ±í×Ö¶Î
+ * è¡¨å­—æ®µ
  * 
  * @author Administrator
  * 
  */
 public class TableColumn {
 	
-	public String name;// Ô­Ãû³Æ
-	public String type;// ×Ö¶ÎÀàĞÍÃû³Æ
-	public String remark;// ×Ö¶Î×¢ÊÍ
-	public int lenght;//ÁĞ³¤¶È
-	public int typeInt;//Êı¾İ¿âÁĞÀàĞÍ
-	public String fieldName;//java ×Ö¶Î
-	public String fieldNameUpper;// Ê××ÖÄ¸´óĞ´
-	public String fieldNameLower;// Ê××ÖÄ¸Ğ¡Ğ´
-	public String fieldType;//java ×Ö¶ÎÀàĞÍ
+	public String name;// åŸåç§°
+	public String type;// å­—æ®µç±»å‹åç§°
+	public String remark;// å­—æ®µæ³¨é‡Š
+	public int lenght;//åˆ—é•¿åº¦
+	public int typeInt;//æ•°æ®åº“åˆ—ç±»å‹
+	public String fieldName;//java å­—æ®µ
+	public String fieldNameUpper;// é¦–å­—æ¯å¤§å†™
+	public String fieldNameLower;// é¦–å­—æ¯å°å†™
+	public String fieldType;//java å­—æ®µç±»å‹
 	public String getName() {
 		return name;
 	}

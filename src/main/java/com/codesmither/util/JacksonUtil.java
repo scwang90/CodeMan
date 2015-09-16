@@ -67,7 +67,7 @@ public class JacksonUtil {
 			objs = getObjectMapper().readValue(body, collectionType);
 		} catch (IOException e) {
 			throw new RuntimeException(String.format(
-					"转换失败 [%s] to %s.", body, clazz), e);
+					"杞崲澶辫触 [%s] to %s.", body, clazz), e);
 		}
 
 		return objs;

@@ -34,10 +34,10 @@ public class Engine {
 		File ftemplates = new File(templates);
 		File ftarget = new File(target);
 		if (!ftemplates.exists()) {
-			throw new Exception("Ô´ÏîÄ¿²»´æÔÚ£¡");
+			throw new Exception("æºé¡¹ç›®ä¸å­˜åœ¨ï¼");
 		}
 		if (!ftarget.exists() && !ftarget.mkdirs()) {
-			throw new Exception("´´½¨Ä¿±êÏîÄ¿Ê§°Ü£¡");        
+			throw new Exception("åˆ›å»ºç›®æ ‡é¡¹ç›®å¤±è´¥ï¼");        
 		}
 
 		Connection connection = C3P0Factory.getConnection();

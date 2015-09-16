@@ -9,18 +9,18 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * @ClassName: JdbcUtils2
- * @Description: Êı¾İ¿âÁ¬½Ó¹¤¾ßÀà
- * @author: ¹Â°Á²ÔÀÇ
- * @date: 2014-10-4 ÏÂÎç6:04:36
+ * @Description: æ•°æ®åº“è¿æ¥å·¥å…·ç±»
+ * @author: å­¤å‚²è‹ç‹¼
+ * @date: 2014-10-4 ä¸‹åˆ6:04:36
  *
  */
 public class C3P0Factory {
 
 	private static ComboPooledDataSource dataSource = null;
-	// Ê¹ÓÃThreadLocal´æ´¢µ±Ç°Ïß³ÌÖĞµÄConnection¶ÔÏó
+	// ä½¿ç”¨ThreadLocalå­˜å‚¨å½“å‰çº¿ç¨‹ä¸­çš„Connectionå¯¹è±¡
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
 
-	// ÔÚ¾²Ì¬´úÂë¿éÖĞ´´½¨Êı¾İ¿âÁ¬½Ó³Ø
+	// åœ¨é™æ€ä»£ç å—ä¸­åˆ›å»ºæ•°æ®åº“è¿æ¥æ± 
 	static {
 		String name = ConfigFactory.getDbConfigName();
 		if (name != null && name.trim().length() > 0) {
@@ -34,18 +34,18 @@ public class C3P0Factory {
 
 	/**
 	 * @Method: getConnection
-	 * @Description: ´ÓÊı¾İÔ´ÖĞ»ñÈ¡Êı¾İ¿âÁ¬½Ó
-	 * @Anthor:¹Â°Á²ÔÀÇ
+	 * @Description: ä»æ•°æ®æºä¸­è·å–æ•°æ®åº“è¿æ¥
+	 * @Anthor:å­¤å‚²è‹ç‹¼
 	 * @return Connection
 	 * @throws SQLException
 	 */
 	public static Connection getConnection() throws SQLException {
-		// ´Óµ±Ç°Ïß³ÌÖĞ»ñÈ¡Connection
+		// ä»å½“å‰çº¿ç¨‹ä¸­è·å–Connection
 		Connection conn = threadLocal.get();
 		if (conn == null) {
-			// ´ÓÊı¾İÔ´ÖĞ»ñÈ¡Êı¾İ¿âÁ¬½Ó
+			// ä»æ•°æ®æºä¸­è·å–æ•°æ®åº“è¿æ¥
 			conn = getDataSource().getConnection();
-			// ½«conn°ó¶¨µ½µ±Ç°Ïß³Ì
+			// å°†connç»‘å®šåˆ°å½“å‰çº¿ç¨‹
 			threadLocal.set(conn);
 		}
 		return conn;
@@ -74,26 +74,26 @@ public class C3P0Factory {
 	/**
 	 * @throws SQLException
 	 * @Method: startTransaction
-	 * @Description: ¿ªÆôÊÂÎñ
-	 * @Anthor:¹Â°Á²ÔÀÇ
+	 * @Description: å¼€å¯äº‹åŠ¡
+	 * @Anthor:å­¤å‚²è‹ç‹¼
 	 */
 	public static void startTransaction() throws SQLException {
-		// ¿ªÆôÊÂÎñ
+		// å¼€å¯äº‹åŠ¡
 		getConnection().setAutoCommit(false);
 	}
 
 	/**
 	 * @throws SQLException
 	 * @Method: rollback
-	 * @Description:»Ø¹öÊÂÎñ
-	 * @Anthor:¹Â°Á²ÔÀÇ
+	 * @Description:å›æ»šäº‹åŠ¡
+	 * @Anthor:å­¤å‚²è‹ç‹¼
 	 *
 	 */
 	public static void rollback() throws SQLException {
-		// ´Óµ±Ç°Ïß³ÌÖĞ»ñÈ¡Connection
+		// ä»å½“å‰çº¿ç¨‹ä¸­è·å–Connection
 		Connection conn = threadLocal.get();
 		if (conn != null) {
-			// »Ø¹öÊÂÎñ
+			// å›æ»šäº‹åŠ¡
 			conn.rollback();
 		}
 	}
@@ -101,15 +101,15 @@ public class C3P0Factory {
 	/**
 	 * @throws SQLException
 	 * @Method: commit
-	 * @Description:Ìá½»ÊÂÎñ
-	 * @Anthor:¹Â°Á²ÔÀÇ
+	 * @Description:æäº¤äº‹åŠ¡
+	 * @Anthor:å­¤å‚²è‹ç‹¼
 	 *
 	 */
 	public static void commit() throws SQLException {
-		// ´Óµ±Ç°Ïß³ÌÖĞ»ñÈ¡Connection
+		// ä»å½“å‰çº¿ç¨‹ä¸­è·å–Connection
 		Connection conn = threadLocal.get();
 		if (conn != null) {
-			// Ìá½»ÊÂÎñ
+			// æäº¤äº‹åŠ¡
 			conn.commit();
 		}
 	}
@@ -117,28 +117,28 @@ public class C3P0Factory {
 	/**
 	 * @throws SQLException 
 	 * @Method: close
-	 * @Description:¹Ø±ÕÊı¾İ¿âÁ¬½Ó(×¢Òâ£¬²¢²»ÊÇÕæµÄ¹Ø±Õ£¬¶øÊÇ°ÑÁ¬½Ó»¹¸øÊı¾İ¿âÁ¬½Ó³Ø)
-	 * @Anthor:¹Â°Á²ÔÀÇ
+	 * @Description:å…³é—­æ•°æ®åº“è¿æ¥(æ³¨æ„ï¼Œå¹¶ä¸æ˜¯çœŸçš„å…³é—­ï¼Œè€Œæ˜¯æŠŠè¿æ¥è¿˜ç»™æ•°æ®åº“è¿æ¥æ± )
+	 * @Anthor:å­¤å‚²è‹ç‹¼
 	 *
 	 */
 	public static void close() throws SQLException {
-		// ´Óµ±Ç°Ïß³ÌÖĞ»ñÈ¡Connection
+		// ä»å½“å‰çº¿ç¨‹ä¸­è·å–Connection
 		Connection conn = threadLocal.get();
 		if (conn != null) {
 			conn.close();
-			// ½â³ıµ±Ç°Ïß³ÌÉÏ°ó¶¨conn
+			// è§£é™¤å½“å‰çº¿ç¨‹ä¸Šç»‘å®šconn
 			threadLocal.remove();
 		}
 	}
 
 	/**
 	 * @Method: getDataSource
-	 * @Description: »ñÈ¡Êı¾İÔ´
-	 * @Anthor:¹Â°Á²ÔÀÇ
+	 * @Description: è·å–æ•°æ®æº
+	 * @Anthor:å­¤å‚²è‹ç‹¼
 	 * @return DataSource
 	 */
 	public static DataSource getDataSource() {
-		// ´ÓÊı¾İÔ´ÖĞ»ñÈ¡Êı¾İ¿âÁ¬½Ó
+		// ä»æ•°æ®æºä¸­è·å–æ•°æ®åº“è¿æ¥
 		return dataSource;
 	}
 }

@@ -3,7 +3,7 @@ package com.codesmither.util;
 public class StringUtil {
 	
 	/**
-	 * ��д
+	 * 大写
 	 * @param s
 	 * @return
 	 */
@@ -19,7 +19,7 @@ public class StringUtil {
 	}
 
 	/**
-	 * Сд
+	 * 小写
 	 * 
 	 * @param s
 	 * @return

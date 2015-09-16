@@ -18,7 +18,7 @@ import ${packagename}.service.${className}Service;
  */
 @RestController
 @Intent("${table.remark}")
-@RequestMapping("${className}")
+@RequestMapping("${table.classNameLower}")
 public class ${className}Controller extends GeneralController<${className}>{
 
 	@Autowired
@@ -31,7 +31,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@RequestMapping("Add")
+	@RequestMapping("add")
 	public Object add(@RequestBody ${className} model) throws Exception {
 		// TODO Auto-generated method stub
 		service.insert(model);
@@ -45,7 +45,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@RequestMapping("Update")
+	@RequestMapping("update")
 	public Object update(@RequestBody ${className} model) throws Exception {
 		// TODO Auto-generated method stub
 		service.update(model);
@@ -59,8 +59,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@RequestMapping("Get/{ID}")
-	public Object getByID(@PathVariable String ID) throws Exception {
+	@RequestMapping("get/{ID}")
+	public Object get(@PathVariable String ID) throws Exception {
 		// TODO Auto-generated method stub
 		Object model = service.findById(ID);
 		if (model == null) {
@@ -75,7 +75,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@RequestMapping("Delete/{ID}")
+	@RequestMapping("delete/{ID}")
 	public Object delete(@PathVariable String ID) throws Exception {
 		// TODO Auto-generated method stub
 		service.delete(ID);
@@ -88,8 +88,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@RequestMapping("CountAll")
-	public Object countAll() throws Exception {
+	@RequestMapping("count")
+	public Object count() throws Exception {
 		// TODO Auto-generated method stub
 		return service.countAll();
 	}
@@ -100,8 +100,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@RequestMapping("GetList")
-	public Object getList() throws Exception {
+	@RequestMapping("list")
+	public Object list() throws Exception {
 		// TODO Auto-generated method stub
 		return service.findAll();
 	}
@@ -114,8 +114,8 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 * @throws Exception 
 	 */
 	@Override
-	@RequestMapping("GetList/{pageSize}/{pageNo}")
-	public Object getListByPage(@PathVariable int pageSize,@PathVariable int pageNo) throws Exception {
+	@RequestMapping("list/{pageSize}/{pageNo}")
+	public Object listByPage(@PathVariable int pageSize,@PathVariable int pageNo) throws Exception {
 		// TODO Auto-generated method stub
 		return service.listByPage(pageSize, pageNo);
 	}
