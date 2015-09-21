@@ -42,20 +42,20 @@ public class ${className}ControllerTester {
 	}
 	
 	@Test
-	public void countAll() throws Exception {
-		Object result = controller.countAll();
+	public void count() throws Exception {
+		Object result = controller.count();
 		System.out.println(JacksonUtil.toJson(result));
 	}
 	
 	@Test
-	public void getByID() throws Exception {
-		Object result = controller.getByID("1");
+	public void get() throws Exception {
+		Object result = controller.get("1");
 		System.out.println(JacksonUtil.toJson(result));
 	}
 	
 	@Test
-	public void getListByPage() throws Exception {
-		Object result = controller.getListByPage(6, 0);
+	public void listByPage() throws Exception {
+		Object result = controller.listByPage(6, 0);
 		System.out.println(JacksonUtil.toJson(result));
 	}
 
