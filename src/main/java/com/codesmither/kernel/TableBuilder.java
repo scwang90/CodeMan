@@ -67,7 +67,7 @@ public class TableBuilder {
 			table.classNameUpper = table.className.toUpperCase();
 			table.classNameLower = table.className.toLowerCase();
 			if (table.remark == null || table.remark.trim().length()==0) {
-				table.remark = "鏁版嵁搴撹〃"+table.name;
+				table.remark = "数据库表"+table.name;
 			}
 			table.columns = buildColumns(table.name);
 			table.idColumn = buildIdColumn(table.name);
@@ -109,7 +109,7 @@ public class TableBuilder {
 			column.fieldNameUpper = StringUtil.upperFirst(column.fieldName);
 			column.fieldNameLower = StringUtil.lowerFirst(column.fieldName);
 			if (column.remark == null || column.remark.trim().length()==0) {
-				column.remark = "鏁版嵁搴撳垪"+column.name;
+				column.remark = "数据库列"+column.name;
 			}
 			columns.add(column);
 		}
