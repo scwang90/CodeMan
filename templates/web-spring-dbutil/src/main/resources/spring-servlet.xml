@@ -17,6 +17,8 @@
     <mvc:annotation-driven />
     <!-- 使用默认的Servlet来响应静态文件 否则不能正常访问js、css -->
     <mvc:default-servlet-handler />
+    <!-- 主页映射 -->
+    <!--<mvc:view-controller path="/" view-name="redirect:/index"/>-->
 
     <bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">

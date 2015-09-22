@@ -80,14 +80,36 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @return
 	 * @throws Exception
 	 */
-	@Select("SELECT * FROM ${table.name} WHERE ${table.idColumn.name}=${r"#"}{id}")
+	<@single_line>@Select("SELECT
+		<#list table.columns as column>
+			<#if column.name==column.fieldName>
+				${column.name}
+			</#if>
+			<#if column.name!=column.fieldName>
+				${column.name} ${column.fieldName}
+			</#if>
+			<#if column_has_next>,</#if>
+		</#list>
+		FROM ${table.name} WHERE ${table.idColumn.name}=${r"#"}{id}")
+	</@single_line>
 	public ${className} findById(@Param("id") Object id) throws Exception;
 	/**
 	 * 获取全部数据
 	 * @return
 	 * @throws Exception
 	 */
-	@Select("SELECT * FROM ${table.name} ${r"${order}"}")
+	<@single_line>@Select("SELECT
+		<#list table.columns as column>
+			<#if column.name==column.fieldName>
+			${column.name}
+			</#if>
+			<#if column.name!=column.fieldName>
+			${column.name} ${column.fieldName}
+			</#if>
+			<#if column_has_next>,</#if>
+		</#list>
+		FROM ${table.name} ${r"${order}"}")
+	</@single_line>
 	public List<${className}> findAll(@Param("order") String order) throws Exception;
 	/**
 	 * 分页查询数据
@@ -96,7 +118,18 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @return
 	 * @throws Exception
 	 */
-	@Select("SELECT * FROM ${table.name} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+	<@single_line>@Select("SELECT
+		<#list table.columns as column>
+			<#if column.name==column.fieldName>
+			${column.name}
+			</#if>
+			<#if column.name!=column.fieldName>
+			${column.name} ${column.fieldName}
+			</#if>
+			<#if column_has_next>,</#if>
+		</#list>
+		FROM ${table.name} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+	</@single_line>
 	public List<${className}> findByPage(@Param("order") String order,@Param("limit") int limit,@Param("start") int start) throws Exception;
 	/**
 	 * 选择性删除
@@ -138,7 +171,18 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @return
 	 * @throws Exception
 	 */
-	@Select("SELECT * FROM ${table.name} ${r"${where}"} ${r"${order}"}")
+	<@single_line>@Select("SELECT
+		<#list table.columns as column>
+			<#if column.name==column.fieldName>
+			${column.name}
+			</#if>
+			<#if column.name!=column.fieldName>
+			${column.name} ${column.fieldName}
+			</#if>
+			<#if column_has_next>,</#if>
+		</#list>
+		FROM ${table.name} ${r"${where}"} ${r"${order}"}")
+	</@single_line>
 	public List<${className}> findWhere(@Param("order") String order,@Param("where") String where) throws Exception;
 	/**
 	 * 选择性分页查询
@@ -148,7 +192,18 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @return
 	 * @throws Exception
 	 */
-	@Select("SELECT * FROM ${table.name} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+	<@single_line>@Select("SELECT
+		<#list table.columns as column>
+			<#if column.name==column.fieldName>
+			${column.name}
+			</#if>
+			<#if column.name!=column.fieldName>
+			${column.name} ${column.fieldName}
+			</#if>
+			<#if column_has_next>,</#if>
+		</#list>
+		FROM ${table.name} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+	</@single_line>
 	public List<${className}> findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start) throws Exception;
 	/**
 	 * 根据属性查询
@@ -157,6 +212,17 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @return
 	 * @throws Exception
 	 */
-	@Select("SELECT * FROM ${table.name} WHERE ${r"${propertyName}"}=${r"#{value}"} ${r"${order}"}")
+	<@single_line>@Select("SELECT
+		<#list table.columns as column>
+			<#if column.name==column.fieldName>
+			${column.name}
+			</#if>
+			<#if column.name!=column.fieldName>
+			${column.name} ${column.fieldName}
+			</#if>
+			<#if column_has_next>,</#if>
+		</#list>
+		FROM ${table.name} WHERE ${r"${propertyName}"}=${r"#{value}"} ${r"${order}"}")
+	</@single_line>
 	public List<${className}> findByPropertyName(@Param("order") String order,@Param("propertyName") String propertyName,@Param("value") Object value) throws Exception;
 }
