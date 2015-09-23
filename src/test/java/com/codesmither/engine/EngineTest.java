@@ -57,7 +57,6 @@ public class EngineTest {
 			Engine engine = new Engine();
 			engine.doInBackground(System.out);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}

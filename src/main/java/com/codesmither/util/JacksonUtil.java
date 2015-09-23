@@ -22,7 +22,6 @@ public class JacksonUtil {
 	
 	private static ObjectMapper objectMapper;
 
-	// TODO use annotations to metaprogram the parsing behaviour instead
 	/**
 	 * Get the list of model objects and create json as expected by the API.
 	 * 
@@ -38,7 +37,6 @@ public class JacksonUtil {
 	 *             is empty or null
 	 */
 	public static  String toJson(Object model) {
-		// TODO strip nodes that has a null key?
 		String json = null;
 
 		try {

@@ -29,7 +29,6 @@ public class ConfigFactory {
 		try {
 			loadConfig("config.properties");
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}

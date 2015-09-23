@@ -177,10 +177,8 @@ public class AfReflecter {
 			try {
 				return type.getDeclaredField(field);
 			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			}
 			type = type.getSuperclass();
@@ -228,7 +226,6 @@ public class AfReflecter {
 		try {
 			return getField(model.getClass(), field.split("\\."), 0);
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 	}
@@ -306,7 +303,6 @@ public class AfReflecter {
 			invokeMember(obj.getClass(), field.split("\\."), obj,value, 0);
 			return true;
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
 			return false;
 		}
 	}
@@ -336,7 +332,6 @@ public class AfReflecter {
 		try {
 			return invokeMember(obj.getClass(), field.split("\\."), obj, 0);
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 	}
@@ -369,7 +364,6 @@ public class AfReflecter {
 		try {
 			return clazz.cast(invokeMember(obj.getClass(), field.split("\\."), obj, 0));
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 	}
