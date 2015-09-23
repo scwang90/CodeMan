@@ -1,0 +1,20 @@
+package com.codesmither.engine;
+
+import org.junit.Test;
+
+/**
+ * Created by Administrator on 2015/9/16.
+ */
+public class TempleteTest {
+
+    @Test
+    public void Templete() {
+        try {
+            Engine engine = new Engine();
+            engine.doInBackground(System.out);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+}
