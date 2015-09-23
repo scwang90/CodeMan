@@ -90,9 +90,9 @@ public class JavaType {
 	}
 	
 	public static String getBasicType(String type){
-		if (type.equals("Boolean"))
+		if (type.equals("Boolean") || type.equals("java.lang.Boolean"))
 			type = "boolean";
-		if (type.equals("Byte") || type.equals("java.lang.Byte"))
+		else if (type.equals("Byte") || type.equals("java.lang.Byte"))
 			type = "byte";
 		else if (type.equals("Short") || type.equals("java.lang.Short"))
 			type = "short";

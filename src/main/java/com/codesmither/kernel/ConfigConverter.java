@@ -21,7 +21,7 @@ public class ConfigConverter extends Converter{
 		}
 		if (tableSuffix != null) {
 			if (tableName.endsWith(tableSuffix)) {
-				tableName = tableName.substring(0,tableName.length()-tablePrefix.length()-1);
+				tableName = tableName.substring(0,tableName.length()-tableSuffix.length()-1);
 			}
 		}
 		if (tableDivision != null) {
@@ -42,7 +42,7 @@ public class ConfigConverter extends Converter{
 		}
 		if (columnSuffix != null) {
 			if (columnName.endsWith(columnSuffix)) {
-				columnName = columnName.substring(0,columnName.length()-columnPrefix.length()-1);
+				columnName = columnName.substring(0,columnName.length()-columnSuffix.length()-1);
 			}
 		}
 		if (columnDivision != null) {

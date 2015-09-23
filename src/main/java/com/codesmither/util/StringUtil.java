@@ -20,7 +20,6 @@ public class StringUtil {
 
 	/**
 	 * 小写
-	 * 
 	 * @param s
 	 * @return
 	 */
