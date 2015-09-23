@@ -34,14 +34,12 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	
 	@Override
 	public int insert(T model) throws Exception{
-		// TODO Auto-generated method stub
 		checkNullID(model);
 		return baseDao.insert(model);
 	}
 	
 	@Override
 	public int update(T model) throws Exception {
-		// TODO Auto-generated method stub
 		T old = findById(getModelID(model));
 		if (old == null) {
 			throw new ServiceException("请求更新记录不存在或已经被删除！");
@@ -52,43 +50,36 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 
 	@Override
 	public int delete(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		return baseDao.delete(id);
 	}
 
 	@Override
 	public T findById(Object id) throws Exception{
-		// TODO Auto-generated method stub
 		return baseDao.findById(id);
 	}
 
 	@Override
 	public List<T> findAll() throws Exception{
-		// TODO Auto-generated method stub
 		return baseDao.findAll();
 	}
 
 	@Override
 	public int delete(String id) throws Exception{
-		// TODO Auto-generated method stub
 		return baseDao.delete(id);
 	}
 
 	@Override
 	public List<T> findByPage(int limit, int start) throws Exception {
-		// TODO Auto-generated method stub
 		return baseDao.findByPage(limit,start);
 	}
 
 	@Override
 	public T findById(String id) throws Exception {
-		// TODO Auto-generated method stub
 		return baseDao.findById(id);
 	}
 	
 	@Override
 	public Page<T> listByPage(int pageSize, int pageNo) throws Exception{
-		// TODO Auto-generated method stub
 		int limit = pageSize; 
 		int start = pageNo*pageSize;
 		int totalRecord = baseDao.countAll();
@@ -101,7 +92,6 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 
 	@Override
 	public int countAll() throws Exception {
-		// TODO Auto-generated method stub
 		return baseDao.countAll();
 	}
 	/**
@@ -125,7 +115,6 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	 */
 	@SuppressWarnings("unchecked")
 	protected T checkNullField(T old, T model) {
-		// TODO Auto-generated method stub
 		try {
 			Class<?> clazz = model.getClass();
 			old = (T) JacksonUtil.toObject(JacksonUtil.toJson(old), clazz);

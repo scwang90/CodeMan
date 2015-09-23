@@ -10,12 +10,10 @@ import java.util.regex.Pattern;
 public class AfStringUtil {
 
 	public static boolean isEmpty(String string) {
-		// TODO Auto-generated method stub
 		return string == null || string.trim().length() == 0;
 	}
 	
 	public static boolean isNotEmpty(String string) {
-		// TODO Auto-generated method stub
 		return string != null && string.trim().length() > 0;
 	}
 

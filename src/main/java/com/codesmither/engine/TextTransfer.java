@@ -40,7 +40,6 @@ public class TextTransfer {
 	}
 
 	private void putTask(File task) {
-		// TODO Auto-generated method stub
 		if (task.isFile()) {
 			tasks.add(task);
 		}else if(task.isDirectory()){
@@ -56,12 +55,10 @@ public class TextTransfer {
 	}
 
 	public boolean hasTask() {
-		// TODO Auto-generated method stub
 		return itask < tasks.size();
 	}
 
 	public String doTask() throws IOException, TemplateException {
-		// TODO Auto-generated method stub
 		File file = tasks.get(itask++);
 		String path = file.getAbsolutePath();
 		path = path.replace(fsrc, ftarget);
@@ -96,7 +93,6 @@ public class TextTransfer {
 	}
 	
 	private Template getTemplate(File file) throws IOException {
-		// TODO Auto-generated method stub
 		String charset = ConfigFactory.getTemplateCharset();
 		if (charset != null && charset.trim().length() > 0) {
 			return FreemarkerFactory.getTemplate(file, charset);

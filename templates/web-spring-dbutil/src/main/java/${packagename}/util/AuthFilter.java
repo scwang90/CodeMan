@@ -20,14 +20,12 @@ public class AuthFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void doFilter(ServletRequest srequest, ServletResponse sresponse,
 			FilterChain filterChain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
 		HttpServletRequest request = (HttpServletRequest) srequest;
 		HttpServletResponse response = (HttpServletResponse) sresponse;
 		String url = request.getRequestURI();
@@ -59,7 +57,6 @@ public class AuthFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
 		
 	}
 

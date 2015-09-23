@@ -30,7 +30,7 @@ public class Engine {
 	}
 	
 	protected void doInBackground(PrintStream print) throws Exception {
-		// TODO Auto-generated method stub
+
 		File ftemplates = new File(templates);
 		File ftarget = new File(target);
 		if (!ftemplates.exists()) {

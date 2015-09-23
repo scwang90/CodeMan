@@ -33,7 +33,6 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@Override
 	@RequestMapping("add")
 	public Object add(@RequestBody ${className} model) throws Exception {
-		// TODO Auto-generated method stub
 		service.insert(model);
 		return null;
 	}
@@ -47,7 +46,6 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@Override
 	@RequestMapping("update")
 	public Object update(@RequestBody ${className} model) throws Exception {
-		// TODO Auto-generated method stub
 		service.update(model);
 		return null;
 	}
@@ -61,7 +59,6 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@Override
 	@RequestMapping("get/{ID}")
 	public Object get(@PathVariable String ID) throws Exception {
-		// TODO Auto-generated method stub
 		Object model = service.findById(ID);
 		if (model == null) {
 			return "null";
@@ -77,7 +74,6 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@Override
 	@RequestMapping("delete/{ID}")
 	public Object delete(@PathVariable String ID) throws Exception {
-		// TODO Auto-generated method stub
 		service.delete(ID);
 		return null;
 	}
@@ -90,7 +86,6 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@Override
 	@RequestMapping("count")
 	public Object count() throws Exception {
-		// TODO Auto-generated method stub
 		return service.countAll();
 	}
 
@@ -102,7 +97,6 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@Override
 	@RequestMapping("list")
 	public Object list() throws Exception {
-		// TODO Auto-generated method stub
 		return service.findAll();
 	}
 
@@ -116,7 +110,6 @@ public class ${className}Controller extends GeneralController<${className}>{
 	@Override
 	@RequestMapping("list/{pageSize}/{pageNo}")
 	public Object listByPage(@PathVariable int pageSize,@PathVariable int pageNo) throws Exception {
-		// TODO Auto-generated method stub
 		return service.listByPage(pageSize, pageNo);
 	}
 

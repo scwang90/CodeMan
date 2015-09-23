@@ -79,7 +79,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * @return
 	 */
 	private BaseDaoDbUtilMYSQLImpl<T>.Model loadModel(Class<T> clazz) {
-		// TODO Auto-generated method stub
 		Model model = new Model();
 
 		List<Field> fields = new ArrayList<Field>();
@@ -107,7 +106,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * @return ?,?
 	 */
 	private String getValues(Field[] fields) {
-		// TODO Auto-generated method stub
 		StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < fields.length; i++) {
 			buffer.append("?,");
@@ -124,7 +122,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * @return name,sex
 	 */
 	private String getColumn(Field[] fields) {
-		// TODO Auto-generated method stub
 		StringBuffer buffer = new StringBuffer();
 		for (Field field : fields) {
 			buffer.append("`"+Interpreter.getColumnName(field)+"`");
@@ -143,7 +140,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * @throws Exception
 	 */
 	protected String getSeters(Field[] fields) {
-		// TODO Auto-generated method stub
 		StringBuffer buffer = new StringBuffer();
 		for (Field field : fields) {
 			buffer.append("`"+Interpreter.getColumnName(field)+"`");
@@ -161,7 +157,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * @throws Exception
 	 */
 	private Object[] getValues(T t) throws Exception {
-		// TODO Auto-generated method stub
 		List<Object> list = new ArrayList<Object>();
 		for (Field field : model.fields) {
 			field.setAccessible(true);
@@ -178,7 +173,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * @throws Exception
 	 */
 	private List<Object> getValuesAsList(T t) throws Exception {
-		// TODO Auto-generated method stub
 		List<Object> list = new ArrayList<Object>();
 		for (Field field : model.fields) {
 			field.setAccessible(true);
@@ -195,7 +189,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * @throws Exception
 	 */
 	private Object getId(T t) throws Exception {
-		// TODO Auto-generated method stub
 		Field field = model.idfield;
 		field.setAccessible(true);
 		return field.get(t);
@@ -204,7 +197,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	@Sql("insert into @{table}(@{column}) values(@{values})")
 	public int insert(T t) throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{column}", String.valueOf(model.column));
@@ -214,14 +206,12 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	@Override
 	public int delete(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		return deleteByPropertyName(model.id, id);
 	}
 
 	@Override
 	@Sql("update @{table} set @{seters} where @{id}=?")
 	public int update(T t) throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{seters}", String.valueOf(model.seters));
@@ -233,7 +223,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	@Sql("select count(*) from @{table}")
 	public int countAll() throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		Long count = qr.query(sql, new ScalarHandler<Long>());
@@ -242,7 +231,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	@Override
 	public T findById(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		for (T t : findByPropertyName(model.id, id)) {
 			return t;
 		}
@@ -252,7 +240,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	@Sql("select * from @{table} @{order}")
 	public List<T> findAll() throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{order}", String.valueOf(order));
@@ -262,7 +249,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	@Sql("select * from @{table} @{order} limit @{start},@{limit}")
 	public List<T> findByPage(int limit, int start) throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{start}", String.valueOf(start));
@@ -274,7 +260,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	@Sql("delete from @{table} @{where}")
 	public int deleteWhere(String where) throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{where}", String.valueOf(where));
@@ -285,7 +270,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Sql("delete from @{table} where @{propertyName} = ?")
 	public int deleteByPropertyName(String propertyName, Object value)
 			throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{propertyName}", String.valueOf(propertyName));
@@ -295,7 +279,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	@Sql("select count(*) from @{table} @{where}")
 	public int countWhere(String where) throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{where}", String.valueOf(where));
@@ -307,7 +290,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Sql("select count(*) from @{table} where @{propertyName} = ?")
 	public int countByPropertyName(String propertyName, Object value)
 			throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{propertyName}", String.valueOf(propertyName));
@@ -318,7 +300,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	@Sql("select * from @{table} @{where} @{order}")
 	public List<T> findWhere(String where) throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{where}", String.valueOf(where));
@@ -334,7 +315,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Sql("select * from @{table} @{where} @{order} limit @{start},@{limit}")
 	public List<T> findWhereByPage(String where, int limit, int start)
 			throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{where}", String.valueOf(where));
@@ -352,7 +332,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	@Sql("select * from @{table} where @{propertyName} = ? @{order}")
 	public List<T> findByPropertyName(String propertyName, Object value)
 			throws Exception {
-		// TODO Auto-generated method stub
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{propertyName}", String.valueOf(propertyName));
@@ -395,7 +374,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 		 * 驼峰转换的匹配器
 		 */
 		private boolean match(String column, String name) {
-			// TODO Auto-generated method stub
 			name = name.replace("-", "").toLowerCase(Locale.ENGLISH);
 			column = column.replace("-", "").toLowerCase(Locale.ENGLISH);
 			return column.toString().equals(name);

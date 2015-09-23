@@ -14,7 +14,6 @@ public class ConfigConverter extends Converter{
 	public String columnDivision = ConfigFactory.getColumnDivision();
 	
 	public String converterClassName(String tableName) {
-		// TODO Auto-generated method stub
 		if (tablePrefix != null) {
 			if (tableName.startsWith(tablePrefix)) {
 				tableName = tableName.substring(tablePrefix.length());
@@ -36,7 +35,6 @@ public class ConfigConverter extends Converter{
 	}
 
 	public String converterFieldName(String columnName) {
-		// TODO Auto-generated method stub
 		if (columnPrefix != null) {
 			if (columnName.startsWith(columnPrefix)) {
 				columnName = columnName.substring(columnPrefix.length());

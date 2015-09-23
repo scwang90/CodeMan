@@ -35,7 +35,6 @@ public class ConfigFactory {
 	}
 
 	private static void loadConfig(String path) throws IOException {
-		// TODO Auto-generated method stub
 		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
 		Properties propty = new Properties();
 		propty.load(stream);

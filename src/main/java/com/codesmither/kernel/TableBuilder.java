@@ -41,7 +41,6 @@ public class TableBuilder {
 
 	@Override
 	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
 		if (autoclose) {
 			this.connection.close();
 		}
@@ -56,7 +55,6 @@ public class TableBuilder {
 	}
 
 	private List<Table> buildTables(ResultSet tableset) throws SQLException {
-		// TODO Auto-generated method stub
 		List<Table> tables = new ArrayList<Table>();
 		while (tableset.next()) {
 			Table table = new Table();
@@ -83,7 +81,6 @@ public class TableBuilder {
 	}
 
 	private TableColumn buildIdColumn(String tableName) throws SQLException{
-		// TODO Auto-generated method stub
 		TableColumn column = new TableColumn();
 		ResultSet keyset = databaseMetaData.getPrimaryKeys(null, null, tableName);
 		while (keyset.next()) {
@@ -94,7 +91,6 @@ public class TableBuilder {
 	}
 
 	private List<TableColumn> buildColumns(String tableName) throws SQLException {
-		// TODO Auto-generated method stub
 		ResultSet resultSet = databaseMetaData.getColumns(null, "%", tableName, "%");
 		List<TableColumn> columns = new ArrayList<TableColumn>();
 		while (resultSet.next()) {

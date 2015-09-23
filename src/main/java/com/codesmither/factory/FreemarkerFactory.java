@@ -24,14 +24,12 @@ public class FreemarkerFactory {
 	}
 
 	public static Template getTemplate(File file, String encoding) throws IOException {
-		// TODO Auto-generated method stub
 		String path = file.getParentFile().getAbsolutePath();
 		Configuration configuration = getConfiguration(path);
 		return configuration.getTemplate(file.getName(), encoding);
 	}
 
 	public static Template getTemplate(File file) throws IOException {
-		// TODO Auto-generated method stub
 		String path = file.getParentFile().getAbsolutePath();
 		Configuration configuration = getConfiguration(path);
 		return configuration.getTemplate(file.getName());

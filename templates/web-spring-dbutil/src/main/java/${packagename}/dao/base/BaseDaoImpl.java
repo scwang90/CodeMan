@@ -22,7 +22,6 @@ public class BaseDaoImpl<T> extends BaseDaoDbUtilMYSQLImpl<T> implements BaseDao
 	
 	@Override
 	public int insert(T t) throws Exception {
-		// TODO Auto-generated method stub
 		checkNullID(t);
 		AfReflecter.setMemberNoException(t, "createTime", new Date());
 		AfReflecter.setMemberNoException(t, "updateTime", new Date());
@@ -31,7 +30,6 @@ public class BaseDaoImpl<T> extends BaseDaoDbUtilMYSQLImpl<T> implements BaseDao
 	
 	@Override
 	public int update(T t) throws Exception {
-		// TODO Auto-generated method stub
 		AfReflecter.setMemberNoException(t, "updateTime", new Date());
 		return super.update(t);
 	}

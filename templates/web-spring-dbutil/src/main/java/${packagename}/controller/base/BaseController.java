@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 public class BaseController {
 	
 	protected void bindModel(Model model, HttpServletRequest request) {
-		// TODO Auto-generated method stub
 //		String title = "XXX后台管理系统";
 //		model.addAttribute("title", title);
 	}

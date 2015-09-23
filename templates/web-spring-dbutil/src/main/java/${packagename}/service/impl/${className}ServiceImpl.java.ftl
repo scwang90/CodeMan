@@ -25,14 +25,12 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 	
 	@Override
 	public int insert(${className} model) throws Exception{
-		// TODO Auto-generated method stub
 		checkNullID(model);
 		return dao.insert(model);
 	}
 	
 	@Override
 	public int update(${className} model) throws Exception {
-		// TODO Auto-generated method stub
 		${className} old = findById(getModelID(model));
 		if (old == null) {
 			throw new ServiceException("请求更新记录不存在或已经被删除！");
@@ -43,43 +41,36 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 
 	@Override
 	public int delete(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.delete(id);
 	}
 
 	@Override
 	public ${className} findById(Object id) throws Exception{
-		// TODO Auto-generated method stub
 		return dao.findById(id);
 	}
 
 	@Override
 	public List<${className}> findAll() throws Exception{
-		// TODO Auto-generated method stub
 		return dao.findAll();
 	}
 
 	@Override
 	public int delete(String id) throws Exception{
-		// TODO Auto-generated method stub
 		return dao.delete(id);
 	}
 
 	@Override
 	public List<${className}> findByPage(int limit, int start) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.findByPage(limit,start);
 	}
 
 	@Override
 	public ${className} findById(String id) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.findById(id);
 	}
 	
 	@Override
 	public Page<${className}> listByPage(int pageSize, int pageNo) throws Exception{
-		// TODO Auto-generated method stub
 		int limit = pageSize; 
 		int start = pageNo*pageSize;
 		int totalRecord = dao.countAll();
@@ -92,7 +83,6 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 
 	@Override
 	public int countAll() throws Exception {
-		// TODO Auto-generated method stub
 		return dao.countAll();
 	}
 }

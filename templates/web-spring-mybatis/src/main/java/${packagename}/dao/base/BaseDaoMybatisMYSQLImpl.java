@@ -46,75 +46,63 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 
 	@Override
 	public int insert(T model) throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.insert(model);
 	}
 
 	@Override
 	public int delete(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.delete(id);
 	}
 
 	@Override
 	public int update(T model) throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.update(model);
 	}
 
 	@Override
 	public int countAll() throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.countAll();
 	}
 
 	@Override
 	public T findById(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.findById(id);
 	}
 
 	@Override
 	public List<T> findAll() throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.findAll(order);
 	}
 
 	@Override
 	public List<T> findByPage(int limit, int start) throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.findByPage(order, limit, start);
 	}
 
 	@Override
 	public int deleteWhere(String where) throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.deleteWhere(where);
 	}
 
 	@Override
 	public int deleteByPropertyName(String propertyName, Object value)
 			throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.deleteByPropertyName(propertyName, value);
 	}
 
 	@Override
 	public int countWhere(String where) throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.countWhere(where);
 	}
 
 	@Override
 	public int countByPropertyName(String propertyName, Object value)
 			throws Exception {
-		// TODO Auto-generated method stub
 		return multiDao.countByPropertyName(propertyName, value);
 	}
 
 	@Override
 	public List<T> findWhere(String where) throws Exception {
-		// TODO Auto-generated method stub
 		if (where.toLowerCase().indexOf("order by ") < 0) {
 			return multiDao.findWhere(order, where);
 		}else {
@@ -125,7 +113,6 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	public List<T> findWhereByPage(String where, int limit, int start)
 			throws Exception {
-		// TODO Auto-generated method stub
 		if (where.toLowerCase().indexOf("order by ") < 0) {
 			return multiDao.findWhereByPage(order, where, limit, start);
 		}else {
@@ -136,7 +123,6 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	@Override
 	public List<T> findByPropertyName(String propertyName, Object value)
 			throws Exception {
-		// TODO Auto-generated method stub
 		if (value instanceof java.util.Date) {
 			java.util.Date date = (java.util.Date) value;
 			value = new java.sql.Date(date.getTime());

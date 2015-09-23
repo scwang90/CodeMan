@@ -18,43 +18,36 @@ public class ${className}DaoImpl extends BaseDaoImpl<${className}> implements ${
 
 	@Override
 	public int insert(${className} t) throws Exception {
-		// TODO Auto-generated method stub
 		return super.insert(t);
 	}
 
 	@Override
 	public int update(${className} t) throws Exception {
-		// TODO Auto-generated method stub
 		return super.update(t);
 	}
 
 	@Override
 	public int delete(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		return super.delete(id);
 	}
 
 	@Override
 	public int countAll() throws Exception {
-		// TODO Auto-generated method stub
 		return super.countAll();
 	}
 
 	@Override
 	public ${className} findById(Object id) throws Exception {
-		// TODO Auto-generated method stub
 		return super.findById(id);
 	}
 
 	@Override
 	public List<${className}> findAll() throws Exception {
-		// TODO Auto-generated method stub
 		return super.findAll();
 	}
 
 	@Override
 	public List<${className}> findByPage(int limit, int start) throws Exception {
-		// TODO Auto-generated method stub
 		return super.findByPage(limit, start);
 	}
 }

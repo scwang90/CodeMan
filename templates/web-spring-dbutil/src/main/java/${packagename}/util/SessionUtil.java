@@ -27,7 +27,6 @@ public class SessionUtil {
 //	 * @param sysuser
 //	 */
 //	public static void setUser(HttpServletRequest request, Sysuser sysuser) {
-//		// TODO Auto-generated method stub
 //		request.getSession().setAttribute("sysuser", sysuser);
 //	}
 }

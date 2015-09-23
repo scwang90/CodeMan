@@ -55,7 +55,6 @@ public class AfReflecter {
 	 * @return Field[]
 	 */
 	public static Field[] getField(Class<?> clazz) {
-		// TODO Auto-generated method stub
 		List<Field> fields = new ArrayList<Field>();
 		while (!clazz.equals(Object.class)) {
 			for (Field field : clazz.getDeclaredFields()) {
@@ -73,7 +72,6 @@ public class AfReflecter {
 	 * @return Field[]
 	 */
 	public static Field[] getFieldAnnotation(Class<?> clazz, Class<? extends Annotation> annot) {
-		// TODO Auto-generated method stub
 		List<Field> fields = new ArrayList<Field>();
 		while (!clazz.equals(Object.class)) {
 			for (Field field : clazz.getDeclaredFields()) {
@@ -94,7 +92,6 @@ public class AfReflecter {
 	 * @return method or null
 	 */
 	public static <T extends  Annotation> T getMethodAnnotation(Class<?> type, String method,  Class<T> annot) {
-		// TODO Auto-generated method stub
 		while (!type.equals(Object.class)) {
 			for (Method dmethod : type.getDeclaredMethods()) {
 				if (dmethod.getName().equals(method)) {
@@ -114,7 +111,6 @@ public class AfReflecter {
 	 * @return method or null
 	 */
 	public static Method getMethod(Class<?> type, String method) {
-		// TODO Auto-generated method stub
 		while (!type.equals(Object.class)) {
 			for (Method dmethod : type.getDeclaredMethods()) {
 				if (dmethod.getName().equals(method)) {
@@ -160,7 +156,6 @@ public class AfReflecter {
 	 * @return method or null
 	 */
 	public static Method getMethod(Class<?> type, String method,Class<?>[] parameterTypes) {
-		// TODO Auto-generated method stub
 		while (!type.equals(Object.class)) {
 			try {
 				return type.getDeclaredMethod(method,parameterTypes);
@@ -178,7 +173,6 @@ public class AfReflecter {
 	 * @return field or null
 	 */
 	public static Field getField(Class<?> type, String field) {
-		// TODO Auto-generated method stub
 		while (!type.equals(Object.class)) {
 			try {
 				return type.getDeclaredField(field);
@@ -221,7 +215,6 @@ public class AfReflecter {
 	 * @throws Exception
 	 */
 	public static Field getField(Object model, String field) throws Exception {
-		// TODO Auto-generated method stub
 		return getField(model.getClass(), field.split("\\."), 0);
 	}
 
@@ -232,7 +225,6 @@ public class AfReflecter {
 	 * @return
 	 */
 	public static Field getFieldNoException(Object model, String field) {
-		// TODO Auto-generated method stub
 		try {
 			return getField(model.getClass(), field.split("\\."), 0);
 		} catch (Throwable e) {
