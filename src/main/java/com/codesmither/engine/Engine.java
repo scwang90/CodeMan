@@ -18,13 +18,11 @@ public class Engine {
 	private String target;
 	
 	public Engine() {
-		// TODO Auto-generated constructor stub
 		target = ConfigFactory.getTargetPath();
 		templates = ConfigFactory.getTemplatePath();
 	}
 	
 	public Engine(String templates,String target) {
-		// TODO Auto-generated constructor stub
 		this.templates = templates;
 		this.target = target;
 	}

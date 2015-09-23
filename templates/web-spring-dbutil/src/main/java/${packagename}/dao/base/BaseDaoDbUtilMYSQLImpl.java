@@ -63,7 +63,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	protected QueryRunner qr = new QueryRunner(C3P0Factory.getDataSource());
 
 	public BaseDaoDbUtilMYSQLImpl() {
-		// TODO Auto-generated constructor stub
 		clazz = AfReflecter.getActualTypeArgument(this,
 				BaseDaoDbUtilMYSQLImpl.class, 0);
 		beanHandler = new BeanHandler<T>(clazz, new BasicRowProcessor(

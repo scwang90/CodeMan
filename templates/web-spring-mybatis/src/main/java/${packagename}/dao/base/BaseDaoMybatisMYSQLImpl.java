@@ -39,7 +39,6 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	protected MybatisMultiDao<T> multiDao;
 	
 	public BaseDaoMybatisMYSQLImpl() {
-		// TODO Auto-generated constructor stub
 		clazz = AfReflecter.getActualTypeArgument(this,
 				BaseDaoMybatisMYSQLImpl.class, 0);
 	}

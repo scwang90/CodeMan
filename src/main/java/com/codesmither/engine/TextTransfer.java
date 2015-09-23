@@ -30,7 +30,6 @@ public class TextTransfer {
 	private String packagepath;
 	
 	public TextTransfer(Model model, File fsrc, File ftarget) {
-		// TODO Auto-generated constructor stub
 		this.model = model;
 		this.tables = model.tables;
 		this.fsrc = fsrc.getAbsolutePath();

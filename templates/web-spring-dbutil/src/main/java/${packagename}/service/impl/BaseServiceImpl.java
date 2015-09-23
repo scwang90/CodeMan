@@ -28,7 +28,6 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	protected Class<T> clazz;
 	
 	public BaseServiceImpl() {
-		// TODO Auto-generated constructor stub
 		this.clazz = AfReflecter.getActualTypeArgument(this, BaseServiceImpl.class, 0);
 	}
 	

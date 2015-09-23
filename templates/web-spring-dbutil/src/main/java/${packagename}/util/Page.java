@@ -19,7 +19,6 @@ public abstract class Page<T>{
 	private List<T> datas = new ArrayList<T>();
 	
 	public Page() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Page(int currentPage, int pageSize, int totalPage, int totalRecord,
@@ -33,7 +32,6 @@ public abstract class Page<T>{
 	}
 
 	public Page(List<T> all) {
-		// TODO Auto-generated constructor stub
 		super();
 		this.currentPage = 0;
 		this.pageSize = all.size();

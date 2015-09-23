@@ -71,7 +71,6 @@ public class Model {
 	}
 
 	public Model() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Model(String author, String packagename) {
@@ -81,7 +80,6 @@ public class Model {
 	}
 
 	public Model(Table table) {
-		// TODO Auto-generated constructor stub
 		this.table = table;
 		this.className = table.className;
 	}

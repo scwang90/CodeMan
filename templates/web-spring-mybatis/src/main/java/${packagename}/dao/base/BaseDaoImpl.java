@@ -16,7 +16,6 @@ import ${packagename}.util.AfReflecter;
 public class BaseDaoImpl<T> extends BaseDaoMybatisMYSQLImpl<T> implements BaseDao<T>{
 
 	public BaseDaoImpl() {
-		// TODO Auto-generated constructor stub
 		//order = "ORDER BY createTime DESC";
 	}
 	

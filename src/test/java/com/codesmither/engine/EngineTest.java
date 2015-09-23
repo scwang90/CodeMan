@@ -19,7 +19,6 @@ public class EngineTest {
 
 	@Test
 	public void Engine() throws SQLException {
-		// TODO Auto-generated constructor stub
 		Connection connection = C3P0Factory.getConnection();
 		Converter converter = new ConfigConverter();
 		TableBuilder builder = new TableBuilder(connection,converter );

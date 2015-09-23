@@ -29,7 +29,6 @@ public class ${className}{
 	</#list>
 
 	public ${className}() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	<#list table.columns as column>

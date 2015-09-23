@@ -8,7 +8,6 @@ public class DatabaseJdbc {
 	public String password;
 	
 	public DatabaseJdbc() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public String getUsename() {
