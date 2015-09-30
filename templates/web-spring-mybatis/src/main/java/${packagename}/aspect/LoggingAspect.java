@@ -36,7 +36,7 @@ public class LoggingAspect {
 						}
 					}
 				}
-				out.print("\n])");
+				out.print("\b])");
 			} else {
 				out.print("()");
 			}
