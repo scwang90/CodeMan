@@ -48,4 +48,10 @@ public class ${className}MapperTester {
 		System.out.println(JacksonUtil.toJson(result));
 	}
 
+	@Test
+	public void findAll() throws Exception {
+		Object result = mapper.findAll("");
+		System.out.println(JacksonUtil.toJson(result));
+	}
+
 }

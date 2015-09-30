@@ -14,44 +14,63 @@ import ${packagename}.util.JacksonUtil;
  */
 @Aspect
 public class LoggingAspect {
+
+	public static boolean log = true;
 	
 	public void before(JoinPoint point) {
-		out.print(LoggingAspect.class.getSimpleName()+"-");
-		out.print(point.getTarget().getClass().getSimpleName()+".");
-		out.print(point.getSignature().getName()+"-begin-args-");
-		try {
-			out.print(JacksonUtil.toJson(point.getArgs()));
-		} catch (Throwable e) {
-			out.print("[");
-			for (Object object : point.getArgs()) {
-				out.print(object+",");
+		if (log){
+			out.print(LoggingAspect.class.getSimpleName()+"-");
+			out.print(point.getTarget().getClass().getSimpleName()+".");
+			out.print(point.getSignature().getName() + "-begin-args-");
+			Object[] args = point.getArgs();
+			if (args != null && args.length > 0){
+				out.print("([");
+				for (Object object : point.getArgs()) {
+					try {
+						out.print(JacksonUtil.toJson(object)+",");
+					} catch (Throwable e) {
+						if (object instanceof HttpServletRequest) {
+							out.print(((HttpServletRequest) object).getQueryString()+",");
+						} else {
+							out.print(object+",");
+						}
+					}
+				}
+				out.print("\n])");
+			} else {
+				out.print("()");
 			}
-			out.print("\b]");
+			out.println();
 		}
-		out.println();
 	}
-	
+
 	public void after(JoinPoint point) {
-		out.print(LoggingAspect.class.getSimpleName()+"-");
-		out.print(point.getTarget().getClass().getSimpleName()+".");
-		out.print(point.getSignature().getName()+"-after-");
-		out.println();
+		if (log){
+			out.print(LoggingAspect.class.getSimpleName()+"-");
+			out.print(point.getTarget().getClass().getSimpleName()+".");
+			out.print(point.getSignature().getName()+"-after-");
+			out.println();
+		}
 	}
-	
+
 	public void returned(JoinPoint point,Object result) {
-		out.print(LoggingAspect.class.getSimpleName()+"-");
-		out.print(point.getTarget().getClass().getSimpleName()+".");
-		out.print(point.getSignature().getName()+"-returned-result-");
-		out.print((result instanceof String)?result:JacksonUtil.toJson(result));
-		out.println();
+		if (log){
+			out.print(LoggingAspect.class.getSimpleName()+"-");
+			out.print(point.getTarget().getClass().getSimpleName()+".");
+			out.print(point.getSignature().getName()+"-returned-result-");
+			out.print((result instanceof String)?result:JacksonUtil.toJson(result));
+			out.println();
+		}
 	}
-	
+
 	public void throwed(JoinPoint point,Throwable ex) {
-		out.print(LoggingAspect.class.getSimpleName()+"-");
-		out.print(point.getTarget().getClass().getSimpleName()+".");
-		out.print(point.getSignature().getName()+"-throwed-ex-");
-		out.print(ex.getMessage()+"-"+ex.getClass().getSimpleName());
-		out.println();
+		if (log){
+			out.print(LoggingAspect.class.getSimpleName()+"-");
+			out.print(point.getTarget().getClass().getSimpleName()+".");
+			out.print(point.getSignature().getName()+"-throwed-ex-");
+			out.print(ex.getMessage()+"-"+ex.getClass().getSimpleName());
+			out.println();
+		}
 	}
 
 }
