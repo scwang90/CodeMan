@@ -1,18 +1,18 @@
 package ${packagename}.service.impl;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import ${packagename}.annotations.dbmodel.interpreter.Interpreter;
 import ${packagename}.dao.base.BaseDao;
+import ${packagename}.model.base.ModelBase;
 import ${packagename}.service.BaseService;
 import ${packagename}.util.AfReflecter;
 import ${packagename}.util.JacksonUtil;
 import ${packagename}.util.Page;
 import ${packagename}.util.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * 通用Service层实现基类
@@ -33,6 +33,9 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	
 	@Override
 	public int insert(T model) throws Exception{
+		if (model instanceof ModelBase) {
+			((ModelBase) model).check();
+		}
 		checkNullID(model);
 		return baseDao.insert(model);
 	}

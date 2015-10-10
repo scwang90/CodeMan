@@ -1,16 +1,15 @@
 package ${packagename}.service.impl;
 
-
-import java.util.List;
-
+import ${packagename}.dao.ActionDao;
+import ${packagename}.model.Action;
+import ${packagename}.model.base.ModelBase;
+import ${packagename}.service.ActionService;
+import ${packagename}.util.Page;
+import ${packagename}.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ${packagename}.util.Page;
-import ${packagename}.util.ServiceException;
-import ${packagename}.dao.${className}Dao;
-import ${packagename}.model.${className};
-import ${packagename}.service.${className}Service;
+import java.util.List;
 
 /**
  * ${table.remark}的Service接实现
@@ -25,6 +24,9 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 	
 	@Override
 	public int insert(${className} model) throws Exception{
+		if (ModelBase.class.isInstance(model)) {
+			ModelBase.class.cast(model).check();
+		}
 		checkNullID(model);
 		return dao.insert(model);
 	}

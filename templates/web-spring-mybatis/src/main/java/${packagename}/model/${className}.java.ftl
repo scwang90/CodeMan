@@ -10,6 +10,7 @@ import ${packagename}.annotations.dbmodel.Column;
 </#list>
 import ${packagename}.annotations.dbmodel.Id;
 import ${packagename}.annotations.dbmodel.Table;
+import ${packagename}.model.base.ModelBase;
 
 /**
  * ${table.remark}
@@ -17,7 +18,7 @@ import ${packagename}.annotations.dbmodel.Table;
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
 @Table("${table.name}")
-public class ${className}{
+public class ${className} extends ModelBase{
 
 	<#list table.columns as column>
 	/**
