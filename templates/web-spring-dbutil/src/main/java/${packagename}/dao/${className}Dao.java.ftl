@@ -14,52 +14,45 @@ public interface ${className}Dao extends BaseDao<${className}>{
 
 	/**
 	 * 插入一条新数据
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param model 添加的数据
+	 * @return 改变行数
 	 */
-	public int insert(${className} model) throws Exception;
+	int insert(${className} model) throws Exception;
 	/**
 	 * 根据ID删除
-	 * @param id
-	 * @return
-	 * @throws Exception
+	 * @param id 主键ID
+	 * @return 改变行数
 	 */
-	public int delete(Object id) throws Exception;
+	int delete(Object id) throws Exception;
 	/**
 	 * 更新一条数据
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param model 需要更新数据
+	 * @return 改变行数
 	 */
-	public int update(${className} model) throws Exception;
+	int update(${className} model) throws Exception;
 	/**
 	 * 统计全部出数据
-	 * @return
-	 * @throws Exception
+	 * @return 全部数据量
 	 */
-	public int countAll() throws Exception;
+	int countAll() throws Exception;
 	/**
 	 * 根据ID获取
-	 * @param id
-	 * @return
-	 * @throws Exception
+	 * @param id 主键ID
+	 * @return 数据对象 or null
 	 */
-	public ${className} findById(Object id) throws Exception;
+	${className} findById(Object id) throws Exception;
 	/**
 	 * 获取全部数据
-	 * @return
-	 * @throws Exception
+	 * @return 全部所有数据
 	 */
-	public List<${className}> findAll() throws Exception;
+	List<${className}> findAll() throws Exception;
 	/**
 	 * 分页查询数据
-	 * @param limit
-	 * @param start
-	 * @return
-	 * @throws Exception
+	 * @param limit 分页最大值
+	 * @param start 开始编号
+	 * @return 分页列表数据
 	 */
-	public List<${className}> findByPage(int limit,int start) throws Exception;
+	List<${className}> findByPage(int limit,int start) throws Exception;
 	
 
 }

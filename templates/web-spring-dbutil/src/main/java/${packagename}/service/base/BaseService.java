@@ -1,4 +1,4 @@
-package ${packagename}.service;
+package ${packagename}.service.base;
 
 import ${packagename}.dao.base.BaseDao;
 import ${packagename}.util.Page;
@@ -10,7 +10,7 @@ import ${packagename}.util.Page;
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
 public interface BaseService<T> extends BaseDao<T>{
-	public int delete(String id) throws Exception;
-	public T findById(String id) throws Exception;
-	public Page<T> listByPage(int pageSize, int pageNo) throws Exception;
+	int delete(String id) throws Exception;
+	T findById(String id) throws Exception;
+	Page<T> listByPage(int pageSize, int pageNo) throws Exception;
 }

@@ -9,53 +9,47 @@ import java.util.List;
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
 public interface BaseDao<T> {
+
 	/**
 	 * 插入一条新数据
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param model 添加的数据
+	 * @return 改变行数
 	 */
-	public int insert(T model) throws Exception;
+	int insert(T model) throws Exception;
 	/**
 	 * 根据ID删除
-	 * @param id
-	 * @return
-	 * @throws Exception
+	 * @param id 主键ID
+	 * @return 改变行数
 	 */
-	public int delete(Object id) throws Exception;
+	int delete(Object id) throws Exception;
 	/**
 	 * 更新一条数据
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param model 需要更新数据
+	 * @return 改变行数
 	 */
-	public int update(T model) throws Exception;
+	int update(T model) throws Exception;
 	/**
 	 * 统计全部出数据
-	 * @return
-	 * @throws Exception
+	 * @return 全部数据量
 	 */
-	public int countAll() throws Exception;
+	int countAll() throws Exception;
 	/**
 	 * 根据ID获取
-	 * @param id
-	 * @return
-	 * @throws Exception
+	 * @param id 主键ID
+	 * @return 数据对象 or null
 	 */
-	public T findById(Object id) throws Exception;
+	T findById(Object id) throws Exception;
 	/**
 	 * 获取全部数据
-	 * @return
-	 * @throws Exception
+	 * @return 全部所有数据
 	 */
-	public List<T> findAll() throws Exception;
+	List<T> findAll() throws Exception;
 	/**
 	 * 分页查询数据
-	 * @param limit
-	 * @param start
-	 * @return
-	 * @throws Exception
+	 * @param limit 分页最大值
+	 * @param start 开始编号
+	 * @return 分页列表数据
 	 */
-	public List<T> findByPage(int limit,int start) throws Exception;
+	List<T> findByPage(int limit,int start) throws Exception;
 	
 }

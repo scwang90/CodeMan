@@ -1,9 +1,8 @@
-package ${packagename}.service.impl;
+package ${packagename}.service.base;
 
 import ${packagename}.annotations.dbmodel.interpreter.Interpreter;
 import ${packagename}.dao.base.BaseDao;
 import ${packagename}.model.base.ModelBase;
-import ${packagename}.service.BaseService;
 import ${packagename}.util.AfReflecter;
 import ${packagename}.util.JacksonUtil;
 import ${packagename}.util.Page;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 通用Service层实现基类
@@ -33,10 +31,8 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	
 	@Override
 	public int insert(T model) throws Exception{
-		if (model instanceof ModelBase) {
-			((ModelBase) model).check();
-		}
-		checkNullID(model);
+		ModelBase.check(model);
+		ModelBase.fillNullID(model);
 		return baseDao.insert(model);
 	}
 	
@@ -97,23 +93,9 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 		return baseDao.countAll();
 	}
 	/**
-	 * 检查ID字段是否为空，否则设置一个新ID
-	 * @param model
-	 * @throws Exception
-	 */
-	protected void checkNullID(T model) throws Exception {
-		Class<?> clazz = model.getClass();
-		Field field = Interpreter.getIdField(clazz);
-		field.setAccessible(true);
-		Object id = field.get(model);
-		if(id == null || id.toString().trim().length() == 0){
-			field.set(model, UUID.randomUUID().toString());
-		}
-	}
-	/**
 	 * 检测非空字段
-	 * @param old
-	 * @param model
+	 * @param old 老数据
+	 * @param model 新数据model
 	 */
 	@SuppressWarnings("unchecked")
 	protected T checkNullField(T old, T model) {
@@ -134,15 +116,15 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	}
 	/**
 	 * 获取ID字段
-	 * @param model
-	 * @throws Exception 
-	 * @throws IllegalArgumentException 
-	 * @throws Exception
+	 * @param model 数据model
 	 */
 	protected Object getModelID(T model) throws Exception {
 		Class<?> clazz = model.getClass();
 		Field field = Interpreter.getIdField(clazz);
-		field.setAccessible(true);
-		return field.get(model);
+		if (field != null) {
+			field.setAccessible(true);
+			return field.get(model);
+		}
+		return null;
 	}
 }
