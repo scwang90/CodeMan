@@ -11,7 +11,7 @@ import java.util.Date;
  * @author ${author}
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
-public class BaseDaoImpl<T> extends BaseDaoDbUtilMYSQLImpl<T> implements BaseDao<T>{
+public class BaseDaoImpl<T> extends BaseDaoMybatisMYSQLImpl<T> implements BaseDao<T>{
 
 	public BaseDaoImpl() {
 		order = "ORDER BY create_time DESC";

@@ -1,11 +1,12 @@
 package ${packagename}.aspect;
 
-import static java.lang.System.out;
-
+import ${packagename}.util.JacksonUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 
-import ${packagename}.util.JacksonUtil;
+import javax.servlet.http.HttpServletRequest;
+
+import static java.lang.System.out;
 
 /**
  * 日志处理切面
@@ -16,7 +17,7 @@ import ${packagename}.util.JacksonUtil;
 public class LoggingAspect {
 
 	public static boolean log = true;
-	
+
 	public void before(JoinPoint point) {
 		if (log){
 			out.print(LoggingAspect.class.getSimpleName()+"-");

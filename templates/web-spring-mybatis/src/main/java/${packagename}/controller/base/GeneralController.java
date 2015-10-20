@@ -3,7 +3,7 @@ package ${packagename}.controller.base;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ${packagename}.annotations.Intent;
-import ${packagename}.service.BaseService;
+import ${packagename}.service.base.BaseService;
 
 /**
  * Controller 层通用处理事务基类
