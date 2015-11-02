@@ -25,32 +25,32 @@ public class ${className}ServiceTester {
 	public void insert() throws Exception{
 		${className} model = new ${className}();
 		Object result = service.insert(model);
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void update() throws Exception {
 		${className} model = new ${className}();
 		Object result = service.update(model);
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void delete() throws Exception {
 		Object result = service.delete("1");
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void countAll() throws Exception {
 		Object result = service.countAll();
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 
 	@Test
 	public void findByPage() throws Exception {
 		Object result = service.findByPage(5, 0);
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 
 }

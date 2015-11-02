@@ -14,7 +14,7 @@ import java.util.Date;
 public class BaseDaoImpl<T> extends BaseDaoMybatisMYSQLImpl<T> implements BaseDao<T>{
 
 	public BaseDaoImpl() {
-		order = "ORDER BY create_time DESC";
+		//order = "ORDER BY create_time DESC";
 	}
 
 	@Override

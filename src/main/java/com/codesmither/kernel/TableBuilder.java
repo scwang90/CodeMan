@@ -41,17 +41,20 @@ public class TableBuilder {
 
 	@Override
 	protected void finalize() throws Throwable {
-		if (autoclose) {
+		if (autoclose && this.connection != null) {
 			this.connection.close();
 		}
 		super.finalize();
 	}
 
 	public List<Table> build() throws SQLException {
-		databaseMetaData = this.connection.getMetaData();
-		ResultSet tableset = databaseMetaData.getTables(null, "%", "%",
-				new String[] { "TABLE" });
-		return buildTables(tableset);
+		if (this.connection != null) {
+			databaseMetaData = this.connection.getMetaData();
+			ResultSet tableset = databaseMetaData.getTables(null, "%", "%",
+					new String[] { "TABLE" });
+			return buildTables(tableset);
+		}
+		return new ArrayList<>();
 	}
 
 	private List<Table> buildTables(ResultSet tableset) throws SQLException {

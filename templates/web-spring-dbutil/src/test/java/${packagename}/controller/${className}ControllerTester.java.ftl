@@ -25,38 +25,38 @@ public class ${className}ControllerTester {
 	public void add() throws Exception{
 		${className} model = new ${className}();
 		Object result = controller.add(model);
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void update() throws Exception {
 		${className} model = new ${className}();
 		Object result = controller.update(model);
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void delete() throws Exception {
 		Object result = controller.delete("1");
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void count() throws Exception {
 		Object result = controller.count();
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void get() throws Exception {
 		Object result = controller.get("1");
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 	
 	@Test
 	public void listByPage() throws Exception {
 		Object result = controller.listByPage(6, 0);
-		System.out.println(JacksonUtil.toJson(result));
+		System.out.println(JacksonUtil.toJson(result).replace("{","\n{"));
 	}
 
 }
