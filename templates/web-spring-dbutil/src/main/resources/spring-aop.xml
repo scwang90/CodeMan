@@ -29,9 +29,11 @@
             <aop:after-throwing method="throwed" pointcut-ref="ptc-mapper" throwing="ex"/>
             -->
 
+            <aop:after-throwing method="throwed" pointcut-ref="ptc-controller" throwing="ex"/>
+
+            <!--
             <aop:before method="before" pointcut-ref="ptc-controller"/>
             <aop:after-returning method="returned" pointcut-ref="ptc-controller" returning="result"/>
-            <aop:after-throwing method="throwed" pointcut-ref="ptc-controller" throwing="ex"/>
             <aop:after method="after" pointcut-ref="ptc-controller"/>
 
             <aop:before method="before" pointcut-ref="ptc-service"/>
@@ -42,6 +44,7 @@
 
             <aop:before method="before" pointcut-ref="ptc-mapper"/>
             <aop:after-returning method="returned" pointcut-ref="ptc-mapper" returning="result"/>
+            -->
 
         </aop:aspect>
     </aop:config>

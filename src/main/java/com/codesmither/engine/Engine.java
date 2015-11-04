@@ -6,6 +6,7 @@ import java.sql.Connection;
 
 import com.codesmither.factory.C3P0Factory;
 import com.codesmither.factory.ConfigFactory;
+import com.codesmither.factory.FilterFactory;
 import com.codesmither.kernel.ConfigConverter;
 import com.codesmither.kernel.Converter;
 import com.codesmither.kernel.ModelBuilder;
@@ -14,40 +15,40 @@ import com.codesmither.model.Model;
 
 public class Engine {
 
-	private String templates;
-	private String target;
-	
-	public Engine() {
-		target = ConfigFactory.getTargetPath();
-		templates = ConfigFactory.getTemplatePath();
-	}
-	
-	public Engine(String templates,String target) {
-		this.templates = templates;
-		this.target = target;
-	}
-	
-	protected void doInBackground(PrintStream print) throws Exception {
+    private String templates;
+    private String target;
 
-		File ftemplates = new File(templates);
-		File ftarget = new File(target);
-		if (!ftemplates.exists()) {
-			throw new Exception("源项目不存在！");
-		}
-		if (!ftarget.exists() && !ftarget.mkdirs()) {
-			throw new Exception("创建目标项目失败！");        
-		}
+    public Engine() {
+        target = ConfigFactory.getTargetPath();
+        templates = ConfigFactory.getTemplatePath();
+    }
 
-		Connection connection = C3P0Factory.getConnection();
-		Converter converter = new ConfigConverter();
-		ModelBuilder modelBuilder = new ModelBuilder();
-		TableBuilder tableBuilder = new TableBuilder(connection,converter );
-		Model model = modelBuilder.build();
-		model.tables = tableBuilder.build();
-		TextTransfer transfer = new TextTransfer(model,ftemplates,ftarget);
-		while (transfer.hasTask()) {
-			print.println(transfer.doTask());
-		}
-	}
-	
+    public Engine(String templates, String target) {
+        this.templates = templates;
+        this.target = target;
+    }
+
+    protected void doInBackground(PrintStream print) throws Exception {
+
+        File ftemplates = new File(templates);
+        File ftarget = new File(target);
+        if (!ftemplates.exists()) {
+            throw new Exception("源项目不存在！");
+        }
+        if (!ftarget.exists() && !ftarget.mkdirs()) {
+            throw new Exception("创建目标项目失败！");
+        }
+
+        Connection connection = C3P0Factory.getConnection();
+        Converter converter = new ConfigConverter();
+        ModelBuilder modelBuilder = new ModelBuilder();
+        TableBuilder tableBuilder = new TableBuilder(connection, converter);
+        Model model = modelBuilder.build();
+        model.tables = tableBuilder.build();
+        TaskTransfer transfer = new TaskTransfer(model, ftemplates, ftarget, FilterFactory.getFilter());
+        while (transfer.hasTask()) {
+            print.println(transfer.doTask());
+        }
+    }
+
 }

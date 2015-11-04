@@ -18,6 +18,11 @@ public class ConfigFactory {
 	
 	private static String templatePath = "templates/dbutil-spring-web";
 	private static String templateCharset = "UTF-8";
+
+	private static String templateIncludeFile = "*.*";
+	private static String templateIncludePath = "*";
+	private static String templateFilterFile = "*.classes;*.jar;";
+	private static String templateFilterPath = "bin;build";
 	
 	private static String targetPath = "target/project";
 	private static String targetCharset = "UTF-8";
@@ -51,6 +56,11 @@ public class ConfigFactory {
 		templatePath   = propty.getProperty("codesmither.template.path",templatePath);
 		templateCharset   = propty.getProperty("codesmither.template.charset",templateCharset);
 
+		templateIncludeFile = propty.getProperty("codesmither.template.include.file",templateIncludeFile);
+		templateIncludePath = propty.getProperty("codesmither.template.include.path",templateIncludePath);
+		templateFilterFile = propty.getProperty("codesmither.template.filter.file",templateFilterFile);
+		templateFilterPath = propty.getProperty("codesmither.template.filter.path",templateFilterPath);
+
 		targetPath = propty.getProperty("codesmither.target.path",targetPath);
 		targetCharset = propty.getProperty("codesmither.target.charset",targetCharset);
 		targetProjectName = propty.getProperty("codesmither.target.project.name",targetProjectName);
@@ -65,62 +75,6 @@ public class ConfigFactory {
 
 	public static void setDbConfigName(String dbConfigName) {
 		ConfigFactory.dbConfigName = dbConfigName;
-	}
-
-	public static String getTargetProjectPackage() {
-		return targetProjectPackage;
-	}
-
-	public static void setTargetProjectPackage(String targetProjectPackage) {
-		ConfigFactory.targetProjectPackage = targetProjectPackage;
-	}
-
-	public static String getTargetProjectAuthor() {
-		return targetProjectAuthor;
-	}
-
-	public static void setTargetProjectAuthor(String targetProjectAuthor) {
-		ConfigFactory.targetProjectAuthor = targetProjectAuthor;
-	}
-
-	public static String getTemplatePath() {
-		return templatePath;
-	}
-
-	public static void setTemplatePath(String templatePath) {
-		ConfigFactory.templatePath = templatePath;
-	}
-
-	public static String getTemplateCharset() {
-		return templateCharset;
-	}
-
-	public static void setTemplateCharset(String templateCharset) {
-		ConfigFactory.templateCharset = templateCharset;
-	}
-
-	public static String getTargetPath() {
-		return targetPath;
-	}
-
-	public static void setTargetPath(String targetPath) {
-		ConfigFactory.targetPath = targetPath;
-	}
-
-	public static String getTargetCharset() {
-		return targetCharset;
-	}
-
-	public static void setTargetCharset(String targetCharset) {
-		ConfigFactory.targetCharset = targetCharset;
-	}
-
-	public static String getTargetProjectName() {
-		return targetProjectName;
-	}
-
-	public static void setTargetProjectName(String targetProjectName) {
-		ConfigFactory.targetProjectName = targetProjectName;
 	}
 
 	public static String getTablePrefix() {
@@ -171,4 +125,91 @@ public class ConfigFactory {
 		ConfigFactory.columnDivision = columnDivision;
 	}
 
+	public static String getTemplatePath() {
+		return templatePath;
+	}
+
+	public static void setTemplatePath(String templatePath) {
+		ConfigFactory.templatePath = templatePath;
+	}
+
+	public static String getTemplateCharset() {
+		return templateCharset;
+	}
+
+	public static void setTemplateCharset(String templateCharset) {
+		ConfigFactory.templateCharset = templateCharset;
+	}
+
+	public static String getTemplateIncludeFile() {
+		return templateIncludeFile;
+	}
+
+	public static void setTemplateIncludeFile(String templateIncludeFile) {
+		ConfigFactory.templateIncludeFile = templateIncludeFile;
+	}
+
+	public static String getTemplateIncludePath() {
+		return templateIncludePath;
+	}
+
+	public static void setTemplateIncludePath(String templateIncludePath) {
+		ConfigFactory.templateIncludePath = templateIncludePath;
+	}
+
+	public static String getTemplateFilterFile() {
+		return templateFilterFile;
+	}
+
+	public static void setTemplateFilterFile(String templateFilterFile) {
+		ConfigFactory.templateFilterFile = templateFilterFile;
+	}
+
+	public static String getTemplateFilterPath() {
+		return templateFilterPath;
+	}
+
+	public static void setTemplateFilterPath(String templateFilterPath) {
+		ConfigFactory.templateFilterPath = templateFilterPath;
+	}
+
+	public static String getTargetPath() {
+		return targetPath;
+	}
+
+	public static void setTargetPath(String targetPath) {
+		ConfigFactory.targetPath = targetPath;
+	}
+
+	public static String getTargetCharset() {
+		return targetCharset;
+	}
+
+	public static void setTargetCharset(String targetCharset) {
+		ConfigFactory.targetCharset = targetCharset;
+	}
+
+	public static String getTargetProjectName() {
+		return targetProjectName;
+	}
+
+	public static void setTargetProjectName(String targetProjectName) {
+		ConfigFactory.targetProjectName = targetProjectName;
+	}
+
+	public static String getTargetProjectAuthor() {
+		return targetProjectAuthor;
+	}
+
+	public static void setTargetProjectAuthor(String targetProjectAuthor) {
+		ConfigFactory.targetProjectAuthor = targetProjectAuthor;
+	}
+
+	public static String getTargetProjectPackage() {
+		return targetProjectPackage;
+	}
+
+	public static void setTargetProjectPackage(String targetProjectPackage) {
+		ConfigFactory.targetProjectPackage = targetProjectPackage;
+	}
 }
