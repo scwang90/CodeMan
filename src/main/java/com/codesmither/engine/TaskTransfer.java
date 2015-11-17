@@ -53,22 +53,32 @@ public class TaskTransfer {
 		path = path.replace(fsrc, ftarget);
 		path = path.replace("${packagename}", packagepath);
 		File outfile = new File(path);
-		
+
+		StringBuilder log = new StringBuilder(path+"\r\n");
 		if (task.getFile().getName().endsWith(".ftl")) {
 			Template template = getTemplate(task.getFile());
 			for (Table table : tables) {
-				String outpath = outfile.getAbsolutePath().replace(".ftl", "");
-				Writer out = getFileWriter(new File(outpath.replace("${className}", table.className)));
+				String outpath = outfile.getAbsolutePath().replace(".ftl", "").replace("${className}", table.className);
+				log.append("  =>>");
+				log.append(outpath);
+				log.append("\r\n");
+				Writer out = getFileWriter(new File(outpath));
 				model.bindTable(table);
 				template.process(model, out);
 				out.close();
 			}
 		} else if(FileUtil.isTextFile(task.getFile())){
+			log.append("  =>>");
+			log.append(outfile.getAbsolutePath());
+			log.append("\r\n");
 			Template template = getTemplate(task.getFile());
 			Writer out = getFileWriter(outfile);
 			template.process(model, out);
 			out.close();
 		} else {
+			log.append("  =>>");
+			log.append(outfile.getAbsolutePath());
+			log.append("\r\n");
 			FileInputStream inputStream = new FileInputStream(task.getFile());
 			FileOutputStream outputStream = new FileOutputStream(outfile);
 			byte[] bytes = new byte[inputStream.available()];
@@ -78,7 +88,7 @@ public class TaskTransfer {
 			inputStream.close();
 			System.gc();
 		}
-		return path;
+		return log.toString();
 	}
 	
 	private Template getTemplate(File file) throws IOException {
