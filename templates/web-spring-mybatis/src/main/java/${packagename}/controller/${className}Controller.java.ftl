@@ -26,35 +26,30 @@ public class ${className}Controller extends GeneralController<${className}>{
 	
 	/**
 	 * 添加信息
-	 * @param model
-	 * @return
-	 * @throws Exception 
+	 * @param model 添加的数据
+	 * @return 改变行数
 	 */
 	@Override
 	@RequestMapping("add")
 	public Object add(@RequestBody ${className} model) throws Exception {
-		service.insert(model);
-		return null;
+		return service.insert(model);
 	}
 
 	/**
 	 * 更新信息
-	 * @param model
-	 * @return
-	 * @throws Exception 
+	 * @param model 更新的数据
+	 * @return 改变行数
 	 */
 	@Override
 	@RequestMapping("update")
 	public Object update(@RequestBody ${className} model) throws Exception {
-		service.update(model);
-		return null;
+		return service.update(model);
 	}
 
 	/**
 	 * 根据ID获取信息
-	 * @param ID
-	 * @return
-	 * @throws Exception 
+	 * @param ID 主键ID
+	 * @return 数据
 	 */
 	@Override
 	@RequestMapping("get/{ID}")
@@ -68,20 +63,17 @@ public class ${className}Controller extends GeneralController<${className}>{
 
 	/**
 	 * 根据ID删除
-	 * @return
-	 * @throws Exception 
+	 * @return 改变行数
 	 */
 	@Override
 	@RequestMapping("delete/{ID}")
 	public Object delete(@PathVariable String ID) throws Exception {
-		service.delete(ID);
-		return null;
+		return service.delete(ID);
 	}
 
 	/**
 	 * 统计全部
-	 * @return
-	 * @throws Exception 
+	 * @return 统计数
 	 */
 	@Override
 	@RequestMapping("count")
@@ -91,8 +83,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 
 	/**
 	 * 获取全部列表
-	 * @return
-	 * @throws Exception 
+	 * @return 数据列表
 	 */
 	@Override
 	@RequestMapping("list")
@@ -102,10 +93,9 @@ public class ${className}Controller extends GeneralController<${className}>{
 
 	/**
 	 * 获取分页列表
-	 * @param pageSize
-	 * @param pageNo
-	 * @return
-	 * @throws Exception 
+	 * @param pageSize 分页大小
+	 * @param pageNo 分页页数
+	 * @return 数据列表
 	 */
 	@Override
 	@RequestMapping("list/{pageSize}/{pageNo}")
