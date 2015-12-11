@@ -31,7 +31,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("add")
-	public Object add(@RequestBody ${className} model) throws Exception {
+	public Object add(@RequestBody ${className} model) {
 		return service.insert(model);
 	}
 
@@ -42,7 +42,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("update")
-	public Object update(@RequestBody ${className} model) throws Exception {
+	public Object update(@RequestBody ${className} model) {
 		return service.update(model);
 	}
 
@@ -53,7 +53,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("get/{ID}")
-	public Object get(@PathVariable String ID) throws Exception {
+	public Object get(@PathVariable String ID) {
 		Object model = service.findById(ID);
 		if (model == null) {
 			return "null";
@@ -67,7 +67,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("delete/{ID}")
-	public Object delete(@PathVariable String ID) throws Exception {
+	public Object delete(@PathVariable String ID) {
 		return service.delete(ID);
 	}
 
@@ -77,7 +77,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("count")
-	public Object count() throws Exception {
+	public Object count() {
 		return service.countAll();
 	}
 
@@ -87,7 +87,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("list")
-	public Object list() throws Exception {
+	public Object list() {
 		return service.findAll();
 	}
 
@@ -99,7 +99,7 @@ public class ${className}Controller extends GeneralController<${className}>{
 	 */
 	@Override
 	@RequestMapping("list/{pageSize}/{pageNo}")
-	public Object listByPage(@PathVariable int pageSize,@PathVariable int pageNo) throws Exception {
+	public Object listByPage(@PathVariable int pageSize,@PathVariable int pageNo) {
 		return service.listByPage(pageSize, pageNo);
 	}
 

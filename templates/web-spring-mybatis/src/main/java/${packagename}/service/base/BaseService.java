@@ -10,7 +10,7 @@ import ${packagename}.util.Page;
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
 public interface BaseService<T> extends BaseDao<T>{
-	int delete(String id) throws Exception;
-	T findById(String id) throws Exception;
-	Page<T> listByPage(int pageSize, int pageNo) throws Exception;
+	int delete(String id);
+	T findById(String id);
+	Page<T> listByPage(int pageSize, int pageNo);
 }

@@ -17,37 +17,37 @@ import ${packagename}.model.${className};
 public class ${className}DaoImpl extends BaseDaoImpl<${className}> implements ${className}Dao{
 
 	@Override
-	public int insert(${className} t) throws Exception {
+	public int insert(${className} t) {
 		return super.insert(t);
 	}
 
 	@Override
-	public int update(${className} t) throws Exception {
+	public int update(${className} t) {
 		return super.update(t);
 	}
 
 	@Override
-	public int delete(Object id) throws Exception {
+	public int delete(Object id) {
 		return super.delete(id);
 	}
 
 	@Override
-	public int countAll() throws Exception {
+	public int countAll() {
 		return super.countAll();
 	}
 
 	@Override
-	public ${className} findById(Object id) throws Exception {
+	public ${className} findById(Object id) {
 		return super.findById(id);
 	}
 
 	@Override
-	public List<${className}> findAll() throws Exception {
+	public List<${className}> findAll() {
 		return super.findAll();
 	}
 
 	@Override
-	public List<${className}> findByPage(int limit, int start) throws Exception {
+	public List<${className}> findByPage(int limit, int start) {
 		return super.findByPage(limit, start);
 	}
 }

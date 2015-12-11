@@ -2,11 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="
           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:property-placeholder location="classpath:c3p0.properties"/>
+    <context:property-placeholder location="classpath:c3p0.properties" ignore-unresolvable="true"/>
 
     <!-- c3p0 connection pool configuration -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
@@ -42,16 +44,17 @@
         <property name="checkoutTimeout" value="10000"/>
     </bean>
 
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!-- <property name="configLocation" value="classpath:mybatis-config.xml" /> -->
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <!-- 
-    <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="${packagename}.mapper" />
-        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-    </bean> 
-    -->
+
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!-- 扫描包路径，如果需要扫描多个包，中间使用半角逗号隔开 -->
         <property name="basePackage" value="${packagename}.mapper"/>

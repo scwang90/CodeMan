@@ -1,12 +1,12 @@
 package ${packagename}.controller.base;
 
-		import ${packagename}.util.AfReflecter;
-		import org.springframework.ui.Model;
+import ${packagename}.util.AfReflecter;
+import org.springframework.ui.Model;
 
-		import javax.servlet.http.HttpServletRequest;
-		import java.lang.reflect.Field;
-		import java.lang.reflect.Modifier;
-		import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * Controller 层基类
@@ -28,7 +28,7 @@ public class BaseController {
 	 * @return map 列表
 	 * @throws Exception includes 中的参数错误
 	 */
-	protected List<Map<String, Object>> mapInclude(List<? extends Object> list, String[] includes) throws Exception {
+	protected List<Map<String, Object>> mapInclude(List<? extends Object> list, String... includes){
 		List<Map<String, Object>> map = new ArrayList<>();
 		for (Object model : list) {
 			map.add(mapInclude(model, includes));
@@ -44,11 +44,11 @@ public class BaseController {
 	 * @return map
 	 * @throws Exception includes 中的参数错误
 	 */
-	protected Map<String, Object> mapInclude(Object model, String[] includes) throws Exception {
-		Map<String, Object> map = new HashMap<>();
+	protected Map<String, Object> mapInclude(Object model, String... includes){
+		Map<String, Object> map = new LinkedHashMap<>();
 		if (model != null) {
 			for (String include : includes) {
-				map.put(include, AfReflecter.getMember(model, include));
+				map.put(include, AfReflecter.getMemberNoException(model, include));
 			}
 		}
 		return map;
@@ -62,7 +62,7 @@ public class BaseController {
 	 * @return map 列表
 	 * @throws Exception includes 中的参数错误
 	 */
-	protected List<Map<String, Object>> mapExclude(List<? extends Object> list, String[] excludes) throws Exception {
+	protected List<Map<String, Object>> mapExclude(List<? extends Object> list, String... excludes){
 		List<Map<String, Object>> map = new ArrayList<>();
 		String[] includes = null;
 		for (Object model : list) {
@@ -81,7 +81,7 @@ public class BaseController {
 	 * @param excludes excludes
 	 * @return includes
 	 */
-	private String[] getInclude(Class<? extends Object> clazz, String[] excludes) {
+	private String[] getInclude(Class<? extends Object> clazz, String... excludes) {
 		List<String> ltInclude = new ArrayList<>();
 		List<String> ltExclude = new ArrayList<>(Arrays.asList(excludes));
 		Field[] fields = AfReflecter.getField(clazz);

@@ -42,14 +42,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 			</#list>
 		)")
 	</@single_line>
-	int insert(${className} model) throws Exception;
+	int insert(${className} model);
 	/**
 	 * 根据ID删除
 	 * @param id 数据的主键ID
 	 * @return 改变的行数
 	 */
 	@Delete("DELETE FROM ${table.name} WHERE ${table.idColumn.name}=${r"#"}{id}")
-	int delete(@Param("id") Object id) throws Exception;
+	int delete(@Param("id") Object id);
 	/**
 	 * 更新一条数据
 	 * @param model 更新的数据
@@ -63,13 +63,13 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 			WHERE ${table.idColumn.name}=${r"#"}{${table.idColumn.fieldName}}
 	")
 	</@single_line>
-	int update(${className} model) throws Exception;
+	int update(${className} model);
 	/**
 	 * 统计全部出数据
 	 * @return 统计数
 	 */
 	@Select("SELECT COUNT(*) FROM ${table.name}")
-	int countAll() throws Exception;
+	int countAll();
 	/**
 	 * 根据ID获取
 	 * @param id 主键ID
@@ -87,7 +87,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.name} WHERE ${table.idColumn.name}=${r"#"}{id}")
 	</@single_line>
-	${className} findById(@Param("id") Object id) throws Exception;
+	${className} findById(@Param("id") Object id);
 	/**
 	 * 获取全部数据
 	 * @return 全部数据列表
@@ -104,7 +104,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.name} ${r"${order}"}")
 	</@single_line>
-	List<${className}> findAll(@Param("order") String order) throws Exception;
+	List<${className}> findAll(@Param("order") String order);
 	/**
 	 * 分页查询数据
 	 * @param limit 最大返回
@@ -123,14 +123,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.name} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	</@single_line>
-	List<${className}> findByPage(@Param("order") String order,@Param("limit") int limit,@Param("start") int start) throws Exception;
+	List<${className}> findByPage(@Param("order") String order,@Param("limit") int limit,@Param("start") int start);
 	/**
 	 * 选择性删除
 	 * @param where SQL条件语句
 	 * @return 改变的行数
 	 */
 	@Delete("DELETE FROM ${table.name} ${r"${where}"}")
-	int deleteWhere(@Param("where") String where) throws Exception;
+	int deleteWhere(@Param("where") String where);
 	/**
 	 * 根据属性值删除
 	 * @param propertyName 数据库列名
@@ -138,14 +138,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @return 改变的行数
 	 */
 	@Delete("DELETE FROM ${table.name} WHERE ${r"${propertyName}"}=${r"#{value}"}")
-	int deleteByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value) throws Exception;
+	int deleteByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value);
 	/**
 	 * 选择性统计
 	 * @param where SQL条件语句
 	 * @return 统计数
 	 */
 	@Select("SELECT COUNT(*) FROM ${table.name} ${r"${where}"}")
-	int countWhere(@Param("where") String where) throws Exception;
+	int countWhere(@Param("where") String where);
 	/**
 	 * 根据属性统计
 	 * @param propertyName 数据库列名
@@ -153,7 +153,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @return 统计数
 	 */
 	@Select("SELECT COUNT(*) FROM WHERE ${r"${propertyName}"}=${r"#{value}"}")
-	int countByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value) throws Exception;
+	int countByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value);
 	/**
 	 * 选择性查询
 	 * @param where SQL条件语句
@@ -171,7 +171,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.name} ${r"${where}"} ${r"${order}"}")
 	</@single_line>
-	List<${className}> findWhere(@Param("order") String order,@Param("where") String where) throws Exception;
+	List<${className}> findWhere(@Param("order") String order,@Param("where") String where);
 	/**
 	 * 选择性分页查询
 	 * @param where SQL条件语句
@@ -191,7 +191,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.name} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	</@single_line>
-	List<${className}> findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start) throws Exception;
+	List<${className}> findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start);
 	/**
 	 * 根据属性查询
 	 * @param propertyName 数据库列名
@@ -210,5 +210,5 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.name} WHERE ${r"${propertyName}"}=${r"#{value}"} ${r"${order}"}")
 	</@single_line>
-	List<${className}> findByPropertyName(@Param("order") String order,@Param("propertyName") String propertyName,@Param("value") Object value) throws Exception;
+	List<${className}> findByPropertyName(@Param("order") String order,@Param("propertyName") String propertyName,@Param("value") Object value);
 }

@@ -101,6 +101,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
+					<warSourceDirectory>WebRoot</warSourceDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
@@ -112,6 +113,7 @@
 					<include>*.xml</include>
 					<include>*.properties</include>
 					<include>*.xls</include>
+					<include>*.*</include>
 				</includes>
 			</resource>
 		</resources>

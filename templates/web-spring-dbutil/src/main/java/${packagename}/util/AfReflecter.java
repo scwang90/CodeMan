@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class AfReflecter {
 
-
 	/**
 	 * 获取 subobj 相对 父类 supclass 的 第index个泛型参数
 	 *
@@ -289,6 +288,9 @@ public class AfReflecter {
 	 * @throws Exception
 	 */
 	public static Field getField(Object model, String field) throws Exception {
+		if (model instanceof Class){
+			return getField(Class.class.cast(model), field.split("\\."), 0);
+		}
 		return getField(model.getClass(), field.split("\\."), 0);
 	}
 
@@ -301,6 +303,9 @@ public class AfReflecter {
 	 */
 	public static Field getFieldNoException(Object model, String field) {
 		try {
+			if (model instanceof Class){
+				return getField(Class.class.cast(model), field.split("\\."), 0);
+			}
 			return getField(model.getClass(), field.split("\\."), 0);
 		} catch (Throwable e) {
 			return null;
@@ -318,7 +323,8 @@ public class AfReflecter {
 			field.setAccessible(true);
 			field.set(obj, value);
 		} else if (path.length > 0) {
-			value = field.get(obj);
+			field.setAccessible(true);
+			obj = field.get(obj);
 			invokeMember(obj.getClass(), path, obj, value, index + 1);
 		}
 	}
@@ -347,6 +353,10 @@ public class AfReflecter {
 	 * @throws Exception 数组越界
 	 */
 	public static void setMember(Object obj, String field, Object value) throws Exception {
+		if (obj instanceof Class){
+			invokeMember(Class.class.cast(obj), field.split("\\."), obj, value, 0);
+			return ;
+		}
 		invokeMember(obj.getClass(), field.split("\\."), obj, value, 0);
 	}
 
@@ -359,6 +369,10 @@ public class AfReflecter {
 	 */
 	public static boolean setMemberNoException(Object obj, String field, Object value) {
 		try {
+			if (obj instanceof Class){
+				invokeMember(Class.class.cast(obj), field.split("\\."), obj, value, 0);
+				return true;
+			}
 			invokeMember(obj.getClass(), field.split("\\."), obj, value, 0);
 			return true;
 		} catch (Throwable e) {
@@ -375,6 +389,9 @@ public class AfReflecter {
 	 * @throws Exception 数组越界
 	 */
 	public static Object getMember(Object obj, String field) throws Exception {
+		if (obj instanceof Class){
+			return invokeMember(Class.class.cast(obj), field.split("\\."), obj, 0);
+		}
 		return invokeMember(obj.getClass(), field.split("\\."), obj, 0);
 	}
 
@@ -387,6 +404,9 @@ public class AfReflecter {
 	 */
 	public static Object getMemberNoException(Object obj, String field) {
 		try {
+			if (obj instanceof Class){
+				return invokeMember(Class.class.cast(obj), field.split("\\."), obj, 0);
+			}
 			return invokeMember(obj.getClass(), field.split("\\."), obj, 0);
 		} catch (Throwable e) {
 			return null;
@@ -402,7 +422,11 @@ public class AfReflecter {
 	 * @throws Exception 数组越界
 	 */
 	public static <T> T getMember(Object obj, String field, Class<T> type) throws Exception {
-		obj = invokeMember(obj.getClass(), field.split("\\."), obj, 0);
+		if (obj instanceof Class){
+			obj = invokeMember(Class.class.cast(obj), field.split("\\."), obj, 0);
+		} else {
+			obj = invokeMember(obj.getClass(), field.split("\\."), obj, 0);
+		}
 		if (type.isInstance(obj)) {
 			type.cast(obj);
 		}
@@ -418,14 +442,24 @@ public class AfReflecter {
 	 */
 	public static <T> T getMemberNoException(Object obj, String field, Class<T> type) {
 		try {
-			return type.cast(invokeMember(obj.getClass(), field.split("\\."), obj, 0));
+			if (obj instanceof Class){
+				obj = invokeMember(Class.class.cast(obj), field.split("\\."), obj, 0);
+			} else {
+				obj = invokeMember(obj.getClass(), field.split("\\."), obj, 0);
+			}
+			return type.cast(obj);
 		} catch (Throwable e) {
 			return null;
 		}
 	}
 
 	public static Object doMethod(Object obj, String smethod, Object... args) {
-		Method method = getMethod(obj.getClass(), smethod, args);
+		Method method = null;
+		if (obj instanceof Class){
+			method = getMethod(Class.class.cast(obj), smethod, args);
+		} else {
+			method = getMethod(obj.getClass(), smethod, args);
+		}
 		try {
 			return method.invoke(obj, args);
 		} catch (Exception e) {
@@ -435,7 +469,12 @@ public class AfReflecter {
 	}
 
 	public static <T> T doMethod(Object obj, String smethod, Class<T> type, Object... args) {
-		Method method = getMethod(obj.getClass(), smethod, args);
+		Method method = null;
+		if (obj instanceof Class){
+			method = getMethod(Class.class.cast(obj), smethod, args);
+		} else {
+			method = getMethod(obj.getClass(), smethod, args);
+		};
 		try {
 			return type.cast(method.invoke(obj, args));
 		} catch (Exception e) {
@@ -484,6 +523,5 @@ public class AfReflecter {
 		}
 		return null;
 	}
-
 
 }

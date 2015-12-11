@@ -30,14 +30,14 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	}
 	
 	@Override
-	public int insert(T model) throws Exception{
+	public int insert(T model){
 		ModelBase.check(model);
 		ModelBase.fillNullID(model);
 		return baseDao.insert(model);
 	}
 	
 	@Override
-	public int update(T model) throws Exception {
+	public int update(T model) {
 		T old = findById(getModelID(model));
 		if (old == null) {
 			throw new ServiceException("请求更新记录不存在或已经被删除！");
@@ -47,37 +47,37 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	}
 
 	@Override
-	public int delete(Object id) throws Exception {
+	public int delete(Object id) {
 		return baseDao.delete(id);
 	}
 
 	@Override
-	public T findById(Object id) throws Exception{
+	public T findById(Object id){
 		return baseDao.findById(id);
 	}
 
 	@Override
-	public List<T> findAll() throws Exception{
+	public List<T> findAll(){
 		return baseDao.findAll();
 	}
 
 	@Override
-	public int delete(String id) throws Exception{
+	public int delete(String id){
 		return baseDao.delete(id);
 	}
 
 	@Override
-	public List<T> findByPage(int limit, int start) throws Exception {
+	public List<T> findByPage(int limit, int start) {
 		return baseDao.findByPage(limit,start);
 	}
 
 	@Override
-	public T findById(String id) throws Exception {
+	public T findById(String id) {
 		return baseDao.findById(id);
 	}
 	
 	@Override
-	public Page<T> listByPage(int pageSize, int pageNo) throws Exception{
+	public Page<T> listByPage(int pageSize, int pageNo){
 		int limit = pageSize; 
 		int start = pageNo*pageSize;
 		int totalRecord = baseDao.countAll();
@@ -89,7 +89,7 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	}
 
 	@Override
-	public int countAll() throws Exception {
+	public int countAll() {
 		return baseDao.countAll();
 	}
 	/**
@@ -118,12 +118,16 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	 * 获取ID字段
 	 * @param model 数据model
 	 */
-	protected Object getModelID(T model) throws Exception {
+	protected Object getModelID(T model) {
 		Class<?> clazz = model.getClass();
 		Field field = Interpreter.getIdField(clazz);
 		if (field != null) {
 			field.setAccessible(true);
-			return field.get(model);
+			try {
+				return field.get(model);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

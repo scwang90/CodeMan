@@ -22,7 +22,7 @@ public class ModelBase {
         check(this);
     }
 
-    public static void check(Object model) throws Exception{
+    public static void check(Object model) {
         Field[] fields = AfReflecter.getFieldAnnotation(model.getClass(), Must.class);
         for (Field field:fields){
             String name = field.getName() + ":" + field.getAnnotation(Must.class).value();
@@ -36,7 +36,7 @@ public class ModelBase {
     /**
      * 检查ID字段是否为空，否则设置一个新ID
      */
-    public void fillNullID() throws Exception {
+    public void fillNullID() {
         fillNullID(this);
     }
 
@@ -44,15 +44,20 @@ public class ModelBase {
      * 检查ID字段是否为空，否则设置一个新ID
      * @param model 数据model
      */
-    public static void fillNullID(Object model) throws Exception {
+    public static void fillNullID(Object model) {
         Class<?> clazz = model.getClass();
         Field field = Interpreter.getIdField(clazz);
         if (field != null) {
             field.setAccessible(true);
-            Object id = field.get(model);
-            if(id == null || id.toString().trim().length() == 0){
-                field.set(model, UUID.randomUUID().toString());
+            try {
+                Object id = field.get(model);
+                if(id == null || id.toString().trim().length() == 0){
+                    field.set(model, UUID.randomUUID().toString());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
     }
+
 }

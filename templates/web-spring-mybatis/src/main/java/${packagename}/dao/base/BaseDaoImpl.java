@@ -18,7 +18,7 @@ public class BaseDaoImpl<T> extends BaseDaoMybatisMYSQLImpl<T> implements BaseDa
 	}
 
 	@Override
-	public int insert(T t) throws Exception {
+	public int insert(T t) {
 		ModelBase.fillNullID(t);
 		AfReflecter.setMemberNoException(t, "createTime", new Date());
 		AfReflecter.setMemberNoException(t, "updateTime", new Date());
@@ -26,7 +26,7 @@ public class BaseDaoImpl<T> extends BaseDaoMybatisMYSQLImpl<T> implements BaseDa
 	}
 
 	@Override
-	public int update(T t) throws Exception {
+	public int update(T t) {
 		AfReflecter.setMemberNoException(t, "updateTime", new Date());
 		return super.update(t);
 	}
