@@ -15,20 +15,20 @@ import ${packagename}.util.AfReflecter;
 public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	
 	public interface MybatisMultiDao<T>{
-		public int insert(T model);
-		public int delete(Object id);
-		public int update(T model);
-		public int countAll();
-		public T findById(Object id);
-		public List<T> findAll(String order);
-		public List<T> findByPage(String order,int limit,int start);
-		public int deleteWhere(String where) ;
-		public int deleteByPropertyName(String propertyName,Object value);
-		public int countWhere(String where);
-		public int countByPropertyName(String propertyName, Object value) ;
-		public List<T> findWhere(String order, String where) ;
-		public List<T> findWhereByPage(String order, String where, int limit,int start);
-		public List<T> findByPropertyName(String order, String propertyName,Object value);
+		int insert(T model);
+		int delete(Object id);
+		int update(T model);
+		int countAll();
+		T findById(Object id);
+		List<T> findAll(String order);
+		List<T> findByPage(String order,int limit,int start);
+		int deleteWhere(String where) ;
+		int deleteByPropertyName(String propertyName,Object value);
+		int countWhere(String where);
+		int countByPropertyName(String propertyName, Object value) ;
+		List<T> findWhere(String order, String where) ;
+		List<T> findWhereByPage(String order, String where, int limit,int start);
+		List<T> findByPropertyName(String order, String propertyName,Object value);
 	}
 
 	protected Class<T> clazz;
@@ -84,8 +84,7 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	}
 
 	@Override
-	public int deleteByPropertyName(String propertyName, Object value)
-			throws Exception {
+	public int deleteByPropertyName(String propertyName, Object value) {
 		return multiDao.deleteByPropertyName(propertyName, value);
 	}
 
@@ -95,8 +94,7 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	}
 
 	@Override
-	public int countByPropertyName(String propertyName, Object value)
-			throws Exception {
+	public int countByPropertyName(String propertyName, Object value) {
 		return multiDao.countByPropertyName(propertyName, value);
 	}
 
@@ -110,8 +108,7 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	}
 
 	@Override
-	public List<T> findWhereByPage(String where, int limit, int start)
-			throws Exception {
+	public List<T> findWhereByPage(String where, int limit, int start) {
 		if (where.toLowerCase().indexOf("order by ") < 0) {
 			return multiDao.findWhereByPage(order, where, limit, start);
 		}else {
@@ -120,8 +117,7 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	}
 
 	@Override
-	public List<T> findByPropertyName(String propertyName, Object value)
-			throws Exception {
+	public List<T> findByPropertyName(String propertyName, Object value) {
 		if (value instanceof java.util.Date) {
 			java.util.Date date = (java.util.Date) value;
 			value = new java.sql.Date(date.getTime());
