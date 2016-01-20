@@ -1,6 +1,9 @@
 package com.codesmither.model;
 
-
+/**
+ * 模板Model-jdbc
+ * Created by SCWANG on 2015-07-04.
+ */
 public class DatabaseJdbc {
 	public String driver;
 	public String url;

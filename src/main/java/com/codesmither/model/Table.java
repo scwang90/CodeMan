@@ -2,6 +2,10 @@ package com.codesmither.model;
 
 import java.util.List;
 
+/**
+ * 模板Model-table
+ * Created by SCWANG on 2015-07-04.
+ */
 public class Table {
 
 	public String className;// 原类名称

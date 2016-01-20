@@ -7,6 +7,10 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 
+/**
+ * 模板引擎工厂
+ * Created by SCWANG on 2015-07-04.
+ */
 public class FreemarkerFactory {
 
 	private static Configuration cfg;

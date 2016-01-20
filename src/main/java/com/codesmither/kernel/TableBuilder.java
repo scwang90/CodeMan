@@ -12,11 +12,15 @@ import com.codesmither.model.Table;
 import com.codesmither.model.TableColumn;
 import com.codesmither.util.StringUtil;
 
+/**
+ * 模板Model-Table构建器
+ * Created by SCWANG on 2015-07-04.
+ */
 public class TableBuilder {
 
+	private boolean autoclose = true;
 	private Converter converter = null;
 	private Connection connection = null;
-	private boolean autoclose = true;
 	private DatabaseMetaData databaseMetaData = null;
 	
 

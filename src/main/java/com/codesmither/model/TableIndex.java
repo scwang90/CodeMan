@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 表索引
- * @author Administrator
+ * 模板Model-table-表索引
+ * Created by SCWANG on 2015-07-04.
  */
 public class TableIndex {
 	public String indexName; // 索引名称

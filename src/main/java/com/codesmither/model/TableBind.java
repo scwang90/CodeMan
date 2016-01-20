@@ -1,8 +1,8 @@
 package com.codesmither.model;
 
 /**
- * 表的主外键关系
- * @author Administrator
+ * 模板Model-表的主外键关系
+ * Created by SCWANG on 2015-07-04.
  */
 public class TableBind {
 

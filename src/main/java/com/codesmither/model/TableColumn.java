@@ -1,10 +1,8 @@
 package com.codesmither.model;
 
 /**
- * 表字段
- * 
- * @author Administrator
- * 
+ * 模板Model-table-column
+ * Created by SCWANG on 2015-07-04.
  */
 public class TableColumn {
 	

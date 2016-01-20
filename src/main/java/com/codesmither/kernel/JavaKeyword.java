@@ -1,5 +1,9 @@
 package com.codesmither.kernel;
 
+/**
+ * Java关键字模拟
+ * Created by SCWANG on 2015-07-04.
+ */
 public class JavaKeyword {
 	
 	public static final String[] javakeywords = { "abstract", "assert",

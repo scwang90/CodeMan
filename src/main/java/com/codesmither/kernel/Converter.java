@@ -2,6 +2,11 @@ package com.codesmither.kernel;
 
 import com.codesmither.util.StringUtil;
 
+/**
+ * 类转换器
+ * 根据表名和列名转成类名和字段名
+ * Created by SCWANG on 2015-07-04.
+ */
 public class Converter {
 
 	public String converterClassName(String tableName) {

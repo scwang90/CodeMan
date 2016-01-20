@@ -21,17 +21,37 @@
 			<version>5.1.8</version>
 		</dependency>
 
+		<!-- Oracle -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.4.0</version>
+		</dependency>
+
 		<!-- sqlserver -->
-<!-- 		<dependency>
+		<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>sqljdbc4-chs</artifactId>
+			<version>4.0.2206.100</version>
+		</dependency>
+
+ 		<!--
+ 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
-		</dependency> -->
+		</dependency>
+		-->
+
+
+		<!-- sqlserver JDBC3.0 开源库 -->
+		<!--
 		<dependency>
 			<groupId>net.sourceforge.jtds</groupId>
 			<artifactId>jtds</artifactId>
 			<version>1.2.4</version>
 		</dependency>
+		-->
 
 		<!-- c3p0连接池 -->
 		<dependency>

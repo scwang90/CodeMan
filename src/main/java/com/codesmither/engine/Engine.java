@@ -13,6 +13,10 @@ import com.codesmither.kernel.ModelBuilder;
 import com.codesmither.kernel.TableBuilder;
 import com.codesmither.model.Model;
 
+/**
+ * 核心引擎
+ * Created by SCWANG on 2015-07-04.
+ */
 public class Engine {
 
     private String templates;

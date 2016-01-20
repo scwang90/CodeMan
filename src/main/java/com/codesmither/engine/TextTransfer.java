@@ -19,6 +19,10 @@ import com.codesmither.util.FileUtil;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * 文本转换器
+ * Created by SCWANG on 2015-07-04.
+ */
 public class TextTransfer {
 
 	private int itask = 0;

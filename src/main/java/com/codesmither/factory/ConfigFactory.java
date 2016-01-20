@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * 生成配置工厂
+ * Created by SCWANG on 2015-07-04.
+ */
 public class ConfigFactory {
 
 	private static String dbConfigName;

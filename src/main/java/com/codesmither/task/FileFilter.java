@@ -3,10 +3,10 @@ package com.codesmither.task;
 import java.io.File;
 
 /**
- * 文件过滤接口
+ * 鏂囦欢杩囨护鎺ュ彛
  * Created by SCWANG on 2015-07-04.
  */
-public  interface FileFilter {
+public interface FileFilter {
 
     boolean filterFile(File file);
 

@@ -9,6 +9,11 @@ import java.sql.RowId;
 import java.sql.SQLXML;
 import java.sql.Time;
 
+/**
+ * 数据类型映射
+ * 把数据库类型映射成Java数据类型
+ * Created by SCWANG on 2015-07-04.
+ */
 public class JavaType {
 
 	public static String getType(int columnType) {

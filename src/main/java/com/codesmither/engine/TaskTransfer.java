@@ -14,12 +14,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 任务转换器
+ * 根据模板文件转成要执行的任务
+ * Created by SCWANG on 2015-07-04.
+ */
 public class TaskTransfer {
 
 	private int itask = 0;
 	private String fsrc;
 	private String ftarget;
-	private List<Task> tasks = new ArrayList<Task>();
+	private List<Task> tasks = new ArrayList<>();
 	private List<Table> tables;
 	private Model model;
 	private String packagepath;

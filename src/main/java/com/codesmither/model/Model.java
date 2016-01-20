@@ -2,6 +2,10 @@ package com.codesmither.model;
 
 import java.util.List;
 
+/**
+ * 模板根Model
+ * Created by SCWANG on 2015-07-04.
+ */
 public class Model {
 	
 	public Table table;

@@ -5,6 +5,10 @@ import com.codesmither.factory.ConfigFactory;
 import com.codesmither.model.DatabaseJdbc;
 import com.codesmither.model.Model;
 
+/**
+ * 模板Model构建器
+ * Created by SCWANG on 2015-07-04.
+ */
 public class ModelBuilder {
 
 	public Model build() {

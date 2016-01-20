@@ -3,7 +3,7 @@ package com.codesmither.task;
 import java.io.File;
 
 /**
- * 文件包含实现
+ * 鏂囦欢杩囨护 - 鍖呭惈
  * Created by SCWANG on 2015-07-04.
  */
 public class FileFilterInclude implements FileFilter{

@@ -7,7 +7,7 @@ import com.codesmither.task.FileFilterInclude;
 import java.io.File;
 
 /**
- * 文件过滤工程
+ * 鏂囦欢杩囨护
  * Created by SCWANG on 2015-07-04.
  */
 public class FilterFactory implements FileFilter {

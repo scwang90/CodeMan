@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
-	<default-config>
-		<property name="user">root</property>
-		<property name="password">root</property>
-		<property name="driverClass">com.mysql.jdbc.Driver </property>
-		<property name="jdbcUrl">jdbc:mysql://localhost:3306/ddydbak</property>
-		<property name="initialPoolSize">10</property>
-		<property name="maxIdleTime">30</property>
-		<property name="maxPoolSize">100</property>
-		<property name="minPoolSize">10</property>
-	</default-config>
-	<named-config name="WebAnalytics">
-		<property name="user">builder</property>
-		<property name="password">builder</property>
-		<property name="driverClass">com.mysql.jdbc.Driver </property>
-		<property name="jdbcUrl">jdbc:mysql://108.108.108.8:3306/webanalytics</property>
-		<property name="initialPoolSize">10</property>
-		<property name="maxIdleTime">30</property>
-		<property name="maxPoolSize">100</property>
-		<property name="minPoolSize">10</property>
-	</named-config>
 	<named-config name="WifiProbe">
 		<property name="user">builder</property>
 		<property name="password">builder</property>
@@ -30,4 +10,4 @@
 		<property name="maxPoolSize">100</property>
 		<property name="minPoolSize">10</property>
 	</named-config>
-</c3p0-config> 
+</c3p0-config>
