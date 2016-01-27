@@ -21,6 +21,15 @@ public class Table {
 
 	public TableColumn idColumn; // ID列
 
+	// public String modelPackage;// pojo包名称
+	// public String daoPackage;// dao包名称
+	// public String daoImplPackage;// imp包名称
+	// public String servicePackage;// ext包名称
+	// public String serviceImplPackage;// xml包名称
+	// public List<TableIndex> tableIndexs;// 表索引
+	// public List<TableBind> tableBinds;// 表主外键
+	public List<TableColumn> columns;// 表字段
+
 	public String getClassNameCamel() {
 		return classNameCamel;
 	}
@@ -44,15 +53,6 @@ public class Table {
 	public void setClassNameLower(String classNameLower) {
 		this.classNameLower = classNameLower;
 	}
-
-	// public String modelPackage;// pojo包名称
-	// public String daoPackage;// dao包名称
-	// public String daoImplPackage;// imp包名称
-	// public String servicePackage;// ext包名称
-	// public String serviceImplPackage;// xml包名称
-	// public List<TableIndex> tableIndexs;// 表索引
-	// public List<TableBind> tableBinds;// 表主外键
-	public List<TableColumn> columns;// 表字段
 
 	public TableColumn getIdColumn() {
 		return idColumn;

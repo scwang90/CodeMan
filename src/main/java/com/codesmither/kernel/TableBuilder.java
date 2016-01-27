@@ -77,7 +77,7 @@ public class TableBuilder {
 			table.columns = buildColumns(table.name);
 			table.idColumn = buildIdColumn(table.name);
 			for (TableColumn column : table.columns) {
-				if (column.name.equals(table.idColumn.name)) {
+				if (column.getName().equals(table.idColumn.getName())) {
 					table.idColumn = column;
 					break;
 				}
@@ -91,7 +91,8 @@ public class TableBuilder {
 		TableColumn column = new TableColumn();
 		ResultSet keyset = databaseMetaData.getPrimaryKeys(null, null, tableName);
 		while (keyset.next()) {
-			column.name = keyset.getString("COLUMN_NAME");
+//			column.name = keyset.getString("COLUMN_NAME");
+			column.setName(keyset.getString("COLUMN_NAME"));
 			break;
 		}
 		return column;
@@ -99,20 +100,25 @@ public class TableBuilder {
 
 	private List<TableColumn> buildColumns(String tableName) throws SQLException {
 		ResultSet resultSet = databaseMetaData.getColumns(null, "%", tableName, "%");
-		List<TableColumn> columns = new ArrayList<TableColumn>();
+		List<TableColumn> columns = new ArrayList<>();
 		while (resultSet.next()) {
 			TableColumn column = new TableColumn();
-			column.name = resultSet.getString("COLUMN_NAME");
-			column.type = resultSet.getString("TYPE_NAME");
-			column.typeInt = resultSet.getInt("DATA_TYPE");
-			column.lenght = resultSet.getInt("COLUMN_SIZE");
-			column.remark = resultSet.getString("REMARKS");
-			column.fieldName = this.converter.converterFieldName(column.name);
-			column.fieldType = this.converter.converterfieldType(column.typeInt);
-			column.fieldNameUpper = StringUtil.upperFirst(column.fieldName);
-			column.fieldNameLower = StringUtil.lowerFirst(column.fieldName);
-			if (column.remark == null || column.remark.trim().length()==0) {
-				column.remark = "数据库列"+column.name;
+			column.setName(resultSet.getString("COLUMN_NAME"));
+			column.setType(resultSet.getString("TYPE_NAME"));
+			column.setTypeInt(resultSet.getInt("DATA_TYPE"));
+			column.setLenght(resultSet.getInt("COLUMN_SIZE"));
+			column.setDefvalue(resultSet.getString("COLUMN_DEF"));
+			column.setNullable(resultSet.getBoolean("NULLABLE"));
+			column.setAutoIncrement(resultSet.getBoolean("IS_AUTOINCREMENT"));
+			column.setRemark(resultSet.getString("REMARKS"));
+
+			column.setFieldName(this.converter.converterFieldName(column.getName()));
+			column.setFieldType(this.converter.converterfieldType(column.getTypeInt()));
+			column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
+			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
+
+			if (column.getRemark() == null || column.getRemark().trim().length()==0) {
+				column.setRemark("数据库列"+column.getName());
 			}
 			columns.add(column);
 		}
