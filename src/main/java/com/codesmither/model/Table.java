@@ -8,27 +8,43 @@ import java.util.List;
  */
 public class Table {
 
-	public String className;// 原类名称
-	public String classNameCamel;// 骆驼峰类名
-	public String classNameUpper;// 类名全大写
-	public String classNameLower;// 类名全小写
+	private String name;// 原表名称
+	private String remark;// 字段注释
 
-	public String name;// 原表名称
-	// public String tableName_u;// 大写表名称
-	// public String tableName_l;// 小写表名称
+	private String className;// 原类名称
+	private String classNameCamel;// 骆驼峰类名
+	private String classNameUpper;// 类名全大写
+	private String classNameLower;// 类名全小写
 
-	public String remark;// 字段注释
+	private TableColumn idColumn; // ID列
 
-	public TableColumn idColumn; // ID列
+	private List<TableColumn> columns;// 表字段
+	// private List<TableIndex> tableIndexs;// 表索引
+	// private List<TableBind> tableBinds;// 表主外键
 
-	// public String modelPackage;// pojo包名称
-	// public String daoPackage;// dao包名称
-	// public String daoImplPackage;// imp包名称
-	// public String servicePackage;// ext包名称
-	// public String serviceImplPackage;// xml包名称
-	// public List<TableIndex> tableIndexs;// 表索引
-	// public List<TableBind> tableBinds;// 表主外键
-	public List<TableColumn> columns;// 表字段
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
 
 	public String getClassNameCamel() {
 		return classNameCamel;
@@ -62,30 +78,6 @@ public class Table {
 		this.idColumn = idColumn;
 	}
 
-	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
 	public List<TableColumn> getColumns() {
 		return columns;
 	}
@@ -93,13 +85,4 @@ public class Table {
 	public void setColumns(List<TableColumn> columns) {
 		this.columns = columns;
 	}
-
-	// public Set<String> importPojos;// 需要导入的POJO
-
-	// public String stringCarrayNames1;// ","拼接大写字段
-	// public String stringCarrayNames2;// int id ,String userCord ,..
-	// public String stringCarrayNames3;// ","拼接原字段
-	// public String stringCarrayNames4;// "#{%s},"拼接小写字段
-	// public String stringCarrayNames5;// "%s=#{%s},"拼接原字段-小写字段
-
 }

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据字典 ${projectName}</title>
+    <link href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container"><h1 style="text-align:center;">数据字典</h1>
+
+    <#list tables as table>
+        <h3>${table.name} <b>表</b></h3>
+        <table class="table table-hover table-bordered table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>字段名</th>
+                <th>数据类型</th>
+                <th>列长</th>
+                <th>默认值</th>
+                <th>允许非空</th>
+                <th>自动递增</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <#list table.columns as column>
+                <tr>
+                    <td>${column.name}</td>
+                    <td>${column.type}</td>
+                    <td>${column.lenght}</td>
+                    <td>${column.defvalue}</td>
+                    <td><#if column.nullable>允许</#if><#if !column.nullable>不允许</#if></td>
+                    <td><#if column.autoIncrement>自增</#if></td>
+                    <td>${column.remark}</td>
+                </tr>
+            </#list>
+            </tbody>
+        </table>
+    </#list>
+
+</div>
+</body>
+</html>

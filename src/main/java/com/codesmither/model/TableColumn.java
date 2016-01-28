@@ -10,12 +10,17 @@ public class TableColumn {
 	private String type;// 字段类型名称
 	private String remark;// 字段注释
 	private String defvalue;// 字段注释
+
 	private int lenght;//列长度
 	private int typeInt;//数据库列类型
-	private String fieldName;//java 字段
+
+	private String fieldName;// 字段
 	private String fieldNameUpper;// 首字母大写
 	private String fieldNameLower;// 首字母小写
-	private String fieldType;//java 字段类型
+	private String fieldType;// 字段类型
+	private String fieldJavaType;//java 字段类型
+	private String fieldCSharpType;//C# 字段类型
+
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增
 
@@ -121,6 +126,28 @@ public class TableColumn {
 			fieldType = "";
 		}
 		this.fieldType = fieldType;
+	}
+
+	public String getFieldJavaType() {
+		return fieldJavaType;
+	}
+
+	public void setFieldJavaType(String fieldJavaType) {
+		if (fieldJavaType == null) {
+			fieldJavaType = "";
+		}
+		this.fieldJavaType = fieldJavaType;
+	}
+
+	public String getFieldCSharpType() {
+		return fieldCSharpType;
+	}
+
+	public void setFieldCSharpType(String fieldCSharpType) {
+		if (fieldCSharpType == null) {
+			fieldCSharpType = "";
+		}
+		this.fieldCSharpType = fieldCSharpType;
 	}
 
 	public boolean isNullable() {

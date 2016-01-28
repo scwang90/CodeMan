@@ -1,5 +1,7 @@
 package com.codesmither.engine;
 
+import com.codesmither.factory.ConfigFactory;
+import com.codesmither.kernel.api.Config;
 import org.junit.Test;
 
 /**
@@ -11,7 +13,8 @@ public class TempleteTest {
     @Test
     public void Templete() {
         try {
-            Engine engine = new Engine();
+            Config config = ConfigFactory.loadConfig("config.properties");
+            Engine engine = new Engine(config);
             engine.doInBackground(System.out);
         } catch (Exception e) {
             e.printStackTrace();

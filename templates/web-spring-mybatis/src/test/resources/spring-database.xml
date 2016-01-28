@@ -57,7 +57,7 @@
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!-- 扫描包路径，如果需要扫描多个包，中间使用半角逗号隔开 -->
-        <property name="basePackage" value="${packagename}.mapper"/>
+        <property name="basePackage" value="${packageName}.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
@@ -65,7 +65,7 @@
     <#list tables as table>
     <bean id="${table.classNameCamel}Mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
-        <property name="mapperInterface" value="${packagename}.mapper.${table.className}Mapper" />  
+        <property name="mapperInterface" value="${packageName}.mapper.${table.className}Mapper" />
     </bean>
     </#list>
     -->

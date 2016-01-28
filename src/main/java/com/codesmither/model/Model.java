@@ -8,15 +8,35 @@ import java.util.List;
  */
 public class Model {
 	
-	public Table table;
-	public List<Table> tables;
-	public DatabaseJdbc jdbc;
-	public String className;
-	public String tableName;
-	public String author;
-	public String packagename;
-	public String projectName;
-	public String charset;
+	private Table table;
+	private List<Table> tables;
+	private DatabaseJdbc jdbc;
+	private String className;
+	private String tableName;
+	private String author;
+	private String packageName;
+	private String projectName;
+	private String charset;
+
+	public Model() {
+	}
+
+	public Model(String author, String packageName) {
+		super();
+		this.author = author;
+		this.packageName = packageName;
+	}
+
+	public Model(Table table) {
+		this.table = table;
+		this.className = table.getClassName();
+	}
+
+	public void bindTable(Table table) {
+		this.table = table;
+		this.tableName = table.getName();
+		this.className = table.getClassName();
+	}
 	
 	public List<Table> getTables() {
 		return tables;
@@ -58,40 +78,20 @@ public class Model {
 		this.author = author;
 	}
 
-	public String getpackagename() {
-		return packagename;
+	public String getPackageName() {
+		return packageName;
 	}
 
-	public void setpackagename(String packagename) {
-		this.packagename = packagename;
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
 	}
 
-	public String getPackagename() {
-		return packagename;
+	public String getTableName() {
+		return tableName;
 	}
 
-	public void setPackagename(String packagename) {
-		this.packagename = packagename;
-	}
-
-	public Model() {
-	}
-	
-	public Model(String author, String packagename) {
-		super();
-		this.author = author;
-		this.packagename = packagename;
-	}
-
-	public Model(Table table) {
-		this.table = table;
-		this.className = table.className;
-	}
-	
-	public void bindTable(Table table) {
-		this.table = table;
-		this.tableName = table.name;
-		this.className = table.className;
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 
 	public String getCharset() {

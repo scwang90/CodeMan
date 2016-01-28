@@ -1,6 +1,6 @@
 package com.codesmither.kernel;
 
-import com.codesmither.factory.ConfigFactory;
+import com.codesmither.kernel.api.Config;
 import com.codesmither.util.StringUtil;
 
 /**
@@ -8,15 +8,14 @@ import com.codesmither.util.StringUtil;
  * 根据表名和列名转成类名和字段名
  * Created by SCWANG on 2015-07-04.
  */
-public class ConfigConverter extends Converter {
+public class ConfigConverter extends LangConverter {
 
-    public String tablePrefix = ConfigFactory.getTablePrefix();
-    public String tableSuffix = ConfigFactory.getTableSuffix();
-    public String tableDivision = ConfigFactory.getTableDivision();
+    private final Config config;
 
-    public String columnPrefix = ConfigFactory.getColumnPrefix();
-    public String columnSuffix = ConfigFactory.getColumnSuffix();
-    public String columnDivision = ConfigFactory.getColumnDivision();
+    public ConfigConverter(Config config) {
+        super(config.getProgramLanguage());
+        this.config = config;
+    }
 
     private String camel(String orgin, String division) {
         String[] divs = orgin.split(division);
@@ -28,37 +27,41 @@ public class ConfigConverter extends Converter {
     }
 
     public String converterClassName(String tableName) {
-        if (tablePrefix != null) {
-            if (tableName.startsWith(tablePrefix)) {
-                tableName = tableName.substring(tablePrefix.length());
+        if (config.getTablePrefix() != null) {
+            if (tableName.startsWith(config.getTablePrefix())) {
+                tableName = tableName.substring(config.getTablePrefix().length());
             }
         }
-        if (tableSuffix != null) {
-            if (tableName.endsWith(tableSuffix)) {
-                tableName = tableName.substring(0, tableName.length() - tableSuffix.length() - 1);
+        if (config.getTableSuffix() != null) {
+            if (tableName.endsWith(config.getTableSuffix())) {
+                tableName = tableName.substring(0, tableName.length() - config.getTableSuffix().length() - 1);
             }
         }
-        if (tableDivision != null) {
-            tableName = camel(tableName, tableDivision);
+        if (config.getTableDivision() != null) {
+            tableName = camel(tableName, config.getTableDivision());
         }
         return super.converterClassName(tableName);
     }
 
     public String converterFieldName(String columnName) {
-        if (columnPrefix != null) {
-            if (columnName.startsWith(columnPrefix)) {
-                columnName = columnName.substring(columnPrefix.length());
+        if (config.getColumnPrefix() != null) {
+            if (columnName.startsWith(config.getColumnPrefix())) {
+                columnName = columnName.substring(config.getColumnPrefix().length());
             }
         }
-        if (columnSuffix != null) {
-            if (columnName.endsWith(columnSuffix)) {
-                columnName = columnName.substring(0, columnName.length() - columnSuffix.length() - 1);
+        if (config.getColumnSuffix() != null) {
+            if (columnName.endsWith(config.getColumnSuffix())) {
+                columnName = columnName.substring(0, columnName.length() - config.getColumnSuffix().length() - 1);
             }
         }
-        if (columnDivision != null) {
-            columnName = camel(columnName, columnDivision);
+        if (config.getColumnDivision() != null) {
+            columnName = camel(columnName, config.getColumnDivision());
         }
         return super.converterFieldName(columnName);
     }
 
+    @Override
+    public String converterFieldType(int columnType) {
+        return lang.getBasicType(columnType);
+    }
 }

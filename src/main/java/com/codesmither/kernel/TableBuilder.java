@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codesmither.kernel.api.Converter;
 import com.codesmither.model.Table;
 import com.codesmither.model.TableColumn;
 import com.codesmither.util.StringUtil;
@@ -18,17 +19,10 @@ import com.codesmither.util.StringUtil;
  */
 public class TableBuilder {
 
-	private boolean autoclose = true;
+	private boolean autoclose = false;
 	private Converter converter = null;
 	private Connection connection = null;
 	private DatabaseMetaData databaseMetaData = null;
-	
-
-	public TableBuilder(Connection connection) {
-		super();
-		this.connection = connection;
-		this.converter = new Converter();
-	}
 
 	public TableBuilder(Connection connection,Converter converter) {
 		super();
@@ -65,20 +59,20 @@ public class TableBuilder {
 		List<Table> tables = new ArrayList<Table>();
 		while (tableset.next()) {
 			Table table = new Table();
-			table.name = tableset.getString("TABLE_NAME");
-			table.remark = tableset.getString("REMARKS");
-			table.className = this.converter.converterClassName(table.name);
-			table.classNameCamel = StringUtil.lowerFirst(table.className);
-			table.classNameUpper = table.className.toUpperCase();
-			table.classNameLower = table.className.toLowerCase();
-			if (table.remark == null || table.remark.trim().length()==0) {
-				table.remark = "数据库表"+table.name;
+			table.setName(tableset.getString("TABLE_NAME"));
+			table.setRemark(tableset.getString("REMARKS"));
+			table.setClassName(this.converter.converterClassName(table.getName()));
+			table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
+			table.setClassNameUpper(table.getClassName().toUpperCase());
+			table.setClassNameLower(table.getClassName().toLowerCase());
+			if (table.getRemark() == null || table.getRemark().trim().length()==0) {
+				table.setRemark("数据库表"+table.getName());
 			}
-			table.columns = buildColumns(table.name);
-			table.idColumn = buildIdColumn(table.name);
-			for (TableColumn column : table.columns) {
-				if (column.getName().equals(table.idColumn.getName())) {
-					table.idColumn = column;
+			table.setColumns(buildColumns(table.getName()));
+			table.setIdColumn(buildIdColumn(table.getName()));
+			for (TableColumn column : table.getColumns()) {
+				if (column.getName().equals(table.getIdColumn().getName())) {
+					table.setIdColumn(column);
 					break;
 				}
 			}
@@ -91,7 +85,6 @@ public class TableBuilder {
 		TableColumn column = new TableColumn();
 		ResultSet keyset = databaseMetaData.getPrimaryKeys(null, null, tableName);
 		while (keyset.next()) {
-//			column.name = keyset.getString("COLUMN_NAME");
 			column.setName(keyset.getString("COLUMN_NAME"));
 			break;
 		}
@@ -113,7 +106,7 @@ public class TableBuilder {
 			column.setRemark(resultSet.getString("REMARKS"));
 
 			column.setFieldName(this.converter.converterFieldName(column.getName()));
-			column.setFieldType(this.converter.converterfieldType(column.getTypeInt()));
+			column.setFieldType(this.converter.converterFieldType(column.getTypeInt()));
 			column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 

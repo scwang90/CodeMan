@@ -1,8 +1,14 @@
 package com.codesmither.factory;
 
+import com.codesmither.kernel.ConfigConverter;
+import com.codesmither.kernel.api.Config;
+import com.codesmither.kernel.api.Converter;
+import com.codesmither.kernel.api.ProgLang;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * 生成配置工厂
@@ -10,210 +16,56 @@ import java.util.Properties;
  */
 public class ConfigFactory {
 
-	private static String dbConfigName;
+	public static Config loadConfig(String path) throws IOException {
 
-	private static String tablePrefix = "";
-	private static String tableSuffix = "";
-	private static String tableDivision = "";
-
-	private static String columnPrefix = "";
-	private static String columnSuffix = "";
-	private static String columnDivision = "";
-	
-	private static String templatePath = "templates/dbutil-spring-web";
-	private static String templateCharset = "UTF-8";
-
-	private static String templateIncludeFile = "*.*";
-	private static String templateIncludePath = "*";
-	private static String templateFilterFile = "*.classes;*.jar;";
-	private static String templateFilterPath = "bin;build";
-	
-	private static String targetPath = "target/project";
-	private static String targetCharset = "UTF-8";
-	private static String targetProjectName = "TargetProject";
-	private static String targetProjectAuthor = "scwang";
-	private static String targetProjectPackage = "com.codesmither";
-	
-	static{
-		try {
-			loadConfig("config.properties");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static void loadConfig(String path) throws IOException {
 		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
 		Properties propty = new Properties();
 		propty.load(stream);
-		
-		dbConfigName = propty.getProperty("codesmither.database.config.name",dbConfigName);
 
-		tablePrefix   = propty.getProperty("codesmither.database.table.prefix",tablePrefix);
-		tableSuffix   = propty.getProperty("codesmither.database.table.suffix",tableSuffix);
-		tableDivision = propty.getProperty("codesmither.database.table.division",tableDivision);
+		Config config = new Config() {
+			@Override
+			public Converter getConverter() {
+				return new ConfigConverter(this);
+			}
 
-		columnPrefix   = propty.getProperty("codesmither.database.column.prefix",columnPrefix);
-		columnSuffix   = propty.getProperty("codesmither.database.column.suffix",columnSuffix);
-		columnDivision = propty.getProperty("codesmither.database.column.division",columnDivision);
-		
-		templatePath   = propty.getProperty("codesmither.template.path",templatePath);
-		templateCharset   = propty.getProperty("codesmither.template.charset",templateCharset);
+			@Override
+			public ProgLang getProgramLanguage() {
+				for (ProgLang.Lang lang :
+						ProgLang.Lang.values()) {
+					if (lang.value.equalsIgnoreCase(this.templateLang) || lang.name().equalsIgnoreCase(this.templateLang)) {
+						return lang.lang;
+					}
+				}
+				return ProgLang.Lang.Java.lang;
+			}
+		};
 
-		templateIncludeFile = propty.getProperty("codesmither.template.include.file",templateIncludeFile);
-		templateIncludePath = propty.getProperty("codesmither.template.include.path",templateIncludePath);
-		templateFilterFile = propty.getProperty("codesmither.template.filter.file",templateFilterFile);
-		templateFilterPath = propty.getProperty("codesmither.template.filter.path",templateFilterPath);
+		config.setDbConfigName(propty.getProperty("codesmither.database.config.name",config.getDbConfigName()));
 
-		targetPath = propty.getProperty("codesmither.target.path",targetPath);
-		targetCharset = propty.getProperty("codesmither.target.charset",targetCharset);
-		targetProjectName = propty.getProperty("codesmither.target.project.name",targetProjectName);
-		targetProjectAuthor = propty.getProperty("codesmither.target.project.author",targetProjectAuthor);
-		targetProjectPackage = propty.getProperty("codesmither.target.project.packagename",targetProjectPackage);
-		
+		config.setTablePrefix(propty.getProperty("codesmither.database.table.prefix",config.getTablePrefix()));
+		config.setTableSuffix(propty.getProperty("codesmither.database.table.suffix",config.getTableSuffix()));
+		config.setTableDivision(propty.getProperty("codesmither.database.table.division",config.getTableDivision()));
+
+		config.setColumnPrefix(propty.getProperty("codesmither.database.column.prefix",config.getColumnPrefix()));
+		config.setColumnSuffix(propty.getProperty("codesmither.database.column.suffix",config.getColumnSuffix()));
+		config.setColumnDivision(propty.getProperty("codesmither.database.column.division",config.getColumnDivision()));
+
+		config.setTemplateLang(propty.getProperty("codesmither.template.lang",config.getTemplateLang()));
+		config.setTemplatePath(propty.getProperty("codesmither.template.path",config.getTemplatePath()));
+		config.setTemplateCharset(propty.getProperty("codesmither.template.charset",config.getTemplateCharset()));
+
+		config.setTemplateIncludeFile(propty.getProperty("codesmither.template.include.file",config.getTemplateIncludeFile()));
+		config.setTemplateIncludePath(propty.getProperty("codesmither.template.include.path",config.getTemplateIncludePath()));
+		config.setTemplateFilterFile(propty.getProperty("codesmither.template.filter.file",config.getTemplateFilterFile()));
+		config.setTemplateFilterPath(propty.getProperty("codesmither.template.filter.path",config.getTemplateFilterPath()));
+
+		config.setTargetPath(propty.getProperty("codesmither.target.path",config.getTargetPath()));
+		config.setTargetCharset(propty.getProperty("codesmither.target.charset",config.getTargetCharset()));
+		config.setTargetProjectName(propty.getProperty("codesmither.target.project.name",config.getTargetProjectName()));
+		config.setTargetProjectAuthor(propty.getProperty("codesmither.target.project.author",config.getTargetProjectAuthor()));
+		config.setTargetProjectPackage(propty.getProperty("codesmither.target.project.packagename",config.getTargetProjectPackage()));
+
+		return config;
 	}
 
-	public static String getDbConfigName() {
-		return dbConfigName;
-	}
-
-	public static void setDbConfigName(String dbConfigName) {
-		ConfigFactory.dbConfigName = dbConfigName;
-	}
-
-	public static String getTablePrefix() {
-		return tablePrefix;
-	}
-
-	public static void setTablePrefix(String tablePrefix) {
-		ConfigFactory.tablePrefix = tablePrefix;
-	}
-
-	public static String getTableSuffix() {
-		return tableSuffix;
-	}
-
-	public static void setTableSuffix(String tableSuffix) {
-		ConfigFactory.tableSuffix = tableSuffix;
-	}
-
-	public static String getTableDivision() {
-		return tableDivision;
-	}
-
-	public static void setTableDivision(String tableDivision) {
-		ConfigFactory.tableDivision = tableDivision;
-	}
-
-	public static String getColumnPrefix() {
-		return columnPrefix;
-	}
-
-	public static void setColumnPrefix(String columnPrefix) {
-		ConfigFactory.columnPrefix = columnPrefix;
-	}
-
-	public static String getColumnSuffix() {
-		return columnSuffix;
-	}
-
-	public static void setColumnSuffix(String columnSuffix) {
-		ConfigFactory.columnSuffix = columnSuffix;
-	}
-
-	public static String getColumnDivision() {
-		return columnDivision;
-	}
-
-	public static void setColumnDivision(String columnDivision) {
-		ConfigFactory.columnDivision = columnDivision;
-	}
-
-	public static String getTemplatePath() {
-		return templatePath;
-	}
-
-	public static void setTemplatePath(String templatePath) {
-		ConfigFactory.templatePath = templatePath;
-	}
-
-	public static String getTemplateCharset() {
-		return templateCharset;
-	}
-
-	public static void setTemplateCharset(String templateCharset) {
-		ConfigFactory.templateCharset = templateCharset;
-	}
-
-	public static String getTemplateIncludeFile() {
-		return templateIncludeFile;
-	}
-
-	public static void setTemplateIncludeFile(String templateIncludeFile) {
-		ConfigFactory.templateIncludeFile = templateIncludeFile;
-	}
-
-	public static String getTemplateIncludePath() {
-		return templateIncludePath;
-	}
-
-	public static void setTemplateIncludePath(String templateIncludePath) {
-		ConfigFactory.templateIncludePath = templateIncludePath;
-	}
-
-	public static String getTemplateFilterFile() {
-		return templateFilterFile;
-	}
-
-	public static void setTemplateFilterFile(String templateFilterFile) {
-		ConfigFactory.templateFilterFile = templateFilterFile;
-	}
-
-	public static String getTemplateFilterPath() {
-		return templateFilterPath;
-	}
-
-	public static void setTemplateFilterPath(String templateFilterPath) {
-		ConfigFactory.templateFilterPath = templateFilterPath;
-	}
-
-	public static String getTargetPath() {
-		return targetPath;
-	}
-
-	public static void setTargetPath(String targetPath) {
-		ConfigFactory.targetPath = targetPath;
-	}
-
-	public static String getTargetCharset() {
-		return targetCharset;
-	}
-
-	public static void setTargetCharset(String targetCharset) {
-		ConfigFactory.targetCharset = targetCharset;
-	}
-
-	public static String getTargetProjectName() {
-		return targetProjectName;
-	}
-
-	public static void setTargetProjectName(String targetProjectName) {
-		ConfigFactory.targetProjectName = targetProjectName;
-	}
-
-	public static String getTargetProjectAuthor() {
-		return targetProjectAuthor;
-	}
-
-	public static void setTargetProjectAuthor(String targetProjectAuthor) {
-		ConfigFactory.targetProjectAuthor = targetProjectAuthor;
-	}
-
-	public static String getTargetProjectPackage() {
-		return targetProjectPackage;
-	}
-
-	public static void setTargetProjectPackage(String targetProjectPackage) {
-		ConfigFactory.targetProjectPackage = targetProjectPackage;
-	}
 }

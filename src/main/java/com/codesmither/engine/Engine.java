@@ -5,10 +5,10 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import com.codesmither.factory.C3P0Factory;
-import com.codesmither.factory.ConfigFactory;
-import com.codesmither.factory.FilterFactory;
 import com.codesmither.kernel.ConfigConverter;
-import com.codesmither.kernel.Converter;
+import com.codesmither.kernel.ConfigFileFilter;
+import com.codesmither.kernel.api.Config;
+import com.codesmither.kernel.api.Converter;
 import com.codesmither.kernel.ModelBuilder;
 import com.codesmither.kernel.TableBuilder;
 import com.codesmither.model.Model;
@@ -19,12 +19,14 @@ import com.codesmither.model.Model;
  */
 public class Engine {
 
+    private Config config;
     private String templates;
     private String target;
 
-    public Engine() {
-        target = ConfigFactory.getTargetPath();
-        templates = ConfigFactory.getTemplatePath();
+    public Engine(Config config) {
+        this.config = config;
+        target = config.getTargetPath();
+        templates = config.getTemplatePath();
     }
 
     public Engine(String templates, String target) {
@@ -43,16 +45,19 @@ public class Engine {
             throw new Exception("创建目标项目失败！");
         }
 
+        C3P0Factory.load(config.getDbConfigName());
         Connection connection = C3P0Factory.getConnection();
-        Converter converter = new ConfigConverter();
+        Converter converter = new ConfigConverter(config);
+        ConfigFileFilter filter = new ConfigFileFilter(config);
         ModelBuilder modelBuilder = new ModelBuilder();
         TableBuilder tableBuilder = new TableBuilder(connection, converter);
-        Model model = modelBuilder.build();
-        model.tables = tableBuilder.build();
-        TaskTransfer transfer = new TaskTransfer(model, ftemplates, ftarget, FilterFactory.getFilter());
+        Model model = modelBuilder.build(config);
+        model.setTables(tableBuilder.build());
+        TaskTransfer transfer = new TaskTransfer(config, model, ftemplates, ftarget, filter);
         while (transfer.hasTask()) {
             print.println(transfer.doTask());
         }
+        C3P0Factory.close();
     }
 
 }

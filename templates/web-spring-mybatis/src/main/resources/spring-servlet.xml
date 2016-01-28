@@ -10,7 +10,7 @@
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 扫描注解Bean -->
-    <context:component-scan base-package="${packagename}"/>
+    <context:component-scan base-package="${packageName}"/>
 
     <mvc:annotation-driven/>
     <!-- 使用默认的Servlet来响应静态文件 否则不能正常访问js、css -->

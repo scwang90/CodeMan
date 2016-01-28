@@ -10,13 +10,13 @@
     <aop:aspectj-autoproxy expose-proxy="true"/>
     
     <!-- 开启AOP切面日志 -->
-    <bean id="loggingaspect" class="${packagename}.aspect.LoggingAspect"/>
+    <bean id="loggingaspect" class="${packageName}.aspect.LoggingAspect"/>
     <aop:config>
         <!-- 切入点配置 -->
-        <aop:pointcut expression="execution(* ${packagename}.controller.*.*(..))" id="ptc-controller"/>
-        <aop:pointcut expression="execution(* ${packagename}.service.*.*(..))" id="ptc-service"/>
-        <aop:pointcut expression="execution(* ${packagename}.dao.*.*(..))" id="ptc-dao"/>
-        <aop:pointcut expression="execution(* ${packagename}.mapper.*.*(..))" id="ptc-mapper"/>
+        <aop:pointcut expression="execution(* ${packageName}.controller.*.*(..))" id="ptc-controller"/>
+        <aop:pointcut expression="execution(* ${packageName}.service.*.*(..))" id="ptc-service"/>
+        <aop:pointcut expression="execution(* ${packageName}.dao.*.*(..))" id="ptc-dao"/>
+        <aop:pointcut expression="execution(* ${packageName}.mapper.*.*(..))" id="ptc-mapper"/>
         <!-- 日志切面 -->
         <aop:aspect ref="loggingaspect">
             <!--

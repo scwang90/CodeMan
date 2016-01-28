@@ -18,8 +18,7 @@ public class C3P0Factory {
     private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
 
     // 在静态代码块中创建数据库连接池
-    static {
-        String name = ConfigFactory.getDbConfigName();
+    public static void load(String name) {
         if (name==null||name.trim().length()==0||"null".equals(name)||"[null]".equals(name)) {
             dataSource = null;
         } else if (name != null && name.trim().length() > 0) {
@@ -28,7 +27,6 @@ public class C3P0Factory {
             dataSource = new ComboPooledDataSource();
         }
     }
-
 
     /**
      * 从数据源中获取数据库连接

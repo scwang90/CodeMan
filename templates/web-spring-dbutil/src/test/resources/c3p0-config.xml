@@ -10,7 +10,7 @@
 		<property name="maxPoolSize">100</property>
 		<property name="minPoolSize">10</property>
 	</default-config>
-	<named-config name="myApp">
+	<named-config name="${projectName}">
 		<property name="user">${jdbc.usename}</property>
 		<property name="password">${jdbc.password}</property>
 		<property name="driverClass">${jdbc.driver}</property>
