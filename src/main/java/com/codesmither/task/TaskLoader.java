@@ -15,7 +15,6 @@ public class TaskLoader {
     private FileFilter fileFilter;
 
     public TaskLoader(File forgin, File target, FileFilter fileFilter) {
-        // TODO Auto-generated constructor stub
         this.fileFilter = fileFilter;
         this.forgin = forgin.getAbsolutePath();
         this.target = target.getAbsolutePath();
