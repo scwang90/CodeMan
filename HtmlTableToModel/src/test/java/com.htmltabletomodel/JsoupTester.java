@@ -30,6 +30,7 @@ public class JsoupTester {
         Document parse = Jsoup.parse(new File(path), "utf-8");
         Elements table = parse.select("table");
         for (Element row : table) {
+            System.out.print(row.previousElementSibling());
             System.out.println(row.toString());
         }
     }
