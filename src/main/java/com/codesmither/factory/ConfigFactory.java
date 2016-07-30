@@ -23,10 +23,10 @@ public class ConfigFactory {
 		propty.load(stream);
 
 		Config config = new Config() {
-			@Override
-			public Converter getConverter() {
-				return new ConfigConverter(this);
-			}
+//			@Override
+//			public Converter getConverter() {
+//				return new ConfigConverter(this);
+//			}
 
 			@Override
 			public ProgLang getProgramLanguage() {

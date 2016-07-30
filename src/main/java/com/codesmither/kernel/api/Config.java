@@ -31,7 +31,7 @@ public abstract class Config {
     protected String targetProjectAuthor = "scwang";
     protected String targetProjectPackage = "com.codesmither";
 
-    public abstract Converter getConverter();
+//    public abstract Converter getConverter();
     public abstract ProgLang getProgramLanguage();
 
     public String getDbConfigName() {

@@ -8,6 +8,7 @@
 	<modules>
 		<module>HtmlTableToModel</module>
 		<module>TemplateModel</module>
+		<module>SmitherCore</module>
 	</modules>
 
 	<dependencies>
