@@ -8,7 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codesmither.factory.api.DbFactory;
 import com.codesmither.kernel.api.Converter;
+import com.codesmither.kernel.api.Remarker;
+import com.codesmither.kernel.api.TableSource;
 import com.codesmither.model.Table;
 import com.codesmither.model.TableColumn;
 import com.codesmither.util.StringUtil;
@@ -17,20 +20,19 @@ import com.codesmither.util.StringUtil;
  * 模板Model-Table构建器
  * Created by SCWANG on 2015-07-04.
  */
-public class TableBuilder {
+public class DbTableSource implements TableSource {
 
-	private boolean autoclose = false;
-	private Converter converter = null;
-	private Connection connection = null;
-	private DatabaseMetaData databaseMetaData = null;
+	protected boolean autoclose = false;
+	protected Converter converter = null;
+	protected Connection connection = null;
+	protected DatabaseMetaData databaseMetaData = null;
+	protected Remarker remarker = new DbRemarker();
 
-	public TableBuilder(Connection connection,Converter converter) {
-		super();
-		this.connection = connection;
-		this.converter = converter;
+	public DbTableSource(Connection connection, Converter converter) {
+		this(connection, converter, false);
 	}
 
-	public TableBuilder(Connection connection,Converter converter, boolean autoclose) {
+	public DbTableSource(Connection connection, Converter converter, boolean autoclose) {
 		super();
 		this.connection = connection;
 		this.autoclose = autoclose;
@@ -55,7 +57,7 @@ public class TableBuilder {
 		return new ArrayList<>();
 	}
 
-	private List<Table> buildTables(ResultSet tableset) throws SQLException {
+	protected List<Table> buildTables(ResultSet tableset) throws SQLException {
 		List<Table> tables = new ArrayList<Table>();
 		while (tableset.next()) {
 			Table table = new Table();
@@ -66,7 +68,7 @@ public class TableBuilder {
 			table.setClassNameUpper(table.getClassName().toUpperCase());
 			table.setClassNameLower(table.getClassName().toLowerCase());
 			if (table.getRemark() == null || table.getRemark().trim().length()==0) {
-				table.setRemark("数据库表"+table.getName());
+				table.setRemark(remarker.getTableRemark(table.getName()));
 			}
 			table.setColumns(buildColumns(table.getName()));
 			table.setIdColumn(buildIdColumn(table.getName()));
@@ -81,17 +83,32 @@ public class TableBuilder {
 		return tables;
 	}
 
-	private TableColumn buildIdColumn(String tableName) throws SQLException{
+	protected TableColumn buildIdColumn(String tableName) throws SQLException{
 		TableColumn column = new TableColumn();
 		ResultSet keyset = databaseMetaData.getPrimaryKeys(null, null, tableName);
-		while (keyset.next()) {
+		if (keyset.next()) {
 			column.setName(keyset.getString("COLUMN_NAME"));
-			break;
+		} else {
+			column.setName("hasNoPrimaryKey");
+
+			column.setName("hasNoPrimaryKey");
+			column.setType("VARCHAR");
+			column.setTypeInt(java.sql.Types.VARCHAR);
+			column.setLenght(256);
+			column.setDefvalue("");
+			column.setNullable(true);
+			column.setAutoIncrement(false);
+			column.setRemark("没有主键");
+
+			column.setFieldName(this.converter.converterFieldName(column.getName()));
+			column.setFieldType(this.converter.converterFieldType(column.getTypeInt()));
+			column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
+			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 		}
 		return column;
 	}
 
-	private List<TableColumn> buildColumns(String tableName) throws SQLException {
+	protected List<TableColumn> buildColumns(String tableName) throws SQLException {
 		ResultSet resultSet = databaseMetaData.getColumns(null, "%", tableName, "%");
 		List<TableColumn> columns = new ArrayList<>();
 		while (resultSet.next()) {
@@ -111,7 +128,7 @@ public class TableBuilder {
 			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 
 			if (column.getRemark() == null || column.getRemark().trim().length()==0) {
-				column.setRemark("数据库列"+column.getName());
+				column.setRemark(remarker.getColumnRemark(column.getName()));
 			}
 			columns.add(column);
 		}

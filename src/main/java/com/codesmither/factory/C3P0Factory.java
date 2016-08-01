@@ -2,38 +2,69 @@ package com.codesmither.factory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.sql.DataSource;
 
+import com.codesmither.factory.api.DbFactory;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * C3p0数据库链接池
  * Created by SCWANG on 2015-07-04.
  */
-public class C3P0Factory {
+public class C3P0Factory implements DbFactory {
 
-    private static ComboPooledDataSource dataSource = null;
+    private static HashMap<String, C3P0Factory> instances = new HashMap<>();
+
+    private ComboPooledDataSource dataSource = null;
     // 使用ThreadLocal存储当前线程中的Connection对象
-    private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
+    private ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 
-    // 在静态代码块中创建数据库连接池
-    public static void load(String name) {
-        if (name==null||name.trim().length()==0||"null".equals(name)||"[null]".equals(name)) {
+    protected C3P0Factory(String name) {
+        if (name == null || name.trim().length() == 0 || "null".equals(name) || "[null]".equals(name)) {
             dataSource = null;
-        } else if (name != null && name.trim().length() > 0) {
+        } else if (name.trim().length() > 0) {
             dataSource = new ComboPooledDataSource(name);
         } else {
             dataSource = new ComboPooledDataSource();
         }
     }
 
+    // 在静态代码块中创建数据库连接池
+    public static DbFactory getInstance(String name) {
+        C3P0Factory c3P0Factory = instances.get(name);
+        if (c3P0Factory == null) {
+            c3P0Factory = new C3P0Factory(name);
+            instances.put(name, c3P0Factory);
+        }
+        return c3P0Factory;
+    }
+
+    public String getJdbcUrl() {
+        if (dataSource == null) return "";
+        return dataSource.getJdbcUrl();
+    }
+
+    public String getDriverClass() {
+        if (dataSource == null) return "";
+        return dataSource.getDriverClass();
+    }
+
+    public String getPassword() {
+        if (dataSource == null) return "";
+        return dataSource.getPassword();
+    }
+
+    public String getUser() {
+        if (dataSource == null) return "";
+        return dataSource.getUser();
+    }
+
     /**
      * 从数据源中获取数据库连接
-     * @return Connection
-     * @throws SQLException
      */
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         // 从当前线程中获取Connection
         Connection conn = threadLocal.get();
         if (conn == null && getDataSource() != null) {
@@ -45,40 +76,18 @@ public class C3P0Factory {
         return conn;
     }
 
-    public static String getJdbcUrl() {
-        if (dataSource == null) return "";
-        return dataSource.getJdbcUrl();
-    }
-
-    public static String getDriverClass() {
-        if (dataSource == null) return "";
-        return dataSource.getDriverClass();
-    }
-
-    public static String getPassword() {
-        if (dataSource == null) return "";
-        return dataSource.getPassword();
-    }
-
-    public static String getUser() {
-        if (dataSource == null) return "";
-        return dataSource.getUser();
-    }
-
     /**
      * 开启事务
-     * @throws SQLException
      */
-    public static void startTransaction() throws SQLException {
+    public void startTransaction() throws SQLException {
         // 开启事务
         getConnection().setAutoCommit(false);
     }
 
     /**
      * 回滚事务
-     * @throws SQLException
      */
-    public static void rollback() throws SQLException {
+    public void rollback() throws SQLException {
         // 从当前线程中获取Connection
         Connection conn = threadLocal.get();
         if (conn != null) {
@@ -89,9 +98,8 @@ public class C3P0Factory {
 
     /**
      * 提交事务
-     * @throws SQLException
      */
-    public static void commit() throws SQLException {
+    public void commit() throws SQLException {
         // 从当前线程中获取Connection
         Connection conn = threadLocal.get();
         if (conn != null) {
@@ -102,9 +110,8 @@ public class C3P0Factory {
 
     /**
      * 关闭数据库连接(注意，并不是真的关闭，而是把连接还给数据库连接池)
-     * @throws SQLException
      */
-    public static void close() throws SQLException {
+    public void close() throws SQLException {
         // 从当前线程中获取Connection
         Connection conn = threadLocal.get();
         if (conn != null) {
@@ -116,9 +123,8 @@ public class C3P0Factory {
 
     /**
      * 获取数据源
-     * @return DataSource
      */
-    public static DataSource getDataSource() {
+    public DataSource getDataSource() {
         // 从数据源中获取数据库连接
         return dataSource;
     }

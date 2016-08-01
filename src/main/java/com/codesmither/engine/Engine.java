@@ -5,12 +5,15 @@ import java.io.PrintStream;
 import java.sql.Connection;
 
 import com.codesmither.factory.C3P0Factory;
+import com.codesmither.factory.TableSourceFactory;
+import com.codesmither.factory.api.DbFactory;
 import com.codesmither.kernel.ConfigConverter;
 import com.codesmither.kernel.ConfigFileFilter;
 import com.codesmither.kernel.api.Config;
 import com.codesmither.kernel.api.Converter;
 import com.codesmither.kernel.ModelBuilder;
-import com.codesmither.kernel.TableBuilder;
+import com.codesmither.kernel.DbTableSource;
+import com.codesmither.kernel.api.TableSource;
 import com.codesmither.model.Model;
 
 /**
@@ -44,20 +47,17 @@ public class Engine {
         if (!ftarget.exists() && !ftarget.mkdirs()) {
             throw new Exception("创建目标项目失败！");
         }
-
-        C3P0Factory.load(config.getDbConfigName());
-        Connection connection = C3P0Factory.getConnection();
+        DbFactory factory = C3P0Factory.getInstance(config.getDbConfigName());
         Converter converter = new ConfigConverter(config);
         ConfigFileFilter filter = new ConfigFileFilter(config);
         ModelBuilder modelBuilder = new ModelBuilder();
-        TableBuilder tableBuilder = new TableBuilder(connection, converter);
-        Model model = modelBuilder.build(config);
-        model.setTables(tableBuilder.build());
+        TableSource tableBuilder = TableSourceFactory.getInstance(factory, converter);
+        Model model = modelBuilder.build(config, factory, tableBuilder.build());
         TaskTransfer transfer = new TaskTransfer(config, model, ftemplates, ftarget, filter);
         while (transfer.hasTask()) {
             print.println(transfer.doTask());
         }
-        C3P0Factory.close();
+        factory.close();
     }
 
 }
