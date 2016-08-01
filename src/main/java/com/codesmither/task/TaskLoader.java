@@ -33,13 +33,16 @@ public class TaskLoader {
     }
 
     protected List<Task> loadTask(File path, List<Task> tasks) {
-        for (File file : path.listFiles()) {
-            if (file.isFile()) {
-                if (fileFilter.filterFile(file)) {
-                    tasks.add(new Task(file, forgin, target));
+        File[] files = path.listFiles();
+        if (files != null && files.length > 0) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    if (fileFilter.filterFile(file)) {
+                        tasks.add(new Task(file, forgin, target));
+                    }
+                } else if (file.isDirectory() && fileFilter.filterPath(file)) {
+                    loadTask(file, tasks);
                 }
-            } else if (file.isDirectory() && fileFilter.filterPath(file)) {
-                loadTask(file, tasks);
             }
         }
         return tasks;
