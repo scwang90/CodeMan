@@ -1,6 +1,7 @@
 package com.codesmither.kernel;
 
 import com.codesmither.kernel.api.ProgLang;
+import com.codesmither.util.StringUtil;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -121,7 +122,7 @@ public class CSharpLang extends ProgLang {
             case Types.CLOB:
                 return Clob.class.getSimpleName();
             case Types.DATE:
-                return java.util.Date.class.getSimpleName();
+                return "DateTime";
             case Types.DECIMAL:
                 return BigDecimal.class.getSimpleName();
             case Types.DISTINCT:
@@ -185,7 +186,7 @@ public class CSharpLang extends ProgLang {
         String type = getType(columnType);
 
         if (type.contains("Boolean"))
-            type = "boolean";
+            type = "bool";
         else if (type.contains("Byte"))
             type = "byte";
         else if (type.contains("Short"))
@@ -198,7 +199,20 @@ public class CSharpLang extends ProgLang {
             type = "float";
         else if (type.contains("Double"))
             type = "double";
+        else if (type.contains("String"))
+            type = "string";
 
         return type;
     }
+
+    @Override
+    public String converterClassName(String tableName) {
+        return StringUtil.upperFirst(tableName);
+    }
+
+    @Override
+    public String converterFieldName(String columnName) {
+        return StringUtil.upperFirst(columnName);
+    }
+
 }

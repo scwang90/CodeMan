@@ -18,7 +18,7 @@ public abstract class LangConverter extends Converter {
 	}
 
 	public String converterClassName(String tableName) {
-		String classname = StringUtil.upperFirst(tableName);
+		String classname = lang.converterClassName(tableName);
 		if (lang.isKeyword(classname)) {
 			classname = classname + "Ex";
 		}
@@ -26,7 +26,7 @@ public abstract class LangConverter extends Converter {
 	}
 
 	public String converterFieldName(String columnName) {
-		String fieldName = StringUtil.lowerFirst(columnName);
+		String fieldName = lang.converterFieldName(columnName);
 		if (lang.isKeyword(fieldName)) {
 			fieldName = fieldName + "Ex";
 		}

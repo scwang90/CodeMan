@@ -1,6 +1,7 @@
 package com.codesmither.kernel;
 
 import com.codesmither.kernel.api.ProgLang;
+import com.codesmither.util.StringUtil;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -130,5 +131,15 @@ public class JavaLang extends ProgLang{
             type = "double";
 
         return type;
+    }
+
+    @Override
+    public String converterClassName(String tableName) {
+        return StringUtil.upperFirst(tableName);
+    }
+
+    @Override
+    public String converterFieldName(String columnName) {
+        return StringUtil.lowerFirst(columnName);
     }
 }

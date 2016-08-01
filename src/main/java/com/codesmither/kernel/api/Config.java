@@ -4,7 +4,7 @@ package com.codesmither.kernel.api;
  * 模板生成配置信息
  * Created by root on 16-1-28.
  */
-public abstract class Config {
+public class Config {
 
     protected String dbConfigName;
 
@@ -30,9 +30,6 @@ public abstract class Config {
     protected String targetProjectName = "TargetProject";
     protected String targetProjectAuthor = "scwang";
     protected String targetProjectPackage = "com.codesmither";
-
-//    public abstract Converter getConverter();
-    public abstract ProgLang getProgramLanguage();
 
     public String getDbConfigName() {
         return dbConfigName;

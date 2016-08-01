@@ -21,6 +21,15 @@ public abstract class ProgLang {
         }
     }
 
+    public static ProgLang getLang(String progLang) {
+        for (ProgLang.Lang lang : ProgLang.Lang.values()) {
+            if (lang.value.equalsIgnoreCase(progLang) || lang.name().equalsIgnoreCase(progLang)) {
+                return lang.lang;
+            }
+        }
+        return ProgLang.Lang.Java.lang;
+    }
+
     /**
      * 判断value在当前编程语言中是否是关键字
      * @param value 判断值
@@ -43,4 +52,17 @@ public abstract class ProgLang {
      */
     public abstract String getBasicType(int columnType);
 
+    /**
+     * 把数据库表名转成类名
+     * @param tableName 数据库表明
+     * @return 相关编程语言命名规则的 类名
+     */
+    public abstract String converterClassName(String tableName);
+
+    /**
+     * 把数据库表名转成列名
+     * @param columnName 数据库表明
+     * @return 相关编程语言命名规则的 列名
+     */
+    public abstract String converterFieldName(String columnName);
 }

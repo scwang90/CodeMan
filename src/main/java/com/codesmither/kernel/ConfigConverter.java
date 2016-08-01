@@ -1,6 +1,7 @@
 package com.codesmither.kernel;
 
 import com.codesmither.kernel.api.Config;
+import com.codesmither.kernel.api.ProgLang;
 import com.codesmither.util.StringUtil;
 
 /**
@@ -13,15 +14,17 @@ public class ConfigConverter extends LangConverter {
     private final Config config;
 
     public ConfigConverter(Config config) {
-        super(config.getProgramLanguage());
+        super(ProgLang.getLang(config.getTemplateLang()));
         this.config = config;
     }
 
     private String camel(String orgin, String division) {
-        String[] divs = orgin.split(division);
-        orgin = "";
-        for (String div : divs) {
-            orgin += StringUtil.upperFirst(div);
+        if (division != null && division.length() > 0) {
+            String[] divs = orgin.split(division);
+            orgin = "";
+            for (String div : divs) {
+                orgin += StringUtil.upperFirst(div);
+            }
         }
         return orgin;
     }

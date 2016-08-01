@@ -7,12 +7,10 @@ import java.sql.Connection;
 import com.codesmither.factory.C3P0Factory;
 import com.codesmither.factory.TableSourceFactory;
 import com.codesmither.factory.api.DbFactory;
-import com.codesmither.kernel.ConfigConverter;
-import com.codesmither.kernel.ConfigFileFilter;
+import com.codesmither.kernel.*;
 import com.codesmither.kernel.api.Config;
 import com.codesmither.kernel.api.Converter;
-import com.codesmither.kernel.ModelBuilder;
-import com.codesmither.kernel.DbTableSource;
+import com.codesmither.kernel.api.HtmlTableConfig;
 import com.codesmither.kernel.api.TableSource;
 import com.codesmither.model.Model;
 
@@ -60,4 +58,25 @@ public class Engine {
         factory.close();
     }
 
+    public void doHtmlTableInBackground(PrintStream out, HtmlTableConfig config) throws Exception {
+        doHtmlTableInBackground(out, new HtmlTableSource(config.getHtmlTablePath(), config.getHtmlTableCharset(), new ConfigConverter(config)));
+    }
+
+    public void doHtmlTableInBackground(PrintStream out, TableSource tableBuilder) throws Exception {
+        File ftemplates = new File(config.getTemplatePath());
+        File ftarget = new File(config.getTargetPath());
+        if (!ftemplates.exists()) {
+            throw new Exception("源项目不存在！");
+        }
+        if (!ftarget.exists() && !ftarget.mkdirs()) {
+            throw new Exception("创建目标项目失败！");
+        }
+        ConfigFileFilter filter = new ConfigFileFilter(config);
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Model model = modelBuilder.build(config, C3P0Factory.getInstance("null"), tableBuilder.build());
+        TaskTransfer transfer = new TaskTransfer(config, model, ftemplates, ftarget, filter);
+        while (transfer.hasTask()) {
+            out.println(transfer.doTask());
+        }
+    }
 }

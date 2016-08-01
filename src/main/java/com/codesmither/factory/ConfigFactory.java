@@ -3,7 +3,9 @@ package com.codesmither.factory;
 import com.codesmither.kernel.ConfigConverter;
 import com.codesmither.kernel.api.Config;
 import com.codesmither.kernel.api.Converter;
+import com.codesmither.kernel.api.HtmlTableConfig;
 import com.codesmither.kernel.api.ProgLang;
+import com.codesmither.util.JacksonUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,23 +24,7 @@ public class ConfigFactory {
 		Properties propty = new Properties();
 		propty.load(stream);
 
-		Config config = new Config() {
-//			@Override
-//			public Converter getConverter() {
-//				return new ConfigConverter(this);
-//			}
-
-			@Override
-			public ProgLang getProgramLanguage() {
-				for (ProgLang.Lang lang :
-						ProgLang.Lang.values()) {
-					if (lang.value.equalsIgnoreCase(this.templateLang) || lang.name().equalsIgnoreCase(this.templateLang)) {
-						return lang.lang;
-					}
-				}
-				return ProgLang.Lang.Java.lang;
-			}
-		};
+		Config config = new Config();
 
 		config.setDbConfigName(propty.getProperty("codesmither.database.config.name",config.getDbConfigName()));
 
@@ -68,4 +54,15 @@ public class ConfigFactory {
 		return config;
 	}
 
+	public static HtmlTableConfig loadHtmlTableConfig(String path) throws IOException {
+
+		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
+		Properties propty = new Properties();
+		propty.load(stream);
+
+		HtmlTableConfig config = JacksonUtil.toObject(JacksonUtil.toJson(loadConfig(path)), HtmlTableConfig.class);
+		config.setHtmlTablePath(propty.getProperty("codesmither.htmltable.path",config.getDbConfigName()));
+		config.setHtmlTableCharset(propty.getProperty("codesmither.htmltable.charset",config.getDbConfigName()));
+		return config;
+	}
 }
