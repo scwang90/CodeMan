@@ -1,4 +1,4 @@
-package ${packageName}.model;
+package ${packageName};
 
 /**
  * ${table.remark}

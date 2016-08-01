@@ -1,4 +1,4 @@
-package ${packageName}.model;
+package ${packageName};
 
 <#list table.columns as column>
 <#if column.name!=column.fieldName>
