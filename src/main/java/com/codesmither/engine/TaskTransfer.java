@@ -1,6 +1,5 @@
 package com.codesmither.engine;
 
-import com.codesmither.factory.ConfigFactory;
 import com.codesmither.factory.FreemarkerFactory;
 import com.codesmither.kernel.api.Config;
 import com.codesmither.model.Model;
@@ -46,7 +45,7 @@ public class TaskTransfer {
 		for (Task task : tasks) {
 			String path = task.getFile().getParent();
 			path = path.replace(fsrc, ftarget);
-			path = path.replace("${packageName}", packagepath);
+			path = path.replace("${packagePath}", packagepath);
 			new File(path).mkdirs();
 		}
 	}
@@ -59,7 +58,7 @@ public class TaskTransfer {
 		Task task = tasks.get(itask++);
 		String path = task.getFile().getAbsolutePath();
 		path = path.replace(fsrc, ftarget);
-		path = path.replace("${packageName}", packagepath);
+		path = path.replace("${packagePath}", packagepath);
 		File outfile = new File(path);
 
 		StringBuilder log = new StringBuilder(path+"\r\n");

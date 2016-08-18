@@ -1,4 +1,4 @@
-package com.codesmither.factory.api;
+package com.codesmither.project.base.api;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

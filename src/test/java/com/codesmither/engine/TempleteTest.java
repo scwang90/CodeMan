@@ -1,24 +1,16 @@
 package com.codesmither.engine;
 
-import com.codesmither.factory.C3P0Factory;
 import com.codesmither.factory.ConfigFactory;
-import com.codesmither.factory.TableSourceFactory;
 import com.codesmither.kernel.ConfigConverter;
-import com.codesmither.kernel.ConfigFileFilter;
 import com.codesmither.kernel.HtmlTableSource;
-import com.codesmither.kernel.ModelBuilder;
 import com.codesmither.kernel.api.Config;
-import com.codesmither.kernel.api.Converter;
 import com.codesmither.kernel.api.HtmlTableConfig;
-import com.codesmither.kernel.api.TableSource;
-import com.codesmither.model.Model;
 import com.codesmither.model.Table;
 import com.codesmither.model.TableColumn;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import java.io.File;
 import java.sql.Types;
 
 /**

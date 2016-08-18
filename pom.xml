@@ -5,6 +5,15 @@
 	<artifactId>code-smither</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
+	<modules>
+		<module>smither-engine</module>
+		<module>smither-model-code</module>
+		<module>smither-code-model</module>
+		<module>smither-project-model</module>
+		<module>smither-project-database</module>
+		<module>smither-project-htmltable</module>
+		<module>smither-project-base</module>
+	</modules>
 
 	<dependencies>
 		<!--HTML解析-->

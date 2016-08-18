@@ -1,16 +1,12 @@
 package com.codesmither.factory;
 
-import com.codesmither.kernel.ConfigConverter;
 import com.codesmither.kernel.api.Config;
-import com.codesmither.kernel.api.Converter;
 import com.codesmither.kernel.api.HtmlTableConfig;
-import com.codesmither.kernel.api.ProgLang;
 import com.codesmither.util.JacksonUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 /**
  * 生成配置工厂
