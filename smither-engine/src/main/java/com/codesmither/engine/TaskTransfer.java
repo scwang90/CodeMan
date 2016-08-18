@@ -40,14 +40,10 @@ public class TaskTransfer {
         return config.getFileFilterFactory().build(null);
     }
 
-    private ITaskLoader buildTaskLoder(Config config, File templates, File target) {
-        return config.getTaskLoaderFactory().build(templates, target, buildFilter(config));
-    }
-
     public void prepareTask() throws Exception{
         if (rootModel == null) {
             this.rootModel = modelBuilder.build();
-            this.tasks = buildTaskLoder(config, templates, target).loadTask();
+            this.tasks = config.getTaskLoader().loadTask(templates, target, buildFilter(config));
         }
     }
 
@@ -72,19 +68,7 @@ public class TaskTransfer {
             Template template = getTemplate(task.getTemplateFile());
             for (IModel model : rootModel.getModels()) {
                 rootModel.bindModel(model);
-
                 String outpath = replacePath(outfile.getAbsolutePath().replace(".ftl", ""));
-//                if (matcher.find()) {
-//                    for (int i = 1; i <= matcher.groupCount(); i++) {
-//                        String group = matcher.group(i);
-//                        Object value = Reflecter.getMemberNoException(rootModel, group);
-//                        if (value != null) {
-//                            outpath = outpath.replace("${" + group + "}", value.toString());
-//                        } else {
-//                            throw new RuntimeException("未找到${" + group + "}替换值");
-//                        }
-//                    }
-//                }
                 log.append("  =>>");
                 log.append(outpath);
                 log.append("\r\n");

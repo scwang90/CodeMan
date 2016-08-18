@@ -1,12 +1,11 @@
-package com.codesmither.project.database.impl;
+package com.codesmither.project.htmltable.impl;
 
 
 import com.codesmither.project.base.ProjectConfig;
-import com.codesmither.project.base.api.Converter;
+import com.codesmither.project.base.api.DbFactory;
 import com.codesmither.project.base.model.TableColumn;
 import com.codesmither.project.base.util.StringUtil;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,12 +17,12 @@ import java.util.List;
  */
 public class SqlServerTableSource extends DbTableSource {
 
-    public SqlServerTableSource(ProjectConfig config, Connection connection) {
-        this(config, connection, false);
+    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory) {
+        this(config, dbFactory, false);
     }
 
-    public SqlServerTableSource(ProjectConfig config, Connection connection, boolean autoclose) {
-        super(config, connection, autoclose);
+    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+        super(config, dbFactory, autoclose);
     }
 
     protected List<TableColumn> buildColumns(String tableName) throws SQLException {

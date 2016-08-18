@@ -40,10 +40,11 @@ public class ProjectConfig extends Config implements IFilterConfig {
 
     @Override
     public Config initEmptyFieldsWithDefaultValues() {
+        super.initEmptyFieldsWithDefaultValues();
         if (converter == null) {
             converter = new ConfigConverter(this);
         }
-        return super.initEmptyFieldsWithDefaultValues();
+        return this;
     }
 
     public void setConverter(Converter converter) {

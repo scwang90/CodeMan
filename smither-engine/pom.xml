@@ -13,20 +13,13 @@
     <artifactId>smither-engine</artifactId>
 
     <dependencies>
-        <!--&lt;!&ndash; 模板引擎 &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.freemarker</groupId>-->
-            <!--<artifactId>freemarker</artifactId>-->
-            <!--<version>2.3.20</version>-->
-        <!--</dependency>-->
+        <!-- 模板引擎 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.20</version>
+        </dependency>
 
-        <!--&lt;!&ndash; 测试 &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>4.11</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
     </dependencies>
 
 

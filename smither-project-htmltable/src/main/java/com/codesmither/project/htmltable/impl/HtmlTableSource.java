@@ -1,4 +1,4 @@
-package com.codesmither.project.database.impl;
+package com.codesmither.project.htmltable.impl;
 
 import com.codesmither.project.base.api.Converter;
 import com.codesmither.project.base.api.Remarker;
@@ -7,14 +7,13 @@ import com.codesmither.project.base.impl.DbRemarker;
 import com.codesmither.project.base.model.Table;
 import com.codesmither.project.base.model.TableColumn;
 import com.codesmither.project.base.util.StringUtil;
-import com.codesmither.project.database.HtmlTableConfig;
+import com.codesmither.project.htmltable.HtmlTableConfig;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +60,7 @@ public class HtmlTableSource implements TableSource {
     protected Remarker remarker = new DbRemarker();
     protected HtmlTableMetaData metaData = new HtmlTableMetaDataImpl();
 
-    public HtmlTableSource(HtmlTableConfig config) throws IOException {
+    public HtmlTableSource(HtmlTableConfig config) {
         this.converter = config.getConverter();
         this.charset = config.getHtmlTableCharset();
         File file = new File(config.getHtmlTablePath());

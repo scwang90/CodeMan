@@ -85,7 +85,7 @@ public class Model implements IRootModel {
     public void setPackageName(String packageName) {
         this.packageName = packageName;
         this.packagePath = packageName.replace(".", File.separatorChar + "");
-        this.packagePath = packagePath.replace("::", File.separatorChar + "");
+//        this.packagePath = packagePath.replace("::", File.separatorChar + "");
     }
 
     public String getPackagePath() {

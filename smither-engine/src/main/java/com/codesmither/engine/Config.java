@@ -1,9 +1,9 @@
 package com.codesmither.engine;
 
 import com.codesmither.engine.api.IFileFilterFactory;
-import com.codesmither.engine.api.ITaskLoaderFactory;
+import com.codesmither.engine.api.TaskLoader;
 import com.codesmither.engine.factory.DefaultFileFilterFactory;
-import com.codesmither.engine.factory.DefaultTaskLoaderFactory;
+import com.codesmither.engine.impl.DefaultTaskLoader;
 
 /**
  * 配置信息
@@ -16,8 +16,9 @@ public class Config {
     protected String templatePath;
     protected String templateCharset;
     protected String targetCharset;
-    protected ITaskLoaderFactory taskLoaderFactory;
-    protected IFileFilterFactory fileFilterFactory;
+
+    protected transient TaskLoader taskLoader;
+    protected transient IFileFilterFactory fileFilterFactory;
 
     public String getTargetPath() {
         return targetPath;
@@ -51,12 +52,12 @@ public class Config {
         this.targetCharset = targetCharset;
     }
 
-    public ITaskLoaderFactory getTaskLoaderFactory() {
-        return taskLoaderFactory;
+    public TaskLoader getTaskLoader() {
+        return taskLoader;
     }
 
-    public void setTaskLoaderFactory(ITaskLoaderFactory taskLoaderFactory) {
-        this.taskLoaderFactory = taskLoaderFactory;
+    public void setTaskLoader(TaskLoader taskLoader) {
+        this.taskLoader = taskLoader;
     }
 
     public IFileFilterFactory getFileFilterFactory() {
@@ -68,8 +69,8 @@ public class Config {
     }
 
     public Config initEmptyFieldsWithDefaultValues() {
-        if (taskLoaderFactory == null) {
-            taskLoaderFactory = new DefaultTaskLoaderFactory();
+        if (taskLoader == null) {
+            taskLoader = new DefaultTaskLoader();
         }
         if (fileFilterFactory == null) {
             fileFilterFactory = new DefaultFileFilterFactory();

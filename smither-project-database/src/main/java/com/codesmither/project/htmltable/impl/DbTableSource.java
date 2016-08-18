@@ -1,7 +1,8 @@
-package com.codesmither.project.database.impl;
+package com.codesmither.project.htmltable.impl;
 
 import com.codesmither.project.base.ProjectConfig;
 import com.codesmither.project.base.api.Converter;
+import com.codesmither.project.base.api.DbFactory;
 import com.codesmither.project.base.api.Remarker;
 import com.codesmither.project.base.api.TableSource;
 import com.codesmither.project.base.impl.DbRemarker;
@@ -25,18 +26,19 @@ import java.util.List;
 public class DbTableSource implements TableSource {
 
 	protected boolean autoclose = false;
+	protected DbFactory dbFactory = null;
 	protected Converter converter = null;
 	protected Connection connection = null;
 	protected DatabaseMetaData databaseMetaData = null;
 	protected Remarker remarker = new DbRemarker();
 
-	public DbTableSource(ProjectConfig config, Connection connection) {
-		this(config, connection, false);
+	public DbTableSource(ProjectConfig config, DbFactory dbFactory) {
+		this(config, dbFactory, false);
 	}
 
-	public DbTableSource(ProjectConfig config, Connection connection, boolean autoclose) {
+	public DbTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
 		super();
-		this.connection = connection;
+		this.dbFactory = dbFactory;
 		this.autoclose = autoclose;
 		this.converter = config.getConverter();
 	}
@@ -50,6 +52,9 @@ public class DbTableSource implements TableSource {
 	}
 
 	public List<Table> build() throws SQLException {
+		if (this.connection == null) {
+			this.connection = dbFactory.getConnection();
+		}
 		if (this.connection != null) {
 			databaseMetaData = this.connection.getMetaData();
 			ResultSet tableset = databaseMetaData.getTables(null, "%", "%",

@@ -1,10 +1,11 @@
-package com.codesmither.project.database.impl;
+package com.codesmither.project.htmltable.impl;
 
 import com.codesmither.engine.api.IModelBuilder;
 import com.codesmither.engine.api.IRootModel;
+import com.codesmither.project.base.ProjectConfig;
+import com.codesmither.project.base.api.TableSource;
 import com.codesmither.project.base.model.DatabaseJdbc;
 import com.codesmither.project.base.model.Model;
-import com.codesmither.project.database.HtmlTableConfig;
 
 /**
  *
@@ -12,10 +13,10 @@ import com.codesmither.project.database.HtmlTableConfig;
  */
 public class HtmlTableModelBuilder implements IModelBuilder {
 
-    private final HtmlTableConfig config;
-    private final HtmlTableSource source;
+    private final TableSource source;
+    private final ProjectConfig config;
 
-    public HtmlTableModelBuilder(HtmlTableConfig config, HtmlTableSource source) {
+    public HtmlTableModelBuilder(ProjectConfig config, TableSource source) {
         this.config = config;
         this.source = source;
     }
@@ -25,7 +26,7 @@ public class HtmlTableModelBuilder implements IModelBuilder {
         return build(config,source);
     }
 
-    private Model build(HtmlTableConfig config, HtmlTableSource source) throws Exception {
+    private Model build(ProjectConfig config, TableSource source) throws Exception {
         Model model = new Model();
         model.setAuthor(config.getTargetProjectAuthor());
         model.setCharset(config.getTargetCharset());

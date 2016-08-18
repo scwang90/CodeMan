@@ -1,4 +1,4 @@
-package com.codesmither.project.database.factory;
+package com.codesmither.project.htmltable.factory;
 
 import com.codesmither.project.base.api.DbFactory;
 import com.mchange.v2.c3p0.ComboPooledDataSource;

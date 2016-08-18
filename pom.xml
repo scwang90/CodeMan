@@ -7,74 +7,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<modules>
 		<module>smither-engine</module>
-		<module>smither-model-code</module>
-		<module>smither-code-model</module>
-		<module>smither-project-model</module>
 		<module>smither-project-database</module>
 		<module>smither-project-htmltable</module>
 		<module>smither-project-base</module>
+		<module>smither-apidoc</module>
 	</modules>
 
 	<dependencies>
-		<!--HTML解析-->
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.9.2</version>
-		</dependency>
 
-		<!-- 模板引擎 -->
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<version>2.3.20</version>
-		</dependency>
-
-		<!-- MySql -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.8</version>
-		</dependency>
-
-		<!-- Oracle -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.4.0</version>
-		</dependency>
-
-		<!-- sqlserver -->
-		<dependency>
-			<groupId>com.hynnet</groupId>
-			<artifactId>sqljdbc4-chs</artifactId>
-			<version>4.0.2206.100</version>
-		</dependency>
-
- 		<!--
- 		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>sqljdbc4</artifactId>
-			<version>4.0</version>
-		</dependency>
-		-->
-
-
-		<!-- sqlserver JDBC3.0 开源库 -->
-		<!--
-		<dependency>
-			<groupId>net.sourceforge.jtds</groupId>
-			<artifactId>jtds</artifactId>
-			<version>1.2.4</version>
-		</dependency>
-		-->
-
-		<!-- c3p0连接池 -->
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.codesmither.project.database</groupId>-->
+			<!--<artifactId>smither-project-database</artifactId>-->
+			<!--<version>0.0.1-SNAPSHOT</version>-->
+		<!--</dependency>-->
 
 		<!-- 测试 -->
 		<dependency>
