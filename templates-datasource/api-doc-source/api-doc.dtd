@@ -1,0 +1,33 @@
+<!ELEMENT service (module+,description?)>
+        <!ELEMENT module        (api+,description?)>
+        <!ELEMENT api           (param*,header*,body?,response?,description?)>
+        <!ELEMENT header        (#PCDATA,description?)>
+        <!ELEMENT param         (#PCDATA,description?)>
+        <!ELEMENT body          (#PCDATA)>
+        <!ELEMENT response      (#PCDATA,header*)>
+        <!ELEMENT description   (#PCDATA)>
+
+        <!ATTLIST service name CDATA #REQUIRED >
+        <!ATTLIST service basePath CDATA "http://">
+        <!ATTLIST service description CDATA "">
+
+        <!ATTLIST module name CDATA #REQUIRED >
+        <!ATTLIST module path CDATA "">
+        <!ATTLIST module description CDATA "">
+
+        <!ATTLIST api name CDATA #REQUIRED>
+        <!ATTLIST api path CDATA #REQUIRED>
+        <!ATTLIST api requestMethod (GET|POST|PUT|DELETE) #REQUIRED>
+        <!ATTLIST api description CDATA "">
+
+        <!ATTLIST header name CDATA #REQUIRED>
+        <!ATTLIST header type (string,int,float) #REQUIRED>
+        <!ATTLIST header nullable (false|true) false>
+
+        <!ATTLIST param name CDATA #REQUIRED>
+        <!ATTLIST param type (string,int,float) #REQUIRED>
+        <!ATTLIST param nullable (false|true) false>
+        <!ATTLIST param description CDATA "">
+
+        <!ATTLIST body contentType (JSON|FROM|XML|MULTIPART) #REQUIRED>
+        <!ATTLIST response contentType (JSON|FROM|XML|MULTIPART) #REQUIRED>

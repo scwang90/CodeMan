@@ -13,11 +13,20 @@
     <artifactId>smither-apidoc</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>com.codesmither.engine</groupId>
             <artifactId>smither-engine</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <!--HTML解析-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
+<service name="检测APP 服务接口" basePath="http://192.168.1.207/api/android.ashx">
+    <module name="全局通用">
+        <api name="用户登录" requestMethod="POST" path="?$c=Common&amp;$m=UserLogin">
+            <param name="UserNo" description="账户"/>
+            <param name="Password" description="密码"/>
+            <response contentType="JSON">
+                {
+                    ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
+                    ErrorMsg:"",
+                    Data:{
+                        String Id,
+                        String Name,
+                        int TitleCode,
+                        int Status,
+                        String HeadUrl,
+
+                        String Token,
+                        String OrgId,
+                        Authority{
+                            boolean Collect;    //是否有收样的权限,
+                            boolean Sample;     //是否有取样的权限,
+                            boolean Witness;    //是否有见证的权限,
+                            boolean Test;       //是否有测试的权限
+                        }
+                    }
+                }
+            </response>
+        </api>
+        <api name="图片上传" requestMethod="POST" path="?$c=Common&#38;$m=UploadImage">
+            <param name="infoType" description="固定为“样品”"/>
+            <param name="infoId" description="图片所属对象的ID"/>
+            <body contentType="MULTIPART">
+                图片二进制文件
+            </body>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+        <api name="删除图片" requestMethod="POST" path="?$c=Common&#38;$m=DeleteImage">
+            <param name="infoType" description="固定为“样品”"/>
+            <param name="infoId" description="图片所属对象的ID"/>
+            <description>用于部分图片上传失败而部分无法上传成功，并且用户选择取消提交任务的时候</description>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+    </module>
+    <module name="取样模块">
+        <api name="工程列表" requestMethod="POST" path="?$c=Base&amp;$m=GetProject">
+            <param name="pageSize" description="分页大小"/>
+            <param name="page" description="页数"/>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
+                ErrorMsg:"",
+                Data:[{
+                    String Id;//": "工程编号",
+                    String Name;//":"工程名称",
+                    String ChargePersonName;// ":"项目负责人姓名"
+                }...]
+                }
+            </response>
+        </api>
+        <api name="专业项目" requestMethod="POST" path="?$c=Sample&amp;$m=GetTestItemList">
+            <description>
+                提取检测专业及检测项目&#x000A;
+                注意：返回的数据是树形递归结构
+            </description>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
+                ErrorMsg:"",
+                Data:[{
+                Code: "1",
+                TestObjId :"",
+                Item : [{"Code": "001","TestObjId": "水泥","item":[...]}]
+                }...]
+                }
+            </response>
+        </api>
+        <api name="项目属性" requestMethod="POST" path="?$c=Sample&amp;$m=GetTestItemPropList">
+            <description>
+                提取检测项目属性，含初始值
+            </description>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
+                ErrorMsg:"",
+                Data:[{
+                    Id://"属性Id",
+                    AttributeName://"属性名称",
+                    Type://"属性类型。可选值：1文本型，2日期型，3选项型",
+                    IsRequired://是否必须,
+                    AttributeFieldName://对应字段名,
+                    Data:[{
+                        "Id":值ID,"AttrValue":值
+                },...]
+                }...]
+                }
+            </response>
+        </api>
+        <api name="提交取样" requestMethod="POST" path="?$c=Sample&amp;$m=SubmitSampleData">
+            <description>
+                提取检测项目属性，含初始值
+            </description>
+            <body contentType="JSON">
+                {
+                    "Signature":"" //登录用户ID,
+                    "Param":{
+                        PrjNo://"工程项目编号",
+                        OrgNo://"使用机构编号",
+                        UserNo://"使用人编号",
+                        TypeCode = 1://"检验类别（试件来源）代码" 固定为1,
+                        SamplePart://"工程部位",
+                        ProCode://"专业序号",
+                        ItemCode://"检测项目代码",
+                        Remark://页面多余项
+
+                        SampleData : [{ //样品信息
+                            TagType:    //"标识类别代码",
+                            TagNo:      //"标识编号",
+                            SampleNo:   //"样品编号",
+                            Lang:0.0f   //"使用地经度",
+                            Lat:0.0f    //"使用地纬度",
+                            Address:    //"使用地点",
+                            ImageUrl1:  //"样品图片地址1",
+                            ImageUrl2:  //"样品图片地址2",
+                            ImageUrl3:  //"样品图片地址3"
+                        }...]
+
+                        SampleParam : [{ //样品信息
+                            //动态内容，在 项目属性 接口中获得
+                        }...]
+
+                    }
+                }
+            </body>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+        <api name="取样扫码" requestMethod="POST" path="?$c=Tag&amp;$m=ValidTagNo">
+            <description>
+                提取检测项目属性，含初始值
+            </description>
+            <body contentType="JSON">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                    Action:"取样" // 固定为 "取样",
+                    TagNo:"" // 二维码扫描结果,
+                }
+                }
+            </body>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+    </module>
+    <module name="收样模块">
+        <api name="批量收样" requestMethod="POST" path="?$c=Sample&amp;$m=SubmitCollectData">
+            <body contentType="JSON">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                    TagType:    //"标识类别代码",
+                    TagNo:      //"标识编号",
+                    SampleNo:   //"样品编号",
+                    Lang:0.0f   //"使用地经度",
+                    Lat:0.0f    //"使用地纬度",
+                    Address:    //"使用地点",
+                    ImageUrl1:  //"样品图片地址1",
+                    ImageUrl2:  //"样品图片地址2",
+                    ImageUrl3:  //"样品图片地址3"
+                }
+                }
+            </body>
+            <response contentType="JSON">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:["",...] 失败的数据
+                }
+            </response>
+        </api>
+    </module>
+</service>

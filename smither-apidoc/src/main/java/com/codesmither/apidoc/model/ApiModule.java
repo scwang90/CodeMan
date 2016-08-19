@@ -8,9 +8,10 @@ import java.util.List;
  * APi 模块划分
  * Created by SCWANG on 2016/8/19.
  */
-public class ApiModule implements IModel {
+public class ApiModule extends HtmlModel implements IModel {
 
     private String name;
+    private String path;
     private String description;
     private List<Api> apis;
 
@@ -20,6 +21,14 @@ public class ApiModule implements IModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getDescription() {

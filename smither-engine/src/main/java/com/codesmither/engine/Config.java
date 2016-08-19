@@ -1,8 +1,10 @@
 package com.codesmither.engine;
 
+import com.codesmither.engine.api.EmptyFieldFiller;
 import com.codesmither.engine.api.IFileFilterFactory;
 import com.codesmither.engine.api.TaskLoader;
 import com.codesmither.engine.factory.DefaultFileFilterFactory;
+import com.codesmither.engine.impl.DefaultEmptyFieldFiller;
 import com.codesmither.engine.impl.DefaultTaskLoader;
 
 /**
@@ -18,6 +20,7 @@ public class Config {
     protected String targetCharset;
 
     protected transient TaskLoader taskLoader;
+    protected transient EmptyFieldFiller emptyFieldFiller;
     protected transient IFileFilterFactory fileFilterFactory;
 
     public String getTargetPath() {
@@ -68,12 +71,23 @@ public class Config {
         this.fileFilterFactory = fileFilterFactory;
     }
 
+    public EmptyFieldFiller getEmptyFieldFiller() {
+        return emptyFieldFiller;
+    }
+
+    public void setEmptyFieldFiller(EmptyFieldFiller emptyFieldFiller) {
+        this.emptyFieldFiller = emptyFieldFiller;
+    }
+
     public Config initEmptyFieldsWithDefaultValues() {
         if (taskLoader == null) {
             taskLoader = new DefaultTaskLoader();
         }
         if (fileFilterFactory == null) {
             fileFilterFactory = new DefaultFileFilterFactory();
+        }
+        if (emptyFieldFiller == null) {
+            emptyFieldFiller = new DefaultEmptyFieldFiller();
         }
         return this;
     }

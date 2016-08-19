@@ -4,7 +4,8 @@ package com.codesmither.apidoc.model;
  * Api 实体信息
  * Created by SCWANG on 2016/8/19.
  */
-public class ApiBody {
+@SuppressWarnings("unused")
+public class ApiBody extends HtmlModel {
     private String sample;
     private String contentType;
 

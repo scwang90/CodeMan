@@ -1,6 +1,6 @@
 package com.codesmither.apidoc.factory;
 
-import com.codesmither.apidoc.ApidocConfig;
+import com.codesmither.apidoc.XmlApidocConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,13 +12,16 @@ import java.util.Properties;
  */
 public class ConfigFactory {
 
-	public static ApidocConfig loadConfig(String path) throws IOException {
+	public static XmlApidocConfig loadConfig(String path) throws IOException {
 
 		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
 		Properties propty = new Properties();
 		propty.load(stream);
 
-		ApidocConfig config = new ApidocConfig();
+		XmlApidocConfig config = new XmlApidocConfig();
+
+		config.setXmlSourcePath(propty.getProperty("codesmither.xmlsource.path",config.getXmlSourcePath()));
+		config.setXmlSourceCharset(propty.getProperty("codesmither.xmlsource.charset",config.getXmlSourceCharset()));
 
 		config.setTemplatePath(propty.getProperty("codesmither.template.path",config.getTemplatePath()));
 		config.setTemplateCharset(propty.getProperty("codesmither.template.charset",config.getTemplateCharset()));

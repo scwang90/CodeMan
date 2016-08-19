@@ -42,9 +42,16 @@ public class TaskTransfer {
 
     public void prepareTask() throws Exception{
         if (rootModel == null) {
-            this.rootModel = modelBuilder.build();
+            this.rootModel = fillEmptyFields(modelBuilder.build());
             this.tasks = config.getTaskLoader().loadTask(templates, target, buildFilter(config));
         }
+    }
+
+    /**
+     * 填充空字段 防止发送异常
+     */
+    private IRootModel fillEmptyFields(IRootModel model) {
+        return config.getEmptyFieldFiller().fill(model);
     }
 
     public boolean hasTask() throws Exception {

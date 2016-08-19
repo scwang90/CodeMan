@@ -2,7 +2,6 @@ package com.codesmither.engine;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.sql.Connection;
 
 import com.codesmither.factory.C3P0Factory;
 import com.codesmither.factory.TableSourceFactory;
@@ -10,7 +9,6 @@ import com.codesmither.factory.api.DbFactory;
 import com.codesmither.kernel.*;
 import com.codesmither.kernel.api.Config;
 import com.codesmither.kernel.api.Converter;
-import com.codesmither.kernel.api.HtmlTableConfig;
 import com.codesmither.kernel.api.TableSource;
 import com.codesmither.model.Model;
 

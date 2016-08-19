@@ -1,7 +1,6 @@
 package com.codesmither.factory;
 
 import com.codesmither.kernel.api.Config;
-import com.codesmither.kernel.api.HtmlTableConfig;
 import com.codesmither.util.JacksonUtil;
 
 import java.io.IOException;
@@ -50,15 +49,4 @@ public class ConfigFactory {
 		return config;
 	}
 
-	public static HtmlTableConfig loadHtmlTableConfig(String path) throws IOException {
-
-		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
-		Properties propty = new Properties();
-		propty.load(stream);
-
-		HtmlTableConfig config = JacksonUtil.toObject(JacksonUtil.toJson(loadConfig(path)), HtmlTableConfig.class);
-		config.setHtmlTablePath(propty.getProperty("codesmither.htmltable.path",config.getDbConfigName()));
-		config.setHtmlTableCharset(propty.getProperty("codesmither.htmltable.charset",config.getDbConfigName()));
-		return config;
-	}
 }

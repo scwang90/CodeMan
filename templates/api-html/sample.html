@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="font-size: 16px;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>API文档</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
+
+    <link rel="icon" href="http://www.yunpian.com/favicon.ico">
+    <link rel="stylesheet" href="./res/reset.css">
+    <link rel="stylesheet" href="./res/index.css">
+    <link rel="stylesheet" href="./res/api.css">
+</head>
+<body>
+<header id="top" class="clearfix">
+    <div class="top clearfix">
+        <div class="logo">
+            <img src="./res/yunpian.png">
+        </div>
+        <nav class="top-nav">
+            <ul class="top-nav-ul item clearfix">
+                <li><a class="" href="#">首页</a></li>
+                <li class="p-r " id="yun_hover">
+                    <a class="" href="javascript:void(0);">产品</a>
+                </li>
+                <li class="mob-hide"><a class=" active " href="#">API 文档</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+<div id="tpl" class="main">
+    <nav class="apileft">
+
+        <h2 class="cos">
+            <a href="#" class=" item">账户API</a>
+            <ul class="sub-nav" >
+                <li><a id="a11" href="#">查看账户信息</a></li>
+                <li><a id="a22" href="#">修改账户信息</a></li>
+            </ul>
+        </h2>
+
+        <h2 class="cos">
+            <a href="#" class=" active  item">模板API</a>
+            <ul class="sub-nav" style="display: block;">
+                <li><a id="b22" href="#">添加模板</a></li>
+                <li><a id="b33" href="#">取模板</a></li>
+                <li><a id="b44" href="#">修改模板</a></li>
+                <li><a id="b55" href="#">删除模板</a></li>
+            </ul>
+        </h2>
+
+    </nav>
+    <div class="content">
+        <h2 class="page-title">模板API</h2>
+        <article class="doc">
+            <section class="one">
+                <h3 id="b2">1、添加模板</h3>
+                <code>
+                    URL：https://sms.yunpian.com/v1/tpl/add.json
+                </code>
+                <p>访问方式：POST </p>
+                <p>参数：</p>
+                <div class="can">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>参数名</th>
+                            <th>类型</th>
+                            <th>是否必须</th>
+                            <th>描述</th>
+                            <th>示例</th>
+                        </tr>
+                        <tr>
+                            <td>apikey</td>
+                            <td>String</td>
+                            <td>是</td>
+                            <td>用户唯一标识</td>
+                            <td>9b11127a9701975c734b8aee81ee3526</td>
+                        </tr>
+                        <tr>
+                            <td>tpl_content</td>
+                            <td>String</td>
+                            <td>是</td>
+                            <td>模板内容，必须以带符号【】的签名开头</td>
+                            <td>【云片网】您的验证码是#code#</td>
+                        </tr>
+                        <tr>
+                            <td>notify_type</td>
+                            <td>Integer</td>
+                            <td>否</td>
+                            <td>审核结果短信通知的方式:
+                                <br>0表示需要通知,默认;
+                                <br>1表示仅审核不通过时通知;
+                                <br>2表示仅审核通过时通知;
+                                <br>3表示不需要通知
+                            </td>
+                            <td>1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>调用成功的返回值示例：</p>
+                <pre><code>{
+                    "code": 0,
+                    "msg": "OK",
+                    "template": {
+                    "tpl_id": 1, //模板id
+                    "tpl_content": "【云片网】您的验证码是#code#", //模板内容
+                    "check_status": "CHECKING", //审核状态：CHECKING/SUCCESS/FAIL
+                    "reason": null //审核未通过的原因
+                    }
+                    }</code></pre>
+            </section>
+        </article>
+    </div>
+</div>
+
+</body>
+</html>

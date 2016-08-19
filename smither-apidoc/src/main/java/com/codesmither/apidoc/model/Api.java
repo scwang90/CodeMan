@@ -6,15 +6,17 @@ import java.util.List;
  * Api 基本信息
  * Created by SCWANG on 2016/8/19.
  */
-public class Api {
+@SuppressWarnings("unused")
+public class Api extends HtmlModel {
 
     private String name;
     private String path;
     private String description;
-    private List<ApiHeader> headers;
-    private List<ApiParam> params;
+    private String requestMethod = "POST";
     private ApiBody body;
     private ApiResponse response;
+    private List<ApiHeader> headers;
+    private List<ApiParam> params;
 
     public String getName() {
         return name;
@@ -38,6 +40,14 @@ public class Api {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRequestMethod() {
+        return requestMethod;
+    }
+
+    public void setRequestMethod(String requestMethod) {
+        this.requestMethod = requestMethod;
     }
 
     public List<ApiHeader> getHeaders() {
