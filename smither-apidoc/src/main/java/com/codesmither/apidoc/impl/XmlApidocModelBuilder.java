@@ -253,7 +253,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
     }
 
     private static String getHtml(Element description) {
-        return description.text().replace("\n","<br/>");//html().replace("&lt;","<").replace("&gt;",">").replace("&#10;","<br/>");
+        return description.text().replaceAll("(\\s*\\n)+","<br/>");//html().replace("&lt;","<").replace("&gt;",">").replace("&#10;","<br/>");
 //        Pattern pattern = Pattern.compile("^<[^>]+>((.*\\n?)*)</\\w+>$");
 //        Matcher matcher = pattern.matcher(description.toString());
 //        if (matcher.find()) {

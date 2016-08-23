@@ -9,19 +9,19 @@
             <![CDATA[
             本服务所有接口都已 Post 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
 
-            <b>发送-头部（Header）</b>：
+            <br/><b>发送-头部（Header）</b>：
                 主要用于保持登录 的 token，作用在于当Cookie和Session失效之后，继续生成新的Cookie
 
-            <b>发送-参数（Url）</b>：
+            <br/><b>发送-参数（Url）</b>：
                 目前用于发送分页参数 page（当前页数，0开始），pageSize（分页大小）
                 例如：url?page=1&amp;pageSize=20
 
-            <b>发送-实体（Body）</b>：
+            <br/><b>发送-实体（Body）</b>：
                 除了分页参数，一般其他数据都是以实体（Body）的Json格式发送，而且Json个最外层必须有 Signature 和 Param。
                 Signature 用于登录验证的备用字段，目前无实际用处，如果没有登录直接使用空字符串“”，如果登录，就使用用户ID
                 Param 才是发送参数的主要部分，具体内容根据具体接口来定。
 
-            <b>返回-实体（Body）</b>：Json
+            <br/><b>返回-实体（Body）</b>：Json
                 最外层格式都有 ResultCode，Data，ErrorMsg
                 ResultCode //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
                 Data //根据不同接口有不同的数据格式
