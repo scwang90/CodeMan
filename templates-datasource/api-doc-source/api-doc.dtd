@@ -4,10 +4,10 @@
         <!ELEMENT header            (#PCDATA,description?)>
         <!ELEMENT param             (#PCDATA,description?)>
         <!ELEMENT form              (#PCDATA,description?)>
-        <!ELEMENT body              (ANY)>
-        <!ELEMENT response          (ANY,header*)>
-        <!ELEMENT description       (#PCDATA,ANY)>
-        <!ELEMENT apidescription    (#PCDATA,ANY)>
+        <!ELEMENT body              (#PCDATA)>
+        <!ELEMENT response          (#PCDATA,header*)>
+        <!ELEMENT description       (#PCDATA)>
+        <!ELEMENT apidescription    (#PCDATA)>
 
         <!ATTLIST service name CDATA #REQUIRED >
         <!ATTLIST service basePath CDATA "http://">
