@@ -94,33 +94,39 @@ public class XmlApidocModelBuilder implements IModelBuilder {
 
     private List<Api> buildApis(Element module) {
         List<Api> apiList = new ArrayList<>();
-        Elements apis = module.select(">api");
+        Elements apis = module.select(">*");
         for (Element api : apis) {
             Api apiMpdel = new Api();
             apiMpdel.setName(api.attr("name"));
-            apiMpdel.setPath(api.attr("path"));
-            apiMpdel.setDescription(api.attr("description"));
-            apiMpdel.setRequestMethod(api.attr("requestMethod"));
 
-            Element description = api.select(">description").first();
-            if (description != null) {
-                apiMpdel.setDescription(getHtml(description));
+            if ("api".equals(api.tag().getName())) {
+                apiMpdel.setPath(api.attr("path"));
+                apiMpdel.setDescription(api.attr("description"));
+                apiMpdel.setRequestMethod(api.attr("requestMethod"));
+
+                Element description = api.select(">description").first();
+                if (description != null) {
+                    apiMpdel.setDescription(getHtml(description));
+                }
+                apiMpdel.setBody(buildBody(api));
+                apiMpdel.setResponse(buildResponse(api));
+                apiMpdel.setHeaders(buildHeaders(api));
+                apiMpdel.setParams(buildParams(api));
+                apiMpdel.setForms(buildForms(api));
+            } else if ("apidescription".equals(api.tag().getName())) {
+                apiMpdel.setDescription(getHtml(api));
             }
-            apiMpdel.setBody(buildBody(api));
-            apiMpdel.setResponse(buildResponse(api));
-            apiMpdel.setHeaders(buildHeaders(api));
-            apiMpdel.setParams(buildParams(api));
-            apiMpdel.setForms(buildForms(api));
 
             apiList.add(apiMpdel);
         }
-        Elements apidescriptions = module.select(">apidescription");
-        for (Element apidescription : apidescriptions) {
-            Api apiMpdel = new Api();
-            apiMpdel.setName(apidescription.attr("name"));
-            apiMpdel.setDescription(getHtml(apidescription));
-            apiList.add(apiMpdel);
-        }
+
+//        Elements apidescriptions = module.select(">apidescription");
+//        for (Element apidescription : apidescriptions) {
+//            Api apiMpdel = new Api();
+//            apiMpdel.setName(apidescription.attr("name"));
+//            apiMpdel.setDescription(getHtml(apidescription));
+//            apiList.add(apiMpdel);
+//        }
 
         return apiList;
     }
@@ -222,7 +228,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
     }
 
     private static String getHtml(Element description) {
-        return description.text();//html().replace("&lt;","<").replace("&gt;",">").replace("&#10;","<br/>");
+        return description.text().replace("\n","<br/>");//html().replace("&lt;","<").replace("&gt;",">").replace("&#10;","<br/>");
 //        Pattern pattern = Pattern.compile("^<[^>]+>((.*\\n?)*)</\\w+>$");
 //        Matcher matcher = pattern.matcher(description.toString());
 //        if (matcher.find()) {

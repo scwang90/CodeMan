@@ -64,7 +64,7 @@
                 <div class="frame">
                     <h3>${api?counter}、${api.name}</h3>
                     <#if api.description?? && (api.description?length > 0)>
-                        <p>${api.description?esc}</p>
+                        <p>${api.description}</p>
                     </#if>
                     <#if api.path?? && (api.path?length > 0)>
                         <p><b>接口链接</b></p>

@@ -4,26 +4,26 @@
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
-    <module name="项目说明">
+    <module name="接口说明">
         <apidescription name="接口访问">
-            本服务所有接口都已 Post &#10; &#x000A; 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
-            &#x000A;
-            &lt;b&gt;发送-头部（Header）&lt;/b&gt;：&#x000A;
+            本服务所有接口都已 Post 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
+
+            &lt;b&gt;发送-头部（Header）&lt;/b&gt;：
                 主要用于保持登录 的 token，作用在于当Cookie和Session失效之后，继续生成新的Cookie
-            &#x000A;
-            &lt;b&gt;发送-参数（Url）&lt;/b&gt;：&#x000A;
+
+            &lt;b&gt;发送-参数（Url）&lt;/b&gt;：
                 目前用于发送分页参数 page（当前页数，0开始），pageSize（分页大小）
                 例如：url?page=1&amp;pageSize=20
-            &#x000A;
-            &lt;b&gt;发送-实体（Body）&lt;/b&gt;：&#x000A;
-                除了分页参数，一般其他数据都是以实体（Body）的Json格式发送，而且Json个最外层必须有 Signature 和 Param。&#x000A;
-                Signature 用于登录验证的备用字段，目前无实际用处，如果没有登录直接使用空字符串“”，如果登录，就使用用户ID&#x000A;
+
+            &lt;b&gt;发送-实体（Body）&lt;/b&gt;：
+                除了分页参数，一般其他数据都是以实体（Body）的Json格式发送，而且Json个最外层必须有 Signature 和 Param。
+                Signature 用于登录验证的备用字段，目前无实际用处，如果没有登录直接使用空字符串“”，如果登录，就使用用户ID
                 Param 才是发送参数的主要部分，具体内容根据具体接口来定。
-            &#x000A;
-            &lt;b&gt;返回-实体（Body）&lt;/b&gt;：Json&#x000A;
-                最外层格式都有 ResultCode，Data，ErrorMsg &#x000A;
-                ResultCode //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,&#x000A;
-                Data //根据不同接口有不同的数据格式&#x000A;
+
+            &lt;b&gt;返回-实体（Body）&lt;/b&gt;：Json
+                最外层格式都有 ResultCode，Data，ErrorMsg
+                ResultCode //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                Data //根据不同接口有不同的数据格式
                 ErrorMsg //字符串格式，如：密码错误
         </apidescription>
         <apidescription name="登录保持">
@@ -34,6 +34,12 @@
         </apidescription>
     </module>
     <module name="全局通用">
+        <apidescription name="登录保持">
+            调用登录接口之后，服务器会返回一个 Set-Cookie ，客户端必须把 Cookie 保存下来，在之后的接口中发送到服务器，才能保持
+            登录会话。&#x000A;
+            由于 Cookie 和 Session 会在短时间内过期，客户端也必须保存下 服务站在登录接口中返回的 Token ，之后一起发送到服务器，
+            可以在 Session 过期的时候继续创建新的 Cookie。
+        </apidescription>
         <api name="用户登录" requestMethod="POST" path="?$c=Common&amp;$m=UserLogin$OPEN">
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
