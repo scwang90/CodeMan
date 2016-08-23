@@ -1,0 +1,85 @@
+@font-face {
+	font-family: 'icomoon';
+	src: url('icomoon.eot');
+	src: url('icomoon.eot?#iefix') format('embedded-opentype'),
+		url('icomoon.svg#icomoon') format('svg'),
+		url('icomoon.woff') format('woff'),
+		url('icomoon.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+	font-family: 'icomoon';
+	content: attr(data-icon);
+	speak: none;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+[class^="icon-"]:before, [class*=" icon-"]:before {
+	font-family: 'icomoon';
+	font-style: normal;
+	speak: none;
+}
+
+.icon-home:before {
+	content: "\21";
+}
+.icon-newspaper:before {
+	content: "\23";
+}
+.icon-home-2:before {
+	content: "\22";
+}
+.icon-home-3:before {
+	content: "\24";
+}
+.icon-pencil:before {
+	content: "\25";
+}
+.icon-pencil-2:before {
+	content: "\26";
+}
+.icon-droplet:before {
+	content: "\27";
+}
+.icon-picture:before {
+	content: "\28";
+}
+.icon-picture-2:before {
+	content: "\29";
+}
+.icon-camera:before {
+	content: "\2a";
+}
+.icon-music:before {
+	content: "\2b";
+}
+.icon-play:before {
+	content: "\2c";
+}
+.icon-film:before {
+	content: "\2d";
+}
+.icon-camera-2:before {
+	content: "\2e";
+}
+.icon-spades:before {
+	content: "\2f";
+}
+.icon-clubs:before {
+	content: "\30";
+}
+.icon-diamonds:before {
+	content: "\31";
+}
+.icon-broadcast:before {
+	content: "\32";
+}
+.icon-microphone:before {
+	content: "\33";
+}
+.icon-book:before {
+	content: "\34";
+}

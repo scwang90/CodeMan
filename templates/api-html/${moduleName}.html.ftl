@@ -5,20 +5,19 @@
     <title>${name}</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
-
+<#--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">-->
     <link rel="icon" href="http://www.yunpian.com/favicon.ico">
     <link rel="stylesheet" href="./res/reset.css">
     <link rel="stylesheet" href="./res/index.css">
     <link rel="stylesheet" href="./res/api.css">
+    <style>
+        .apileft ul li .selected {
+            background-color: #0000;
+            color: #3286c1;
+            font-weight: bold;
+        }
+    </style>
 </head>
-
-<#macro single_line>
-    <@compress single_line=true>
-    <#nested>
-    </@compress>
-</#macro>
-
 <body>
 <header id="top" class="clearfix">
     <div class="top clearfix">
@@ -27,7 +26,7 @@
         </div>
         <nav class="top-nav">
             <ul class="top-nav-ul item clearfix">
-                <li><a class="" href="#">首页</a></li>
+                <li><a class="" href="index.html">首页</a></li>
                 <li class="p-r " id="yun_hover">
                     <a class="" href="javascript:void(0);">产品</a>
                 </li>
@@ -40,77 +39,125 @@
 
 <div id="tpl" class="main">
     <nav class="apileft">
-
-        <#list modules as module>
-            <h2 class="cos">
-                <@single_line><a href="${module.name}.html" class="item
-                    <#if module.name==moduleName>
-                        active
-                    </#if>
-                ">${module.name}</a>
-                </@single_line>
-
-                <@single_line><ul class="sub-nav"
-                    <#if module.name==moduleName>
-                        style="display: block;"
-                    </#if>
-                >
-                </@single_line>
-
+    <#list modules as module>
+        <h2 class="cos">
+            <a href="${module.name}.html"
+               class="item ${(module.name==moduleName)?string("active","")}">${module.name}</a>
+            <ul class="sub-nav" ${(module.name==moduleName)?string("style='display: block;'","")}>
                 <#list module.apis as api>
-                    <li><a href="#${api.id}">${api.name}</a></li>
+                    <li><a href="javascript:void(0)" id="${api.id}">${api.name}</a></li>
                 </#list>
-                </ul>
-            </h2>
-        </#list>
+            </ul>
+        </h2>
+    </#list>
     </nav>
     <div class="content">
-        <h2 class="page-title">${moduleName}</h2>
         <article class="doc">
             <section class="one">
-                <#list module.apis as api>
-                <h3 id="${api.id}">${api_index+1}、${api.name}</h3>
-                    <br/>
-                <#if api.description?? && (api.description?length > 0)>
-                    <p>${api.description}</p>
-                </#if>
-                <code>
-                ${api.requestMethod}：${basePath}${module.path}${api.path}
-                </code>
-                <#if api.params?? && (api.params?size > 0) >
-                <p>参数：</p>
-                <div class="can">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <th>参数名</th>
-                            <th>类型</th>
-                            <th>是否必须</th>
-                            <th>描述</th>
-                            <th>示例</th>
-                        </tr>
-                        <#list api.params as param>
-                        <tr>
-                            <td>${param.name}</td>
-                            <td>${param.type}</td>
-                            <td><#if !param.nullable>是</#if></td>
-                            <td>${param.description}</td>
-                            <td>${param.sample}</td>
-                        </tr>
-                        </#list>
-                        </tbody>
-                    </table>
+            <#if module.description?? && (module.description?length > 0)>
+                <h3>${moduleName}</h3>
+                <p>${module.description}</p>
+            </#if>
+
+            <#list module.apis as api>
+            <div id="${api.id}" class="api-div">
+                <div class="frame">
+                    <h3>${api?counter}、${api.name}</h3>
+                    <#if api.description?? && (api.description?length > 0)>
+                        <p>${api.description?esc}</p>
+                    </#if>
+                    <#if api.path?? && (api.path?length > 0)>
+                        <p><b>接口链接</b></p>
+                        <code>
+                        ${api.requestMethod}：${basePath}${module.path}${api.path}
+                        </code>
+                    </#if>
+                    <#if api.headers?? && (api.headers?size > 0) >
+                        <p><b>头部（Header）：</b></p>
+                        <div class="can">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <th>参数名</th>
+                                    <th>类型</th>
+                                    <th>是否必须</th>
+                                    <th>描述</th>
+                                    <th>示例</th>
+                                </tr>
+                                    <#list api.headers as header>
+                                    <tr>
+                                        <td>${header.name}</td>
+                                        <td>${header.type}</td>
+                                        <td><#if !header.nullable>是</#if></td>
+                                        <td>${header.description}</td>
+                                        <td>${header.sample}</td>
+                                    </tr>
+                                    </#list>
+                                </tbody>
+                            </table>
+                        </div>
+                    </#if>
+                    <#if api.params?? && (api.params?size > 0) >
+                        <p><b>参数（Url）：</b></p>
+                        <div class="can">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <th>参数名</th>
+                                    <th>类型</th>
+                                    <th>是否必须</th>
+                                    <th>描述</th>
+                                    <th>示例</th>
+                                </tr>
+                                    <#list api.params as param>
+                                    <tr>
+                                        <td>${param.name}</td>
+                                        <td>${param.type}</td>
+                                        <td><#if !param.nullable>是</#if></td>
+                                        <td>${param.description}</td>
+                                        <td>${param.sample}</td>
+                                    </tr>
+                                    </#list>
+                                </tbody>
+                            </table>
+                        </div>
+                    </#if>
+                    <#if api.forms?? && (api.forms?size > 0) >
+                        <p><b>表单(Form) ：</b></p>
+                        <div class="can">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <th>参数名</th>
+                                    <th>类型</th>
+                                    <th>是否必须</th>
+                                    <th>描述</th>
+                                    <th>示例</th>
+                                </tr>
+                                    <#list api.forms as form>
+                                    <tr>
+                                        <td>${form.name}</td>
+                                        <td>${form.type}</td>
+                                        <td><#if !form.nullable>是</#if></td>
+                                        <td>${form.description}</td>
+                                        <td>${form.sample}</td>
+                                    </tr>
+                                    </#list>
+                                </tbody>
+                            </table>
+                        </div>
+                    </#if>
+                    <#if api.body?? && api.body.sample??>
+                        <p><b>Body数据：【${api.body.contentType}】</b></p>
+                        <pre><code>${api.body.sample}</code></pre>
+                    </#if>
+                    <#if api.response?? && api.response.sample??>
+                        <p><b>调用成功的返回值示例：【${api.response.contentType}】</b></p>
+                        <pre><code>${api.response.sample}</code></pre>
+                    </#if>
                 </div>
-                </#if>
-                <#if api.body?? && api.body.sample??>
-                    <p>Body数据：【${api.body.contentType}】</p>
-                    <pre><code>${api.body.sample}</code></pre>
-                </#if>
-                <#if api.response?? && api.response.sample??>
-                    <p>调用成功的返回值示例：【${api.response.contentType}】</p>
-                    <pre><code>${api.response.sample}</code></pre>
-                </#if>
-                </#list>
+            </#list>
+            </div>
             </section>
         </article>
     </div>
@@ -120,6 +167,17 @@
     (function ($) {
         $('nav.apileft').find('.item.active').hover(function () {
             $(this).css({'background': '#3286c1', 'color': '#fff'});
+        });
+        $("nav.apileft li>a").click(function () {
+            $("nav.apileft li>a").removeClass("selected");
+            var id = $(this).addClass("selected").attr('id');
+            $(".api-div").each(function () {
+                if ($(this).attr('id') == id) {
+                    $(this).find("div.frame").show();
+                } else {
+                    $(this).find("div.frame").hide();
+                }
+            });
         });
     })(jQuery);
 </script>

@@ -2,6 +2,7 @@ package com.codesmither.engine;
 
 import com.codesmither.engine.api.*;
 import com.codesmither.engine.factory.FreemarkerFactory;
+import com.codesmither.engine.impl.DefaultModelToMap;
 import com.codesmither.engine.util.FileUtil;
 import com.codesmither.engine.util.Reflecter;
 import freemarker.template.Template;
@@ -54,6 +55,10 @@ public class TaskTransfer {
         return config.getEmptyFieldFiller().fill(model);
     }
 
+    private IRootModel modelToMap(IRootModel model) {
+        return DefaultModelToMap.modelToMap(model);
+    }
+
     public boolean hasTask() throws Exception {
         checkPrepareTask("hasTask");
         return itask < tasks.size();
@@ -98,7 +103,7 @@ public class TaskTransfer {
             log.append(outpath);
             log.append("\r\n");
             FileInputStream inputStream = new FileInputStream(task.getTemplateFile());
-            FileOutputStream outputStream = new FileOutputStream(new File(outpath));
+            FileOutputStream outputStream = new FileOutputStream(checkpath(new File(outpath)));
             byte[] bytes = new byte[inputStream.available()];
             if (inputStream.read(bytes) > 0) {
                 outputStream.write(bytes);
@@ -133,14 +138,19 @@ public class TaskTransfer {
     }
 
     private Writer getFileWriter(File file) throws IOException{
-        File path = file.getParentFile();
-        if (!path.exists() && !path.mkdirs()) {
-            throw new RuntimeException("创建目标目录失败："+path);
-        }
+        checkpath(file);
         String charset = config.getTargetCharset();
         if (charset != null && charset.trim().length() > 0) {
             return new OutputStreamWriter(new FileOutputStream(file),charset);
         }
         return new FileWriter(file);
+    }
+
+    private File checkpath(File file) {
+        File path = file.getParentFile();
+        if (!path.exists() && !path.mkdirs()) {
+            throw new RuntimeException("创建目标目录失败："+path);
+        }
+        return file;
     }
 }

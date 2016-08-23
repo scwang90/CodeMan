@@ -6,10 +6,7 @@ import com.codesmither.engine.util.Reflecter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 默认空字段填充器
@@ -24,6 +21,9 @@ public class DefaultEmptyFieldFiller implements EmptyFieldFiller {
     }
 
     private void fill(Object model) {
+        if (model instanceof Map) {
+            return;
+        }
         Field[] fields = Reflecter.getField(model.getClass());
         for (Field field : fields) {
             if (!Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()) && !field.getName().startsWith("this$")) {

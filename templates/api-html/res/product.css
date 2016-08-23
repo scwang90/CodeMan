@@ -1,0 +1,85 @@
+.banner {
+	width: 100%;
+	height: 377px
+}
+
+.pro-btm {
+	background: #fff
+}
+
+.pro-btm .content {
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 20px;
+	text-align: center;
+	color: #585858;
+}
+
+.pro-btm .content img {
+	width: 125px
+}
+
+.pro-btm .content h3 {
+	font-size: 16px;
+	padding: 10px 0
+}
+
+.pro-btm .item {
+	margin-top: 50px;
+	display: inline-block ;
+	width: 28%;
+	margin-right: 5%;
+	min-width: 130px;
+}
+
+.pro-btm .item-last {
+	margin-right: 0
+}
+
+#phoneGprs .content {
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 20px;
+	text-align: center;
+	color: #465cb9
+}
+
+#phoneGprs .content h2 {
+	font-size: 20px
+}
+
+#phoneGprs .content p {
+	padding: 20px 0 40px
+}
+
+#phoneGprs .content img {
+	width: 572px
+}
+
+#phoneGprs .banner {
+	height: 390px;
+	background: #44b9c2 url(../res/gprs-banner.jpg?t=1) center no-repeat;
+	background-size: cover
+}
+
+#phoneGprs .stream {
+	display: inline-block;
+	margin-left: 15%;
+	margin-top: 45px;
+	color: #fff
+}
+
+#phoneGprs .stream h1 {
+	margin-bottom: 26px;
+	font-size: 44px;
+	font-weight: bold
+}
+
+#phoneGprs .stream .p2 {
+	font-size: 22px;
+	padding: 0 0 8px 0px
+}
+
+#phoneGprs .fullheight {
+	height: auto
+}

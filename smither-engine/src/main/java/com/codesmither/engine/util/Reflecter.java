@@ -518,6 +518,7 @@ public class Reflecter {
 
     public static <T> Object doStaticMethod(Class<?> type, Method method, Object... args) {
         try {
+            method.setAccessible(true);
             return method.invoke(type, args);
         } catch (Throwable e) {
             e.printStackTrace();

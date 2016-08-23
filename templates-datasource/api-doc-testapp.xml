@@ -1,11 +1,55 @@
 <?xml version="1.0"?>
 <!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
-<service name="检测APP 服务接口" basePath="http://192.168.1.207/api/android.ashx">
+<service name="检测APP 服务接口" basePath="http://192.168.1.207:8090/api/android.ashx">
+    <description>
+        接入简单、异常监控&#x000A; 完善的机制、丰富的接口
+    </description>
+    <module name="项目说明">
+        <apidescription name="接口访问">
+            本服务所有接口都已 Post &#10; &#x000A; 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
+            &#x000A;
+            &lt;b&gt;发送-头部（Header）&lt;/b&gt;：&#x000A;
+                主要用于保持登录 的 token，作用在于当Cookie和Session失效之后，继续生成新的Cookie
+            &#x000A;
+            &lt;b&gt;发送-参数（Url）&lt;/b&gt;：&#x000A;
+                目前用于发送分页参数 page（当前页数，0开始），pageSize（分页大小）
+                例如：url?page=1&amp;pageSize=20
+            &#x000A;
+            &lt;b&gt;发送-实体（Body）&lt;/b&gt;：&#x000A;
+                除了分页参数，一般其他数据都是以实体（Body）的Json格式发送，而且Json个最外层必须有 Signature 和 Param。&#x000A;
+                Signature 用于登录验证的备用字段，目前无实际用处，如果没有登录直接使用空字符串“”，如果登录，就使用用户ID&#x000A;
+                Param 才是发送参数的主要部分，具体内容根据具体接口来定。
+            &#x000A;
+            &lt;b&gt;返回-实体（Body）&lt;/b&gt;：Json&#x000A;
+                最外层格式都有 ResultCode，Data，ErrorMsg &#x000A;
+                ResultCode //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,&#x000A;
+                Data //根据不同接口有不同的数据格式&#x000A;
+                ErrorMsg //字符串格式，如：密码错误
+        </apidescription>
+        <apidescription name="登录保持">
+            调用登录接口之后，服务器会返回一个 Set-Cookie ，客户端必须把 Cookie 保存下来，在之后的接口中发送到服务器，才能保持
+            登录会话。&#x000A;
+            由于 Cookie 和 Session 会在短时间内过期，客户端也必须保存下 服务站在登录接口中返回的 Token ，之后一起发送到服务器，
+            可以在 Session 过期的时候继续创建新的 Cookie。
+        </apidescription>
+    </module>
     <module name="全局通用">
-        <api name="用户登录" requestMethod="POST" path="?$c=Common&amp;$m=UserLogin">
-            <param name="UserNo" description="账户"/>
-            <param name="Password" description="密码"/>
-            <response contentType="JSON">
+        <api name="用户登录" requestMethod="POST" path="?$c=Common&amp;$m=UserLogin$OPEN">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <!--<param name="UserNo" description="账户" type="string"/>-->
+            <!--<param name="Password" description="密码（未加密）" type="string"/>-->
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                UserNo:        //"账户",
+                Password:      //"密码（未加密）"
+                }
+                }
+            </body>
+            <response contentType="Json">
                 {
                     ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
                     ErrorMsg:"",
@@ -16,7 +60,7 @@
                         int Status,
                         String HeadUrl,
 
-                        String Token,
+                        String Token;           //要保存下载，在登录之后的所有接口的头部都要加上这个参数
                         String OrgId,
                         Authority{
                             boolean Collect;    //是否有收样的权限,
@@ -29,12 +73,13 @@
             </response>
         </api>
         <api name="图片上传" requestMethod="POST" path="?$c=Common&#38;$m=UploadImage">
-            <param name="infoType" description="固定为“样品”"/>
-            <param name="infoId" description="图片所属对象的ID"/>
-            <body contentType="MULTIPART">
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+            <param name="infoType" description="固定为“样品”" type="string"/>
+            <param name="infoId" description="图片所属对象的ID" type="string"/>
+            <body contentType="Multipart">
                 图片二进制文件
             </body>
-            <response contentType="JSON">
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
                 ErrorMsg:"",
@@ -43,10 +88,11 @@
             </response>
         </api>
         <api name="删除图片" requestMethod="POST" path="?$c=Common&#38;$m=DeleteImage">
-            <param name="infoType" description="固定为“样品”"/>
-            <param name="infoId" description="图片所属对象的ID"/>
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+            <param name="infoType" description="固定为“样品”" type="string"/>
+            <param name="infoId" description="图片所属对象的ID" type="string"/>
             <description>用于部分图片上传失败而部分无法上传成功，并且用户选择取消提交任务的时候</description>
-            <response contentType="JSON">
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
                 ErrorMsg:"",
@@ -57,9 +103,10 @@
     </module>
     <module name="取样模块">
         <api name="工程列表" requestMethod="POST" path="?$c=Base&amp;$m=GetProject">
-            <param name="pageSize" description="分页大小"/>
-            <param name="page" description="页数"/>
-            <response contentType="JSON">
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
                 ErrorMsg:"",
@@ -72,11 +119,12 @@
             </response>
         </api>
         <api name="专业项目" requestMethod="POST" path="?$c=Sample&amp;$m=GetTestItemList">
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
                 提取检测专业及检测项目&#x000A;
                 注意：返回的数据是树形递归结构
             </description>
-            <response contentType="JSON">
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
                 ErrorMsg:"",
@@ -89,10 +137,11 @@
             </response>
         </api>
         <api name="项目属性" requestMethod="POST" path="?$c=Sample&amp;$m=GetTestItemPropList">
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
                 提取检测项目属性，含初始值
             </description>
-            <response contentType="JSON">
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
                 ErrorMsg:"",
@@ -110,10 +159,11 @@
             </response>
         </api>
         <api name="提交取样" requestMethod="POST" path="?$c=Sample&amp;$m=SubmitSampleData">
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
                 提取检测项目属性，含初始值
             </description>
-            <body contentType="JSON">
+            <body contentType="Json">
                 {
                     "Signature":"" //登录用户ID,
                     "Param":{
@@ -145,7 +195,7 @@
                     }
                 }
             </body>
-            <response contentType="JSON">
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
                 ErrorMsg:"",
@@ -154,10 +204,11 @@
             </response>
         </api>
         <api name="取样扫码" requestMethod="POST" path="?$c=Tag&amp;$m=ValidTagNo">
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
                 提取检测项目属性，含初始值
             </description>
-            <body contentType="JSON">
+            <body contentType="Json">
                 {
                 "Signature":"" //登录用户ID,
                 "Param":{
@@ -166,7 +217,7 @@
                 }
                 }
             </body>
-            <response contentType="JSON">
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
                 ErrorMsg:"",
@@ -177,7 +228,11 @@
     </module>
     <module name="收样模块">
         <api name="批量收样" requestMethod="POST" path="?$c=Sample&amp;$m=SubmitCollectData">
-            <body contentType="JSON">
+            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+            <description>
+                批量收样主要是批量扫描二维码（手机不做验证），然后批量提交到服务器（验证并记录），服务器将返回失败的条目，如果没有返回则全部成功
+            </description>
+            <body contentType="Json">
                 {
                 "Signature":"" //登录用户ID,
                 "Param":{
@@ -193,13 +248,15 @@
                 }
                 }
             </body>
-            <response contentType="JSON">
+            <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
                 ErrorMsg:"",
                 Data:["",...] 失败的数据
                 }
             </response>
+        </api>
+        <api name="" path="" requestMethod="GET">
         </api>
     </module>
 </service>

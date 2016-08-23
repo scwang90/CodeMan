@@ -1,11 +1,13 @@
 <!ELEMENT service (module+,description?)>
-        <!ELEMENT module        (api+,description?)>
-        <!ELEMENT api           (param*,header*,body?,response?,description?)>
-        <!ELEMENT header        (#PCDATA,description?)>
-        <!ELEMENT param         (#PCDATA,description?)>
-        <!ELEMENT body          (#PCDATA)>
-        <!ELEMENT response      (#PCDATA,header*)>
-        <!ELEMENT description   (#PCDATA)>
+        <!ELEMENT module            (api*,apidescription*,description?)>
+        <!ELEMENT api               (param*,header*,form*,body?,response?,description?)>
+        <!ELEMENT header            (#PCDATA,description?)>
+        <!ELEMENT param             (#PCDATA,description?)>
+        <!ELEMENT form              (#PCDATA,description?)>
+        <!ELEMENT body              (#PCDATA)>
+        <!ELEMENT response          (#PCDATA,header*)>
+        <!ELEMENT description       (#PCDATA)>
+        <!ELEMENT apidescription    (#PCDATA)>
 
         <!ATTLIST service name CDATA #REQUIRED >
         <!ATTLIST service basePath CDATA "http://">
@@ -20,14 +22,22 @@
         <!ATTLIST api requestMethod (GET|POST|PUT|DELETE) #REQUIRED>
         <!ATTLIST api description CDATA "">
 
+        <!ATTLIST apidescription name CDATA #REQUIRED>
+
         <!ATTLIST header name CDATA #REQUIRED>
-        <!ATTLIST header type (string,int,float) #REQUIRED>
+        <!ATTLIST header type (string|int|float) #REQUIRED>
         <!ATTLIST header nullable (false|true) false>
+        <!ATTLIST header description CDATA "">
 
         <!ATTLIST param name CDATA #REQUIRED>
-        <!ATTLIST param type (string,int,float) #REQUIRED>
+        <!ATTLIST param type (string|int|float) #REQUIRED>
         <!ATTLIST param nullable (false|true) false>
         <!ATTLIST param description CDATA "">
 
-        <!ATTLIST body contentType (JSON|FROM|XML|MULTIPART) #REQUIRED>
-        <!ATTLIST response contentType (JSON|FROM|XML|MULTIPART) #REQUIRED>
+        <!ATTLIST form name CDATA #REQUIRED>
+        <!ATTLIST form type (string|int|float) #REQUIRED>
+        <!ATTLIST form nullable (false|true) false>
+        <!ATTLIST form description CDATA "">
+
+        <!ATTLIST body contentType (Json|Form|XML|Multipart) #REQUIRED>
+        <!ATTLIST response contentType (Json|Form|XML|Multipart) #REQUIRED>

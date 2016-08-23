@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://www.yunpian.com/product-flow.html -->
+<html lang="zh-CN" style="font-size: 16px;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>${name}</title>
+
+    <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">-->
+    <link rel="icon" href="http://www.yunpian.com/favicon.ico">
+    <link rel="stylesheet" href="./res/reset.css">
+    <link rel="stylesheet" href="./res/index.css">
+    <link rel="stylesheet" href="./res/product.css">
+    <link rel="stylesheet" type="text/css" href="fonts/style.css"/>
+
+    <style>
+        #phoneGprs .banner .stream p {
+            max-width: 400px;
+        }
+
+        .pro-btm .item{
+            width: 20%;
+            margin-right: 9%;
+        }
+
+        .item .back {
+            margin: 0 auto;
+            width: 130px;
+            height: 130px;
+            background-color: #3386C0;
+            border-radius: 65px;
+            vertical-align: middle
+        }
+
+        .item .icon {
+            vertical-align: middle;
+            padding-top: 20px;
+        }
+
+        .item span {
+            margin-top: 25px;
+            padding-top: 25px;
+            font-size: 70px;
+            color: white;
+            vertical-align: middle
+        }
+    </style>
+</head>
+<header id="top" class="clearfix">
+    <div class="top clearfix">
+        <div class="logo">
+            <a href="http://www.yunpian.com/">
+                <img src="./res/yunpian.png">
+            </a>
+        </div>
+        <nav class="top-nav">
+            <ul class="top-nav-ul item clearfix">
+                <li><a class="" href="http://www.yunpian.com/">首页</a></li>
+                <li class="p-r " id="yun_hover">
+                    <a class="" href="javascript:void(0);">产品</a>
+                </li>
+                <li class="mob-hide">
+                    <a class="" href="http://www.yunpian.com/api2.0/howto.html">API 文档</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<div id="phoneGprs">
+    <div class="banner">
+        <div>&nbsp;</div>
+        <div class="stream">
+            <h1>${name}</h1>
+            <p class="p2">${description}</p>
+        </div>
+    </div>
+</div>
+<section class="pro-btm">
+    <div class="content clearfix">
+
+        <#assign last = .now?string('SSS')?number/>
+        last=${last}   ${.now?string('YYY-MM-dd HH:mm:ss:SSS')}
+        <#function random min max>
+            <#assign last = (last * 127 + 253) % 32767/>
+            <#return min + (last?abs) % max>
+        </#function>
+
+        <#assign icons= ["home", "newspaper", "home-2", "home-3", "pencil", "pencil-2", "droplet", "picture", "picture-2", "camera", "camera-2", "music", "play", "film", "spades", "clubs", "diamonds","broadcast","microphone","book"]/>
+        <#assign colors= ["darkorchid","cadetblue","goldenrod","darkviolet","palevioletred","peru","darkcyan","chocolate","darkgreen","darkslateblue"]/>
+
+        <!--<#assign round= "com.codesmither.engine.impl.DefaultRandomMethod">-->
+        <#list modules as module>
+            <a class='item ${module_has_next?string("","item-last")}' href="${module.name}.html">
+                <!--<img src="./res/pro1.png" alt="安全">-->
+                <#assign ics = random(0, colors?size)/>
+                ics=${ics}
+                <div class="back" style="background-color:${colors[ics]!0};">
+                    <#assign ins = random(0, icons?size)/>
+                    ins=${ins}
+                    <div class="icon">
+                        <span aria-hidden="true" class="icon-${icons[ins]!0}"></span>
+                    </div>
+                </div>
+                <h3>${module.name}</h3>
+                <p>${module.description?html}</p>
+            </a>
+        </#list>
+    </div>
+</section>
+</div>
+</div>
+<script type="text/javascript" src="./res/jquery-1.10.2.min.js"></script>
+</body>
+
+</html>

@@ -5,8 +5,13 @@ import com.codesmither.apidoc.model.*;
 import com.codesmither.apidoc.util.FormatUtil;
 import com.codesmither.engine.api.IModelBuilder;
 import com.codesmither.engine.api.IRootModel;
+import com.codesmither.engine.util.Reflecter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.parser.Parser;
+import org.jsoup.parser.Tag;
+import org.jsoup.parser.XmlTreeBuilder;
 import org.jsoup.select.Elements;
 
 import java.io.*;
@@ -19,7 +24,8 @@ import java.util.List;
  */
 public class XmlApidocModelBuilder implements IModelBuilder {
 
-    private static final String TAG_BODY = "bodyreplace";
+    private static final String TAG_BODY = "body";
+    private static final String TAG_FORM = "form";
 
     private XmlApidocConfig config;
 
@@ -29,29 +35,39 @@ public class XmlApidocModelBuilder implements IModelBuilder {
 
     @Override
     public IRootModel build() throws Exception {
-        File file = new File(config.getXmlSourcePath());
-        String charset = config.getXmlSourceCharset();
-        StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),charset))){
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-        }
-        String doc = builder.toString().replace("body", TAG_BODY).replace("&#x000A;", "<br/>");
-        Element service = Jsoup.parse(doc).select("service").first();
-
         ApiService apiService = new ApiService();
-        apiService.setName(service.attr("name"));
-        apiService.setBasePath(service.attr("basePath"));
-        apiService.setDescription(service.attr("description"));
 
-        Element description = service.select(">description").first();
-        if (description != null) {
-            apiService.setDescription(description.html());
+        checkJsonpTag("description");
+        checkJsonpTag("apidescription");
+
+        try (InputStream input = new FileInputStream(config.getXmlSourcePath())) {
+            Element service = Jsoup.parse(input, config.getXmlSourceCharset(), "", new Parser(new XmlTreeBuilder())).select("service").first();
+
+            apiService.setName(service.attr("name"));
+            apiService.setBasePath(service.attr("basePath"));
+            apiService.setDescription(service.attr("description"));
+
+            Element description = service.select(">description").first();
+            if (description != null) {
+                apiService.setDescription(getHtml(description));
+            }
+            apiService.setModules(buildModules(service));
         }
 
-        apiService.setModules(buildModules(service));
+
+//        File file = new File(config.getXmlSourcePath());
+//        String charset = config.getXmlSourceCharset();
+//        StringBuilder builder = new StringBuilder();
+//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),charset))){
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                builder.append(line);
+//            }
+//        }
+//        String doc = builder.toString();//.replace("body", TAG_BODY).replace("form", TAG_FORM).replace("&#x000A;", "<br/>");
+//        Element service = Jsoup.parse(doc,"",new Parser(new XmlTreeBuilder())).select("service").first();
+
+
         return apiService;
     }
 
@@ -64,9 +80,9 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             apiModule.setPath(module.attr("path"));
             apiModule.setDescription(module.attr("description"));
 
-            Element description = service.select(">description").first();
+            Element description = module.select(">description").first();
             if (description != null) {
-                apiModule.setDescription(description.html());
+                apiModule.setDescription(getHtml(description));
             }
 
             apiModule.setApis(buildApis(module));
@@ -88,15 +104,24 @@ public class XmlApidocModelBuilder implements IModelBuilder {
 
             Element description = api.select(">description").first();
             if (description != null) {
-                apiMpdel.setDescription(description.html());
+                apiMpdel.setDescription(getHtml(description));
             }
             apiMpdel.setBody(buildBody(api));
             apiMpdel.setResponse(buildResponse(api));
             apiMpdel.setHeaders(buildHeaders(api));
             apiMpdel.setParams(buildParams(api));
+            apiMpdel.setForms(buildForms(api));
 
             apiList.add(apiMpdel);
         }
+        Elements apidescriptions = module.select(">apidescription");
+        for (Element apidescription : apidescriptions) {
+            Api apiMpdel = new Api();
+            apiMpdel.setName(apidescription.attr("name"));
+            apiMpdel.setDescription(getHtml(apidescription));
+            apiList.add(apiMpdel);
+        }
+
         return apiList;
     }
 
@@ -113,7 +138,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
 
             Element description = header.select(">description").first();
             if (description != null) {
-                apiHeader.setDescription(description.html());
+                apiHeader.setDescription(getHtml(description));
             }
 
             apiHeaders.add(apiHeader);
@@ -134,12 +159,33 @@ public class XmlApidocModelBuilder implements IModelBuilder {
 
             Element description = param.select(">description").first();
             if (description != null) {
-                apiParam.setDescription(description.html());
+                apiParam.setDescription(getHtml(description));
             }
 
             apiParams.add(apiParam);
         }
         return apiParams;
+    }
+
+    private List<ApiForm> buildForms(Element api) {
+        List<ApiForm> apiForms = new ArrayList<>();
+        Elements forms = api.select(">" + TAG_FORM);
+        for (Element form : forms) {
+            ApiForm apiForm = new ApiForm();
+            apiForm.setName(form.attr("name"));
+            apiForm.setType(form.attr("type"));
+            apiForm.setSample(form.attr("sample"));
+            apiForm.setNullable("true".equals(form.attr("nullable")));
+            apiForm.setDescription(form.attr("description"));
+
+            Element description = form.select(">description").first();
+            if (description != null) {
+                apiForm.setDescription(getHtml(description));
+            }
+
+            apiForms.add(apiForm);
+        }
+        return apiForms;
     }
 
     private ApiBody buildBody(Element api) {
@@ -173,6 +219,24 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             return apiResponse;
         }
         return null;
+    }
+
+    private static String getHtml(Element description) {
+        return description.text();//html().replace("&lt;","<").replace("&gt;",">").replace("&#10;","<br/>");
+//        Pattern pattern = Pattern.compile("^<[^>]+>((.*\\n?)*)</\\w+>$");
+//        Matcher matcher = pattern.matcher(description.toString());
+//        if (matcher.find()) {
+//            return matcher.group(1);
+//        }
+//        return description.html();
+    }
+
+    private static void checkJsonpTag(String tag) {
+        if (!Tag.isKnownTag(tag)) {
+            Tag apiTag = Tag.valueOf(tag);
+            Reflecter.setMemberNoException(apiTag, "preserveWhitespace", true);
+            Reflecter.doStaticMethod(Tag.class, "register", apiTag);
+        }
     }
 
 }

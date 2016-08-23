@@ -17,6 +17,7 @@ public class Api extends HtmlModel {
     private ApiResponse response;
     private List<ApiHeader> headers;
     private List<ApiParam> params;
+    private List<ApiForm> forms;
 
     public String getName() {
         return name;
@@ -64,6 +65,14 @@ public class Api extends HtmlModel {
 
     public void setParams(List<ApiParam> params) {
         this.params = params;
+    }
+
+    public List<ApiForm> getForms() {
+        return forms;
+    }
+
+    public void setForms(List<ApiForm> forms) {
+        this.forms = forms;
     }
 
     public ApiBody getBody() {
