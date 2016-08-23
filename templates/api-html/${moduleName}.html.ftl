@@ -27,9 +27,6 @@
         <nav class="top-nav">
             <ul class="top-nav-ul item clearfix">
                 <li><a class="" href="index.html">首页</a></li>
-                <li class="p-r " id="yun_hover">
-                    <a class="" href="javascript:void(0);">产品</a>
-                </li>
                 <li class="mob-hide"><a class=" active " href="#">API 文档</a></li>
             </ul>
         </nav>
@@ -88,7 +85,7 @@
                                     <tr>
                                         <td>${header.name}</td>
                                         <td>${header.type}</td>
-                                        <td><#if !header.nullable>是</#if></td>
+                                        <td>${header.nullable?string("否","是")}</td>
                                         <td>${header.description}</td>
                                         <td>${header.sample}</td>
                                     </tr>
@@ -113,7 +110,7 @@
                                     <tr>
                                         <td>${param.name}</td>
                                         <td>${param.type}</td>
-                                        <td><#if !param.nullable>是</#if></td>
+                                        <td>${param.nullable?string("否","是")}</td>
                                         <td>${param.description}</td>
                                         <td>${param.sample}</td>
                                     </tr>
@@ -138,7 +135,7 @@
                                     <tr>
                                         <td>${form.name}</td>
                                         <td>${form.type}</td>
-                                        <td><#if !form.nullable>是</#if></td>
+                                        <td>${form.nullable?string("否","是")}</td>
                                         <td>${form.description}</td>
                                         <td>${form.sample}</td>
                                     </tr>
@@ -149,11 +146,45 @@
                     </#if>
                     <#if api.body?? && api.body.sample??>
                         <p><b>Body数据：【${api.body.contentType}】</b></p>
-                        <pre><code>${api.body.sample}</code></pre>
+                        <#if api.body.contentType?lower_case=="xml">
+                            <pre><code>${api.body.sample?html}</code></pre>
+                        <#else>
+                            <pre><code>${api.body.sample}</code></pre>
+                        </#if>
+
                     </#if>
                     <#if api.response?? && api.response.sample??>
                         <p><b>调用成功的返回值示例：【${api.response.contentType}】</b></p>
-                        <pre><code>${api.response.sample}</code></pre>
+                        <#if api.response.contentType?lower_case=="xml">
+                            <pre><code>${api.response.sample?html}</code></pre>
+                        <#else>
+                            <pre><code>${api.response.sample}</code></pre>
+                        </#if>
+                    </#if>
+                    <#if api.response?? && api.response.headers?? && (api.response.headers?size > 0) >
+                        <p><b>调用成功的返回值头部(Header) ：</b></p>
+                        <div class="can">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <th>参数名</th>
+                                    <th>类型</th>
+                                    <th>是否必须</th>
+                                    <th>描述</th>
+                                    <th>示例</th>
+                                </tr>
+                                    <#list api.response.headers as header>
+                                    <tr>
+                                        <td>${header.name}</td>
+                                        <td>${header.type}</td>
+                                        <td>${header.nullable?string("否","是")}</td>
+                                        <td>${header.description}</td>
+                                        <td>${header.sample}</td>
+                                    </tr>
+                                    </#list>
+                                </tbody>
+                            </table>
+                        </div>
                     </#if>
                 </div>
             </#list>

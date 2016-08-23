@@ -37,6 +37,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
     public IRootModel build() throws Exception {
         ApiService apiService = new ApiService();
 
+        checkJsonpTag("body");
         checkJsonpTag("description");
         checkJsonpTag("apidescription");
 
@@ -198,11 +199,22 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         Element body = api.select(">"+TAG_BODY).first();
         if (body != null) {
             ApiBody apiBody = new ApiBody();
-            apiBody.setSample(body.text());
+            apiBody.setSample(body.attr("sample"));
             apiBody.setContentType(body.attr("contentType"));
 
-            if (apiBody.getContentType().toLowerCase().equals("json")) {
-                apiBody.setSample(FormatUtil.formatJson(apiBody.getSample()));
+            if (apiBody.getContentType().toLowerCase().equals("xml")) {
+                String html = body.html();
+                if (html != null && html.length() > 0) {
+                    apiBody.setSample(html);
+                }
+            } else {
+                String text = body.text();
+                if (text != null && text.length() > 0) {
+                    apiBody.setSample(text);
+                }
+                if (apiBody.getContentType().toLowerCase().equals("json")) {
+                    apiBody.setSample(FormatUtil.formatJson(apiBody.getSample()));
+                }
             }
             return apiBody;
         }
@@ -213,11 +225,24 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         Element response = api.select(">response").first();
         if (response != null) {
             ApiResponse apiResponse = new ApiResponse();
-            apiResponse.setSample(response.text());
+            apiResponse.setSample(response.attr("sample"));
             apiResponse.setContentType(response.attr("contentType"));
 
-            if (apiResponse.getContentType().toLowerCase().equals("json")) {
-                apiResponse.setSample(FormatUtil.formatJson(apiResponse.getSample()));
+            if (apiResponse.getContentType().toLowerCase().equals("xml")) {
+                Element cresponse = response.clone();
+                cresponse.select("header").remove();
+                String html = cresponse.html();
+                if (html != null && html.length() > 0) {
+                    apiResponse.setSample(html);
+                }
+            } else {
+                String text = response.text();
+                if (text != null && text.length() > 0) {
+                    apiResponse.setSample(text);
+                }
+                if (apiResponse.getContentType().toLowerCase().equals("json")) {
+                    apiResponse.setSample(FormatUtil.formatJson(apiResponse.getSample()));
+                }
             }
 
             apiResponse.setHeaders(buildHeaders(response));

@@ -4,10 +4,10 @@
         <!ELEMENT header            (#PCDATA,description?)>
         <!ELEMENT param             (#PCDATA,description?)>
         <!ELEMENT form              (#PCDATA,description?)>
-        <!ELEMENT body              (#PCDATA)>
-        <!ELEMENT response          (#PCDATA,header*)>
-        <!ELEMENT description       (#PCDATA)>
-        <!ELEMENT apidescription    (#PCDATA)>
+        <!ELEMENT body              (ANY)>
+        <!ELEMENT response          (ANY,header*)>
+        <!ELEMENT description       (#PCDATA,ANY)>
+        <!ELEMENT apidescription    (#PCDATA,ANY)>
 
         <!ATTLIST service name CDATA #REQUIRED >
         <!ATTLIST service basePath CDATA "http://">
@@ -39,5 +39,7 @@
         <!ATTLIST form nullable (false|true) false>
         <!ATTLIST form description CDATA "">
 
+        <!ATTLIST body sample CDATA "">
         <!ATTLIST body contentType (Json|Form|XML|Multipart) #REQUIRED>
+        <!ATTLIST response sample CDATA "">
         <!ATTLIST response contentType (Json|Form|XML|Multipart) #REQUIRED>
