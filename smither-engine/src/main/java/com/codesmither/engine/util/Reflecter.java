@@ -1,7 +1,5 @@
 package com.codesmither.engine.util;
 
-import com.codesmither.engine.api.IModel;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;

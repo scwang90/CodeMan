@@ -64,13 +64,13 @@
                         <p>${api.description}</p>
                     </#if>
                     <#if api.path?? && (api.path?length > 0)>
-                        <p><b>接口链接</b></p>
+                        <p><li><b>接口链接</b></li></p>
                         <code>
                         ${api.requestMethod}：${basePath}${module.path}${api.path}
                         </code>
                     </#if>
                     <#if api.headers?? && (api.headers?size > 0) >
-                        <p><b>头部（Header）：</b></p>
+                        <p><li><b>头部（Header）：</b></li></p>
                         <div class="can">
                             <table>
                                 <tbody>
@@ -95,7 +95,7 @@
                         </div>
                     </#if>
                     <#if api.params?? && (api.params?size > 0) >
-                        <p><b>参数（Url）：</b></p>
+                        <p><li><b>参数（Url）：</b></li></p>
                         <div class="can">
                             <table>
                                 <tbody>
@@ -120,7 +120,7 @@
                         </div>
                     </#if>
                     <#if api.forms?? && (api.forms?size > 0) >
-                        <p><b>表单(Form) ：</b></p>
+                        <p><li><b>表单(Form) ：</b></li></p>
                         <div class="can">
                             <table>
                                 <tbody>
@@ -145,7 +145,7 @@
                         </div>
                     </#if>
                     <#if api.body?? && api.body.sample??>
-                        <p><b>Body数据：【${api.body.contentType}】</b></p>
+                        <p><li><b>Body数据：【${api.body.contentType}】</b></li></p>
                         <#if api.body.contentType?lower_case=="xml">
                             <pre><code>${api.body.sample?html}</code></pre>
                         <#else>
@@ -153,16 +153,8 @@
                         </#if>
 
                     </#if>
-                    <#if api.response?? && api.response.sample??>
-                        <p><b>调用成功的返回值示例：【${api.response.contentType}】</b></p>
-                        <#if api.response.contentType?lower_case=="xml">
-                            <pre><code>${api.response.sample?html}</code></pre>
-                        <#else>
-                            <pre><code>${api.response.sample}</code></pre>
-                        </#if>
-                    </#if>
                     <#if api.response?? && api.response.headers?? && (api.response.headers?size > 0) >
-                        <p><b>调用成功的返回值头部(Header) ：</b></p>
+                        <p><li><b>调用成功的返回值头部(Header) ：</b></li></p>
                         <div class="can">
                             <table>
                                 <tbody>
@@ -185,6 +177,14 @@
                                 </tbody>
                             </table>
                         </div>
+                    </#if>
+                    <#if api.response?? && api.response.sample??>
+                        <p><li><b>调用成功的返回值示例：【${api.response.contentType}】</b></li></p>
+                        <#if api.response.contentType?lower_case=="xml">
+                            <pre><code>${api.response.sample?html}</code></pre>
+                        <#else>
+                            <pre><code>${api.response.sample}</code></pre>
+                        </#if>
                     </#if>
                 </div>
             </#list>

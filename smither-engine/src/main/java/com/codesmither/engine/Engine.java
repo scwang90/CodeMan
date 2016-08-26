@@ -16,6 +16,7 @@ public class Engine {
     private Config config;
     private File templates;
     private File target;
+    private TaskTransfer transfer;
     private PrintStream print = System.out;
 
     public Engine(Config config) {
@@ -35,7 +36,7 @@ public class Engine {
 
     public void launch(IModelBuilder modelBuilder, ProgressListener listener) throws Exception {
         checkWorkspace();
-        TaskTransfer transfer = new TaskTransfer(config, modelBuilder, templates, target);
+        transfer = new TaskTransfer(config, modelBuilder, templates, target);
         transfer.prepareTask();
         while (transfer.hasTask()) {
             print.println(transfer.doTask());

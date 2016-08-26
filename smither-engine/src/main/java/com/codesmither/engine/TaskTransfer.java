@@ -2,7 +2,6 @@ package com.codesmither.engine;
 
 import com.codesmither.engine.api.*;
 import com.codesmither.engine.factory.FreemarkerFactory;
-import com.codesmither.engine.impl.DefaultModelToMap;
 import com.codesmither.engine.util.FileUtil;
 import com.codesmither.engine.util.Reflecter;
 import freemarker.template.Template;
@@ -53,10 +52,6 @@ public class TaskTransfer {
      */
     private IRootModel fillEmptyFields(IRootModel model) {
         return config.getEmptyFieldFiller().fill(model);
-    }
-
-    private IRootModel modelToMap(IRootModel model) {
-        return DefaultModelToMap.modelToMap(model);
     }
 
     public boolean hasTask() throws Exception {
