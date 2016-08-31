@@ -149,6 +149,15 @@
             <description>
                 提取检测项目属性，含初始值
             </description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                itemCode:        //"专业项目选择最后一层的：Code",
+                testObjId:      //"专业项目选择最后一层的：TestObjId"
+                }
+                }
+            </body>
             <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
