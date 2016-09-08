@@ -16,6 +16,7 @@ public class ApiService extends HtmlModel implements IRootModel {
     private String basePath;
     private String description;
     private List<ApiModule> modules;
+    private List<ApiHeader> headers;
 
     private transient String moduleName;
     private transient ApiModule module;
@@ -26,6 +27,14 @@ public class ApiService extends HtmlModel implements IRootModel {
 
     public void setModules(List<ApiModule> modules) {
         this.modules = modules;
+    }
+
+    public List<ApiHeader> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(List<ApiHeader> headers) {
+        this.headers = headers;
     }
 
     public String getName() {

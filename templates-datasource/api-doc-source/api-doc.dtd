@@ -1,5 +1,5 @@
-<!ELEMENT service (module+,description?)>
-        <!ELEMENT module            (api*,apidescription*,description?)>
+<!ELEMENT service (module+,header*,description?)>
+        <!ELEMENT module            (api*,header*,apidescription*,description?)>
         <!ELEMENT api               (param*,header*,form*,body?,response?,description?)>
         <!ELEMENT header            (#PCDATA,description?)>
         <!ELEMENT param             (#PCDATA,description?)>

@@ -16,7 +16,9 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -52,10 +54,28 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             if (description != null) {
                 apiService.setDescription(getHtml(description));
             }
+            apiService.setHeaders(buildHeaders(service));
             apiService.setModules(buildModules(service));
         }
 
-
+        List<ApiHeader> serviceHeaders = apiService.getHeaders();
+        for (ApiModule apiModule : apiService.getModules()) {
+            List<ApiHeader> moduleHeaders = apiModule.getHeaders();
+            for (Api api : apiModule.getApis()) {
+                Map<String, ApiHeader> headers = new LinkedHashMap<>();
+                List<ApiHeader> apiHeaders = api.getHeaders();
+                for (ApiHeader header : serviceHeaders) {
+                    headers.put(header.getName(), header);
+                }
+                for (ApiHeader header : moduleHeaders) {
+                    headers.put(header.getName(), header);
+                }
+                for (ApiHeader header : apiHeaders) {
+                    headers.put(header.getName(), header);
+                }
+                api.setHeaders(new ArrayList<>(headers.values()));
+            }
+        }
 //        File file = new File(config.getXmlSourcePath());
 //        String charset = config.getXmlSourceCharset();
 //        StringBuilder builder = new StringBuilder();
@@ -86,6 +106,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
                 apiModule.setDescription(getHtml(description));
             }
 
+            apiModule.setHeaders(buildHeaders(module));
             apiModule.setApis(buildApis(module));
 
             apiModules.add(apiModule);
@@ -99,6 +120,8 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         for (Element api : apis) {
             Api apiMpdel = new Api();
             apiMpdel.setName(api.attr("name"));
+            //防止空指针
+            apiMpdel.setHeaders(new ArrayList<ApiHeader>());
 
             if ("api".equals(api.tag().getName())) {
                 apiMpdel.setPath(api.attr("path"));

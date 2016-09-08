@@ -8,12 +8,14 @@ import java.util.List;
  * APi 模块划分
  * Created by SCWANG on 2016/8/19.
  */
+@SuppressWarnings("unused")
 public class ApiModule extends HtmlModel implements IModel {
 
     private String name;
     private String path;
     private String description;
     private List<Api> apis;
+    private List<ApiHeader> headers;
 
     public String getName() {
         return name;
@@ -45,5 +47,13 @@ public class ApiModule extends HtmlModel implements IModel {
 
     public void setApis(List<Api> apis) {
         this.apis = apis;
+    }
+
+    public List<ApiHeader> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(List<ApiHeader> headers) {
+        this.headers = headers;
     }
 }

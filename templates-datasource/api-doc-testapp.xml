@@ -4,6 +4,7 @@
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
+    <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
     <module name="接口说明">
         <apidescription name="接口访问">
             <![CDATA[
@@ -81,7 +82,6 @@
             </response>
         </api>
         <api name="图片上传" requestMethod="POST" path="?$c=Common&#38;$m=UploadImage">
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <param name="infoType" description="固定为“样品”" type="string"/>
             <param name="infoId" description="图片所属对象的ID" type="string"/>
             <body contentType="Multipart">
@@ -96,7 +96,6 @@
             </response>
         </api>
         <api name="删除图片" requestMethod="POST" path="?$c=Common&#38;$m=DeleteImage">
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <param name="infoType" description="固定为“样品”" type="string"/>
             <param name="infoId" description="图片所属对象的ID" type="string"/>
             <description>用于部分图片上传失败而部分无法上传成功，并且用户选择取消提交任务的时候</description>
@@ -111,7 +110,6 @@
     </module>
     <module name="取样模块">
         <api name="工程列表" requestMethod="POST" path="?$c=Base&amp;$m=GetProjectList">
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -127,7 +125,6 @@
             </response>
         </api>
         <api name="专业项目" requestMethod="POST" path="?$c=Sample&amp;$m=GetTestItemList">
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
                 提取检测专业及检测项目
                 注意：返回的数据是树形递归结构
@@ -145,7 +142,6 @@
             </response>
         </api>
         <api name="项目属性" requestMethod="POST" path="?$c=Sample&amp;$m=GetTestItemPropList">
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
                 提取检测项目属性，含初始值
             </description>
@@ -179,7 +175,6 @@
             <description>
                 在提交取样之前，需要添加样品并扫描样品二维码。扫描的二维码值需要发送服务器验证通过才可以提交。
             </description>
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <body contentType="Json">
                 {
                 "Signature":"" //登录用户ID,
@@ -198,7 +193,6 @@
             </response>
         </api>
         <api name="提交取样" requestMethod="POST" path="?$c=Sample&amp;$m=SubmitSampleData">
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
             <![CDATA[
                 <p>如果用户选择了照片的话，需要先调用上传图片接口再提交，因为提交的时候需要图片的下载地址。</p>
@@ -253,23 +247,70 @@
     </module>
     <module name="收样模块">
         <api name="批量收样" requestMethod="POST" path="?$c=Sample&amp;$m=SubmitCollectData">
-            <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
             <description>
                 批量收样主要是批量扫描二维码（手机不做验证），然后批量提交到服务器（验证并记录），服务器将返回失败的条目，如果没有返回则全部成功
             </description>
             <body contentType="Json">
                 {
                 "Signature":"" //登录用户ID,
+                "Param":[{
+                TagNo:      //"标识编号",
+                Lang:0.0f   //"使用地经度",
+                Lat:0.0f    //"使用地纬度",
+                Address:    //"使用地点"
+                }...]
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:["",...] 失败的数据
+                }
+            </response>
+        </api>
+    </module>
+    <module name="见证模块">
+        <api name="见证扫码" requestMethod="POST" path="?$c=Tag&amp;$m=ValidTagNo">
+            <description>
+                在提交见证之前，需要添加样品并扫描样品二维码。扫描的二维码值需要发送服务器验证通过才可以提交。
+            </description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
                 "Param":{
-                    TagType:    //"标识类别代码",
-                    TagNo:      //"标识编号",
-                    SampleNo:   //"样品编号",
-                    Lang:0.0f   //"使用地经度",
-                    Lat:0.0f    //"使用地纬度",
-                    Address:    //"使用地点",
-                    ImageUrl1:  //"样品图片地址1",
-                    ImageUrl2:  //"样品图片地址2",
-                    ImageUrl3:  //"样品图片地址3"
+                Action:"见证" // 固定为 "见证",
+                TagNo:"" // 二维码扫描结果,
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+        <api name="见证取样" requestMethod="POST" path="?$c=Sample&amp;$m=SubmitWitnessData">
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                    "OrgNo":"" //见证人(当前登录用户)机构编号,
+                    "UserNo":"" //见证人(当前登录用户)编号,
+
+                    SampleData : [{ 样品信息
+                        TagType:    "标识类别代码",
+                        TagNo:      "标识编号",
+                        SampleNo:   "样品编号",
+                        Lang:0.0f   "使用地经度",
+                        Lat:0.0f    "使用地纬度",
+                        Address:    "使用地点",
+                        ImageUrl1:  "样品图片地址1",
+                        ImageUrl2:  "样品图片地址2",
+                        ImageUrl3:  "样品图片地址3"
+                    }...]
                 }
                 }
             </body>
