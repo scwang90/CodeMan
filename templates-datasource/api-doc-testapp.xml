@@ -69,6 +69,7 @@
                         int TitleCode,
                         int Status,
                         String HeadUrl,
+                        String OrgId: // 机构ID,
 
                         String Token;           //要保存下载，在登录之后的所有接口的头部都要加上这个参数
                         String OrgId,
