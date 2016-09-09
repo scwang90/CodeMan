@@ -46,6 +46,7 @@
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
+            <header name="token" type="cancel"/>
             <!--<param name="UserNo" description="账户" type="string"/>-->
             <!--<param name="Password" description="密码（未加密）" type="string"/>-->
             <body contentType="Json">
@@ -317,8 +318,7 @@
             <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
-                ErrorMsg:"",
-                Data:["",...] 失败的数据
+                ErrorMsg:""
                 }
             </response>
         </api>

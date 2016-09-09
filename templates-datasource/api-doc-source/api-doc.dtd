@@ -25,7 +25,7 @@
         <!ATTLIST apidescription name CDATA #REQUIRED>
 
         <!ATTLIST header name CDATA #REQUIRED>
-        <!ATTLIST header type (string|int|float) #REQUIRED>
+        <!ATTLIST header type (string|int|float|cancel) #REQUIRED>
         <!ATTLIST header nullable (false|true) false>
         <!ATTLIST header description CDATA "">
 

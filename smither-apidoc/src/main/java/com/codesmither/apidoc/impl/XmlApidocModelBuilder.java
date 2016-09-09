@@ -28,6 +28,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
 
     private static final String TAG_BODY = "body";
     private static final String TAG_FORM = "form";
+    private static final String KEY_CANCEL = "cancel";
 
     private XmlApidocConfig config;
 
@@ -64,32 +65,24 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             for (Api api : apiModule.getApis()) {
                 Map<String, ApiHeader> headers = new LinkedHashMap<>();
                 List<ApiHeader> apiHeaders = api.getHeaders();
-                for (ApiHeader header : serviceHeaders) {
-                    headers.put(header.getName(), header);
-                }
-                for (ApiHeader header : moduleHeaders) {
-                    headers.put(header.getName(), header);
-                }
-                for (ApiHeader header : apiHeaders) {
-                    headers.put(header.getName(), header);
-                }
+                couverHeaders(headers, serviceHeaders);
+                couverHeaders(headers, moduleHeaders);
+                couverHeaders(headers, apiHeaders);
                 api.setHeaders(new ArrayList<>(headers.values()));
             }
         }
-//        File file = new File(config.getXmlSourcePath());
-//        String charset = config.getXmlSourceCharset();
-//        StringBuilder builder = new StringBuilder();
-//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),charset))){
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                builder.append(line);
-//            }
-//        }
-//        String doc = builder.toString();//.replace("body", TAG_BODY).replace("form", TAG_FORM).replace("&#x000A;", "<br/>");
-//        Element service = Jsoup.parse(doc,"",new Parser(new XmlTreeBuilder())).select("service").first();
-
 
         return apiService;
+    }
+
+    private void couverHeaders(Map<String, ApiHeader> headers, List<ApiHeader> apiHeaders) {
+        for (ApiHeader header : apiHeaders) {
+            if (KEY_CANCEL.equals(header.getType())) {
+                headers.remove(header.getName());
+            } else {
+                headers.put(header.getName(), header);
+            }
+        }
     }
 
     private List<ApiModule> buildModules(Element service) {
