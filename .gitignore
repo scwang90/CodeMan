@@ -1,5 +1,6 @@
 /bin/
 /target/
+/apidoc/
 /CodeSmither.iml
 /.idea
 /src/main/resources/c3p0.properties

@@ -69,8 +69,8 @@
                         int TitleCode,
                         int Status,
                         String HeadUrl,
-                        String Token;           //要保存下载，在登录之后的所有接口的头部都要加上这个参数
-                        String OrgId,           // 机构ID,
+                        String Token;           //要保存下载，在登录之后的所有接口的头部都要加上这个参数,
+                        String OrgId:           // 机构ID,
                         Authority{
                             boolean Collect;    //是否有收样的权限,
                             boolean Sample;     //是否有取样的权限,
@@ -300,7 +300,7 @@
                     "OrgNo":"" //见证人(当前登录用户)机构编号,
                     "UserNo":"" //见证人(当前登录用户)编号,
 
-                    SampleData : [{ 样品信息
+                    SampleData ://样品信息 [{
                         TagType:    "标识类别代码",
                         TagNo:      "标识编号",
                         SampleNo:   "样品编号",

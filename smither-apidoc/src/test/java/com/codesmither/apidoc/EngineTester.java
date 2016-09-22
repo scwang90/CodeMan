@@ -69,5 +69,26 @@ public class EngineTester {
         }
     }
 
+    @Test
+    public void engineTestApp() {
+        try {
+            XmlApidocConfig config = ConfigFactory.loadConfig("testapp.properties");
+            ApidocEngine engine = new ApidocEngine(config);
+            engine.launch();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void engineWorker() {
+        try {
+            XmlApidocConfig config = ConfigFactory.loadConfig("worker.properties");
+            ApidocEngine engine = new ApidocEngine(config);
+            engine.launch();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
 
 }

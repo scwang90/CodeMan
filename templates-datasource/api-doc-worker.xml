@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
+<service name="民工APP 服务接口" basePath="http://192.168.1.207:8080/api/ios.ashx">
+    <description>
+        接入简单、异常监控&#x000A; 完善的机制、丰富的接口
+    </description>
+    <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+    <module name="接口说明">
+        <apidescription name="接口访问">
+            <![CDATA[
+            本服务所有接口都已 Post 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
+            <br/><br/>
+            <li><b>发送-头部（Header）</b>：</li>
+                <p>主要用于保持登录 的 token，作用在于当Cookie和Session失效之后，继续生成新的Cookie</p>
+            <br/>
+            <li><b>发送-参数（Url）</b>：</li>
+                <p>目前用于发送分页参数 page（当前页数，0开始），pageSize（分页大小）</p>
+                <p>例如：</p>
+                <code>url?page=1&amp;pageSize=20</code>
+            <br/>
+            <li><b>发送-实体（Body）</b>：</li>
+                <p>除了分页参数，一般其他数据都是以实体（Body）的Form格式发送</p>
+            <br/>
+            <li><b>返回-实体（Body）</b>：Json</li>
+                <p>最外层格式都有 success，data，msg</p>
+                <pre><code>{
+    success:true, //true 表示成功 否则 data 为null msg 可以获取错误信息
+    data:{}, //根据不同接口有不同的数据格式
+    msg:"", //字符串格式，如：密码错误
+}</code></pre>
+            ]]>
+        </apidescription>
+        <apidescription name="登录保持">
+            调用登录接口之后，服务器会返回一个 Set-Cookie ，客户端必须把 Cookie 保存下来，在之后的接口中发送到服务器，才能保持登录会话。
+
+            由于 Cookie 和 Session 会在短时间内过期，客户端也必须保存下 服务站在登录接口中返回的 Token ，之后一起发送到服务器，
+            可以在 Session 过期的时候继续创建新的 Cookie。
+        </apidescription>
+    </module>
+    <module name="全局通用">
+        <api name="用户登录" requestMethod="POST" path="?$c=User&amp;$m=Login$OPEN">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <header name="token" type="cancel"/>
+            <form name="username" description="账户" type="string"/>
+            <form name="password" description="密码（未加密）" type="string"/>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+
+                int Age;
+                String Name;
+                String Token;
+
+                String Id ;/// 用户ID(自增),
+                String UserName ;/// (原Id)	用户名,
+                String NickName ;/// 昵称(没有指定随机生成),
+                String Mail ;/// 邮箱,
+                String QQ ;/// QQ号,
+                String City ;/// 所在城市,
+                String Address ;/// 详细地址,
+                String Signature ;/// 签名,
+                String HeadUrl ;/// 头像Url,
+                String Password ;/// (原Pwd)	MD5密码,
+                Boolean MailVerified ;/// 邮箱是否验证 ：true 已验证，false 未验证,
+                Boolean MobileVerified ;/// 手机是否验证：true 已验证，false 未验证,
+                /// 证件类型【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.人员证件类型(如果有身份证必须选择身份证)】,
+                String IDCardTypeNum ,
+                /// 证件号码【住建部标准】【按该人员证件类型对应的号码填写，如身份证按18位公民身份证号码填写，军官证按照军官证号码填写，护照按照护照号码填写】,
+                String IDCard ,
+                /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                String PersonName ,
+                /// 性别【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.性别，可选值：0男，1女】,
+                String SexNum ,
+                /// 手机号码【住建部标准】【指该人员对外联系用的手机号码(11位数字)】,
+                String Mobile ,
+                Date Birthday;///生日,
+
+                float ServiceScoreTotal;/// 来自雇主的评价总分数,
+                float ServiceScoreAvg;/// 来自雇主的评价总分数,
+                int ServiceEvaluateTimes;/// 来自雇主的评价次数,
+                float EmployerScoreTotal;/// 来自员工的评价总分数,
+                float EmployerScoreAvg;/// 来自员工的评价总分数,
+                int EmployerEvaluateCount;/// 来自员工的评价次数,
+
+                String WorkPlace ;      /// 工作地点,
+                int WorkPlaceRadius ;/// 工作地点半径（米）,
+                WorkPlaceBaiduLngLat; /// 工作地点 GPS,
+                Geometry:{
+                int CoordinateSystemId = 0,
+                String WellKnownText //GPS,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="工种列表" requestMethod="POST" path="?$c=Profession&amp;$m=GetAll$OPEN">
+            <description>
+                这个工种列表 应该在登录之后就调用，并缓存（建议内存），其他很多地方都会用到工种列表选择
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+
+                String Id ,
+                String ParentId ;/// 上级分类,
+                String Name ;/// 名称,
+                String Description ;/// 描述,
+                boolean Enabled ;/// 启用(为false 说明已经关闭这个工种)
+                
+                }...]
+            </response>
+        </api>
+        <api name="图片上传" requestMethod="POST" path="?$c=ImageFile&#38;$m=Upload">
+            <param name="infoType" description="如果是用户头像：用户，如果是工作日志：工作日志" type="string"/>
+            <param name="infoId" description="图片所属对象的ID，如用户ID，日志ID" type="string"/>
+            <body contentType="Multipart">
+                图片二进制文件
+            </body>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+    </module>
+    <module name="工作模块">
+        <api name="工作查询" requestMethod="POST" path="?$c=Job&amp;$m=GetPageByKeyAndProfessions$OPEN">
+            <description>
+                在找工作页面可以调用
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <param name="sortDir" description="正序（ASC）/倒序（DESC）" type="string" nullable="true"/>
+            <param name="sortBy" type="string" nullable="true">
+                <description>
+                    排序 最近：Time 最热：Hot 靠谱：WorkPlaceBaiduLngLat
+                </description>
+            </param>
+            <form name="key" description="搜索关键字，可不传" type="string" nullable="true"/>
+            <form name="professionIds" type="string" nullable="true">
+                <description>
+                    工种筛选,使用工种ID（工种列表接口）和，连接 如 ID1,ID2,ID3 ，不传可以获取全部
+                </description>
+            </form>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+
+                String Id,
+
+                String Profession;/// 工种名称,
+                String Mobile;/// 电话,
+                String Employer;/// 发布者,
+                String HeadUrl;/// 头像,
+                float EmployerScoreAvg;/// 雇主平均评分,
+
+                Date Time;/// 发布时间,
+                String ProfessionId;/// 工种Id,
+                String EmployerId;/// 雇主Id,
+                String WorkPlace;/// 工作地点,
+
+                String Description;/// 描述,
+                int WorkerCount;/// 用工数量,
+                int Price;/// 价格（分，0表示面议）,
+                String PriceUnit;/// 价格单位,
+                Date JobTime;/// 用工时间,
+                boolean Ended ;/// 已结束,
+
+                WorkPlaceBaiduLngLat; /// 工作地点 GPS,
+                Geometry:{
+                int CoordinateSystemId = 0,
+                String WellKnownText //GPS,
+                }
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="发布工作" requestMethod="POST" path="?$c=Job&amp;$m=Publish">
+            <description>
+                在发布工作页面可以调用
+            </description>
+            <form name="Title" description="标题" type="string" />
+            <form name="WorkPlace" description="工作地点" type="string" />
+            <form name="Welfare" description="福利待遇" type="string" />
+            <form name="WorkerCount" description="用工数量" type="int" />
+            <form name="PriceMin" description="最小价格（分，0表示面议）" type="string" />
+            <form name="PriceMax" description="最大价格（分，0表示面议）" type="string" />
+            <form name="PriceUnit" description="单价单位" type="string" nullable="true" />
+            <form name="JobTime" description="用工时间" type="date" nullable="true"/>
+            <form name="IsFullTime" description="是否是全职" type="boolean" />
+            <form name="Description" description="描述" type="string" />
+            <form name="ProfessionId" type="string" >
+                <description>
+                    工种类型,使用工种ID（工种列表接口）和，连接 如 ID1,ID2,ID3
+                </description>
+            </form>
+            <form name="WorkPlaceGPS" type="string" >
+                <description>
+                    发布地点GPS，如 POINT (43.456465 106.554655)
+                </description>
+            </form>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data: id// 新工作的ID
+                }
+            </response>
+
+        </api>
+    </module>
+</service>
