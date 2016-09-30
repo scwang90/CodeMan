@@ -217,7 +217,7 @@
                         ItemCode:"检测项目代码",
                         Remark:页面多余项,
 
-                        SampleData : [{ 样品信息
+                        SampleData : //样品信息{
                             TagType:    "标识类别代码",
                             TagNo:      "标识编号",
                             SampleNo:   "样品编号",
@@ -227,9 +227,9 @@
                             ImageUrl1:  "样品图片地址1",
                             ImageUrl2:  "样品图片地址2",
                             ImageUrl3:  "样品图片地址3"
-                        }...]
+                        },
 
-                        SampleParam : [{ //样品信息
+                        SampleParam ://样品信息 [{
                             //动态内容，在 项目属性 接口中获得
                         }...]
 

@@ -132,6 +132,92 @@
             </response>
         </api>
     </module>
+    <module name="首页展示">
+        <api name="优质工作" path="?$c=Job&amp;$m=GetPageByRecommend$OPEN" requestMethod="POST">
+            <description>
+                首页展示优质工作，无需登录
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+
+                String Id,
+
+                String Profession;/// 工种名称,
+                String Mobile;/// 电话,
+                String Employer;/// 发布者,
+                String HeadUrl;/// 头像,
+                float EmployerScoreAvg;/// 雇主平均评分,
+
+                Date Time;/// 发布时间,
+                String ProfessionId;/// 工种Id,
+                String EmployerId;/// 雇主Id,
+                String WorkPlace;/// 工作地点,
+
+                String Description;/// 描述,
+                int WorkerCount;/// 用工数量,
+                int Price;/// 价格（分，0表示面议）,
+                String PriceUnit;/// 价格单位,
+                Date JobTime;/// 用工时间,
+                boolean Ended ;/// 已结束,
+
+                WorkPlaceBaiduLngLat; /// 工作地点 GPS,
+                Geometry:{
+                int CoordinateSystemId = 0,
+                String WellKnownText //GPS,
+                }
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="靠谱工人" path="?$c=JobWanted&amp;$m=GetPageByRecommend$OPEN" requestMethod="POST">
+            <description>
+                首页展示靠谱工人，无需登录
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+
+                String Id,
+
+                String Profession;/// 工种名称,
+                String Mobile;/// 电话,
+                String Employer;/// 发布者,
+                String HeadUrl;/// 头像,
+                float EmployerScoreAvg;/// 雇主平均评分,
+
+                Date Time;/// 发布时间,
+                String ProfessionId;/// 工种Id,
+                String EmployerId;/// 雇主Id,
+                String WorkPlace;/// 工作地点,
+
+                String Description;/// 描述,
+                int WorkerCount;/// 用工数量,
+                int Price;/// 价格（分，0表示面议）,
+                String PriceUnit;/// 价格单位,
+                Date JobTime;/// 用工时间,
+                boolean Ended ;/// 已结束,
+
+                WorkPlaceBaiduLngLat; /// 工作地点 GPS,
+                Geometry:{
+                int CoordinateSystemId = 0,
+                String WellKnownText //GPS,
+                }
+                }
+                }...]
+                }
+            </response>
+        </api>
+    </module>
     <module name="工作模块">
         <api name="工作查询" requestMethod="POST" path="?$c=Job&amp;$m=GetPageByKeyAndProfessions$OPEN">
             <description>
