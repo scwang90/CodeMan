@@ -91,7 +91,12 @@
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息, 
                 ErrorMsg:"",
-                Data:true
+                Data:{
+                    Id : "文件ID",
+                    Path : "下载链接",
+                    Title : "标题",
+                    Description : "描述"
+                }
                 }
             </response>
         </api>
@@ -318,6 +323,183 @@
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
                 ErrorMsg:""
+                }
+            </response>
+        </api>
+    </module>
+    <module name="试验模块">
+        <api name="任务列表" requestMethod="POST" path="?$c=Task&#38;$m=GetTestTaskList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <description>
+                我的任务列表数据，如果没有数据则是没有分配任务
+            </description>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:[{
+                String TaskId;              //委托ID（任务，用于数据提交关联）,
+                String TaskNo;              //委托编号（任务，用于数据显示和蓝牙部分）,
+                String CustOrgName;         //委托单位(客户),
+                String PrjName;             //工程名称,
+                String ProItemName;         //工程项目名称(工程),
+                Date EntrustDate;           //委托时间,
+                String TaskType;            //任务类型,
+                String ItemCode;            //检测项目代码,
+                int Status;                 //委托状态【待分配 = 1，检测中 = 2，已完成 = 3】
+                }...]
+                }
+            </response>
+        </api>
+        <api name="设备扫码" requestMethod="POST" path="?$c=Equipment&#38;$m=ValidDevice">
+            <description>
+                解析并验证设备二维码
+            </description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                    rqCode:      //"二维码(字符串)"
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                    Data:{
+                        String Id;              //设备注册编号,
+                        String Name;            //设备名称,
+                        String Model;           //设备型号,
+                        String MakerCode;       //设备出厂编号,
+                        String TestOrgName:     //设备所属检测机构名称
+                    }
+                }
+            </response>
+        </api>
+        <api name="文件上传" requestMethod="POST" path="?$c=Common&#38;$m=UploadFile">
+            <description>
+                蓝牙接收完成之后，拼接成文件：数据文件，日志文件（蓝牙不发送则可以没有），然后一次性接口上传到本接口
+            </description>
+            <header name="params" type="string" description="body已经被文件暂用，json数据放到header中"/>
+            <body contentType="Multipart">
+                <![CDATA[
+                    二进制文件(数据文件、日志文件（可无）)<br>
+                    //------------------以下JSON不属于Body 需要放在 header 的 params 参数中<br>
+                    {<br>&#9;
+                        "Signature":"" //登录用户ID,<br>&#9;
+                        "Param":{<br>&#9;&#9;
+                        "TaskId":""             //任务注册编号（使用任务列表接口返回中的TaskId）,<br>&#9;&#9;
+                        "TestNo":""             //试件号（用户在APP中手动输入值）,<br>&#9;&#9;
+                        "ItemCode":""           //检测项目代码,<br>&#9;&#9;
+                        "DevieMakerCode":""     //设备出厂编号,<br>&#9;&#9;
+                        "DevieId":""            //设备编号,<br>&#9;
+                    }<br>
+                    }
+                ]]>
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                Id : "文件ID",
+                Path : "下载链接",
+                Title : "标题",
+                Description : "描述"
+                }
+                }
+            </response>
+        </api>
+        <api name="现场图片" requestMethod="POST" path="?$c=OutSideImage&#38;$m=Submit">
+            <description>
+                上传图片之后需要提交数据在数据库记录
+            </description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String TaskId;   // 所属任务Id,
+                String TestNo;   // 试验号,
+                String Path;     // 上传图片的网络url,
+                double Lang;     // 图片拍摄时的经度,
+                double Lat;      // 图片拍摄时的纬度,
+                String OrgId;    // 机构Id
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+        <api name="结束任务" requestMethod="POST" path="?$c=Task&#38;$m=Finish">
+            <description>
+                任务完成之后页面需要出现结束任务按钮，点击访问本接口，标记结束任务
+            </description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String TaskId;              //任务ID（使用任务列表接口返回中的TaskId）
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+        <api name="室内扫码" requestMethod="POST" path="?$c=Tag&amp;$m=ValidTagNo">
+            <description>
+                在提交是室内检测之前，需要添加样品并扫描样品二维码。扫描的二维码值需要发送服务器验证通过才可以提交。
+            </description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                Action:"试验" // 固定为 "试验",
+                TagNo:"" // 二维码扫描结果,
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                    String TaskNo;  //任务编号
+                }
+                }
+            </response>
+        </api>
+        <api name="室内检测" requestMethod="POST" path="?$c=Sample&#38;$m=SubmitTestScan">
+            <description>
+                提交室内检测结果
+            </description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String Device;      // 设备Id,
+                String TagNo;       // 试件号（扫描并验证成功的二维码）,
+                String Date;        // 实验日期（当前时间）,
+                double TaskNo;      // 任务编号（室内扫码返回）
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
                 }
             </response>
         </api>

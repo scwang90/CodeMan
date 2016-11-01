@@ -18,8 +18,8 @@
         <!ATTLIST module description CDATA "">
 
         <!ATTLIST api name CDATA #REQUIRED>
-        <!ATTLIST api path CDATA #REQUIRED>
         <!ATTLIST api requestMethod (GET|POST|PUT|DELETE) #REQUIRED>
+        <!ATTLIST api path CDATA #REQUIRED>
         <!ATTLIST api description CDATA "">
 
         <!ATTLIST apidescription name CDATA #REQUIRED>
