@@ -488,10 +488,10 @@
                 {
                 "Signature":"" //登录用户ID,
                 "Param":{
-                String Device;      // 设备Id,
+                String Device;      // 设备Id（设备二维码接口返回的Id）,
                 String TagNo;       // 试件号（扫描并验证成功的二维码）,
-                String Date;        // 实验日期（当前时间）,
-                double TaskNo;      // 任务编号（室内扫码返回）
+                String Date;        // 实验日期（当前时间 'yyyy-MM-dd HH:mm:ss'）,
+                String TaskNo;      // 任务编号（室内扫码返回）
                 }
                 }
             </body>
