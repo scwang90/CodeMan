@@ -504,4 +504,231 @@
             </response>
         </api>
     </module>
+    <module name="客服模块">
+        <api name="检测项目" requestMethod="POST" path="?$c=TestItem&amp;$m=GetTestItem">
+            <description>获取所有检测项目，用于结果筛选</description>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:[{
+                String Id;//": "项目编号",
+                String Name;//":"项目名称",
+                String TestItemCode;// ":"项目代码"
+                }...]
+                }
+            </response>
+        </api>
+        <api name="报告验证" requestMethod="POST" path="?$c=Report&amp;$m=ReportValid">
+            <description>扫描二维码，并发送结果到服务器验证</description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":"" //二维码扫描结果
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String TestItemName;         //检测项目名称,
+                String EntrustOrgName;       //委托单位名称,
+                String ProjectName;          //工程名称,
+                String TestConclusion;       //检测结论,
+                String ReportDate;           //报告日期
+                }
+                }
+            </response>
+        </api>
+        <api name="报告查询" requestMethod="POST" path="?$c=Report&amp;$m=GetReportList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                    String TestPart = "施工部位（模糊查询）",
+                    String ReportNo = "报告编号（模糊查询）",
+                    String TestItemCode = "检测项目",
+                    int TestConclusion = -1;    //报告结论【所有=-1;不合格=0;合格=1;无结论=2;】,
+                    int ReportProgress = -1;    //报告进度 【所有=-1;已收样=1;待检测=2;待审核=3;待审批=4;已撤销=5;已完成=9;】,
+                    String EntrustTimeStart = "yyyy-MM-dd HH:mm:ss";    //委托开始时间,
+                    String EntrustTimeEnd = "yyyy-MM-dd HH:mm:ss";      //委托结束时间
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String TestItemName;        //检测项目名称,
+                String TestArg;             //检测参数,
+                String TestOrg;             //检测机构,
+                String TestPart;            //工程部位,
+                String TestConclusion;      //检测结论,
+                String ReportProcess;       //报告进度,
+                Date CollectDate;           //取样日期(报告日期)
+                }}
+            </response>
+        </api>
+        <api name="取样记录" requestMethod="POST" path="?$c=Sample&amp;$m=GetSampleRecordList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String TestPart = "施工部位（模糊查询）",
+                String ReportNo = "报告编号（模糊查询）",
+                String TestItemCode = "检测项目",
+                String SampleTimeStart = "yyyy-MM-dd HH:mm:ss";    //取样开始时间,
+                String SampleTimeEnd = "yyyy-MM-dd HH:mm:ss";      //取样结束时间
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String Status;                   //状态,
+                String ItemCodeName;             //检测项目,
+                String SamplePart;               //施工部位,
+                String SampleUserName;           //取样人员,
+                String EntrustUserName;          //委托人员,
+                Date Time = new Date();          //取样时间,
+                Date EntrustTime = new Date();   //委托时间
+                }}
+            </response>
+        </api>
+        <api name="费用查询" requestMethod="POST" path="?$c=Expenses&amp;$m=GetExpenseList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String TestPart = "施工部位（模糊查询）",
+                String TestItemCode = "检测项目",
+                String SampleTimeStart = "yyyy-MM-dd HH:mm:ss";    //取样开始时间,
+                String SampleTimeEnd = "yyyy-MM-dd HH:mm:ss";      //取样结束时间
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String TaskNo;                   //委托编号,
+                String TestItemName;             //检测项目,
+                String TestPart;                 //施工部位,
+                Date PassDate = new Date();      //报告日期（审核日期）,
+                Date CollectDate = new Date();   //取样日期,
+                float TestExpenses;              //检测费用
+                }}
+            </response>
+        </api>
+        <api name="缴费历史" requestMethod="POST" path="?$c=Expenses&amp;$m=GetChargeList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String ChargeTimeStart = "yyyy-MM-dd HH:mm:ss";    //收费开始时间,
+                String ChargeTimeEnd = "yyyy-MM-dd HH:mm:ss";      //收费结束时间
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String ERNo;                         //收费编号,
+                String ServiceId;                    //服务客户Id,
+                float ChargeMoney;                   //收费金额,
+                String ChargeGeter;                  //收费人员,
+                Date ChargeDate = new Date();        //收费日期
+                }}
+            </response>
+        </api>
+        <api name="合同查询" requestMethod="POST" path="?$c=Expenses&amp;$m=GetChargeList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String ContractNo = "";      //合同编号（模糊查询）,
+                String ContractType = -1;    //合同类型【所有=-1;单价合同 = 1;包干合同 = 2;折扣合同 = 3;】,
+                String ContractTimeEnd = "yyyy-MM-dd HH:mm:ss";     //签约开始时间,
+                String ContractTimeEnd = "yyyy-MM-dd HH:mm:ss";     //签约结束时间
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String ContractNo;                   //合同编号,
+                String ContractType;                 //合同类型,
+                Date DateOfContract = new Date();    //签约日期,
+                String TestOrgManageNo;              //检测机构管理号
+                }}
+            </response>
+        </api>
+        <api name="投诉记录" requestMethod="POST" path="?$c=Complaint&amp;$m=GetMyComplaintRecord">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                    String Content;              //内容,
+                    boolean IsDeal;              //是否处理,
+                    Date LastUpdateTime;         //最后处理时间,
+                    String DealResult;           //处理结果,
+                    String TestOrgName;          //投诉机构名称
+                }}
+            </response>
+        </api>
+        <api name="投诉对象" requestMethod="POST" path="?$c=Complaint&amp;$m=GetDetectionBinding">
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String DetectionOrgId;       //数据中心检测机构ID,
+                String DetectionOrgName;     //检测机构名称,
+                String DetectionOrgCode;     //检测机构管理号
+                }}
+            </response>
+        </api>
+        <api name="提交建议" requestMethod="POST" path="?$c=Complaint&amp;$m=Submit">
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                    String Content ;            // 投诉内容,
+                    String TestOrgId ;          // 被投诉的检测机构,
+                    String TestOrgManageNo ;    // 被投诉检测机构管理号,
+                    String ContactPhone ;       // 联系电话
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+    </module>
 </service>
