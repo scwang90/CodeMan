@@ -612,9 +612,10 @@
                 "Signature":"" //登录用户ID,
                 "Param":{
                 String TestPart = "施工部位（模糊查询）",
+                String ReportNo = "报告编号（模糊查询）",
                 String TestItemCode = "检测项目",
-                String SampleTimeStart = "yyyy-MM-dd HH:mm:ss";    //取样开始时间,
-                String SampleTimeEnd = "yyyy-MM-dd HH:mm:ss";      //取样结束时间
+                String EntrustTimeStart = "yyyy-MM-dd HH:mm:ss";    //委托开始时间,
+                String EntrustTimeEnd = "yyyy-MM-dd HH:mm:ss";      //委托结束时间
                 }
                 }
             </body>
