@@ -658,7 +658,7 @@
                 }}
             </response>
         </api>
-        <api name="合同查询" requestMethod="POST" path="?$c=Expenses&amp;$m=GetChargeList">
+        <api name="合同查询" requestMethod="POST" path="?$c=Contract&amp;$m=GetContractList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <body contentType="Json">
@@ -667,7 +667,7 @@
                 "Param":{
                 String ContractNo = "";      //合同编号（模糊查询）,
                 String ContractType = -1;    //合同类型【所有=-1;单价合同 = 1;包干合同 = 2;折扣合同 = 3;】,
-                String ContractTimeEnd = "yyyy-MM-dd HH:mm:ss";     //签约开始时间,
+                String ContractTimeStart = "yyyy-MM-dd HH:mm:ss";     //签约开始时间,
                 String ContractTimeEnd = "yyyy-MM-dd HH:mm:ss";     //签约结束时间
                 }
                 }
