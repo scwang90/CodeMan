@@ -563,6 +563,7 @@
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
                 ErrorMsg:"",
                 Data:{
+                String ReportNo;            //报告编号,
                 String TestItemName;        //检测项目名称,
                 String TestArg;             //检测参数,
                 String TestOrg;             //检测机构,
