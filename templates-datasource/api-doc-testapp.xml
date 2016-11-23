@@ -570,7 +570,9 @@
                 String TestPart;            //工程部位,
                 String TestConclusion;      //检测结论,
                 String ReportProcess;       //报告进度,
-                Date CollectDate;           //取样日期(报告日期)
+                Date PassDate;              //报告日期（新增）,
+                Date EntrustDate;           //委托日期（新增）,
+                Date CollectDate;           //取样日期（已经废除，页面上不用显示）
                 }}
             </response>
         </api>
@@ -612,7 +614,6 @@
                 "Signature":"" //登录用户ID,
                 "Param":{
                 String TestPart = "施工部位（模糊查询）",
-                String ReportNo = "报告编号（模糊查询）",
                 String TestItemCode = "检测项目",
                 String EntrustTimeStart = "yyyy-MM-dd HH:mm:ss";    //委托开始时间,
                 String EntrustTimeEnd = "yyyy-MM-dd HH:mm:ss";      //委托结束时间
@@ -627,8 +628,9 @@
                 String TaskNo;                   //委托编号,
                 String TestItemName;             //检测项目,
                 String TestPart;                 //施工部位,
-                Date PassDate = new Date();      //报告日期（审核日期）,
-                Date CollectDate = new Date();   //取样日期,
+                Date EntrustDate;                //委托日期（新增）,
+                Date PassDate;                   //报告日期（已经废除，页面上不用显示）,
+                Date CollectDate;                //收样日期（已经废除，页面上不用显示）,
                 float TestExpenses;              //检测费用
                 }}
             </response>
