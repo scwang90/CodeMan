@@ -565,7 +565,7 @@
                 Data:{
                 String ReportNo;            //报告编号,
                 String TestItemName;        //检测项目名称,
-                String TestArg;             //检测参数,
+                String TestArg;             //检测参数（已经废除，页面上不用显示）,
                 String TestOrg;             //检测机构,
                 String TestPart;            //工程部位,
                 String TestConclusion;      //检测结论,
