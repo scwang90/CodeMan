@@ -564,6 +564,7 @@
                 ErrorMsg:"",
                 Data:{
                 String ReportNo;            //报告编号,
+                String ProjectName;         //工程名称,
                 String TestItemName;        //检测项目名称,
                 String TestArg;             //检测参数（已经废除，页面上不用显示）,
                 String TestOrg;             //检测机构,
