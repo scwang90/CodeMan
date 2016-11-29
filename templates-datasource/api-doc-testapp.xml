@@ -519,6 +519,29 @@
                 }
             </response>
         </api>
+        <api name="检测机构" requestMethod="POST" path="?$c=Customer&amp;$m=GetDetectionBinding">
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String DetectionOrgId;       //数据中心检测机构ID,
+                String DetectionOrgName;     //检测机构名称,
+                String DetectionOrgCode;     //检测机构管理号
+                }}
+            </response>
+        </api>
+        <api name="工程名称" requestMethod="POST" path="?$c=Customer&amp;$m=GetCustomerBySelf">
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String Id;              //编号,
+                String ProjectName;     //工程名称,
+                }}
+            </response>
+        </api>
         <api name="报告验证" requestMethod="POST" path="?$c=Report&amp;$m=ReportValid">
             <description>扫描二维码，并发送结果到服务器验证</description>
             <body contentType="Json">
@@ -548,11 +571,13 @@
                 {
                 "Signature":"" //登录用户ID,
                 "Param":{
+                    String ServiceId = "客服编号（工程名称 GetCustomerBySelf 接口返回的Id）",
+                    String TestOrgManageNo = "检测机构编号（检测机构 GetDetectionBinding 接口返回的 DetectionOrgCode）",
                     String TestPart = "施工部位（模糊查询）",
                     String ReportNo = "报告编号（模糊查询）",
                     String TestItemCode = "检测项目",
                     int TestConclusion = -1;    //报告结论【所有=-1;不合格=0;合格=1;无结论=2;】,
-                    int ReportProgress = -1;    //报告进度 【所有=-1;已收样=1;待检测=2;待审核=3;待审批=4;已撤销=5;已完成=9;】,
+                    int ReportProgress = -1;    //报告进度（定死为：已完成=9） 【所有=-1;已收样=1;待检测=2;待审核=3;待审批=4;已撤销=5;已完成=9;】,
                     String EntrustTimeStart = "yyyy-MM-dd HH:mm:ss";    //委托开始时间,
                     String EntrustTimeEnd = "yyyy-MM-dd HH:mm:ss";      //委托结束时间
                 }
@@ -564,16 +589,46 @@
                 ErrorMsg:"",
                 Data:{
                 String ReportNo;            //报告编号,
-                String ProjectName;         //工程名称,
-                String TestItemName;        //检测项目名称,
+                String ProjectName;         //工程名称（新增）（页面改为隐藏）,
+                String TestItemName;        //检测项目名称（页面改为隐藏）,
                 String TestArg;             //检测参数（已经废除，页面上不用显示）,
-                String TestOrg;             //检测机构,
-                String TestPart;            //工程部位,
-                String TestConclusion;      //检测结论,
-                String ReportProcess;       //报告进度,
+                String TestOrg;             //检测机构（页面改为隐藏）,
+                String TestPart;            //工程部位（页面改为隐藏）,
+                String TestConclusion;      //检测结论 ,
+                String ReportProcess;       //报告进度（页面改为隐藏）,
                 Date PassDate;              //报告日期（新增）,
                 Date EntrustDate;           //委托日期（新增）,
                 Date CollectDate;           //取样日期（已经废除，页面上不用显示）
+                }}
+            </response>
+        </api>
+        <api name="进度查询" requestMethod="POST" path="?$c=Report&amp;$m=GetReportList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String ServiceId = "客服编号（工程名称 GetCustomerBySelf 接口返回的Id）",
+                String TestOrgManageNo = "检测机构编号（检测机构 GetDetectionBinding 接口返回的 DetectionOrgCode）",
+                String TestPart = "施工部位（模糊查询）",
+                String ReportNo = "报告编号（模糊查询）",
+                String TestItemCode = "检测项目",
+                int TestConclusion = -1;    //报告结论【所有=-1;不合格=0;合格=1;无结论=2;】,
+                int ReportProgress = -1;    //报告进度（默认为：所有=-1） 【所有=-1;已收样=1;待检测=2;待审核=3;待审批=4;已撤销=5;已完成=9;】,
+                String EntrustTimeStart = "yyyy-MM-dd HH:mm:ss";    //委托开始时间,
+                String EntrustTimeEnd = "yyyy-MM-dd HH:mm:ss";      //委托结束时间
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String TestItemName;        //检测项目名称,
+                Date EntrustDate;           //委托日期（新增）,
+                String ReportProcess;       //报告进度
                 }}
             </response>
         </api>
@@ -614,6 +669,7 @@
                 {
                 "Signature":"" //登录用户ID,
                 "Param":{
+                String TestOrgManageNo = "检测机构编号（检测机构 GetDetectionBinding 接口返回的 DetectionOrgCode）",
                 String TestPart = "施工部位（模糊查询）",
                 String TestItemCode = "检测项目",
                 String EntrustTimeStart = "yyyy-MM-dd HH:mm:ss";    //委托开始时间,
@@ -626,10 +682,10 @@
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
                 ErrorMsg:"",
                 Data:{
-                String TaskNo;                   //委托编号,
+                String TaskNo;                   //委托编号（页面改为隐藏）,
                 String TestItemName;             //检测项目,
-                String TestPart;                 //施工部位,
-                Date EntrustDate;                //委托日期（新增）,
+                String TestPart;                 //施工部位（页面改为隐藏）,
+                Date EntrustDate;                //委托日期（新增）（页面改为隐藏）,
                 Date PassDate;                   //报告日期（已经废除，页面上不用显示）,
                 Date CollectDate;                //收样日期（已经废除，页面上不用显示）,
                 float TestExpenses;              //检测费用
