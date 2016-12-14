@@ -11,6 +11,7 @@ public class Api extends HtmlModel {
 
     private String name;
     private String path;
+    private String url;
     private String description;
     private String requestMethod = "POST";
     private ApiBody body;
@@ -25,6 +26,14 @@ public class Api extends HtmlModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getPath() {

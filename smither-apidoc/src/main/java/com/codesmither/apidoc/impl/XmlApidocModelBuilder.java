@@ -69,10 +69,28 @@ public class XmlApidocModelBuilder implements IModelBuilder {
                 couverHeaders(headers, moduleHeaders);
                 couverHeaders(headers, apiHeaders);
                 api.setHeaders(new ArrayList<>(headers.values()));
+                api.setUrl(buildApiUrl(api, apiService, apiModule));
+                if (api.getPath() != null) {
+                    if (api.getPath().startsWith("/")) {
+                        api.setUrl(apiService.getBasePath() + api.getPath());
+                    } else {
+                        api.setUrl(apiService.getBasePath() + apiModule.getPath() + api.getPath());
+                    }
+                }
             }
         }
 
         return apiService;
+    }
+
+    private String buildApiUrl(Api api, ApiService service, ApiModule module) {
+        if (api.getPath() == null || api.getPath().startsWith("http://")) {
+            return api.getPath();
+        }
+        if (api.getPath().startsWith("/")) {
+            return service.getBasePath() + api.getPath();
+        }
+        return service.getBasePath() + module.getPath() + api.getPath();
     }
 
     private void couverHeaders(Map<String, ApiHeader> headers, List<ApiHeader> apiHeaders) {

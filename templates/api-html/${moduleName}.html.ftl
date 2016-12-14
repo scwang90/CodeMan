@@ -66,7 +66,7 @@
                     <#if api.path?? && (api.path?length > 0)>
                         <p><li><b>接口链接</b></li></p>
                         <code>
-                        ${api.requestMethod}：${basePath}${module.path}${api.path}
+                        ${api.requestMethod}：${api.url}
                         </code>
                     </#if>
                     <#if api.headers?? && (api.headers?size > 0) >

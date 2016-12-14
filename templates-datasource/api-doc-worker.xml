@@ -37,7 +37,8 @@
             可以在 Session 过期的时候继续创建新的 Cookie。
         </apidescription>
     </module>
-    <module name="全局通用2.0">
+
+    <module name="全局通用">
         <api name="用户登录" requestMethod="POST" path="?$c=User&amp;$m=Login$OPEN">
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
@@ -113,11 +114,22 @@
                 String Name ;/// 名称,
                 String Description ;/// 描述,
                 boolean Enabled ;/// 启用(为false 说明已经关闭这个工种)
-                
+
                 }...]
             </response>
         </api>
         <api name="图片上传" requestMethod="POST" path="?$c=ImageFile&#38;$m=Upload">
+            <description>
+                infoType 的枚举
+                用户 = 10,
+                服务 = 20,
+                文章 = 30,
+                工作日志 = 40,
+                幻灯片 = 50,
+                日记 = 60,
+                咨询 = 70,
+                回复 = 80
+            </description>
             <param name="infoType" description="如果是用户头像：用户，如果是工作日志：工作日志" type="string"/>
             <param name="infoId" description="图片所属对象的ID，如用户ID，日志ID" type="string"/>
             <body contentType="Multipart">
@@ -132,6 +144,345 @@
             </response>
         </api>
     </module>
+
+    <module name="首页展示3.0">
+        <api name="首页数据" path="?$c=Pager&amp;$m=GetHomeData$OPEN" requestMethod="POST">
+            <description>
+                获取APP顶部幻灯片和底部标签按钮
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                Banners://顶部幻灯片[{
+                String Id;// "文章ID用于点击跳转WEB页面",
+                String Title;// "标题",
+                String ImageUrl;// "图片连接"
+                }...],
+                Tabs://底部标签按钮[{
+                String Id;// "用于获取列表数据",
+                String Name;// "标题",
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="首页列表" path="?$c=Pager&amp;$m=GetHomeTabData$OPEN" requestMethod="POST">
+            <description>
+                和获取APP首页底部表情对应的列表，传入Tab的Id即可
+            </description>
+            <form name="Id" type="string" description="文章Id"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;      //文章ID用于点击跳转WEB页面,
+                String Title;   //标题,
+                String Icon;    //图标,
+                String Source;  //来源,
+                String Time;    //时间
+                }...]
+                }
+            </response>
+        </api>
+        <api name="文章详情" requestMethod="GET" path="/Article?Id=[文章Id]"/>
+    </module>
+    <module name="特色服务3.0">
+        <api name="维修服务" path="?$c=Pager&amp;$m=GetServiceMaintainList$OPEN" requestMethod="POST">
+            <description>
+                获取维修服务列表
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                    Name:"分类名称",
+                    Items://服务项目[{
+                            Id:"用于提交服务订单",
+                            Name:"名称",
+                            Description:"描述"
+                    }...]
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="家政服务" path="?$c=Pager&amp;$m=GetServiceHomemakingList$OPEN" requestMethod="POST">
+            <description>
+                获取家政服务列表
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Name:"分类名称",
+                Items://服务项目[{
+                Id:"用于提交服务订单",
+                Name:"名称",
+                Description:"描述"
+                }...]
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="提交订单" path="?$c=Pager&amp;$m=SubmitServiceOrder$OPEN" requestMethod="POST">
+            <description>
+                提交【维修服务】 和 【家政服务】选择的服务项订单 (需要登录)
+            </description>
+            <form name="ProfessionIds" type="string">
+                <description>
+                    预约的服务，多个Id以“,”分隔
+                </description>
+            </form>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"订单id"
+                }
+            </response>
+        </api>
+    </module>
+    <module name="最新活动3.0">
+        <api name="活动列表" requestMethod="POST" path="?$c=Pager&amp;$m=GetActivityList$OPEN">
+            <description>
+                分页获取活动列表
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Date StartTime;//开始时间,
+                Date EndTime;//结束时间,
+                Address:"活动地址",
+                Article:{
+                    Id:"文章ID用于WEB跳转",
+                    Title;"标题",
+                    Summary:"摘要"
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="获取按钮" path="?$c=Pager&amp;$m=GetArticleActions$OPEN" requestMethod="POST">
+            <description>
+                <![CDATA[
+                    Cmd命令解释
+
+                    拨打电话
+                    cmd = call$电话号码
+                    活动填表（体检表） (需要登录)
+                    cmd = record
+                    业主查看体检结果（需要登录）
+                    cmd = lookup
+                    打开链接
+                    cmd = url$www.xxx.cn
+                ]]>
+            </description>
+            <form name="Id" type="string" description="文章Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                    Name:"按钮名称",
+                    Cmd:"按钮命令"
+                }...]
+                }
+            </response>
+        </api>
+        <api name="文章详情" requestMethod="GET" path="/Article?Id=[文章Id]">
+            <description>
+                活动详情页面需要调用【获取按钮】接口来显示底部的操作按钮
+            </description>
+        </api>
+    </module>
+    <module name="生活日记3.0" description="改名为家庭档案，需要登录">
+        <api name="日记列表" requestMethod="POST" path="?$c=Note&amp;$m=GetMyNotes">
+            <description>
+                获取我的日记
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id;//Id
+                string Category ;// 分类,
+                string Content ;// 内容
+                int Spend ;//开销（单位：分）
+                DateTime Time ;//提交时间
+                Images:["url","url"]
+                }...]
+                }
+            </response>
+        </api>
+        <api name="新增日记" requestMethod="POST" path="?$c=Note&amp;$m=PostNote">
+            <form name="Category" type="string" description="分类"/>
+            <form name="Content" type="string" description="内容"/>
+            <form name="Spend" type="int" description="开销"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"日记ID"
+                }
+            </response>
+        </api>
+        <api name="修改日记" requestMethod="POST" path="?$c=Note&amp;$m=EditNote">
+            <form name="Id" type="string" description="日记ID"/>
+            <form name="Category" type="string" description="分类"/>
+            <form name="Content" type="string" description="内容"/>
+            <form name="Spend" type="int" description="开销"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+    </module>
+    <module name="生活百科3.0">
+        <api name="问题列表" requestMethod="POST" path="?$c=Question&amp;$m=GetUserQuestions$OPEN">
+            <description>
+                获取问题列表
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                    String Id://ID,
+                    String Content://内容,
+                    Date Time://时间,
+                    String ReadCount ://阅读数量,
+                    String AnswerCount://回答数量,
+                    String Name://名称,
+                    String HeadUrl://头像,
+                    Images:["url","url"]
+                }...]
+                }
+            </response>
+        </api>
+        <api name="提出问题" requestMethod="POST" path="?$c=Question&amp;$m=PostQuestion">
+            <form name="Content" type="string" description="内容"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"问题ID"
+                }
+            </response>
+        </api>
+        <api name="阅读问题" requestMethod="POST" path="?$c=Question&amp;$m=ReadQuestion$OPEN">
+            <form name="Id" type="string" description="问题ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="装修首页3.0">
+        <api name="首页数据" path="?$c=Pager&amp;$m=GetFixmentHomeData$OPEN" requestMethod="POST">
+            <description>
+                获取APP顶部幻灯片和底部标签按钮
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                Cases://中间案例[{
+                String Id;// "文章ID用于点击跳转WEB页面",
+                String Title;// "标题",
+                String Icon;// "图片连接"
+                String Summary;// "摘要（价格）"
+                }...],
+                Likes://猜你喜欢[{
+                String Id;// "文章ID用于点击跳转WEB页面",
+                String Name;// "标题",
+                String CategoryName;// "分类名称",
+                String Summary;// "摘要"
+                Date Time;// "发布时间",
+                Images:["url","url"]
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="装修攻略" path="?$c=Pager&amp;$m=GetFixmentStrategyList$OPEN" requestMethod="POST">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;      //文章ID用于点击跳转WEB页面,
+                String Title;   //标题,
+                String Icon;    //图标,
+                String Source;  //来源,
+                String Time;    //时间
+                }...]
+                }
+            </response>
+        </api>
+        <api name="装修案例" path="?$c=Pager&amp;$m=GetFixmentCaseList$OPEN" requestMethod="POST">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;      //文章ID用于点击跳转WEB页面,
+                String Title;   //标题,
+                String Icon;    //图标,
+                String Source;  //来源,
+                String Time;    //时间
+                }...]
+                }
+            </response>
+        </api>
+        <api name="装修美图" path="?$c=Pager&amp;$m=GetFixmentImageList$OPEN" requestMethod="POST">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;      //文章ID用于点击跳转WEB页面,
+                String Title;   //标题,
+                String Icon;    //图标,
+                String Source;  //来源,
+                String Time;    //时间
+                }...]
+                }
+            </response>
+        </api>
+        <api name="文章详情" requestMethod="GET" path="/Article?Id=[文章Id]"/>
+    </module>
+
     <module name="首页展示2.0">
         <api name="优质工作" path="?$c=Job&amp;$m=GetPageByRecommend$OPEN" requestMethod="POST">
             <description>
@@ -305,71 +656,6 @@
                 }
             </response>
 
-        </api>
-    </module>
-    <module name="首页展示2.0">
-        <api name="首页数据" path="?$c=Pager&amp;$m=GetHomeData$OPEN" requestMethod="POST">
-            <description>
-                获取APP顶部幻灯片和底部标签按钮
-            </description>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                    Banners://顶部幻灯片[{
-                        String Id;// "文章ID用于点击跳转WEB页面",
-                        String Title;// "标题",
-                        String ImageUrl;// "图片连接"
-                    }...],
-                    Tabs[{
-
-                    }...]
-                }
-                }
-            </response>
-        </api>
-        <api name="靠谱工人" path="?$c=JobWanted&amp;$m=GetPageByRecommend$OPEN" requestMethod="POST">
-            <description>
-                首页展示靠谱工人，无需登录
-            </description>
-            <param name="pageSize" description="分页大小" type="int"/>
-            <param name="page" description="页数" type="int"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-
-                String Id,
-
-                String Profession;/// 工种名称,
-                String Mobile;/// 电话,
-                String Employer;/// 发布者,
-                String HeadUrl;/// 头像,
-                float EmployerScoreAvg;/// 雇主平均评分,
-
-                Date Time;/// 发布时间,
-                String ProfessionId;/// 工种Id,
-                String EmployerId;/// 雇主Id,
-                String WorkPlace;/// 工作地点,
-
-                String Description;/// 描述,
-                int WorkerCount;/// 用工数量,
-                int Price;/// 价格（分，0表示面议）,
-                String PriceUnit;/// 价格单位,
-                Date JobTime;/// 用工时间,
-                boolean Ended ;/// 已结束,
-
-                WorkPlaceBaiduLngLat; /// 工作地点 GPS,
-                Geometry:{
-                int CoordinateSystemId = 0,
-                String WellKnownText //GPS,
-                }
-                }
-                }...]
-                }
-            </response>
         </api>
     </module>
 </service>
