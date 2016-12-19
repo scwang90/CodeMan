@@ -360,8 +360,9 @@
                 msg:"",
                 data:{
                 Banners://顶部幻灯片[{
-                String Id;// "文章ID用于点击跳转WEB页面",
+                String Id;// "文章ID(备用)",
                 String Title;// "标题",
+                String ArticleId;// "文章ID用于点击跳转WEB页面",
                 String ImageUrl;// "图片连接"
                 }...],
                 Tabs://底部标签按钮[{
