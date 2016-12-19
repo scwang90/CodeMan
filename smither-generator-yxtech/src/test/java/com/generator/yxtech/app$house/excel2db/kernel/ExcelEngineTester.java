@@ -2,8 +2,6 @@ package com.generator.yxtech.app$house.excel2db.kernel;
 
 import com.generator.yxtech.app$house.excel2db.api.ModelBuilder;
 import com.generator.yxtech.app$house.excel2db.model.Service;
-import com.generator.yxtech.app$house.excel2db.reader.ExcelReader;
-import com.mchange.v2.c3p0.util.TestUtils;
 import org.junit.Test;
 
 import java.io.File;
