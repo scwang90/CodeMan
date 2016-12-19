@@ -70,13 +70,6 @@ public class XmlApidocModelBuilder implements IModelBuilder {
                 couverHeaders(headers, apiHeaders);
                 api.setHeaders(new ArrayList<>(headers.values()));
                 api.setUrl(buildApiUrl(api, apiService, apiModule));
-                if (api.getPath() != null) {
-                    if (api.getPath().startsWith("/")) {
-                        api.setUrl(apiService.getBasePath() + api.getPath());
-                    } else {
-                        api.setUrl(apiService.getBasePath() + apiModule.getPath() + api.getPath());
-                    }
-                }
             }
         }
 
@@ -88,6 +81,13 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             return api.getPath();
         }
         if (api.getPath().startsWith("/")) {
+            int index = service.getBasePath().indexOf('/');
+            if (service.getBasePath().startsWith("http://")) {
+                index = service.getBasePath().indexOf('/', "http://".length());
+            }
+            if (index > 0) {
+                return service.getBasePath().substring(0, index) + api.getPath();
+            }
             return service.getBasePath() + api.getPath();
         }
         return service.getBasePath() + module.getPath() + api.getPath();
