@@ -43,7 +43,7 @@ public class ExcelEngineTester {
                     System.out.println(Arrays.asList(row.toArray()));
                 }
 
-                for (List<String> row : rows.subList(startRow, rows.size() - startRow + 1)) {
+                for (List<String> row : rows.subList(startRow, rows.size() - 1)) {
                     row = row.subList(startColumn, row.size() - startColumn + 1);
 
                     String thisname = row.get(0);
@@ -63,6 +63,52 @@ public class ExcelEngineTester {
                     System.out.println(row.get(1));
                 }
                 return new ArrayList<>(mapService.values());
+            }
+        });
+        engine.driver();
+    }
+
+    @Test
+    public void maintain_generator2() throws Exception {
+        String ROOT_ID = "020";
+        String excelpath = "src\\main\\resources\\房屋维修报价.xls";
+        ExcelEngine engine = new ExcelEngine(ROOT_ID, excelpath, "SqlServer-Worker", new ModelBuilder() {
+            @Override
+            public List<Service> build(List<List<String>> rows) {
+                int startRow = 3, startColumn = 1;
+                String lastName = "";
+                LinkedHashMap<String, Service> mapService = new LinkedHashMap<>();
+
+                for (List<String> row : rows) {
+                    System.out.println(Arrays.asList(row.toArray()));
+                }
+
+                for (List<String> row : rows.subList(startRow, rows.size() - 1)) {
+                    row = row.subList(startColumn, row.size() - startColumn + 1);
+
+                    String thisname = row.get(0);
+                    if (thisname.trim().length() == 0) {
+                        thisname = lastName;
+                    }
+
+                    Service service = mapService.get(thisname);
+                    if (service == null) {
+                        service = new Service();
+                        service.Name = thisname;
+                        service.Items = new ArrayList<>();
+                        mapService.put(lastName = thisname, service);
+                    }
+
+                    String[] items = row.get(1).replaceAll("。|、","").split("\\s*\\d");
+                    for (String item : items) {
+                        if (item.trim().length() > 0) {
+                            service.Items.add(new Service.Item(item, row.get(2)));
+                            System.out.println(item + "--------" + row.get(2));
+                        }
+                    }
+
+                }
+                return new ArrayList<>(mapService.values());//
             }
         });
         engine.driver();

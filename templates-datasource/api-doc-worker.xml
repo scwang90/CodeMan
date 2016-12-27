@@ -304,7 +304,7 @@
                 }
             </response>
         </api>
-        <api name="注册验证" requestMethod="POST" path="?$c=User&#38;$m=SendVerificationCodeBeforeRegist">
+        <api name="注册验证" requestMethod="POST" path="?$c=User&#38;$m=SendVerificationCodeBeforeRegist$OPEN">
             <description>
                 用户注册时发送手机验证码
             </description>
@@ -645,6 +645,39 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:true
+                }
+            </response>
+        </api>
+        <api name="答案列表" requestMethod="POST" path="?$c=Answer&amp;$m=GetAnswersByQuestionId$OPEN">
+            <description>
+                获取答案列表
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <form name="Id" description="问题Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id://ID,
+                String Name://名称,
+                String HeadUrl://头像,
+                String Content://内容,
+                Date Time://时间,
+                Images:["url","url"]
+                }...]
+                }
+            </response>
+        </api>
+        <api name="回答问题" requestMethod="POST" path="?$c=Answer&amp;$m=PostAnswer">
+            <form name="QuestionId" type="string" description="问题Id"/>
+            <form name="Content" type="string" description="内容"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"答案ID"
                 }
             </response>
         </api>
