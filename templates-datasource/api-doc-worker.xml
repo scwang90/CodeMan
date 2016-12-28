@@ -279,7 +279,6 @@
             <form name="HeadUrl" description="头像地址" type="string" nullable="true"/>
             <form name="Age" description="年龄" type="int" nullable="true"/>
             <response contentType="Json">
-                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
@@ -295,7 +294,6 @@
             <form name="oldpwd" description="老密码（未加密）" type="string"/>
             <form name="newpwd" description="新密码（未加密）" type="string"/>
             <response contentType="Json">
-                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
@@ -325,7 +323,6 @@
             <form name="pwd" description="新密码（未加密）" type="string"/>
             <form name="verifycode" description="手机验证码" type="string"/>
             <response contentType="Json">
-                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",

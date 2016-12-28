@@ -84,7 +84,7 @@ public class ExcelEngineTester {
                 }
 
                 for (List<String> row : rows.subList(startRow, rows.size() - 1)) {
-                    row = row.subList(startColumn, row.size() - startColumn + 1);
+                    row = row.subList(startColumn, row.size() - 1);
 
                     String thisname = row.get(0);
                     if (thisname.trim().length() == 0) {
@@ -145,6 +145,49 @@ public class ExcelEngineTester {
                     System.out.println(row.get(1));
                 }
                 return services;
+            }
+        });
+        engine.driver();
+    }
+
+    @Test
+    public void homemaking_generator2() throws Exception {
+        String ROOT_ID = "030";
+        String excelpath = "src\\main\\resources\\保洁报价.xls";
+        ExcelEngine engine = new ExcelEngine(ROOT_ID, excelpath, "SqlServer-Worker", new ModelBuilder() {
+            @Override
+            public List<Service> build(List<List<String>> rows) {
+                int startRow = 2, startColumn = 1;
+                String lastName = "";
+                LinkedHashMap<String, Service> mapService = new LinkedHashMap<>();
+                for (List<String> row : rows.subList(startRow, rows.size())) {
+                    row = row.subList(startColumn, row.size() - 1);
+
+                    String thisname = row.get(0);
+                    if (thisname.trim().length() == 0) {
+                        thisname = lastName;
+                    }
+
+                    Service service = mapService.get(thisname);
+                    if (service == null) {
+                        service = new Service();
+                        service.Name = thisname;
+                        service.Items = new ArrayList<>();
+                        mapService.put(lastName = thisname, service);
+                    }
+
+                    for (final String item : row.get(1).replaceFirst("\\s*\\d\\.", "").split("\\s*\\d\\.")) {
+                        if (item.trim().length() > 0) {
+                            if (row.get(3).trim().matches("\\d+(\\.\\d+)?")) {
+                                service.Items.add(new Service.Item(item.trim(), String.format("%s元/%s", row.get(3).trim(), row.get(2))));
+                            } else {
+                                service.Items.add(new Service.Item(item.trim(), String.format("%s/%s", row.get(3).trim(), row.get(2))));
+                            }
+                            System.out.println(item.trim());
+                        }
+                    }
+                }
+                return new ArrayList<>(mapService.values());
             }
         });
         engine.driver();
