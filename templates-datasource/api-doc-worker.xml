@@ -146,7 +146,7 @@
     </module>
 
     <module name="用户相关">
-        <api name="用户登录" requestMethod="POST" path="?$c=User&amp;$m=Login$OPEN">
+        <api name="用户登录" requestMethod="POST" path="?$c=User&amp;$m=Login$OPEN&amp;username=admin&amp;password=000000">
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
