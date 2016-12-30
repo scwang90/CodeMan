@@ -87,7 +87,7 @@
                                         <td>${header.type}</td>
                                         <td>${header.nullable?string("否","是")}</td>
                                         <td>${header.description}</td>
-                                        <td>${header.sample}</td>
+                                        <td>${header.example}</td>
                                     </tr>
                                     </#list>
                                 </tbody>
@@ -112,7 +112,7 @@
                                         <td>${param.type}</td>
                                         <td>${param.nullable?string("否","是")}</td>
                                         <td>${param.description}</td>
-                                        <td>${param.sample}</td>
+                                        <td>${param.example}</td>
                                     </tr>
                                     </#list>
                                 </tbody>
@@ -137,19 +137,19 @@
                                         <td>${form.type}</td>
                                         <td>${form.nullable?string("否","是")}</td>
                                         <td>${form.description}</td>
-                                        <td>${form.sample}</td>
+                                        <td>${form.example}</td>
                                     </tr>
                                     </#list>
                                 </tbody>
                             </table>
                         </div>
                     </#if>
-                    <#if api.body?? && api.body.sample??>
+                    <#if api.body?? && api.body.example??>
                         <p><li><b>Body数据：【${api.body.contentType}】</b></li></p>
                         <#if api.body.contentType?lower_case=="xml">
-                            <pre><code>${api.body.sample?html}</code></pre>
+                            <pre><code>${api.body.example?html}</code></pre>
                         <#else>
-                            <pre><code>${api.body.sample}</code></pre>
+                            <pre><code>${api.body.example}</code></pre>
                         </#if>
 
                     </#if>
@@ -171,19 +171,19 @@
                                         <td>${header.type}</td>
                                         <td>${header.nullable?string("否","是")}</td>
                                         <td>${header.description}</td>
-                                        <td>${header.sample}</td>
+                                        <td>${header.example}</td>
                                     </tr>
                                     </#list>
                                 </tbody>
                             </table>
                         </div>
                     </#if>
-                    <#if api.response?? && api.response.sample??>
+                    <#if api.response?? && api.response.example??>
                         <p><li><b>调用成功的返回值示例：【${api.response.contentType}】</b></li></p>
                         <#if api.response.contentType?lower_case=="xml">
-                            <pre><code>${api.response.sample?html}</code></pre>
+                            <pre><code>${api.response.example?html}</code></pre>
                         <#else>
-                            <pre><code>${api.response.sample}</code></pre>
+                            <pre><code>${api.response.example}</code></pre>
                         </#if>
                     </#if>
                 </div>

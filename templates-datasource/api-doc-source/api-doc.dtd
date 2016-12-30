@@ -28,18 +28,21 @@
         <!ATTLIST header type (string|int|float|boolean|date|short|long|double|char|byte|cancel) #REQUIRED>
         <!ATTLIST header nullable (false|true) false>
         <!ATTLIST header description CDATA "">
+        <!ATTLIST header example CDATA "">
 
         <!ATTLIST param name CDATA #REQUIRED>
         <!ATTLIST param type (string|int|float|boolean|date|short|long|double|char|byte) #REQUIRED>
         <!ATTLIST param nullable (false|true) false>
         <!ATTLIST param description CDATA "">
+        <!ATTLIST param example CDATA "">
 
         <!ATTLIST form name CDATA #REQUIRED>
         <!ATTLIST form type (string|int|float|boolean|date|short|long|double|char|byte) #REQUIRED>
         <!ATTLIST form nullable (false|true) false>
         <!ATTLIST form description CDATA "">
+        <!ATTLIST form example CDATA "">
 
-        <!ATTLIST body sample CDATA "">
+        <!ATTLIST body example CDATA "">
         <!ATTLIST body contentType (Json|Form|XML|Multipart) #REQUIRED>
-        <!ATTLIST response sample CDATA "">
+        <!ATTLIST response example CDATA "">
         <!ATTLIST response contentType (Json|Form|XML|Multipart) #REQUIRED>

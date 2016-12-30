@@ -8,7 +8,7 @@ package com.codesmither.apidoc.model;
 public class ApiHeader extends HtmlModel {
     private String name;
     private String type = "String";
-    private String sample;
+    private String example;
     private String description;
     private boolean nullable = false;
 
@@ -36,12 +36,12 @@ public class ApiHeader extends HtmlModel {
         this.description = description;
     }
 
-    public String getSample() {
-        return sample;
+    public String getExample() {
+        return example;
     }
 
-    public void setSample(String sample) {
-        this.sample = sample;
+    public void setExample(String example) {
+        this.example = example;
     }
 
     public boolean isNullable() {

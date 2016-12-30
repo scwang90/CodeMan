@@ -6,15 +6,15 @@ package com.codesmither.apidoc.model;
  */
 @SuppressWarnings("unused")
 public class ApiBody extends HtmlModel {
-    private String sample;
+    private String example;
     private String contentType;
 
-    public String getSample() {
-        return sample;
+    public String getExample() {
+        return example;
     }
 
-    public void setSample(String sample) {
-        this.sample = sample;
+    public void setExample(String example) {
+        this.example = example;
     }
 
     public String getContentType() {

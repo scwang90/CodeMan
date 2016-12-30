@@ -565,11 +565,11 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
-                string Id;//Id
+                string Id;//Id,
                 string Category ;// 分类,
-                string Content ;// 内容
-                int Spend ;//开销（单位：分）
-                DateTime Time ;//提交时间
+                string Content ;// 内容,
+                int Spend ;//开销（单位：元）,
+                DateTime Time ;//提交时间,
                 Images:["url","url"]
                 }...]
                 }
@@ -592,6 +592,82 @@
             <form name="Category" type="string" description="分类"/>
             <form name="Content" type="string" description="内容"/>
             <form name="Spend" type="int" description="开销"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+    </module>
+    <module name="生活记账3.0" description="需要登录">
+        <api name="明细账单" requestMethod="POST" path="?$c=Pager&amp;$m=GetAccountByDate">
+            <form name="date" description="日期格式：yyyy-MM-dd" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id;//Id,
+                string Category ;// 分类,
+                int Spend ;//开销（单位：元）,
+                DateTime Time ;//提交时间
+                }...]
+                }
+            </response>
+        </api>
+        <api name="分类账单" requestMethod="POST" path="?$c=Pager&amp;$m=GetAccountByDateRange">
+            <form name="startDate" type="string" description="开始日期：yyyy-MM-dd"/>
+            <form name="endDate" type="string" description="结束格式：yyyy-MM-dd"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Category ;// 分类,
+                int Spend ;//开销（单位：元）,
+                DateTime Time ;//提交时间
+                }...]
+                }
+            </response>
+        </api>
+        <api name="新增账单" requestMethod="POST" path="?$c=Pager&amp;$m=SubmitAccount">
+            <form name="date" description="时间格式：yyyy-MM-dd HH:mm:ss" type="string"/>
+            <form name="names" type="string" description="以英文逗号分隔的名称" example="买菜,电影"/>
+            <form name="values" type="string" description="以英文逗号分隔的金额" example="15,60"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+        <api name="修改账单" requestMethod="POST" path="?$c=Pager&amp;$m=UpdateAccount">
+            <form name="Id" type="string" description="账单ID"/>
+            <form name="Category" type="string" description="分类" nullable="true"/>
+            <form name="Spend" type="int" description="开销" nullable="true"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+        <api name="删除账单" requestMethod="POST" path="?$c=Pager&amp;$m=RemoveAccount">
+            <form name="Id" type="string" description="账单ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+        <api name="更新预算" requestMethod="POST" path="?$c=User&amp;$m=Update">
+            <form name="MonthSpendingBudget" type="int" description="月预算"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,

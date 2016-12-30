@@ -173,7 +173,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             ApiHeader apiHeader = new ApiHeader();
             apiHeader.setName(header.attr("name"));
             apiHeader.setType(header.attr("type"));
-            apiHeader.setSample(header.attr("sample"));
+            apiHeader.setExample(header.attr("example"));
             apiHeader.setNullable("true".equals(header.attr("nullable")));
             apiHeader.setDescription(header.attr("description"));
 
@@ -194,7 +194,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             ApiParam apiParam = new ApiParam();
             apiParam.setName(param.attr("name"));
             apiParam.setType(param.attr("type"));
-            apiParam.setSample(param.attr("sample"));
+            apiParam.setExample(param.attr("example"));
             apiParam.setNullable("true".equals(param.attr("nullable")));
             apiParam.setDescription(param.attr("description"));
 
@@ -215,7 +215,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             ApiForm apiForm = new ApiForm();
             apiForm.setName(form.attr("name"));
             apiForm.setType(form.attr("type"));
-            apiForm.setSample(form.attr("sample"));
+            apiForm.setExample(form.attr("example"));
             apiForm.setNullable("true".equals(form.attr("nullable")));
             apiForm.setDescription(form.attr("description"));
 
@@ -233,15 +233,15 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         Element body = api.select(">"+TAG_BODY).first();
         if (body != null) {
             ApiBody apiBody = new ApiBody();
-            apiBody.setSample(body.attr("sample"));
+            apiBody.setExample(body.attr("example"));
             apiBody.setContentType(body.attr("contentType"));
 
             String text = body.text();
             if (text != null && text.length() > 0) {
-                apiBody.setSample(text);
+                apiBody.setExample(text);
             }
             if (apiBody.getContentType().toLowerCase().equals("json")) {
-                apiBody.setSample(FormatUtil.formatJson(apiBody.getSample()));
+                apiBody.setExample(FormatUtil.formatJson(apiBody.getExample()));
             }
 //            if (apiBody.getContentType().toLowerCase().equals("xml")) {
 //                String html = body.html();
@@ -259,15 +259,15 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         Element response = api.select(">response").first();
         if (response != null) {
             ApiResponse apiResponse = new ApiResponse();
-            apiResponse.setSample(response.attr("sample"));
+            apiResponse.setExample(response.attr("example"));
             apiResponse.setContentType(response.attr("contentType"));
 
             String text = response.text();
             if (text != null && text.length() > 0) {
-                apiResponse.setSample(text);
+                apiResponse.setExample(text);
             }
             if (apiResponse.getContentType().toLowerCase().equals("json")) {
-                apiResponse.setSample(FormatUtil.formatJson(apiResponse.getSample()));
+                apiResponse.setExample(FormatUtil.formatJson(apiResponse.getExample()));
             }
 //            if (apiResponse.getContentType().toLowerCase().equals("xml")) {
 //                Element cresponse = response.clone();
