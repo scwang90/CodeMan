@@ -207,9 +207,6 @@
             </response>
         </api>
         <api name="用户注册" requestMethod="POST" path="?$c=User&amp;$m=Regist$OPEN">
-            <description>
-                这个工种列表 应该在登录之后就调用，并缓存（建议内存），其他很多地方都会用到工种列表选择
-            </description>
             <form name="username" description="账户" type="string"/>
             <form name="password" description="密码（未加密）" type="string"/>
             <form name="nickname" description="昵称" type="string"/>
@@ -268,9 +265,6 @@
             </response>
         </api>
         <api name="修改资料" requestMethod="POST" path="?$c=User&amp;$m=Update">
-            <description>
-                这个工种列表 应该在登录之后就调用，并缓存（建议内存），其他很多地方都会用到工种列表选择
-            </description>
             <form name="PersonName" description="昵称（姓名）" type="string" nullable="true"/>
             <form name="Address" description="地址" type="string" nullable="true"/>
             <form name="IDCard" description="身份证号" type="string" nullable="true"/>
@@ -288,9 +282,6 @@
             </response>
         </api>
         <api name="修改密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPassword">
-            <description>
-                这个工种列表 应该在登录之后就调用，并缓存（建议内存），其他很多地方都会用到工种列表选择
-            </description>
             <form name="oldpwd" description="老密码（未加密）" type="string"/>
             <form name="newpwd" description="新密码（未加密）" type="string"/>
             <response contentType="Json">
@@ -316,9 +307,6 @@
             </response>
         </api>
         <api name="重置密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPwd$OPEN">
-            <description>
-                这个工种列表 应该在登录之后就调用，并缓存（建议内存），其他很多地方都会用到工种列表选择
-            </description>
             <form name="mobile" description="手机号码" type="string"/>
             <form name="pwd" description="新密码（未加密）" type="string"/>
             <form name="verifycode" description="手机验证码" type="string"/>
