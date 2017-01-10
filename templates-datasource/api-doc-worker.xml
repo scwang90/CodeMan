@@ -422,7 +422,7 @@
                 }
             </response>
         </api>
-        <api name="提交订单" path="?$c=Pager&amp;$m=SubmitServiceOrder$OPEN" requestMethod="POST">
+        <api name="提交订单" path="?$c=Pager&amp;$m=SubmitServiceOrder" requestMethod="POST">
             <description>
                 提交【维修服务】 和 【家政服务】选择的服务项订单 (需要登录)
             </description>
@@ -436,6 +436,25 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:"订单id"
+                }
+            </response>
+        </api>
+        <api name="我的订单" path="?$c=Pager&amp;$m=GetServiceOrder" requestMethod="POST">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Id:"ID",
+                Time:"时间",
+                Services://服务项目[{
+                Id:"用于提交服务订单",
+                Name:"名称",
+                Description:"描述"
+                }...]
+                }...]
                 }
             </response>
         </api>
