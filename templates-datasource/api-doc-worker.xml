@@ -162,7 +162,7 @@
 
                 int Age;//年龄,
                 String Name;//姓名,
-                String Token;//登录验证码
+                String Token;//登录验证码,
 
                 String Id ;/// 用户ID(自增),
                 String UserName ;/// (原Id)	用户名(APP3.0忽略),
@@ -293,7 +293,7 @@
                 }
             </response>
         </api>
-        <api name="注册验证" requestMethod="POST" path="?$c=User&#38;$m=SendVerificationCodeBeforeRegist$OPEN">
+        <api name="注册验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">
             <description>
                 用户注册时发送手机验证码
             </description>
@@ -319,11 +319,25 @@
                 }
             </response>
         </api>
-        <api name="重置验证" requestMethod="POST" path="?$c=User&#38;$m=SendVerificationCodeResetPwd">
+        <api name="重置验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">
             <description>
                 重置密码时发送手机验证码
             </description>
             <form name="mobile" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+        <api name="找回验证" requestMethod="POST" path="?$c=User&amp;$m=VerifyResetPwdCode$OPEN">
+            <description>
+               找回密码页面点击验证按钮，发送手机号和验证码到服务器验证
+            </description>
+            <form name="mobile" description="手机号码" type="string"/>
+            <form name="code" description="手机收到的验证码" type="string"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -455,6 +469,16 @@
                 Description:"描述"
                 }...]
                 }...]
+                }
+            </response>
+        </api>
+        <api name="删除订单" path="?$c=Pager&amp;$m=RemoveServiceOrder" requestMethod="POST">
+            <form name="Id" type="string" description="订单ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
                 }
             </response>
         </api>
