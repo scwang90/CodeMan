@@ -792,4 +792,49 @@
             </response>
         </api>
     </module>
+    <module name="检测业务">
+        <api name="上传位置" requestMethod="POST" path="?$c=User&amp;$m=PutUserPosition">
+            <description>如果当前登录用户的组织（OrgType==50）是检测单位，则每隔5分钟获取定位信息，并调用本接口发送服务器</description>
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String Lang ;            // 坐标Lang,
+                String Lat ;             // 坐标Lat,
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:true
+                }
+            </response>
+        </api>
+        <api name="人员动态" requestMethod="POST" path="?$c=User&amp;$m=GetUserPosition">
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                String TestOrgManageNo ;            // 登录用户的OrgId
+                }
+                }
+            </body>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:[{
+                    String UserId,
+                    String UserName,
+                    String UserPhone,
+                    String HeadUrl,
+                    float Lang,
+                    float Lat,
+                },...]
+                }
+            </response>
+        </api>
+    </module>
 </service>

@@ -13,8 +13,9 @@ public final class FormatUtil {
 	 */
     public static String formatJson(String jsonStr) {
         if (null == jsonStr || "".equals(jsonStr)) return "";
+        jsonStr = jsonStr.replaceAll(",\\s*\\}", "}");
         StringBuilder sb = new StringBuilder();
-        char last = '\0';
+        char last;// = '\0';
         char current = '\0';
         int indent = 0;
         for (int i = 0; i < jsonStr.length(); i++) {
