@@ -3,7 +3,7 @@
 <html lang="zh-CN" style="font-size: 16px;">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>${name}</title>
+    <title>${displayName}</title>
 
     <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">-->
     <link rel="icon" href="http://www.yunpian.com/favicon.ico">
@@ -94,7 +94,7 @@
                         <span aria-hidden="true" class="icon-${icons[random(0, icons?size)]!0}"></span>
                     </div>
                 </div>
-                <h3>${module.name}</h3>
+                <h3>${module.displayName}</h3>
                 <p>${module.description?html}</p>
             </a>
         </#list>

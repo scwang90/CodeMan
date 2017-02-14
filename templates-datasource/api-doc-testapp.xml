@@ -793,6 +793,20 @@
         </api>
     </module>
     <module name="检测业务">
+        <api name="业务接口" requestMethod="POST" path="?$c=Common&amp;$m=GetDetectionBusinessUrl">
+            <description>检测系统登录成功之后，调用本接口获取业务系统的服务器（由虎哥编写）的配置</description>
+            <response contentType="Json">
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                    String Host;        //IP或者域名,
+                    String Port;        //端口,
+                    String Url ;        //http连接,
+                }
+                }
+            </response>
+        </api>
         <api name="上传位置" requestMethod="POST" path="?$c=User&amp;$m=PutUserPosition">
             <description>如果当前登录用户的组织（OrgType==50）是检测单位，则每隔5分钟获取定位信息，并调用本接口发送服务器</description>
             <body contentType="Json">

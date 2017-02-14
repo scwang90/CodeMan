@@ -2,7 +2,7 @@
 <html lang="zh-CN" style="font-size: 16px;">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>${name}</title>
+    <title>${displayName}</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <#--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">-->
@@ -39,7 +39,7 @@
     <#list modules as module>
         <h2 class="cos">
             <a href="${module.name}.html"
-               class="item ${(module.name==moduleName)?string("active","")}">${module.name}</a>
+               class="item ${(module.name==moduleName)?string("active","")}">${module.displayName}</a>
             <ul class="sub-nav" ${(module.name==moduleName)?string("style='display: block;'","")}>
                 <#list module.apis as api>
                     <li><a href="javascript:void(0)" id="${api.id}">${api.name}</a></li>
@@ -52,7 +52,7 @@
         <article class="doc">
             <section class="one">
             <#if module.description?? && (module.description?length > 0)>
-                <h3>${moduleName}</h3>
+                <h3>${module.displayName}</h3>
                 <p>${module.description}</p>
             </#if>
 

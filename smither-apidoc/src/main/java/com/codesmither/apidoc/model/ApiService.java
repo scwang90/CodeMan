@@ -13,6 +13,7 @@ import java.util.List;
 public class ApiService extends HtmlModel implements IRootModel {
 
     private String name;
+    private String displayName;
     private String basePath;
     private String description;
     private List<ApiModule> modules;
@@ -43,6 +44,14 @@ public class ApiService extends HtmlModel implements IRootModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getBasePath() {

@@ -7,6 +7,7 @@ import com.codesmither.engine.api.IModelBuilder;
 import com.codesmither.engine.api.IRootModel;
 import com.codesmither.engine.util.Reflecter;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Parser;
@@ -48,6 +49,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             Element service = Jsoup.parse(input, config.getXmlSourceCharset(), "", new Parser(new XmlTreeBuilder())).select("service").first();
 
             apiService.setName(service.attr("name"));
+            apiService.setDisplayName(service.attr("displayName"));
             apiService.setBasePath(service.attr("basePath"));
             apiService.setDescription(service.attr("description"));
 
@@ -59,8 +61,14 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             apiService.setModules(buildModules(service));
         }
 
+        if (apiService.getDisplayName() == null || apiService.getDisplayName().isEmpty()) {
+            apiService.setDisplayName(apiService.getName());
+        }
         List<ApiHeader> serviceHeaders = apiService.getHeaders();
         for (ApiModule apiModule : apiService.getModules()) {
+            if (apiModule.getDisplayName() == null || apiModule.getDisplayName().isEmpty()) {
+                apiModule.setDisplayName(apiModule.getName());
+            }
             List<ApiHeader> moduleHeaders = apiModule.getHeaders();
             for (Api api : apiModule.getApis()) {
                 Map<String, ApiHeader> headers = new LinkedHashMap<>();
@@ -109,6 +117,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         for (Element module : modules) {
             ApiModule apiModule = new ApiModule();
             apiModule.setName(module.attr("name"));
+            apiModule.setDisplayName(module.attr("displayName"));
             apiModule.setPath(module.attr("path"));
             apiModule.setDescription(module.attr("description"));
 

@@ -12,6 +12,7 @@ import java.util.List;
 public class ApiModule extends HtmlModel implements IModel {
 
     private String name;
+    private String displayName;
     private String path;
     private String description;
     private List<Api> apis;
@@ -23,6 +24,14 @@ public class ApiModule extends HtmlModel implements IModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getPath() {
