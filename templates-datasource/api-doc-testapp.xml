@@ -794,7 +794,7 @@
     </module>
     <module name="检测业务">
         <api name="业务接口" requestMethod="POST" path="?$c=Common&amp;$m=GetDetectionBusinessUrl">
-            <description>检测系统登录成功之后，调用本接口获取业务系统的服务器（由虎哥编写）的配置</description>
+            <description>检测系统登录成功之后，调用本接口获取业务系统的服务器（由虎哥编写）的配置，注意：每次重新登录都必须调用本接口，不同的用户配置可能不一样！</description>
             <response contentType="Json">
                 {
                 ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,

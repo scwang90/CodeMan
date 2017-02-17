@@ -361,8 +361,9 @@
                 Banners://顶部幻灯片[{
                 String Id;// "文章ID(备用)",
                 String Title;// "标题",
-                String ArticleId;// "文章ID用于点击跳转WEB页面",
-                String ImageUrl;// "图片连接"
+                String ImageUrl;// "图片连接",
+                String ArticleUrl;//"文章的跳转链接或者跳转ID（优先级最高）",
+                String ArticleId;// "文章ID用于点击跳转WEB页面（次优先级）",
                 }...],
                 Tabs://底部标签按钮[{
                 String Id;// "用于获取列表数据",
