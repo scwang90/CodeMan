@@ -346,6 +346,20 @@
                 }
             </response>
         </api>
+
+        <api name="手机验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">
+            <description>
+                修改手机时发送手机验证码
+            </description>
+            <form name="mobile" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
     </module>
 
     <module name="首页展示3.0">
