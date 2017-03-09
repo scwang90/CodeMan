@@ -518,6 +518,7 @@
             <form name="Address" type="string" description="填写的服务地址"/>
             <form name="ServiceStartTime" type="date" description="开始时间 (yyyy-MM-dd HH)" />
             <form name="ServiceEndTime" type="date" description="结束时间 (yyyy-MM-dd HH)" />
+            <form name="Remark" type="string" description="服务备注" nullable="true"/>
             <form name="Mobile" type="string" description="手机号码（未登录时必须）" nullable="true"/>
             <form name="Name" type="string" description="联系人（未登录时必须）" nullable="true"/>
             <response contentType="Json">
@@ -545,7 +546,7 @@
                 }
             </response>
         </api>
-        <api name="我的订单" path="?$c=ServiceOrder&amp;$m=GetServiceOrder" requestMethod="POST">
+        <api name="我的订单" path="?$c=ServiceOrder&amp;$m=GetServiceOrderByLoginUser" requestMethod="POST">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
