@@ -461,24 +461,91 @@
                 }
             </response>
         </api>
-        <api name="提交订单" path="?$c=Pager&amp;$m=SubmitServiceOrder" requestMethod="POST">
-            <description>
-                提交【维修服务】 和 【家政服务】选择的服务项订单 (需要登录)
-            </description>
-            <form name="ProfessionIds" type="string">
-                <description>
-                    预约的服务，多个Id以“,”分隔
-                </description>
-            </form>
+        <!--<api name="提交订单" path="?$c=Pager&amp;$m=SubmitServiceOrder" requestMethod="POST">-->
+            <!--<description>-->
+                <!--提交【维修服务】 和 【家政服务】选择的服务项订单 (需要登录)-->
+            <!--</description>-->
+            <!--<form name="ProfessionIds" type="string">-->
+                <!--<description>-->
+                    <!--预约的服务，多个Id以“,”分隔-->
+                <!--</description>-->
+            <!--</form>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:"订单id"-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="我的订单" path="?$c=Pager&amp;$m=GetServiceOrder" requestMethod="POST">-->
+            <!--<param name="pageSize" description="分页大小" type="int"/>-->
+            <!--<param name="page" description="页数" type="int"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:[{-->
+                <!--Id:"ID",-->
+                <!--Time:"时间",-->
+                <!--Services://服务项目[{-->
+                <!--Id:"用于提交服务订单",-->
+                <!--Name:"名称",-->
+                <!--Description:"描述"-->
+                <!--}...]-->
+                <!--}...]-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <api name="删除订单" path="?$c=Pager&amp;$m=RemoveServiceOrder" requestMethod="POST">
+            <form name="Id" type="string" description="订单ID"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
-                data:"订单id"
+                data:true
                 }
             </response>
         </api>
-        <api name="我的订单" path="?$c=Pager&amp;$m=GetServiceOrder" requestMethod="POST">
+    </module>
+    <module name="特色服务3.1">
+        <api name="提交订单" path="?$c=Pager&amp;$m=SubmitServiceOrder" requestMethod="POST">
+            <description>
+                提交【维修服务】 和 【家政服务】选择的服务项订单\n
+                注意：如果在未登录状态下提交订单，成功后将会自动登陆，本接口返回值和登陆接口返回一样
+            </description>
+            <form name="ProfessionIds" type="string" description="预约的服务，多个Id以“,”分隔"/>
+            <form name="Address" type="string" description="填写的服务地址"/>
+            <form name="ServiceStartTime" type="date" description="开始时间 (yyyy-MM-dd HH)" />
+            <form name="ServiceEndTime" type="date" description="结束时间 (yyyy-MM-dd HH)" />
+            <form name="Mobile" type="string" description="手机号码（未登录时必须）" nullable="true"/>
+            <form name="Name" type="string" description="联系人（未登录时必须）" nullable="true"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+
+                int Age;//年龄,
+                String Name;//姓名,
+                String Token;//登录验证码,
+
+                String Id ;/// 用户ID(自增),
+                String UserName ;/// (原Id)	用户名(APP3.0忽略),
+                String NickName ;/// 昵称(APP3.0忽略),
+                String Address ;/// 详细地址,
+                String HeadUrl ;/// 头像Url,
+                /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                String PersonName ,
+                /// 性别【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.性别，可选值：0男，1女】,
+                String SexNum ,
+                /// 手机号码【住建部标准】【指该人员对外联系用的手机号码(11位数字)】,
+                String Mobile ,
+                }
+                }
+            </response>
+        </api>
+        <api name="我的订单" path="?$c=ServiceOrder&amp;$m=GetServiceOrder" requestMethod="POST">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -488,7 +555,12 @@
                 data:[{
                 Id:"ID",
                 Time:"时间",
-                Services://服务项目[{
+                Address:"服务地址",
+                WorkerId:"分配人员Id",
+                WorkerName:"分配人员名称",
+                WorkerAvatar:"分配人员头像",
+                Status:0 //状态：0 待处理 1 待执行 2 进行中 3 已完成,
+                Professions://服务项目[{
                 Id:"用于提交服务订单",
                 Name:"名称",
                 Description:"描述"
@@ -497,13 +569,31 @@
                 }
             </response>
         </api>
-        <api name="删除订单" path="?$c=Pager&amp;$m=RemoveServiceOrder" requestMethod="POST">
-            <form name="Id" type="string" description="订单ID"/>
+        <api name="订单详情" requestMethod="POST" path="?$c=ServiceOrder&amp;$m=GetServiceOrderInfoById">
+            <form name="Id" type="string" description="订单Id"/>
             <response contentType="Json">
                 {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
-                data:true
+                data:[{
+                Id:"ID",
+                Time:"时间",
+                Address:"服务地址",
+                WorkerId:"分配人员Id",
+                WorkerName:"分配人员名称",
+                WorkerAvatar:"分配人员头像",
+                UserName:"业主名称",
+                UserAvatar:"业主头像",
+                ServiceStartTime://服务开始时间,
+                ServiceEndTime://服务结束时间,
+                Status:0 //状态：0 待处理 1 待执行 2 进行中 3 已完成,
+                Professions://服务项目[{
+                Id:"用于提交服务订单",
+                Name:"名称",
+                Description:"描述"
+                }...]
+                }...]
+                }
                 }
             </response>
         </api>
