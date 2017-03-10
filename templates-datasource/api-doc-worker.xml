@@ -703,6 +703,20 @@
                 }
             </response>
         </api>
+        <api name="加入工人" requestMethod="POST" path="?$c=Worker&amp;$m=SubmitWorkerJoin">
+            <form name="PersonName" type="string" description="姓名"/>
+            <form name="Mobile" type="string" description="电话"/>
+            <form name="PayRequire" type="string" description="待遇"/>
+            <form name="PushProfessionIds" type="string" description="工种" />
+            <form name="Introduce" type="string" description="个人介绍" />
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"Id"
+                }
+            </response>
+        </api>
     </module>
 
     <module name="最新活动3.0">
@@ -742,6 +756,8 @@
                     cmd = activity.testitem$活动Id
                     业主查看体检结果（需要登录）
                     cmd = activity.testview$活动Id
+                    加入我们
+                    cmd = activity.join.worker
                 ]]>
             </description>
             <form name="Id" type="string" description="文章Id"/>
