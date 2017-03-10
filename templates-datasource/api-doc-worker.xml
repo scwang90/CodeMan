@@ -128,7 +128,10 @@
                 幻灯片 = 50,
                 日记 = 60,
                 咨询 = 70,
-                回复 = 80
+                回复 = 80,
+                评价 = 90,
+                签到签退 = 100,
+                工人评价 = 110,
             </description>
             <param name="infoType" description="如果是用户头像：用户，如果是工作日志：工作日志" type="string"/>
             <param name="infoId" description="图片所属对象的ID，如用户ID，日志ID" type="string"/>
@@ -509,7 +512,7 @@
         </api>
     </module>
     <module name="特色服务3.1">
-        <api name="提交订单" path="?$c=Pager&amp;$m=SubmitServiceOrder" requestMethod="POST">
+        <api name="提交订单" requestMethod="POST" path="?$c=ServiceOrder&amp;$m=SubmitServiceOrder">
             <description>
                 提交【维修服务】 和 【家政服务】选择的服务项订单\n
                 注意：如果在未登录状态下提交订单，成功后将会自动登陆，本接口返回值和登陆接口返回一样
@@ -546,7 +549,7 @@
                 }
             </response>
         </api>
-        <api name="我的订单" path="?$c=ServiceOrder&amp;$m=GetServiceOrderByLoginUser" requestMethod="POST">
+        <api name="我的订单" requestMethod="POST" path="?$c=ServiceOrder&amp;$m=GetServiceOrderByLoginUser" >
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -567,6 +570,30 @@
                 Description:"描述"
                 }...]
                 }...]
+                }
+            </response>
+        </api>
+        <api name="订单流程" requestMethod="POST" path="?$c=ServiceOrder&amp;$m=GetServiceOrderFlowById">
+            <form name="Id" type="string" description="订单Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Time:"时间",
+                Content:"流程内容",
+                Status:0 //状态：0 待处理 1 待执行 2 进行中 3 已完成,
+                Worker://工人（指定工人的时候不为空）{
+                Id:"用于提交服务订单",
+                Name:"名称",
+                Avatar:"头像",
+                }
+                Signed://签到（签到签退时不为空）{
+                Id:"签到Id，用于获取详细信息",
+                SignedStatus:"头像",
+                }
+                }...]
+                }
                 }
             </response>
         </api>
@@ -599,6 +626,83 @@
             </response>
         </api>
     </module>
+    <module name="工人相关3.1">
+        <api name="工人详情" requestMethod="POST" path="?$c=Worker&amp;$m=GetWorkerInfoById">
+            <form name="Id" type="string" description="工人Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Id:"ID",
+                Name:"姓名",
+                Avatar:"头像",
+                Mobile:"手机号码",
+                Description:"描述信息",
+                ServiceQualityScore:"质量评分（0.0~5.5）",
+                ServiceAttitudeScore:"态度评分（0.0~5.5）",
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="评价列表" requestMethod="POST" path="?$c=Worker&amp;$m=GetWorkerEvaluationByWorkerId" >
+            <form name="Id" type="string" description="工人Id"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Id:"ID",
+                Time:"时间",
+                UserName:"评价人名称",
+                Avatar:"头像",
+                Content:"评价内容",
+                WorkerId:"工人Id",
+                ServiceQualityScore:"质量评分（0.0~5.5）",
+                ServiceAttitudeScore:"态度评分（0.0~5.5）",
+                Images:["url","url"]
+                }...]
+                }
+            </response>
+        </api>
+        <api name="提交评价" requestMethod="POST" path="?$c=Worker&amp;$m=SubmitWorkerEvaluation">
+            <form name="Content" type="string" description="评论内容"/>
+            <form name="ServiceQualityScore" type="float" description="质量评分（0.0~5.0）"/>
+            <form name="ServiceAttitudeScore" type="float" description="态度评分 (0.0~5.0)" />
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"评价Id"
+                }
+            </response>
+        </api>
+        <api name="签到详情" requestMethod="POST" path="?$c=Signed&amp;$m=GetSignedInfoById">
+            <form name="Id" type="string" description="签到Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Id:"ID",
+                Time:"签到时间",
+                Address:"签到地址",
+                SignedStatus:1 //状态：1 签到 2 签退 3 完工,
+                Remark:"签到备注",
+                WorkerId:"工人Id",
+                WorkerName:"工人名称",
+                WorkerAvatar:"工人头像",
+                WorkerMobile:"工人手机",
+                }...]
+                }
+                }
+            </response>
+        </api>
+    </module>
+
     <module name="最新活动3.0">
         <api name="活动列表" requestMethod="POST" path="?$c=Pager&amp;$m=GetActivityList$OPEN">
             <description>
