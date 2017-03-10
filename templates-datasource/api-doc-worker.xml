@@ -692,6 +692,8 @@
                 Id:"ID",
                 Time:"签到时间",
                 Address:"签到地址",
+                AddressLng:"经度",
+                AddressLat:"纬度",
                 SignedStatus:1 //状态：1 签到 2 签退 3 完工,
                 Remark:"签到备注",
                 WorkerId:"工人Id",
