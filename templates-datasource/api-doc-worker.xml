@@ -657,8 +657,9 @@
                 data:[{
                 Id:"ID",
                 Time:"时间",
+                UserId:"评价人Id",
                 UserName:"评价人名称",
-                Avatar:"头像",
+                UserAvatar:"评价人头像",
                 Content:"评价内容",
                 WorkerId:"工人Id",
                 ServiceQualityScore:"质量评分（0.0~5.5）",
