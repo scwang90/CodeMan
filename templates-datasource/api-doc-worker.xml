@@ -559,6 +559,7 @@
                 data:[{
                 Id:"ID",
                 Time:"时间",
+                IsCancel:是否取消,
                 Address:"服务地址",
                 WorkerId:"分配人员Id",
                 WorkerName:"分配人员名称",
@@ -606,6 +607,7 @@
                 data:[{
                 Id:"ID",
                 Time:"时间",
+                Remark:"备注",
                 Address:"服务地址",
                 WorkerId:"分配人员Id",
                 WorkerName:"分配人员名称",
@@ -625,6 +627,18 @@
                 }
             </response>
         </api>
+        <api name="取消订单" requestMethod="POST" path="?$c=ServiceOrder&amp;$m=CancelServiceOrderById">
+            <form name="Id" type="string" description="订单Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+                }
+            </response>
+        </api>
+
     </module>
     <module name="工人相关3.1">
         <api name="工人详情" requestMethod="POST" path="?$c=Worker&amp;$m=GetWorkerInfoById">
