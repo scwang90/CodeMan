@@ -471,8 +471,8 @@
             <form name="ProfessionIds" type="string" description="预约的服务，多个Id以“,”分隔"/>
             <form name="Address" type="string" description="填写的服务地址"/>
             <form name="Remark" type="string" description="服务备注" nullable="true"/>
-            <form name="ServiceStartTime" type="date" description="开始时间 (yyyy-MM-dd HH)" />
-            <form name="ServiceEndTime" type="date" description="结束时间 (yyyy-MM-dd HH)" />
+            <form name="ServiceStartTime" type="date" description="开始时间 (yyyy-MM-dd HH:00:00)" />
+            <form name="ServiceEndTime" type="date" description="结束时间 (yyyy-MM-dd HH:00:00)" />
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
