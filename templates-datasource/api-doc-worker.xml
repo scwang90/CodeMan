@@ -699,6 +699,7 @@
         </api>
         <api name="提交评价" requestMethod="POST" path="?$c=Worker&amp;$m=SubmitWorkerEvaluation">
             <form name="WorkerId" type="string" description="工人Id"/>
+            <form name="OrderId" type="string" description="订单Id"/>
             <form name="Content" type="string" description="评论内容"/>
             <form name="ServiceQualityScore" type="float" description="质量评分（0.0~5.0）不能为0"/>
             <form name="ServiceAttitudeScore" type="float" description="态度评分 (0.0~5.0)不能为0" />
