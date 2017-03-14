@@ -550,6 +550,11 @@
             <!--</response>-->
         <!--</api>-->
         <api name="我的订单" requestMethod="POST" path="?$c=ServiceOrder&amp;$m=GetServiceOrderByLoginUser" >
+            <description>
+                注意：\n
+                IsCancel  是否取消,如果IsCancel=true，优先级最高，直接忽略Status字段，变为【已取消】\n
+                IsEvaluated  是否评价过,如果IsEvaluated=true，【去评价】按钮要变成【查看评价】
+            </description>
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -560,6 +565,7 @@
                 Id:"ID",
                 Time:"时间",
                 IsCancel:是否取消,
+                IsEvaluated:false,
                 Address:"服务地址",
                 WorkerId:"分配人员Id",
                 WorkerName:"分配人员名称",
@@ -599,6 +605,11 @@
             </response>
         </api>
         <api name="订单详情" requestMethod="POST" path="?$c=ServiceOrder&amp;$m=GetServiceOrderInfoById">
+            <description>
+                注意：\n
+                IsCancel  是否取消,如果IsCancel=true，优先级最高，直接忽略Status字段，变为【已取消】\n
+                IsEvaluated  是否评价过,如果IsEvaluated=true，【去评价】按钮要变成【查看评价】
+            </description>
             <form name="Id" type="string" description="订单Id"/>
             <response contentType="Json">
                 {
@@ -609,6 +620,8 @@
                 Time:"时间",
                 Remark:"备注",
                 Address:"服务地址",
+                IsCancel:是否取消,
+                IsEvaluated:false,
                 WorkerId:"分配人员Id",
                 WorkerName:"分配人员名称",
                 WorkerAvatar:"分配人员头像",
