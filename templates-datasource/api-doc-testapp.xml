@@ -69,6 +69,7 @@
                         int TitleCode,
                         int Status,
                         String HeadUrl,
+                        String ServiceId;       //客服Id（有的用户没有）,
                         String Token;           //要保存下载，在登录之后的所有接口的头部都要加上这个参数,
                         String OrgId:           // 机构ID,
                         Authority{
