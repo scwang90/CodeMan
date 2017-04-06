@@ -53,14 +53,14 @@ public class MainTest {
         StringBuilder list = new StringBuilder();
         Observable<File> backs = Observable.just(path).map(File::new)
                 .flatMap(file -> Observable.fromArray(file.listFiles()))
-                .filter(file -> !file.getName().equals("list"));
+                .filter(file -> !file.getName().equals("list.html"));
 
         backs.forEach(file -> {
             list.append(file.getName());
             list.append("\r\n");
         });
 
-        String listfile = path + "\\list";
+        String listfile = path + "\\list.html";
         try (PrintStream print = new PrintStream(listfile,"utf-8")){
             print.print(list.toString());
         }
@@ -86,11 +86,61 @@ public class MainTest {
         allfile.forEach(file -> {
 
             PutExtra extra = new PutExtra();
-            String key = file.getAbsolutePath().replace(basepath,"").substring(1).replaceAll("#\\w+\\$\\d+","");
+            String key = file.getAbsolutePath().replace(basepath,"").substring(1).replaceAll("#\\w+\\$\\d+","").replaceAll("\\\\","/");
+            String localFile = file.getAbsolutePath();
+            PutRet ret = IoApi.putFile(uptoken, key, localFile, extra);
+            System.out.println(file.getAbsolutePath() + "- ret:" + ret);
+        });
+    }
+
+
+    @Test
+    public void testFonts() throws Exception {
+
+        String toppath = "src\\main\\resources\\poetry";
+        String path = toppath + "\\fonts";
+
+        StringBuilder list = new StringBuilder();
+        Observable<File> backs = Observable.just(path).map(File::new)
+                .flatMap(file -> Observable.fromArray(file.listFiles()))
+                .filter(file -> !file.getName().equals("list.html"));
+
+        backs.forEach(file -> {
+            list.append(file.getName());
+            list.append("\r\n");
+        });
+
+        String listfile = path + "\\list.html";
+        try (PrintStream print = new PrintStream(listfile,"utf-8")){
+            print.print(list.toString());
+        }
+
+        Observable<File> allfile = backs.concatWith(Observable.just(new File(listfile)))
+                .flatMap(new Function<File, ObservableSource<File>>() {
+                    @Override
+                    public ObservableSource<File> apply(@NonNull File file) throws Exception {
+                        Observable<File> just = Observable.just(file);
+                        File[] files = file.listFiles();
+                        if (files != null && files.length > 0) {
+                            for (File child : files) {
+                                just = just.concatWith(apply(child));
+                            }
+                        }
+                        return just;
+                    }
+                }).filter(File::isFile);
+
+        System.out.println(list);
+
+        String basepath = new File(toppath).getAbsolutePath();
+        allfile.forEach(file -> {
+
+            PutExtra extra = new PutExtra();
+            String key = file.getAbsolutePath().replace(basepath,"").substring(1).replaceAll("#[\\w\\.]+\\$\\d+","").replaceAll("\\\\","/");
             String localFile = file.getAbsolutePath();
             PutRet ret = IoApi.putFile(uptoken, key, localFile, extra);
 
-            System.out.println(file.getAbsolutePath() + "- ret:" + ret);
+            System.out.println(localFile + "- ret:" + ret);
         });
     }
 }
