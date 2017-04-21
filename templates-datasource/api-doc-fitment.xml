@@ -1,0 +1,454 @@
+<?xml version="1.0"?>
+<!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
+<service name="装修APP 服务接口" basePath="http://192.168.1.207:8099/api/ios.ashx">
+    <description>
+        接入简单、异常监控&#x000A; 完善的机制、丰富的接口
+    </description>
+    <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+    <module name="接口说明">
+        <apidescription name="接口访问">
+            <![CDATA[
+            本服务所有接口都已 Post 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
+            <br/><br/>
+            <li><b>发送-头部（Header）</b>：</li>
+                <p>主要用于保持登录 的 token，作用在于当Cookie和Session失效之后，继续生成新的Cookie</p>
+            <br/>
+            <li><b>发送-参数（Url）</b>：</li>
+                <p>目前用于发送分页参数 page（当前页数，0开始），pageSize（分页大小）</p>
+                <p>例如：</p>
+                <code>url?page=1&amp;pageSize=20</code>
+            <br/>
+            <li><b>发送-实体（Body）</b>：</li>
+                <p>除了分页参数，一般其他数据都是以实体（Body）的Form格式发送</p>
+            <br/>
+            <li><b>返回-实体（Body）</b>：Json</li>
+                <p>最外层格式都有 success，data，msg</p>
+                <pre><code>{
+    success:true, //true 表示成功 否则 data 为null msg 可以获取错误信息
+    data:{}, //根据不同接口有不同的数据格式
+    msg:"", //字符串格式，如：密码错误
+}</code></pre>
+            ]]>
+        </apidescription>
+        <apidescription name="登录保持">
+            调用登录接口之后，服务器会返回一个 Set-Cookie ，客户端必须把 Cookie 保存下来，在之后的接口中发送到服务器，才能保持登录会话。
+
+            由于 Cookie 和 Session 会在短时间内过期，客户端也必须保存下 服务站在登录接口中返回的 Token ，之后一起发送到服务器，
+            可以在 Session 过期的时候继续创建新的 Cookie。
+        </apidescription>
+    </module>
+
+    <module name="全局通用">
+        <api name="用户登录" requestMethod="POST" path="?$c=User&amp;$m=Login$OPEN">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <header name="token" type="cancel"/>
+            <form name="username" description="账户" type="string"/>
+            <form name="password" description="密码（未加密）" type="string"/>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                int Age;
+                String Name;
+                String Token;
+
+                String Id ;/// 用户ID(自增),
+                String UserName ;/// (原Id)	用户名,
+                String NickName ;/// 昵称(没有指定随机生成),
+                String Mail ;/// 邮箱,
+                String QQ ;/// QQ号,
+                String City ;/// 所在城市,
+                String Address ;/// 详细地址,
+                String Signature ;/// 签名,
+                String HeadUrl ;/// 头像Url,
+                String Password ;/// (原Pwd)	MD5密码,
+                String PersonName ,/// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                int SexNum ,
+                String Mobile ,
+                Date Birthday;///生日,
+                }
+                }
+            </response>
+        </api>
+        <api name="图片上传" requestMethod="POST" path="?$c=ImageFile&#38;$m=Upload">
+            <description>
+                infoType 的枚举
+                用户 = 10,
+                服务 = 20,
+                文章 = 30,
+                工作日志 = 40,
+                幻灯片 = 50,
+                日记 = 60,
+                咨询 = 70,
+                回复 = 80,
+                评价 = 90,
+                签到签退 = 100,
+                工人评价 = 110,
+            </description>
+            <param name="infoType" description="如果是用户头像：用户，如果是工作日志：工作日志" type="string"/>
+            <param name="infoId" description="图片所属对象的ID，如用户ID，日志ID" type="string"/>
+            <body contentType="Multipart">
+                图片二进制文件
+            </body>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="用户相关">
+        <api name="用户登录" requestMethod="POST" path="?$c=User&amp;$m=Login$OPEN">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <header name="token" type="cancel"/>
+            <form name="username" description="账户" type="string"/>
+            <form name="password" description="密码（未加密）" type="string"/>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                int Age;
+                String Name;
+                String Token;
+
+                String Id ;/// 用户ID(自增),
+                String UserName ;/// (原Id)	用户名,
+                String NickName ;/// 昵称(没有指定随机生成),
+                String Mail ;/// 邮箱,
+                String QQ ;/// QQ号,
+                String City ;/// 所在城市,
+                String Address ;/// 详细地址,
+                String Signature ;/// 签名,
+                String HeadUrl ;/// 头像Url,
+                String Password ;/// (原Pwd)	MD5密码,
+                String PersonName ,/// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                int SexNum ,
+                String Mobile ,
+                Date Birthday;///生日,
+                }
+                }
+            </response>
+        </api>
+        <api name="用户注册" requestMethod="POST" path="?$c=User&amp;$m=Regist$OPEN">
+            <form name="username" description="账户" type="string"/>
+            <form name="password" description="密码（未加密）" type="string"/>
+            <form name="nickname" description="昵称" type="string"/>
+            <form name="verifycode" description="手机验证码" type="string"/>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+
+                int Age;
+                String Name;
+                String Token;
+
+                String Id ;/// 用户ID(自增),
+                String UserName ;/// (原Id)	用户名,
+                String NickName ;/// 昵称(没有指定随机生成),
+                String Mail ;/// 邮箱,
+                String QQ ;/// QQ号,
+                String City ;/// 所在城市,
+                String Address ;/// 详细地址,
+                String Signature ;/// 签名,
+                String HeadUrl ;/// 头像Url,
+                String Password ;/// (原Pwd)	MD5密码,
+                Boolean MailVerified ;/// 邮箱是否验证 ：true 已验证，false 未验证,
+                Boolean MobileVerified ;/// 手机是否验证：true 已验证，false 未验证,
+                /// 证件类型【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.人员证件类型(如果有身份证必须选择身份证)】,
+                String IDCardTypeNum ,
+                /// 证件号码【住建部标准】【按该人员证件类型对应的号码填写，如身份证按18位公民身份证号码填写，军官证按照军官证号码填写，护照按照护照号码填写】,
+                String IDCard ,
+                /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                String PersonName ,
+                /// 性别【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.性别，可选值：0男，1女】,
+                String SexNum ,
+                /// 手机号码【住建部标准】【指该人员对外联系用的手机号码(11位数字)】,
+                String Mobile ,
+                Date Birthday;///生日,
+
+                float ServiceScoreTotal;/// 来自雇主的评价总分数,
+                float ServiceScoreAvg;/// 来自雇主的评价总分数,
+                int ServiceEvaluateTimes;/// 来自雇主的评价次数,
+                float EmployerScoreTotal;/// 来自员工的评价总分数,
+                float EmployerScoreAvg;/// 来自员工的评价总分数,
+                int EmployerEvaluateCount;/// 来自员工的评价次数,
+
+                String WorkPlace ;      /// 工作地点,
+                int WorkPlaceRadius ;/// 工作地点半径（米）,
+                WorkPlaceBaiduLngLat; /// 工作地点 GPS,
+                Geometry:{
+                int CoordinateSystemId = 0,
+                String WellKnownText //GPS,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="修改资料" requestMethod="POST" path="?$c=User&amp;$m=Update">
+            <form name="PersonName" description="昵称（姓名）" type="string" nullable="true"/>
+            <form name="Address" description="地址" type="string" nullable="true"/>
+            <form name="IDCard" description="身份证号" type="string" nullable="true"/>
+            <form name="Mobile" description="手机好嘛" type="string" nullable="true"/>
+            <form name="SexNum" description="性别" type="string" nullable="true"/>
+            <form name="HeadUrl" description="头像地址" type="string" nullable="true"/>
+            <form name="Age" description="年龄" type="int" nullable="true"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                }
+                }
+            </response>
+        </api>
+        <api name="修改密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPassword">
+            <form name="oldpwd" description="老密码（未加密）" type="string"/>
+            <form name="newpwd" description="新密码（未加密）" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                }
+                }
+            </response>
+        </api>
+        <api name="注册验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">
+            <description>
+                用户注册时发送手机验证码
+            </description>
+            <form name="mobile" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+        <api name="重置密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPwd$OPEN">
+            <form name="mobile" description="手机号码" type="string"/>
+            <form name="pwd" description="新密码（未加密）" type="string"/>
+            <form name="verifycode" description="手机验证码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                }
+                }
+            </response>
+        </api>
+        <api name="重置验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">
+            <description>
+                重置密码时发送手机验证码
+            </description>
+            <form name="mobile" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+        <api name="找回验证" requestMethod="POST" path="?$c=User&amp;$m=VerifyResetPwdCode$OPEN">
+            <description>
+               找回密码页面点击验证按钮，发送手机号和验证码到服务器验证
+            </description>
+            <form name="mobile" description="手机号码" type="string"/>
+            <form name="code" description="手机收到的验证码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+        <api name="手机验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">
+            <description>
+                修改手机时发送手机验证码
+            </description>
+            <form name="mobile" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+        <api name="修改手机" requestMethod="POST" path="?$c=User&amp;$m=UpdateMobile">
+            <form name="mobile" description="手机号码" type="string"/>
+            <form name="code" description="手机收到的验证码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="首页展示">
+        <api name="首页数据" path="?$c=Pager&amp;$m=GetHomeData$OPEN" requestMethod="POST">
+            <description>
+                获取APP顶部幻灯片和底部标签按钮
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                Banners://顶部幻灯片[{
+                String Id;// "文章ID(备用)",
+                String Title;// "标题",
+                String ImageUrl;// "图片连接",
+                String ArticleUrl;//"文章的跳转链接或者跳转ID（优先级最高）",
+                String ArticleId;// "文章ID用于点击跳转WEB页面（次优先级）",
+                }...],
+                Tabs://底部标签按钮[{
+                String Id;// "用于获取列表数据",
+                String Name;// "标题",
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="首页列表" path="?$c=Pager&amp;$m=GetHomeTabData$OPEN" requestMethod="POST">
+            <description>
+                和获取APP首页底部表情对应的列表，传入Tab的Id即可
+            </description>
+            <form name="Id" type="string" description="文章Id"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;      //文章ID用于点击跳转WEB页面,
+                String Title;   //标题,
+                String Icon;    //图标,
+                String Source;  //来源,
+                String Time;    //时间
+                }...]
+                }
+            </response>
+        </api>
+        <api name="文章详情" requestMethod="GET" path="/Article?Id=[文章Id]"/>
+    </module>
+
+    <module name="工人相关">
+        <api name="工人详情" requestMethod="POST" path="?$c=Worker&amp;$m=GetWorkerInfoById">
+            <form name="Id" type="string" description="工人Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Id:"ID",
+                Name:"姓名",
+                Avatar:"头像",
+                Mobile:"手机号码",
+                Description:"描述信息",
+                ServiceQualityScore:"质量评分（0.0~5.5）",
+                ServiceAttitudeScore:"态度评分（0.0~5.5）",
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="评价列表" requestMethod="POST" path="?$c=Worker&amp;$m=GetWorkerEvaluationByWorkerId" >
+            <form name="Id" type="string" description="工人Id"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Id:"ID",
+                Time:"时间",
+                UserId:"评价人Id",
+                UserName:"评价人名称",
+                UserAvatar:"评价人头像",
+                Content:"评价内容",
+                WorkerId:"工人Id",
+                Services:"选择的服务",
+                ServiceQualityScore:"质量评分（0.0~5.5）",
+                ServiceAttitudeScore:"态度评分（0.0~5.5）",
+                Images:["url","url"]
+                }...]
+                }
+            </response>
+        </api>
+        <api name="提交评价" requestMethod="POST" path="?$c=Worker&amp;$m=SubmitWorkerEvaluation">
+            <form name="WorkerId" type="string" description="工人Id"/>
+            <form name="OrderId" type="string" description="订单Id"/>
+            <form name="Content" type="string" description="评论内容"/>
+            <form name="ServiceQualityScore" type="float" description="质量评分（0.0~5.0）不能为0"/>
+            <form name="ServiceAttitudeScore" type="float" description="态度评分 (0.0~5.0)不能为0" />
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"评价Id"
+                }
+            </response>
+        </api>
+        <api name="签到详情" requestMethod="POST" path="?$c=Signed&amp;$m=GetSignedInfoById">
+            <form name="Id" type="string" description="签到Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                Id:"ID",
+                Time:"签到时间",
+                Address:"签到地址",
+                AddressLng:"经度",
+                AddressLat:"纬度",
+                SignedStatus:1 //状态：1 签到 2 签退 3 完工,
+                Remark:"签到备注",
+                WorkerId:"工人Id",
+                WorkerName:"工人名称",
+                WorkerAvatar:"工人头像",
+                WorkerMobile:"工人手机",
+                }...]
+                }
+                }
+            </response>
+        </api>
+        <api name="加入工人" requestMethod="POST" path="?$c=Worker&amp;$m=SubmitWorkerJoin">
+            <form name="PersonName" type="string" description="姓名"/>
+            <form name="Mobile" type="string" description="电话"/>
+            <form name="PayRequire" type="string" description="待遇"/>
+            <form name="PushProfessionIds" type="string" description="工种" />
+            <form name="Introduce" type="string" description="个人介绍" />
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"Id"
+                }
+            </response>
+        </api>
+    </module>
+</service>

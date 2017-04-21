@@ -91,4 +91,15 @@ public class EngineTester {
         }
     }
 
+    @Test
+    public void engineFitment() {
+        try {
+            XmlApidocConfig config = ConfigFactory.loadConfig("fitment.properties");
+            ApidocEngine engine = new ApidocEngine(config);
+            engine.launch();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
 }
