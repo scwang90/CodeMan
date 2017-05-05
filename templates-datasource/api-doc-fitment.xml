@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
-<service name="装修APP 服务接口" basePath="http://192.168.1.207:8099/api/ios.ashx">
+<service name="装修APP 服务接口" basePath="http://192.168.1.254:10000/api/ios.ashx">
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
@@ -323,10 +323,6 @@
                 String ArticleUrl;//"文章的跳转链接或者跳转ID（优先级最高）",
                 String ArticleId;// "文章ID用于点击跳转WEB页面（次优先级）",
                 }...],
-                Tabs://底部标签按钮[{
-                String Id;// "用于获取列表数据",
-                String Name;// "标题",
-                }...]
                 }
                 }
             </response>
