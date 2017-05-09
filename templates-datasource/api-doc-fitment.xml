@@ -326,26 +326,19 @@
                 }
             </response>
         </api>
-        <api name="拜访列表" path="?$c=Pager&amp;$m=GetIndexVistiList" requestMethod="POST">
+        <api name="联系列表" path="?$c=Pager&amp;$m=GetContactsList" requestMethod="POST">
             <description>
-                主页拜访列表
+                需要多次获取才能拿到完整的联系人树形列表
             </description>
-            <param name="pageSize" description="分页大小" type="int"/>
-            <param name="page" description="页数" type="int"/>
+            <param name="Id" nullable="true" description="分组Id" type="int"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
-                String Id;      //拜访Id,
-                String Target;    //拜访对象,
-                String Address;  //拜访地点,
-                Date Time;    //拜访日期,
-                Visitor://拜访人员{
-                String Id;      //用户Id,
-                String Name;    //显示名称,
-                String Avatar;  //用户头像,
-                }
+                string Id ;//用户Id
+                string Name ;//显示名称
+                string Avatar ;//用户头像
                 }...]
                 }
             </response>
@@ -494,28 +487,29 @@
                 }
             </response>
         </api>
-        <api name="拜访详情" requestMethod="POST" path="?$c=Approval&amp;$m=GetById">
-            <form name="Id" type="string" description="Id"/>
+        <api name="我的申请" requestMethod="POST" path="?$c=Approval&amp;$m=GetMyApplyList">
+            <description>
+                我发出的申请
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
-                data:{
-                String Id;      //拜访Id,
-                String Target;    //拜访对象,
-                String Address;  //拜访地点,
-                String Remark;  //拜访备注,
-                Date Time;    //拜访日期,
-                Visitor://拜访人员{
+                data:[{
+                string Id ;//Id,
+                string Name ;//申请名称,
+                string Content ;//申请内容,
+                DateTime Time ;//申请时间,
+                int Type;//类型 请假 = 1;休息 = 2;出差 = 3;报销 = 4;物品领用 = 5;通用申请 = 15,
+                int Status ;//状态 未审批 = 1；审批通过 = 2；审批不通过 = 3,
+                Approver://审批人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
-                String Avatar;  //用户头像
-                },
-                Location://定位信息（可能为null）{
-                double latitude,
-                double longitude
+                String Avatar;  //用户头像,
                 }
-                }
+                }...]
                 }
             </response>
         </api>
@@ -632,6 +626,250 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="审批详情">
+        <api name="请假详情" requestMethod="POST" path="?$c=Approval&amp;$m=GetVacateById">
+            <form name="Id" type="string" description="申请Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//申请名称,
+                DateTime Time ;//申请时间,
+                int Status ;//审批状态:未审批 = 1;审批通过 = 2;审批不通过 = 3,
+                int Type ;// 请假类别:事假 = 1;病假 = 2;产假 = 3;婚假 = 4;丧假 = 5;年假 = 6;公假 = 7,
+                DateTime StartTime ;//开始时间,
+                DateTime EndTime ;//结束时间,
+                int Duration ;//请假时长(小时),
+                string Reason ;//请假事由,
+                Images://图片["url","url",...];,
+                Applicant://申请人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Approver://审批人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="休息详情" requestMethod="POST" path="?$c=Approval&amp;$m=GetRestById">
+            <form name="Id" type="string" description="申请Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//申请名称,
+                DateTime Time ;//申请时间,
+                int Status ;//审批状态:未审批 = 1;审批通过 = 2;审批不通过 = 3,
+                DateTime StartTime ;//开始时间,
+                DateTime EndTime ;//结束时间,
+                int Duration ;//休息时长(小时),
+                string Reason ;//休息事由,
+                Images://图片["url","url",...];,
+                Applicant://申请人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Approver://审批人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="出差详情" requestMethod="POST" path="?$c=Approval&amp;$m=GetEvectionById">
+            <form name="Id" type="string" description="申请Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//申请名称,
+                DateTime Time ;//申请时间,
+                int Status ;//审批状态:未审批 = 1;审批通过 = 2;审批不通过 = 3,
+                string Address ;//出差地点,
+                DateTime StartTime ;//开始时间,
+                DateTime EndTime ;//结束时间,
+                int Duration ;//出差时长(小时),
+                string Reason ;//出差事由,
+                Images://图片["url","url",...];,
+                Applicant://申请人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Approver://审批人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="报销详情" requestMethod="POST" path="?$c=Approval&amp;$m=GetPaymentById">
+            <description>
+                报销类别:
+                差旅费 = 1,//火车票、飞机票、长途汽车票、订票费发票、住宿费发票、餐饮发票、打车票、地铁票、加油费、过路过桥费、租车费
+                招待费 = 2,//餐饮业发票、住宿费发票、打车票、礼品发票、食品费
+                车辆费 = 3,//加油费发票、过路过桥费发票、停车费发票、修理费发票（带明细）、保养费（带明细）、车辆保险
+                培训费 = 4,//培训费发票、培训费收据（国家机关事业单位专用）、资料费发票。
+                电话费 = 5,//电话费发票、手机费发票。
+                网络费 = 6,//网络费发票、网络服务发票。
+                咨询费 = 7,//咨询费发票（含咨询报告）。
+                会议费 = 8,//会议费发票（会议决议）
+                运输费 = 9,//运输业专用发票、装卸费发票。
+                办公品 = 10,//办公用品发票（带明细）。
+                劳保费 = 11,//劳保用品发票。
+                邮寄费 = 12,//邮电业专用发票、服务业发票。
+                宣传费 = 13,//广告费发票（合同）
+                制作费 = 14,//增值税专用发票（带合同）
+            </description>
+            <form name="Id" type="string" description="申请Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//申请名称,
+                DateTime Time ;//申请时间,
+                int Status ;//审批状态:未审批 = 1;审批通过 = 2;审批不通过 = 3,
+                int Type ;// 报销类别,
+                float JinE ;//报销金额（单位为万元）,
+                string Detail ;//报销明细,
+                Images://图片["url","url",...];,
+                Applicant://申请人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Approver://审批人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="物品详情" requestMethod="POST" path="?$c=Approval&amp;$m=GetGoodsById">
+            <form name="YongTu" description="物品领用用途（最大长度200）" type="string"/>
+            <form name="Name" description="物品领用名称" type="float"/>
+            <form name="Amounts" description="物品领用数量" type="int"/>
+            <form name="Reason" type="string" description="物品领用事由（最大长度500）"/>
+            <form name="ApproverId" description="审批人Id" type="string"/>
+            <form name="Id" type="string" description="申请Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//申请名称,
+                DateTime Time ;//申请时间,
+                int Status ;//审批状态:未审批 = 1;审批通过 = 2;审批不通过 = 3,
+                string YongTu ;// 物品领用用途,
+                string Name ;// 物品领用名称,
+                int Amounts ;// 物品领用数量,
+                string Reason ;//申请原因,
+                Images://图片["url","url",...];,
+                Applicant://申请人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Approver://审批人 {
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="通用详情" requestMethod="POST" path="?$c=Approval&amp;$m=GetCommonById">
+            <form name="Id" type="string" description="申请Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                    string Id ;//Id,
+                    string Name ;//申请名称,
+                    DateTime Time ;//申请时间,
+                    int Status ;//审批状态:未审批 = 1;审批通过 = 2;审批不通过 = 3,
+                    string Content ;//申请内容,
+                    string Reason ;//申请原因,
+                    Images://图片["url","url",...];,
+                    Applicant://申请人 {
+                        String Id;      //用户Id,
+                        String Name;    //显示名称,
+                        String Avatar;  //用户头像,
+                    },
+                    Approver://审批人 {
+                        String Id;      //用户Id,
+                        String Name;    //显示名称,
+                        String Avatar;  //用户头像,
+                    }
+                }
+                }
+            </response>
+        </api>
+        <api name="审批通过" requestMethod="POST" path="?$c=Approval&amp;$m=Approve">
+            <description>
+                申请类型:
+                请假 = 1,
+                休息 = 2,
+                出差 = 3,
+                报销 = 4,
+                物品领用 = 5,
+                通用申请 = 15
+            </description>
+            <form name="Id" type="string" description="申请Id"/>
+            <form name="type" type="int" description="申请类型"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:""
+                }
+            </response>
+        </api>
+        <api name="不予通过" requestMethod="POST" path="?$c=Approval&amp;$m=Disapprove">
+            <description>
+                申请类型:
+                请假 = 1,
+                休息 = 2,
+                出差 = 3,
+                报销 = 4,
+                物品领用 = 5,
+                通用申请 = 15
+            </description>
+            <form name="Id" type="string" description="申请Id"/>
+            <form name="type" type="int" description="申请类型"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:""
                 }
             </response>
         </api>
