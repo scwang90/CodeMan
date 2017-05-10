@@ -336,9 +336,10 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
-                string Id ;//用户Id
-                string Name ;//显示名称
-                string Avatar ;//用户头像
+                string Id ;//用户Id,
+                string Name ;//显示名称,
+                string Avatar ;//用户头像,
+                string Phone ;//电话,
                 }...]
                 }
             </response>
@@ -476,7 +477,7 @@
                 string Name ;//申请名称,
                 string Content ;//申请内容,
                 DateTime Time ;//申请时间,
-                int Type;//类型 请假 = 1;休息 = 2;出差 = 3;报销 = 4;物品领用 = 5;通用申请 = 15,
+                int ApprovalType;//类型 请假 = 1;休息 = 2;出差 = 3;报销 = 4;物品领用 = 5;通用申请 = 15,
                 int Status ;//状态 未审批 = 1；审批通过 = 2；审批不通过 = 3,
                 Applicant://申请人{
                 String Id;      //用户Id,
@@ -502,7 +503,7 @@
                 string Name ;//申请名称,
                 string Content ;//申请内容,
                 DateTime Time ;//申请时间,
-                int Type;//类型 请假 = 1;休息 = 2;出差 = 3;报销 = 4;物品领用 = 5;通用申请 = 15,
+                int ApprovalType;//类型 请假 = 1;休息 = 2;出差 = 3;报销 = 4;物品领用 = 5;通用申请 = 15,
                 int Status ;//状态 未审批 = 1；审批通过 = 2；审批不通过 = 3,
                 Approver://审批人{
                 String Id;      //用户Id,
