@@ -74,6 +74,43 @@
                 }
             </response>
         </api>
+        <api name="首页数据" requestMethod="POST" path="?$c=Common&amp;$m=GetHomeData$OPEN">
+            <description>
+                获取APP顶部幻灯片和消息数量
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                MessageCount:0//我的消息数量,
+                TaskCount:0//我的任务数量,
+                Banners://顶部幻灯片[{
+                String Title;// "标题",
+                String ImageUrl;// "图片连接",
+                }...],
+                }
+                }
+            </response>
+        </api>
+        <api name="联系列表" requestMethod="POST" path="?$c=Common&amp;$m=GetContactsList" >
+            <description>
+                需要多次获取才能拿到完整的联系人树形列表
+            </description>
+            <param name="Id" nullable="true" description="分组Id" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//用户Id,
+                string Name ;//显示名称,
+                string Avatar ;//用户头像,
+                string Phone ;//电话,
+                }...]
+                }
+            </response>
+        </api>
         <api name="图片上传" requestMethod="POST" path="?$c=ImageFile&#38;$m=Upload">
             <description>
                 infoType 的枚举
@@ -94,6 +131,16 @@
             <body contentType="Multipart">
                 图片二进制文件
             </body>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+        <api name="删除图片" requestMethod="POST" path="?$c=ImageFile&#38;$m=Delete">
+            <param name="Id" description="上传图片返回的Id" type="string"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -306,46 +353,6 @@
         </api>
     </module>
 
-    <module name="首页展示">
-        <api name="首页数据" path="?$c=Pager&amp;$m=GetHomeData$OPEN" requestMethod="POST">
-            <description>
-                获取APP顶部幻灯片和消息数量
-            </description>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                MessageCount:0//我的消息数量,
-                TaskCount:0//我的任务数量,
-                Banners://顶部幻灯片[{
-                String Title;// "标题",
-                String ImageUrl;// "图片连接",
-                }...],
-                }
-                }
-            </response>
-        </api>
-        <api name="联系列表" path="?$c=Pager&amp;$m=GetContactsList" requestMethod="POST">
-            <description>
-                需要多次获取才能拿到完整的联系人树形列表
-            </description>
-            <param name="Id" nullable="true" description="分组Id" type="int"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                string Id ;//用户Id,
-                string Name ;//显示名称,
-                string Avatar ;//用户头像,
-                string Phone ;//电话,
-                }...]
-                }
-            </response>
-        </api>
-    </module>
-
     <module name="拜访相关">
         <api name="拜访列表" requestMethod="POST" path="?$c=Visit&amp;$m=GetList">
             <description>
@@ -397,13 +404,10 @@
             </response>
         </api>
         <api name="添加拜访" requestMethod="POST" path="?$c=Visit&amp;$m=Submit">
-            <description>
-                主页拜访列表
-            </description>
             <form name="Target" description="拜访对象" type="string"/>
             <form name="Address" description="拜访地点" type="string"/>
+            <form name="Remark" nullable="true" description="备注信息" type="string"/>
             <form name="DateTime" nullable="true" type="string" description="拜访时间（yyyy-MM-dd HH:mm）"/>
-            <form name="Id" nullable="true" type="string" description="指定Id"/>
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
             <form name="longitude" nullable="true" type="double" description="定位信息"/>
             <response contentType="Json">
@@ -416,8 +420,255 @@
         </api>
     </module>
 
+    <module name="公告相关">
+        <api name="未读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyNewNoticeList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //公告标题,
+                String Content;  //公告内容,
+                Date Time;       //发布时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="已读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyReadedNotice">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //公告标题,
+                String Content;  //公告内容,
+                Date Time;       //发布时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="公告详情" requestMethod="POST" path="?$c=Notice&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Title;    //公告标题,
+                String Content;  //公告内容,
+                Date Period;  //公告截至日期,
+                Date Time;       //发布时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="阅读公告" requestMethod="POST" path="?$c=Notice&amp;$m=ReadById">
+            <form name="Id" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                }
+            </response>
+        </api>
+        <api name="发送对象" requestMethod="POST" path="?$c=Notice&amp;$m=GetTargetTree" >
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//用户Id,
+                string Name ;//显示名称,
+                string Avatar ;//用户头像,
+                Items:[];//树形嵌套,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="发布公告" requestMethod="POST" path="?$c=Notice&amp;$m=Publish">
+            <form name="Title" description="公告标题" type="string"/>
+            <form name="Content" description="公告内容" type="string"/>
+            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
+            <form name="Period" nullable="true" type="string" description="截止时间" example="yyyy-MM-dd HH:mm"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="备忘记录">
+        <api name="我的备忘" requestMethod="POST" path="?$c=Memo&amp;$m=GetMyMemoList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="备忘详情" requestMethod="POST" path="?$c=Memo&amp;$m=GetMyDemoById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Title;    //公告标题,
+                String Content;  //公告内容,
+                Date Period;  //公告截至日期,
+                Date Time;       //发布时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="提交备忘" requestMethod="POST" path="?$c=Memo&amp;$m=Submit">
+            <form name="Title" description="标题" type="string"/>
+            <form name="Content" description="内容" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="任务相关">
+        <api name="发布列表" requestMethod="POST" path="?$c=Task&amp;$m=GetMySendedTaskList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                Recipient://接收人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="接收列表" requestMethod="POST" path="?$c=Task&amp;$m=GetMyRecvedTaskList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="任务详情" requestMethod="POST" path="?$c=Task&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //发布时间,
+                int StartTime ;// 开始时间,
+                int Period ;// 工作周期（单位为小时）,
+                int Staffs ;// 需要人数,
+                string Address ;// 任务地点,
+                Location Location ;// 来源地点百度经纬度,
+                int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="发布任务" requestMethod="POST" path="?$c=Task&amp;$m=Publish">
+            <form name="Title" description="任务名称" type="string"/>
+            <form name="Content" description="任务内容" type="string"/>
+            <form name="Address" description="位置信息" type="string"/>
+            <form name="Period" type="int" description="工作周期（小时）" />
+            <form name="Staffs" type="int" description="择委派人数" />
+            <form name="StartTime" type="string" description="开始时间" example="yyyy-MM-dd HH:mm"/>
+            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
+            <form name="latitude" nullable="true" type="double" description="定位信息"/>
+            <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
     <module name="考情打卡">
         <api name="打卡签到" requestMethod="POST" path="?$c=Signed&amp;$m=Signin">
+            <form name="latitude" nullable="true" type="double" description="定位信息"/>
+            <form name="longitude" nullable="true" type="double" description="定位信息"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -427,6 +678,8 @@
             </response>
         </api>
         <api name="打卡签退" requestMethod="POST" path="?$c=Signed&amp;$m=Signout">
+            <form name="latitude" nullable="true" type="double" description="定位信息"/>
+            <form name="longitude" nullable="true" type="double" description="定位信息"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
