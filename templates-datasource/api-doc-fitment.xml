@@ -739,14 +739,9 @@
         </api>
         <api name="发布日志" requestMethod="POST" path="?$c=WorkDiary&amp;$m=Publish">
             <form name="Title" description="任务名称" type="string"/>
-            <form name="Content" description="任务内容" type="string"/>
-            <form name="Address" description="位置信息" type="string"/>
-            <form name="Period" type="int" description="工作周期（小时）" />
-            <form name="Staffs" type="int" description="择委派人数" />
-            <form name="StartTime" type="string" description="开始时间" example="yyyy-MM-dd HH:mm"/>
-            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
-            <form name="latitude" nullable="true" type="double" description="定位信息"/>
-            <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <form name="CompleteWork" description="今日完成工作" type="string"/>
+            <form name="UncompletedWork" description="今日未完成工作" type="string"/>
+            <form name="ConcertWork" type="string" description="ConcertWork" />
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -829,15 +824,10 @@
             </response>
         </api>
         <api name="发布处理" requestMethod="POST" path="?$c=QualityHandle&amp;$m=Publish">
-            <form name="Title" description="任务名称" type="string"/>
-            <form name="Content" description="任务内容" type="string"/>
-            <form name="Address" description="位置信息" type="string"/>
-            <form name="Period" type="int" description="工作周期（小时）" />
-            <form name="Staffs" type="int" description="择委派人数" />
-            <form name="StartTime" type="string" description="开始时间" example="yyyy-MM-dd HH:mm"/>
-            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
-            <form name="latitude" nullable="true" type="double" description="定位信息"/>
-            <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <form name="Name" description="标题" type="string"/>
+            <form name="Position" description="隐患位置" type="string"/>
+            <form name="Cause" description="隐患原因" type="string"/>
+            <form name="ConcertWork" type="string" description="协调工作" />
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
