@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
-<service name="装修APP 服务接口" basePath="http://192.168.1.254:10000/api/ios.ashx">
+<service name="装修APP 服务接口" basePath="http://192.168.1.110:8099/api/ios.ashx">
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
@@ -115,16 +115,18 @@
             <description>
                 infoType 的枚举
                 用户 = 10,
-                服务 = 20,
-                文章 = 30,
-                工作日志 = 40,
-                幻灯片 = 50,
-                日记 = 60,
-                咨询 = 70,
-                回复 = 80,
-                评价 = 90,
+                项目验收报告 = 20,
+                施工日志 = 30,
+                质量处理 = 40,
+                施工图纸 = 50,
+                公告 = 60,
+                备忘录 = 70,
+                文章 = 80,
+                机构 = 90,
                 签到签退 = 100,
-                工人评价 = 110,
+                评价 = 110,
+                审批申请 = 120,
+                项目= 130,
             </description>
             <param name="infoType" description="如果是用户头像：用户，如果是工作日志：工作日志" type="string"/>
             <param name="infoId" description="图片所属对象的ID，如用户ID，日志ID" type="string"/>
@@ -442,7 +444,7 @@
                 }
             </response>
         </api>
-        <api name="已读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyReadedNotice">
+        <api name="已读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyReadedNoticeList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -665,6 +667,188 @@
         </api>
     </module>
 
+    <module name="施工日志">
+        <api name="发布列表" requestMethod="POST" path="?$c=WorkDiary&amp;$m=GetMySendedDiaryList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String CompleteWork ;// 今日完成工作,
+                String UncompletedWork ;// 今日未完成工作,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //时间,
+                Recipient://接收人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="接收列表" requestMethod="POST" path="?$c=WorkDiary&amp;$m=GetMyRecvedDiaryList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String CompleteWork ;// 今日完成工作,
+                String UncompletedWork ;// 今日未完成工作,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="日志详情" requestMethod="POST" path="?$c=WorkDiary&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Title;    //标题,
+                String CompleteWork ;// 今日完成工作,
+                String UncompletedWork ;// 今日未完成工作,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //发布时间,
+                int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="发布日志" requestMethod="POST" path="?$c=WorkDiary&amp;$m=Publish">
+            <form name="Title" description="任务名称" type="string"/>
+            <form name="Content" description="任务内容" type="string"/>
+            <form name="Address" description="位置信息" type="string"/>
+            <form name="Period" type="int" description="工作周期（小时）" />
+            <form name="Staffs" type="int" description="择委派人数" />
+            <form name="StartTime" type="string" description="开始时间" example="yyyy-MM-dd HH:mm"/>
+            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
+            <form name="latitude" nullable="true" type="double" description="定位信息"/>
+            <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="质量处理">
+        <api name="发布列表" requestMethod="POST" path="?$c=QualityHandle&amp;$m=GetMySendedQualityHandleList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Name ;// 问题标题,
+                String Position ;// 隐患位置,
+                String Cause ;// 隐患原因,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //时间,
+                Recipient://接收人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="接收列表" requestMethod="POST" path="?$c=QualityHandle&amp;$m=GetMyRecvedQualityHandleList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Name ;// 问题标题,
+                String Position ;// 隐患位置,
+                String Cause ;// 隐患原因,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="处理详情" requestMethod="POST" path="?$c=QualityHandle&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Name ;// 问题标题,
+                String Position ;// 隐患位置,
+                String Cause ;// 隐患原因,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //发布时间,
+                int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="发布处理" requestMethod="POST" path="?$c=QualityHandle&amp;$m=Publish">
+            <form name="Title" description="任务名称" type="string"/>
+            <form name="Content" description="任务内容" type="string"/>
+            <form name="Address" description="位置信息" type="string"/>
+            <form name="Period" type="int" description="工作周期（小时）" />
+            <form name="Staffs" type="int" description="择委派人数" />
+            <form name="StartTime" type="string" description="开始时间" example="yyyy-MM-dd HH:mm"/>
+            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
+            <form name="latitude" nullable="true" type="double" description="定位信息"/>
+            <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
     <module name="考情打卡">
         <api name="打卡签到" requestMethod="POST" path="?$c=Signed&amp;$m=Signin">
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
@@ -688,7 +872,7 @@
                 }
             </response>
         </api>
-        <api name="打卡统计" requestMethod="POST" path="?$c=Pager&amp;$m=StatisticsAttendanceByMonth" >
+        <api name="打卡统计" requestMethod="POST" path="?$c=Common&amp;$m=StatisticsAttendanceByMonth" >
             <description>
                 按月统计考勤
             </description>
