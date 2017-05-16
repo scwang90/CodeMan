@@ -544,6 +544,16 @@
                 }
             </response>
         </api>
+        <api name="删除备忘" requestMethod="POST" path="?$c=Memo&amp;$m=DeleteMyDemoById">
+            <form name="Id" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://"",
+                }
+            </response>
+        </api>
     </module>
 
     <module name="任务相关">
