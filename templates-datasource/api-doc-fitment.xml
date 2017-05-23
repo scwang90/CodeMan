@@ -5,7 +5,8 @@
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
     <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
-    <module name="接口说明">
+
+    <module name="全局通用">
         <apidescription name="接口访问">
             <![CDATA[
             本服务所有接口都已 Post 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
@@ -36,9 +37,6 @@
             由于 Cookie 和 Session 会在短时间内过期，客户端也必须保存下 服务站在登录接口中返回的 Token ，之后一起发送到服务器，
             可以在 Session 过期的时候继续创建新的 Cookie。
         </apidescription>
-    </module>
-
-    <module name="全局通用">
         <api name="首页数据" requestMethod="POST" path="?$c=Common&amp;$m=GetHomeData$OPEN">
             <description>
                 获取APP顶部幻灯片和消息数量
@@ -155,173 +153,173 @@
                 }
             </response>
         </api>
-        <api name="用户注册" requestMethod="POST" path="?$c=User&amp;$m=Regist$OPEN">
-            <form name="username" description="账户" type="string"/>
-            <form name="password" description="密码（未加密）" type="string"/>
-            <form name="nickname" description="昵称" type="string"/>
-            <form name="verifycode" description="手机验证码" type="string"/>
-            <response contentType="Json">
-                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
+        <!--<api name="用户注册" requestMethod="POST" path="?$c=User&amp;$m=Regist$OPEN">-->
+            <!--<form name="username" description="账户" type="string"/>-->
+            <!--<form name="password" description="密码（未加密）" type="string"/>-->
+            <!--<form name="nickname" description="昵称" type="string"/>-->
+            <!--<form name="verifycode" description="手机验证码" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--<header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{-->
 
-                int Age;
-                String Name;
-                String Token;
+                <!--int Age;-->
+                <!--String Name;-->
+                <!--String Token;-->
 
-                String Id ;/// 用户ID(自增),
-                String UserName ;/// (原Id)	用户名,
-                String NickName ;/// 昵称(没有指定随机生成),
-                String Mail ;/// 邮箱,
-                String QQ ;/// QQ号,
-                String City ;/// 所在城市,
-                String Address ;/// 详细地址,
-                String Signature ;/// 签名,
-                String HeadUrl ;/// 头像Url,
-                String Password ;/// (原Pwd)	MD5密码,
-                Boolean MailVerified ;/// 邮箱是否验证 ：true 已验证，false 未验证,
-                Boolean MobileVerified ;/// 手机是否验证：true 已验证，false 未验证,
-                /// 证件类型【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.人员证件类型(如果有身份证必须选择身份证)】,
-                String IDCardTypeNum ,
-                /// 证件号码【住建部标准】【按该人员证件类型对应的号码填写，如身份证按18位公民身份证号码填写，军官证按照军官证号码填写，护照按照护照号码填写】,
-                String IDCard ,
-                /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
-                String PersonName ,
-                /// 性别【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.性别，可选值：0男，1女】,
-                String SexNum ,
-                /// 手机号码【住建部标准】【指该人员对外联系用的手机号码(11位数字)】,
-                String Mobile ,
-                Date Birthday;///生日,
+                <!--String Id ;/// 用户ID(自增),-->
+                <!--String UserName ;/// (原Id)	用户名,-->
+                <!--String NickName ;/// 昵称(没有指定随机生成),-->
+                <!--String Mail ;/// 邮箱,-->
+                <!--String QQ ;/// QQ号,-->
+                <!--String City ;/// 所在城市,-->
+                <!--String Address ;/// 详细地址,-->
+                <!--String Signature ;/// 签名,-->
+                <!--String HeadUrl ;/// 头像Url,-->
+                <!--String Password ;/// (原Pwd)	MD5密码,-->
+                <!--Boolean MailVerified ;/// 邮箱是否验证 ：true 已验证，false 未验证,-->
+                <!--Boolean MobileVerified ;/// 手机是否验证：true 已验证，false 未验证,-->
+                <!--/// 证件类型【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.人员证件类型(如果有身份证必须选择身份证)】,-->
+                <!--String IDCardTypeNum ,-->
+                <!--/// 证件号码【住建部标准】【按该人员证件类型对应的号码填写，如身份证按18位公民身份证号码填写，军官证按照军官证号码填写，护照按照护照号码填写】,-->
+                <!--String IDCard ,-->
+                <!--/// 姓名【住建部标准】【按该人员证件上的姓名填写】,-->
+                <!--String PersonName ,-->
+                <!--/// 性别【住建部标准】【参见DataCommon.TypeCode=enum_data_dic_type.性别，可选值：0男，1女】,-->
+                <!--String SexNum ,-->
+                <!--/// 手机号码【住建部标准】【指该人员对外联系用的手机号码(11位数字)】,-->
+                <!--String Mobile ,-->
+                <!--Date Birthday;///生日,-->
 
-                float ServiceScoreTotal;/// 来自雇主的评价总分数,
-                float ServiceScoreAvg;/// 来自雇主的评价总分数,
-                int ServiceEvaluateTimes;/// 来自雇主的评价次数,
-                float EmployerScoreTotal;/// 来自员工的评价总分数,
-                float EmployerScoreAvg;/// 来自员工的评价总分数,
-                int EmployerEvaluateCount;/// 来自员工的评价次数,
+                <!--float ServiceScoreTotal;/// 来自雇主的评价总分数,-->
+                <!--float ServiceScoreAvg;/// 来自雇主的评价总分数,-->
+                <!--int ServiceEvaluateTimes;/// 来自雇主的评价次数,-->
+                <!--float EmployerScoreTotal;/// 来自员工的评价总分数,-->
+                <!--float EmployerScoreAvg;/// 来自员工的评价总分数,-->
+                <!--int EmployerEvaluateCount;/// 来自员工的评价次数,-->
 
-                String WorkPlace ;      /// 工作地点,
-                int WorkPlaceRadius ;/// 工作地点半径（米）,
-                WorkPlaceBaiduLngLat; /// 工作地点 GPS,
-                Geometry:{
-                int CoordinateSystemId = 0,
-                String WellKnownText //GPS,
-                }
-                }
-                }
-            </response>
-        </api>
-        <api name="修改资料" requestMethod="POST" path="?$c=User&amp;$m=Update">
-            <form name="PersonName" description="昵称（姓名）" type="string" nullable="true"/>
-            <form name="Address" description="地址" type="string" nullable="true"/>
-            <form name="IDCard" description="身份证号" type="string" nullable="true"/>
-            <form name="Mobile" description="手机好嘛" type="string" nullable="true"/>
-            <form name="SexNum" description="性别" type="string" nullable="true"/>
-            <form name="HeadUrl" description="头像地址" type="string" nullable="true"/>
-            <form name="Age" description="年龄" type="int" nullable="true"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                }
-                }
-            </response>
-        </api>
-        <api name="修改密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPassword">
-            <form name="oldpwd" description="老密码（未加密）" type="string"/>
-            <form name="newpwd" description="新密码（未加密）" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                }
-                }
-            </response>
-        </api>
-        <api name="注册验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">
-            <description>
-                用户注册时发送手机验证码
-            </description>
-            <form name="mobile" description="手机号码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{}
-                }
-            </response>
-        </api>
-        <api name="重置密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPwd$OPEN">
-            <form name="mobile" description="手机号码" type="string"/>
-            <form name="pwd" description="新密码（未加密）" type="string"/>
-            <form name="verifycode" description="手机验证码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                }
-                }
-            </response>
-        </api>
-        <api name="重置验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">
-            <description>
-                重置密码时发送手机验证码
-            </description>
-            <form name="mobile" description="手机号码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{}
-                }
-            </response>
-        </api>
-        <api name="找回验证" requestMethod="POST" path="?$c=User&amp;$m=VerifyResetPwdCode$OPEN">
-            <description>
-               找回密码页面点击验证按钮，发送手机号和验证码到服务器验证
-            </description>
-            <form name="mobile" description="手机号码" type="string"/>
-            <form name="code" description="手机收到的验证码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{}
-                }
-            </response>
-        </api>
-        <api name="手机验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">
-            <description>
-                修改手机时发送手机验证码
-            </description>
-            <form name="mobile" description="手机号码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{}
-                }
-            </response>
-        </api>
-        <api name="修改手机" requestMethod="POST" path="?$c=User&amp;$m=UpdateMobile">
-            <form name="mobile" description="手机号码" type="string"/>
-            <form name="code" description="手机收到的验证码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{}
-                }
-            </response>
-        </api>
+                <!--String WorkPlace ;      /// 工作地点,-->
+                <!--int WorkPlaceRadius ;/// 工作地点半径（米）,-->
+                <!--WorkPlaceBaiduLngLat; /// 工作地点 GPS,-->
+                <!--Geometry:{-->
+                <!--int CoordinateSystemId = 0,-->
+                <!--String WellKnownText //GPS,-->
+                <!--}-->
+                <!--}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="修改资料" requestMethod="POST" path="?$c=User&amp;$m=Update">-->
+            <!--<form name="PersonName" description="昵称（姓名）" type="string" nullable="true"/>-->
+            <!--<form name="Address" description="地址" type="string" nullable="true"/>-->
+            <!--<form name="IDCard" description="身份证号" type="string" nullable="true"/>-->
+            <!--<form name="Mobile" description="手机好嘛" type="string" nullable="true"/>-->
+            <!--<form name="SexNum" description="性别" type="string" nullable="true"/>-->
+            <!--<form name="HeadUrl" description="头像地址" type="string" nullable="true"/>-->
+            <!--<form name="Age" description="年龄" type="int" nullable="true"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{-->
+                <!--}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="修改密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPassword">-->
+            <!--<form name="oldpwd" description="老密码（未加密）" type="string"/>-->
+            <!--<form name="newpwd" description="新密码（未加密）" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{-->
+                <!--}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="注册验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">-->
+            <!--<description>-->
+                <!--用户注册时发送手机验证码-->
+            <!--</description>-->
+            <!--<form name="mobile" description="手机号码" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="重置密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPwd$OPEN">-->
+            <!--<form name="mobile" description="手机号码" type="string"/>-->
+            <!--<form name="pwd" description="新密码（未加密）" type="string"/>-->
+            <!--<form name="verifycode" description="手机验证码" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{-->
+                <!--}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="重置验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">-->
+            <!--<description>-->
+                <!--重置密码时发送手机验证码-->
+            <!--</description>-->
+            <!--<form name="mobile" description="手机号码" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="找回验证" requestMethod="POST" path="?$c=User&amp;$m=VerifyResetPwdCode$OPEN">-->
+            <!--<description>-->
+               <!--找回密码页面点击验证按钮，发送手机号和验证码到服务器验证-->
+            <!--</description>-->
+            <!--<form name="mobile" description="手机号码" type="string"/>-->
+            <!--<form name="code" description="手机收到的验证码" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="手机验证" requestMethod="POST" path="?$c=User&amp;$m=SendVerificationCodeResetPwd$OPEN">-->
+            <!--<description>-->
+                <!--修改手机时发送手机验证码-->
+            <!--</description>-->
+            <!--<form name="mobile" description="手机号码" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="修改手机" requestMethod="POST" path="?$c=User&amp;$m=UpdateMobile">-->
+            <!--<form name="mobile" description="手机号码" type="string"/>-->
+            <!--<form name="code" description="手机收到的验证码" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:{}-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
     </module>
 
-    <module name="拜访相关">
+    <module name="拜访公告">
         <api name="拜访列表" requestMethod="POST" path="?$c=Visit&amp;$m=GetList">
             <description>
                 主页拜访列表
@@ -386,9 +384,6 @@
                 }
             </response>
         </api>
-    </module>
-
-    <module name="公告相关">
         <api name="未读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyNewNoticeList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
@@ -493,70 +488,7 @@
         </api>
     </module>
 
-    <module name="备忘记录">
-        <api name="我的备忘" requestMethod="POST" path="?$c=Memo&amp;$m=GetMyMemoList">
-            <param name="pageSize" description="分页大小" type="int"/>
-            <param name="page" description="页数" type="int"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                String Id;       //Id,
-                String Title;    //标题,
-                String Content;  //内容,
-                Date Time;       //时间,
-                }...]
-                }
-            </response>
-        </api>
-        <api name="备忘详情" requestMethod="POST" path="?$c=Memo&amp;$m=GetMyDemoById">
-            <form name="Id" type="string" description="Id"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                String Id;       //Id,
-                String Title;    //公告标题,
-                String Content;  //公告内容,
-                Date Period;  //公告截至日期,
-                Date Time;       //发布时间,
-                Images://图片["url","url",...];,
-                Initiator://发布人{
-                String Id;      //用户Id,
-                String Name;    //显示名称,
-                String Avatar;  //用户头像,
-                }
-                }
-                }
-            </response>
-        </api>
-        <api name="提交备忘" requestMethod="POST" path="?$c=Memo&amp;$m=Submit">
-            <form name="Title" description="标题" type="string"/>
-            <form name="Content" description="内容" type="string"/>
-            <form name="Id" nullable="true" type="string" description="指定Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data://新的Id,
-                }
-            </response>
-        </api>
-        <api name="删除备忘" requestMethod="POST" path="?$c=Memo&amp;$m=DeleteMyDemoById">
-            <form name="Id" type="string" description="指定Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data://"",
-                }
-            </response>
-        </api>
-    </module>
-
-    <module name="任务相关">
+    <module name="任务备忘">
         <api name="发布列表" requestMethod="POST" path="?$c=Task&amp;$m=GetMySendedTaskList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
@@ -647,9 +579,69 @@
                 }
             </response>
         </api>
+        <api name="我的备忘" requestMethod="POST" path="?$c=Memo&amp;$m=GetMyMemoList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="备忘详情" requestMethod="POST" path="?$c=Memo&amp;$m=GetMyDemoById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Title;    //公告标题,
+                String Content;  //公告内容,
+                Date Period;  //公告截至日期,
+                Date Time;       //发布时间,
+                Images://图片["url","url",...];,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="提交备忘" requestMethod="POST" path="?$c=Memo&amp;$m=Submit">
+            <form name="Title" description="标题" type="string"/>
+            <form name="Content" description="内容" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="删除备忘" requestMethod="POST" path="?$c=Memo&amp;$m=DeleteMyDemoById">
+            <form name="Id" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://"",
+                }
+            </response>
+        </api>
     </module>
 
-    <module name="施工日志">
+    <module name="日志打卡">
         <api name="发布列表" requestMethod="POST" path="?$c=WorkDiary&amp;$m=GetMySendedDiaryList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
@@ -731,6 +723,52 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="打卡签到" requestMethod="POST" path="?$c=Signed&amp;$m=Signin">
+            <form name="latitude" nullable="true" type="double" description="定位信息"/>
+            <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://签到ID
+                }
+            </response>
+        </api>
+        <api name="打卡签退" requestMethod="POST" path="?$c=Signed&amp;$m=Signout">
+            <form name="latitude" nullable="true" type="double" description="定位信息"/>
+            <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://签到ID
+                }
+            </response>
+        </api>
+        <api name="打卡统计" requestMethod="POST" path="?$c=Common&amp;$m=StatisticsAttendanceByMonth" >
+            <description>
+                按月统计考勤
+            </description>
+            <form name="month" type="string" description="统计月份(yyyy-MM-01 00:00)" />
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                int AbsenceClock;//缺卡(次),
+                int Absenteeism;//旷工（天）,
+                int AttendanceDay;//出勤天数（天）,
+                int NormalClock;//正常打卡（天）,
+                int LeaveEarly;//早退(次),
+                int BeLate;//迟到(次),
+                int Evection;//出差(小时),
+                int Visit;//外出(次),
+                int Rest;//休息(小时),
+                int vacate;//请假(小时),
+                }
                 }
             </response>
         </api>
@@ -832,55 +870,6 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data://新的Id,
-                }
-            </response>
-        </api>
-    </module>
-
-    <module name="考情打卡">
-        <api name="打卡签到" requestMethod="POST" path="?$c=Signed&amp;$m=Signin">
-            <form name="latitude" nullable="true" type="double" description="定位信息"/>
-            <form name="longitude" nullable="true" type="double" description="定位信息"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data://签到ID
-                }
-            </response>
-        </api>
-        <api name="打卡签退" requestMethod="POST" path="?$c=Signed&amp;$m=Signout">
-            <form name="latitude" nullable="true" type="double" description="定位信息"/>
-            <form name="longitude" nullable="true" type="double" description="定位信息"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data://签到ID
-                }
-            </response>
-        </api>
-        <api name="打卡统计" requestMethod="POST" path="?$c=Common&amp;$m=StatisticsAttendanceByMonth" >
-            <description>
-                按月统计考勤
-            </description>
-            <form name="month" type="string" description="统计月份(yyyy-MM-01 00:00)" />
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                    int AbsenceClock;//缺卡(次),
-                    int Absenteeism;//旷工（天）,
-                    int AttendanceDay;//出勤天数（天）,
-                    int NormalClock;//正常打卡（天）,
-                    int LeaveEarly;//早退(次),
-                    int BeLate;//迟到(次),
-                    int Evection;//出差(小时),
-                    int Visit;//外出(次),
-                    int Rest;//休息(小时),
-                    int vacate;//请假(小时),
-                }
                 }
             </response>
         </api>
@@ -1328,6 +1317,21 @@
                 }
             </response>
         </api>
+        <api name="流程列表" requestMethod="POST" path="?$c=Project&amp;$m=GetProjectFlowListByProcessId">
+            <param name="Id" description="工序Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Sort ;//排序,
+                string GongXuId ;//工序Id,
+                }...]
+                }
+            </response>
+        </api>
         <api name="项目详情" requestMethod="POST" path="?$c=Project&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
@@ -1454,19 +1458,33 @@
                 }
             </response>
         </api>
-        <api name="更新项目" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProject">
+        <!--<api name="更新项目" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProject">-->
+            <!--<form name="Id" type="string" description="指定Id"/>-->
+            <!--<form name="Name" nullable="true" description="标题" type="string"/>-->
+            <!--<form name="StartTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>-->
+            <!--<form name="Address" nullable="true" description="项目位置" type="string"/>-->
+            <!--<form name="GongQi" nullable="true" description="工期" type="string"/>-->
+            <!--<form name="ContractValue" nullable="true" description="合同金额(元)" type="float"/>-->
+            <!--<form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>-->
+            <!--<form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>-->
+            <!--<form name="DirectorId" nullable="true" description="项目负责人" type="string"/>-->
+            <!--<form name="QualityDirectorId" nullable="true" description="质量负责人" type="string"/>-->
+            <!--<form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>-->
+            <!--<form name="Remark" nullable="true" description="备注" type="string"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:,-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <api name="更新工序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProcess">
             <form name="Id" type="string" description="指定Id"/>
-            <form name="Name" description="标题" type="string"/>
-            <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
-            <form name="Address" description="项目位置" type="string"/>
-            <form name="GongQi" description="工期" type="string"/>
-            <form name="ContractValue" description="合同金额(元)" type="float"/>
-            <form name="Area" description="面积（单位㎡）" type="float"/>
-            <form name="Floor" description="楼层（单位层）" type="int"/>
-            <form name="DirectorId" description="项目负责人" type="string"/>
-            <form name="QualityDirectorId" description="质量负责人" type="string"/>
-            <form name="Floor" description="楼层（单位层）" type="int"/>
-            <form name="Remark" nullable="true" description="备注" type="string"/>
+            <form name="Name" nullable="true" description="标题" type="string"/>
+            <form name="StartDateTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
+            <form name="Period" nullable="true" description="工期（单位为天）" type="float"/>
+            <form name="Flows" nullable="true" description="流程名称" type="string" example="流程1,流程2"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -1497,17 +1515,17 @@
                 }
             </response>
         </api>
-        <api name="阶段排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStageSort">
-            <form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>
-            <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:,
-                }
-            </response>
-        </api>
+        <!--<api name="阶段排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStageSort">-->
+            <!--<form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>-->
+            <!--<form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:,-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
         <api name="删除流程" requestMethod="POST" path="?$c=Project&amp;$m=DeleteFlow">
             <form name="Ids" type="string" description="流程Id（可多个）" example="001,002 或者 001"/>
             <response contentType="Json">
@@ -1528,26 +1546,26 @@
                 }
             </response>
         </api>
-        <api name="删除项目" requestMethod="POST" path="?$c=Project&amp;$m=DeleteProject">
-            <form name="Id" type="string" description="Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:,
-                }
-            </response>
-        </api>
-        <api name="删除阶段" requestMethod="POST" path="?$c=Project&amp;$m=DeleteStage">
-            <form name="Id" type="string" description="Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:,
-                }
-            </response>
-        </api>
+        <!--<api name="删除阶段" requestMethod="POST" path="?$c=Project&amp;$m=DeleteStage">-->
+            <!--<form name="Id" type="string" description="Id"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:,-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="删除项目" requestMethod="POST" path="?$c=Project&amp;$m=DeleteProject">-->
+            <!--<form name="Id" type="string" description="Id"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:,-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
     </module>
 
 </service>
