@@ -1458,27 +1458,30 @@
                 }
             </response>
         </api>
-        <!--<api name="更新项目" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProject">-->
-            <!--<form name="Id" type="string" description="指定Id"/>-->
-            <!--<form name="Name" nullable="true" description="标题" type="string"/>-->
-            <!--<form name="StartTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>-->
-            <!--<form name="Address" nullable="true" description="项目位置" type="string"/>-->
-            <!--<form name="GongQi" nullable="true" description="工期" type="string"/>-->
-            <!--<form name="ContractValue" nullable="true" description="合同金额(元)" type="float"/>-->
-            <!--<form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>-->
-            <!--<form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>-->
-            <!--<form name="DirectorId" nullable="true" description="项目负责人" type="string"/>-->
-            <!--<form name="QualityDirectorId" nullable="true" description="质量负责人" type="string"/>-->
-            <!--<form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>-->
-            <!--<form name="Remark" nullable="true" description="备注" type="string"/>-->
-            <!--<response contentType="Json">-->
-                <!--{-->
-                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
-                <!--msg:"",-->
-                <!--data:,-->
-                <!--}-->
-            <!--</response>-->
-        <!--</api>-->
+    </module>
+
+    <module name="项目修改">
+        <api name="更新项目" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProject">
+            <form name="Id" type="string" description="指定Id"/>
+            <form name="Name" nullable="true" description="标题" type="string"/>
+            <form name="StartTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
+            <form name="Address" nullable="true" description="项目位置" type="string"/>
+            <form name="GongQi" nullable="true" description="工期" type="string"/>
+            <form name="ContractValue" nullable="true" description="合同金额(元)" type="float"/>
+            <form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>
+            <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
+            <form name="DirectorId" nullable="true" description="项目负责人" type="string"/>
+            <form name="QualityDirectorId" nullable="true" description="质量负责人" type="string"/>
+            <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
+            <form name="Remark" nullable="true" description="备注" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
         <api name="更新工序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProcess">
             <form name="Id" type="string" description="指定Id"/>
             <form name="Name" nullable="true" description="标题" type="string"/>
@@ -1515,17 +1518,17 @@
                 }
             </response>
         </api>
-        <!--<api name="阶段排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStageSort">-->
-            <!--<form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>-->
-            <!--<form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>-->
-            <!--<response contentType="Json">-->
-                <!--{-->
-                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
-                <!--msg:"",-->
-                <!--data:,-->
-                <!--}-->
-            <!--</response>-->
-        <!--</api>-->
+        <api name="阶段排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStageSort">
+            <form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>
+            <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
         <api name="删除流程" requestMethod="POST" path="?$c=Project&amp;$m=DeleteFlow">
             <form name="Ids" type="string" description="流程Id（可多个）" example="001,002 或者 001"/>
             <response contentType="Json">
@@ -1546,26 +1549,26 @@
                 }
             </response>
         </api>
-        <!--<api name="删除阶段" requestMethod="POST" path="?$c=Project&amp;$m=DeleteStage">-->
-            <!--<form name="Id" type="string" description="Id"/>-->
-            <!--<response contentType="Json">-->
-                <!--{-->
-                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
-                <!--msg:"",-->
-                <!--data:,-->
-                <!--}-->
-            <!--</response>-->
-        <!--</api>-->
-        <!--<api name="删除项目" requestMethod="POST" path="?$c=Project&amp;$m=DeleteProject">-->
-            <!--<form name="Id" type="string" description="Id"/>-->
-            <!--<response contentType="Json">-->
-                <!--{-->
-                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
-                <!--msg:"",-->
-                <!--data:,-->
-                <!--}-->
-            <!--</response>-->
-        <!--</api>-->
+        <api name="删除阶段" requestMethod="POST" path="?$c=Project&amp;$m=DeleteStage">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="删除项目" requestMethod="POST" path="?$c=Project&amp;$m=DeleteProject">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
     </module>
 
 </service>
