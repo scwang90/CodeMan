@@ -1366,6 +1366,33 @@
                 }
             </response>
         </api>
+        <api name="项目内容" requestMethod="POST" path="?$c=Project&amp;$m=GetProjectContentById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                Date EndDateTime ;// 预计结束时间,
+                Process:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Sort ;// 流程排序,
+                Date StartDateTime;开始时间,
+                int Period;//工期单位(天),
+                bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                },...]
+                },...]
+                }
+            </response>
+        </api>
         <api name="创建项目" requestMethod="POST" path="?$c=Project&amp;$m=Create">
             <form name="Name" description="标题" type="string"/>
             <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
@@ -1448,8 +1475,8 @@
                 }
             </response>
         </api>
-        <api name="阶段排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStageSort">
-            <form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>
+        <api name="流程排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateFlowSort">
+            <form name="Ids" description="指定流程Id（可多个）" type="string" example="001,002,003 或者 001"/>
             <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
             <response contentType="Json">
                 {
@@ -1470,8 +1497,8 @@
                 }
             </response>
         </api>
-        <api name="流程排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateFlowSort">
-            <form name="Ids" description="指定流程Id（可多个）" type="string" example="001,002,003 或者 001"/>
+        <api name="阶段排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStageSort">
+            <form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>
             <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
             <response contentType="Json">
                 {
