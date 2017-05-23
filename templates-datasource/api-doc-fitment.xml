@@ -614,12 +614,15 @@
                 int Period ;// 工作周期（单位为小时）,
                 int Staffs ;// 需要人数,
                 string Address ;// 任务地点,
-                Location Location ;// 来源地点百度经纬度,
                 int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
                 Initiator://发布人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                Location://定位信息（可能为null）{
+                double latitude,
+                double longitude
                 }
                 }
                 }
@@ -717,7 +720,7 @@
                 }
             </response>
         </api>
-        <api name="发布日志" requestMethod="POST" path="?$c=WorkDiary&amp;$m=Publish">
+        <api name="发布日志" requestMethod="POST" path="?$c=WorkDiary&amp;$m=Submit">
             <form name="Title" description="日志标题" type="string"/>
             <form name="CompleteWork" description="今日完成工作" type="string"/>
             <form name="UncompletedWork" description="今日未完成工作" type="string"/>
@@ -747,6 +750,7 @@
                 String Position ;// 隐患位置,
                 String Cause ;// 隐患原因,
                 String ConcertWork ;// 协调工作,
+                int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
                 Date Time;       //时间,
                 Recipient://接收人{
                 String Id;      //用户Id,
@@ -770,6 +774,7 @@
                 String Position ;// 隐患位置,
                 String Cause ;// 隐患原因,
                 String ConcertWork ;// 协调工作,
+                int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
                 Date Time;       //时间,
                 Initiator://发布人{
                 String Id;      //用户Id,
@@ -804,11 +809,12 @@
                 }
             </response>
         </api>
-        <api name="发布处理" requestMethod="POST" path="?$c=QualityHandle&amp;$m=Publish">
+        <api name="发布处理" requestMethod="POST" path="?$c=QualityHandle&amp;$m=Submit">
             <form name="Name" description="标题" type="string"/>
             <form name="Position" description="隐患位置" type="string"/>
             <form name="Cause" description="隐患原因" type="string"/>
             <form name="ConcertWork" type="string" description="协调工作" />
+            <form name="HandleStatus" type="int" description="处理状态" example="待处理 = 1;进行中 = 2;已完结 = 3" />
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -1290,6 +1296,228 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:""
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="项目相关">
+        <api name="进度列表" requestMethod="POST" path="?$c=Project&amp;$m=GetProjectProgressList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Progress ;//进度 0-100,
+                Date Time ;//创建时间,
+                Initiator://创建人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="项目详情" requestMethod="POST" path="?$c=Project&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//名称,
+                Date StartTime ;// 开始时间,
+                string GongQi ;// 工期,
+                float ContractValue ;// 合同金额（单位元）,
+                string Address ;// 项目地址,
+                int Floor ;// 楼层（单位层）,
+                float Area ;// 面积（单位㎡）,
+                string Remark ;// 备注,
+                bool Complete ;// 项目是否完成（true标示完成，false表示未完成）,
+
+                Images://图片["url","url",...];,
+                Initiator://创建人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                QualityPrincipal://质量负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="创建项目" requestMethod="POST" path="?$c=Project&amp;$m=Create">
+            <form name="Name" description="标题" type="string"/>
+            <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
+            <form name="Address" description="项目位置" type="string"/>
+            <form name="GongQi" description="工期" type="string"/>
+            <form name="ContractValue" description="合同金额(元)" type="float"/>
+            <form name="DirectorId" description="项目负责人" type="string"/>
+            <form name="QualityDirectorId" description="质量负责人" type="string"/>
+            <form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>
+            <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
+            <form name="Remark" nullable="true" description="备注" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="创建阶段" requestMethod="POST" path="?$c=Project&amp;$m=CreateStage">
+            <form name="Name" description="标题" type="string"/>
+            <form name="EndDateTime" type="string" description="预计结束时间（yyyy-MM-dd HH:mm）"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="创建工序" requestMethod="POST" path="?$c=Project&amp;$m=CreateProcess">
+            <form name="Name" description="标题" type="string"/>
+            <form name="StartDateTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
+            <form name="Period" description="工期（单位为天）" type="float"/>
+            <form name="Flows" description="流程名称" type="string" example="流程1,流程2"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="ConstructionStageId" description="阶段Id" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="创建流程" requestMethod="POST" path="?$c=Project&amp;$m=CreateFlow">
+            <form name="Name" description="标题" type="string"/>
+            <form name="GongXuId" description="工序Id" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="更新项目" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProject">
+            <form name="Id" type="string" description="指定Id"/>
+            <form name="Name" description="标题" type="string"/>
+            <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
+            <form name="Address" description="项目位置" type="string"/>
+            <form name="GongQi" description="工期" type="string"/>
+            <form name="ContractValue" description="合同金额(元)" type="float"/>
+            <form name="Area" description="面积（单位㎡）" type="float"/>
+            <form name="Floor" description="楼层（单位层）" type="int"/>
+            <form name="DirectorId" description="项目负责人" type="string"/>
+            <form name="QualityDirectorId" description="质量负责人" type="string"/>
+            <form name="Floor" description="楼层（单位层）" type="int"/>
+            <form name="Remark" nullable="true" description="备注" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="阶段排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStageSort">
+            <form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>
+            <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="工序排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateProcessSort">
+            <form name="Ids" description="指定工序Id（可多个）" type="string" example="001,002,003 或者 001"/>
+            <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="流程排序" requestMethod="POST" path="?$c=Project&amp;$m=UpdateFlowSort">
+            <form name="Ids" description="指定流程Id（可多个）" type="string" example="001,002,003 或者 001"/>
+            <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="删除流程" requestMethod="POST" path="?$c=Project&amp;$m=DeleteFlow">
+            <form name="Ids" type="string" description="流程Id（可多个）" example="001,002 或者 001"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="删除工序" requestMethod="POST" path="?$c=Project&amp;$m=DeleteProcess">
+            <form name="Ids" type="string" description="工序Id（可多个）" example="001,002 或者 001"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="删除项目" requestMethod="POST" path="?$c=Project&amp;$m=DeleteProject">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="删除阶段" requestMethod="POST" path="?$c=Project&amp;$m=DeleteStage">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
                 }
             </response>
         </api>
