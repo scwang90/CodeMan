@@ -1420,6 +1420,7 @@
         <api name="创建阶段" requestMethod="POST" path="?$c=Project&amp;$m=CreateStage">
             <form name="Name" description="标题" type="string"/>
             <form name="EndDateTime" type="string" description="预计结束时间（yyyy-MM-dd HH:mm）"/>
+            <form name="DownPayment" description="阶段款项（元）" type="float"/>
             <form name="ProjectId" description="项目Id" type="string"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
@@ -1474,6 +1475,19 @@
             <form name="QualityDirectorId" nullable="true" description="质量负责人" type="string"/>
             <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
             <form name="Remark" nullable="true" description="备注" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="更新阶段" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStage">
+            <form name="Id" type="string" description="指定Id"/>
+            <form name="Name" description="标题" type="string"/>
+            <form name="DownPayment" description="阶段款项（元）" type="float"/>
+            <form name="EndDateTime" type="string" description="预计结束时间（yyyy-MM-dd HH:mm）"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
