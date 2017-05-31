@@ -1416,6 +1416,7 @@
             <form name="Flows" description="流程名称" type="string" example="流程1,流程2"/>
             <form name="ProjectId" description="项目Id" type="string"/>
             <form name="ConstructionStageId" description="阶段Id" type="string"/>
+            <form name="DirectorId" nullable="true" description="负责人Id" type="float"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -1479,6 +1480,7 @@
             <form name="Name" nullable="true" description="标题" type="string"/>
             <form name="StartDateTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
             <form name="Period" nullable="true" description="工期（单位为天）" type="float"/>
+            <form name="DirectorId" nullable="true" description="负责人Id" type="float"/>
             <form name="Flows" nullable="true" description="流程名称" type="string" example="流程1,流程2"/>
             <response contentType="Json">
                 {
