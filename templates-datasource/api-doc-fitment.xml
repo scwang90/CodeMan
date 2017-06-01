@@ -48,6 +48,8 @@
                 data:{
                 MessageCount:0//我的消息数量,
                 TaskCount:0//我的任务数量,
+                int NoticeCount;//未读公告,
+                int ApprocalCount;//审批数量,
                 Banners://顶部幻灯片[{
                 String Title;// "标题",
                 String ImageUrl;// "图片连接",
@@ -91,6 +93,7 @@
                 评价 = 110,
                 审批申请 = 120,
                 项目= 130,
+                用户消息= 140,
             </description>
             <param name="infoType" description="如果是用户头像：用户，如果是工作日志：工作日志" type="string"/>
             <param name="infoId" description="图片所属对象的ID，如用户ID，日志ID" type="string"/>
@@ -295,6 +298,94 @@
         <!--</api>-->
     </module>
 
+    <module name="用户消息">
+        <api name="接收列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMyRecvedMessageList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="发布列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMySendedMessageList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                Recipient://接收人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="消息详情" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Title;    //公告标题,
+                String Content;  //公告内容,
+                Date Time;       //发布时间,
+                Images://图片["url","url",...];,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="阅读消息" requestMethod="POST" path="?$c=UserMessage&amp;$m=ReadById">
+            <form name="Id" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                }
+            </response>
+        </api>
+        <api name="发送信息" requestMethod="POST" path="?$c=UserMessage&amp;$m=Send">
+            <form name="Title" description="公告标题" type="string"/>
+            <form name="Content" description="公告内容" type="string"/>
+            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
     <module name="拜访公告">
         <api name="拜访列表" requestMethod="POST" path="?$c=Visit&amp;$m=GetList">
             <description>
@@ -360,7 +451,7 @@
                 }
             </response>
         </api>
-        <api name="未读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyNewNoticeList">
+        <api name="未读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyNoticeList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -372,27 +463,7 @@
                 String Title;    //公告标题,
                 String Content;  //公告内容,
                 Date Time;       //发布时间,
-                Initiator://发布人{
-                String Id;      //用户Id,
-                String Name;    //显示名称,
-                String Avatar;  //用户头像,
-                }
-                }...]
-                }
-            </response>
-        </api>
-        <api name="已读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyReadedNoticeList">
-            <param name="pageSize" description="分页大小" type="int"/>
-            <param name="page" description="页数" type="int"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                String Id;       //Id,
-                String Title;    //公告标题,
-                String Content;  //公告内容,
-                Date Time;       //发布时间,
+                bool IsReaded;   //是否阅读,
                 Initiator://发布人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
@@ -462,6 +533,48 @@
                 }
             </response>
         </api>
+        <!--<api name="未读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyNewNoticeList">-->
+            <!--<param name="pageSize" description="分页大小" type="int"/>-->
+            <!--<param name="page" description="页数" type="int"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:[{-->
+                <!--String Id;       //Id,-->
+                <!--String Title;    //公告标题,-->
+                <!--String Content;  //公告内容,-->
+                <!--Date Time;       //发布时间,-->
+                <!--Initiator://发布人{-->
+                <!--String Id;      //用户Id,-->
+                <!--String Name;    //显示名称,-->
+                <!--String Avatar;  //用户头像,-->
+                <!--}-->
+                <!--}...]-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
+        <!--<api name="已读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyReadedNoticeList">-->
+            <!--<param name="pageSize" description="分页大小" type="int"/>-->
+            <!--<param name="page" description="页数" type="int"/>-->
+            <!--<response contentType="Json">-->
+                <!--{-->
+                <!--success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,-->
+                <!--msg:"",-->
+                <!--data:[{-->
+                <!--String Id;       //Id,-->
+                <!--String Title;    //公告标题,-->
+                <!--String Content;  //公告内容,-->
+                <!--Date Time;       //发布时间,-->
+                <!--Initiator://发布人{-->
+                <!--String Id;      //用户Id,-->
+                <!--String Name;    //显示名称,-->
+                <!--String Avatar;  //用户头像,-->
+                <!--}-->
+                <!--}...]-->
+                <!--}-->
+            <!--</response>-->
+        <!--</api>-->
     </module>
 
     <module name="任务备忘">
