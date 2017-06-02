@@ -451,7 +451,7 @@
                 }
             </response>
         </api>
-        <api name="未读公告" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyNoticeList">
+        <api name="公告列表" requestMethod="POST" path="?$c=Notice&amp;$m=GetMyNoticeList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
