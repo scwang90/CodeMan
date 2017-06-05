@@ -152,6 +152,11 @@
                 int SexNum ,
                 String Mobile ,
                 Date Birthday;///生日,
+                Organization://组织机构{
+                String Id;      //Id,
+                String Name;    //名称,
+                String Avatar;  //头像,
+                }
                 }
                 }
             </response>
@@ -1093,7 +1098,7 @@
                 制作费 = 14,//增值税专用发票（带合同）
             </description>
             <form name="Type" description="报销类别" type="int"/>
-            <form name="JinE" description="报销金额（单位为元）" type="float"/>
+            <form name="JinE" description="报销金额（单位为元）" type="decimal"/>
             <form name="Detail" type="string" description="报销明细（最大长度500）"/>
             <form name="ApproverId" description="审批人Id" type="string"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
@@ -1257,7 +1262,7 @@
                 DateTime Time ;//申请时间,
                 int Status ;//审批状态:未审批 = 1;审批通过 = 2;审批不通过 = 3,
                 int Type ;// 报销类别,
-                float JinE ;//报销金额（单位为万元）,
+                decimal JinE ;//报销金额（单位为元）,
                 string Detail ;//报销明细,
                 Images://图片["url","url",...];,
                 Applicant://申请人 {
@@ -1432,7 +1437,7 @@
                 string Name ;//名称,
                 Date StartTime ;// 开始时间,
                 string GongQi ;// 工期,
-                float ContractValue ;// 合同金额（单位元）,
+                decimal ContractValue ;// 合同金额（单位元）,
                 string Address ;// 项目地址,
                 int Floor ;// 楼层（单位层）,
                 float Area ;// 面积（单位㎡）,
@@ -1469,7 +1474,7 @@
                 string Id ;//Id,
                 string Name ;//名称,
                 Date EndDateTime ;// 预计结束时间,
-                float DownPayment;// 阶段款项（元）
+                decimal DownPayment;// 阶段款项（元）
                 bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
                 Process:[{
                 string Id ;//Id,
@@ -1493,7 +1498,7 @@
             <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
             <form name="Address" description="项目位置" type="string"/>
             <form name="GongQi" description="工期" type="string"/>
-            <form name="ContractValue" description="合同金额(元)" type="float"/>
+            <form name="ContractValue" description="合同金额(元)" type="decimal"/>
             <form name="DirectorId" description="项目负责人" type="string"/>
             <form name="QualityDirectorId" description="质量负责人" type="string"/>
             <form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>
@@ -1511,7 +1516,7 @@
         <api name="创建阶段" requestMethod="POST" path="?$c=Project&amp;$m=CreateStage">
             <form name="Name" description="标题" type="string"/>
             <form name="EndDateTime" type="string" description="预计结束时间（yyyy-MM-dd HH:mm）"/>
-            <form name="DownPayment" description="阶段款项（元）" type="float"/>
+            <form name="DownPayment" description="阶段款项（元）" type="decimal"/>
             <form name="ProjectId" description="项目Id" type="string"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
@@ -1560,7 +1565,7 @@
             <form name="StartTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
             <form name="Address" nullable="true" description="项目位置" type="string"/>
             <form name="GongQi" nullable="true" description="工期" type="string"/>
-            <form name="ContractValue" nullable="true" description="合同金额(元)" type="float"/>
+            <form name="ContractValue" nullable="true" description="合同金额(元)" type="decimal"/>
             <form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>
             <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
             <form name="DirectorId" nullable="true" description="项目负责人" type="string"/>
@@ -1578,7 +1583,7 @@
         <api name="更新阶段" requestMethod="POST" path="?$c=Project&amp;$m=UpdateStage">
             <form name="Id" type="string" description="指定Id"/>
             <form name="Name" description="标题" type="string"/>
-            <form name="DownPayment" description="阶段款项（元）" type="float"/>
+            <form name="DownPayment" description="阶段款项（元）" type="decimal"/>
             <form name="EndDateTime" type="string" description="预计结束时间（yyyy-MM-dd HH:mm）"/>
             <response contentType="Json">
                 {

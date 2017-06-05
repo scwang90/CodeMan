@@ -39,7 +39,7 @@
         <!ATTLIST param example CDATA "">
 
         <!ATTLIST form name CDATA #REQUIRED>
-        <!ATTLIST form type (string|int|float|boolean|date|short|long|double|char|byte) #REQUIRED>
+        <!ATTLIST form type (string|int|float|boolean|date|short|long|double|char|byte|decimal) #REQUIRED>
         <!ATTLIST form nullable (false|true) false>
         <!ATTLIST form description CDATA "">
         <!ATTLIST form example CDATA "">
