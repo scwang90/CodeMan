@@ -303,7 +303,7 @@
         <!--</api>-->
     </module>
 
-    <module name="用户消息">
+    <module name="消息机构">
         <api name="接收列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMyRecvedMessageList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
@@ -386,6 +386,89 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data://新的Id,
+                }
+            </response>
+        </api>
+
+        <api name="创建团队" requestMethod="POST" path="?$c=Organization&amp;$m=Create">
+            <form name="Name" description="名称" type="string"/>
+            <form name="LogoUrl" description="头像" type="string"/>
+            <form name="OrgName" description="公司名称" type="string"/>
+            <form name="Address" description="公司地址" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="创建部门" requestMethod="POST" path="?$c=Department&amp;$m=Create">
+            <form name="Name" description="名称" type="string"/>
+            <form name="OrgId" description="机构Id" type="string"/>
+            <form name="ParentId" description="上级部门Id" type="string"/>
+            <form name="ManagerId" nullable="true" description="管理人Id" type="string"/>
+            <form name="Branches" nullable="true" description="子部门名称（可多个）" type="string" example="财务部,行政部"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="更新部门" requestMethod="POST" path="?$c=Department&amp;$m=Update">
+            <form name="Id" description="部门Id" type="string"/>
+            <form name="Name" description="名称" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Sort ;//排序,
+                string GongXuId ;//工序Id,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="获取部门" requestMethod="POST" path="?$c=Department&amp;$m=GetById">
+            <form name="Id" description="部门Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//名称,
+                }
+                }
+            </response>
+        </api>
+        <api name="删除部门" requestMethod="POST" path="?$c=Department&amp;$m=Delete">
+            <form name="Id" description="部门Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:
+                }
+            </response>
+        </api>
+        <api name="部门列表" requestMethod="POST" path="?$c=Department&amp;$m=GetBranchListById">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                }...]
                 }
             </response>
         </api>
@@ -1412,7 +1495,7 @@
             </response>
         </api>
         <api name="流程列表" requestMethod="POST" path="?$c=Project&amp;$m=GetProjectFlowListByProcessId">
-            <param name="Id" description="工序Id" type="string"/>
+            <form name="Id" description="工序Id" type="string"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
