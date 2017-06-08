@@ -419,7 +419,7 @@
         <api name="创建部门" requestMethod="POST" path="?$c=Department&amp;$m=Create">
             <form name="Name" description="名称" type="string"/>
             <form name="OrgId" description="机构Id" type="string"/>
-            <form name="ParentId" description="上级部门Id" type="string"/>
+            <form name="ParentId" nullable="true" description="上级部门Id（顶层部门可不传）" type="string"/>
             <form name="ManagerId" nullable="true" description="管理人Id" type="string"/>
             <form name="Branches" nullable="true" description="子部门名称（可多个）" type="string" example="财务部,行政部"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
