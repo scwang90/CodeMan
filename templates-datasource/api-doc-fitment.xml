@@ -416,6 +416,40 @@
                 }
             </response>
         </api>
+        <api name="搜索团队" requestMethod="POST" path="?$c=Organization&amp;$m=Search">
+            <form name="Key" type="string" description="名称关键字"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                string Avatar ;//头像,
+                }...],
+                }
+            </response>
+        </api>
+        <api name="加入团队" requestMethod="POST" path="?$c=Organization&amp;$m=Join">
+            <form name="Id" type="string" description="团队ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="退出团队" requestMethod="POST" path="?$c=Organization&amp;$m=Quit">
+            <form name="Id" type="string" description="团队ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
         <api name="创建部门" requestMethod="POST" path="?$c=Department&amp;$m=Create">
             <form name="Name" description="名称" type="string"/>
             <form name="OrgId" description="机构Id" type="string"/>
