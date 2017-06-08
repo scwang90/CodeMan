@@ -190,7 +190,19 @@
                 }
             </response>
         </api>
-        <api name="重置密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPassword$OPEN">
+        <api name="重置密码" requestMethod="POST" path="?$c=User&amp;$m=ResetPassword">
+            <form name="oldpassword" description="原密码（未加密）" type="string"/>
+            <form name="newpassword" description="新密码（未加密）" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                }
+                }
+            </response>
+        </api>
+        <api name="忘记密码" requestMethod="POST" path="?$c=User&amp;$m=ForgetPassword$OPEN">
             <description>用于忘记密码，验证之后的重置</description>
             <form name="mobile" description="手机号码" type="string"/>
             <form name="password" description="新密码（未加密）" type="string"/>
