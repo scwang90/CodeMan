@@ -1680,7 +1680,7 @@
             </response>
         </api>
         <api name="邀请加入" requestMethod="POST" path="?$c=Organization&amp;$m=Invite">
-            <form name="UserId" type="string" description="用户ID"/>
+            <form name="UserIds" type="string" description="用户ID" example="001,002"/>
             <form name="DepartmentId" type="string" description="部门Id"/>
             <response contentType="Json">
                 {
