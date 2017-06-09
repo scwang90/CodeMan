@@ -315,211 +315,6 @@
         <!--</api>-->
     </module>
 
-    <module name="消息机构">
-        <api name="接收列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMyRecvedMessageList">
-            <param name="pageSize" description="分页大小" type="int"/>
-            <param name="page" description="页数" type="int"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                String Id;       //Id,
-                String Title;    //标题,
-                String Content;  //内容,
-                Date Time;       //时间,
-                Initiator://发布人{
-                String Id;      //用户Id,
-                String Name;    //显示名称,
-                String Avatar;  //用户头像,
-                }
-                }...]
-                }
-            </response>
-        </api>
-        <api name="发布列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMySendedMessageList">
-            <param name="pageSize" description="分页大小" type="int"/>
-            <param name="page" description="页数" type="int"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                String Id;       //Id,
-                String Title;    //标题,
-                String Content;  //内容,
-                Date Time;       //时间,
-                Recipient://接收人{
-                String Id;      //用户Id,
-                String Name;    //显示名称,
-                String Avatar;  //用户头像,
-                }
-                }...]
-                }
-            </response>
-        </api>
-        <api name="消息详情" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetById">
-            <form name="Id" type="string" description="Id"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                String Id;       //Id,
-                String Title;    //公告标题,
-                String Content;  //公告内容,
-                Date Time;       //发布时间,
-                Images://图片["url","url",...];,
-                Initiator://发布人{
-                String Id;      //用户Id,
-                String Name;    //显示名称,
-                String Avatar;  //用户头像,
-                }
-                }
-                }
-            </response>
-        </api>
-        <api name="阅读消息" requestMethod="POST" path="?$c=UserMessage&amp;$m=ReadById">
-            <form name="Id" type="string" description="指定Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                }
-            </response>
-        </api>
-        <api name="发送信息" requestMethod="POST" path="?$c=UserMessage&amp;$m=Send">
-            <form name="Title" description="公告标题" type="string"/>
-            <form name="Content" description="公告内容" type="string"/>
-            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
-            <form name="Id" nullable="true" type="string" description="指定Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data://新的Id,
-                }
-            </response>
-        </api>
-
-        <api name="创建团队" requestMethod="POST" path="?$c=Organization&amp;$m=Create">
-            <form name="Name" description="名称" type="string"/>
-            <form name="LogoUrl" description="头像" type="string"/>
-            <form name="OrgName" description="公司名称" type="string"/>
-            <form name="Address" description="公司地址" type="string"/>
-            <form name="Id" nullable="true" type="string" description="指定Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data://新的Id,
-                }
-            </response>
-        </api>
-        <api name="搜索团队" requestMethod="POST" path="?$c=Organization&amp;$m=Search">
-            <form name="Key" type="string" description="名称关键字"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                string Id ;//Id,
-                string Name ;//名称,
-                string Avatar ;//头像,
-                }...],
-                }
-            </response>
-        </api>
-        <api name="加入团队" requestMethod="POST" path="?$c=Organization&amp;$m=Join">
-            <form name="Id" type="string" description="团队ID"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:,
-                }
-            </response>
-        </api>
-        <api name="退出团队" requestMethod="POST" path="?$c=Organization&amp;$m=Quit">
-            <form name="Id" type="string" description="团队ID"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:,
-                }
-            </response>
-        </api>
-        <api name="创建部门" requestMethod="POST" path="?$c=Department&amp;$m=Create">
-            <form name="Name" description="名称" type="string"/>
-            <form name="OrgId" description="机构Id" type="string"/>
-            <form name="ParentId" nullable="true" description="上级部门Id（顶层部门可不传）" type="string"/>
-            <form name="ManagerId" nullable="true" description="管理人Id" type="string"/>
-            <form name="Branches" nullable="true" description="子部门名称（可多个）" type="string" example="财务部,行政部"/>
-            <form name="Id" nullable="true" type="string" description="指定Id"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data://新的Id,
-                }
-            </response>
-        </api>
-        <api name="更新部门" requestMethod="POST" path="?$c=Department&amp;$m=Update">
-            <form name="Id" description="部门Id" type="string"/>
-            <form name="Name" description="名称" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                string Id ;//Id,
-                string Name ;//名称,
-                int Sort ;//排序,
-                string GongXuId ;//工序Id,
-                }...]
-                }
-            </response>
-        </api>
-        <api name="获取部门" requestMethod="POST" path="?$c=Department&amp;$m=GetById">
-            <form name="Id" description="部门Id" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                string Id ;//Id,
-                string Name ;//名称,
-                }
-                }
-            </response>
-        </api>
-        <api name="删除部门" requestMethod="POST" path="?$c=Department&amp;$m=Delete">
-            <form name="Id" description="部门Id" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:
-                }
-            </response>
-        </api>
-        <api name="部门列表" requestMethod="POST" path="?$c=Department&amp;$m=GetBranchListById">
-            <param name="pageSize" description="分页大小" type="int"/>
-            <param name="page" description="页数" type="int"/>
-            <response contentType="Json">
-                {
-                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:[{
-                string Id ;//Id,
-                string Name ;//名称,
-                }...]
-                }
-            </response>
-        </api>
-    </module>
-
     <module name="拜访公告">
         <api name="拜访列表" requestMethod="POST" path="?$c=Visit&amp;$m=GetList">
             <description>
@@ -950,6 +745,7 @@
             </response>
         </api>
         <api name="打卡签到" requestMethod="POST" path="?$c=Signed&amp;$m=Signin">
+            <form name="Address" type="string" description="定位信息"/>
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
             <form name="longitude" nullable="true" type="double" description="定位信息"/>
             <response contentType="Json">
@@ -961,6 +757,7 @@
             </response>
         </api>
         <api name="打卡签退" requestMethod="POST" path="?$c=Signed&amp;$m=Signout">
+            <form name="Address" type="string" description="定位信息"/>
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
             <form name="longitude" nullable="true" type="double" description="定位信息"/>
             <response contentType="Json">
@@ -1807,6 +1604,283 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:,
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="消息机构">
+        <api name="创建团队" requestMethod="POST" path="?$c=Organization&amp;$m=Create">
+            <form name="Name" description="名称" type="string"/>
+            <form name="LogoUrl" description="头像" type="string"/>
+            <form name="OrgName" description="公司名称" type="string"/>
+            <form name="Address" description="公司地址" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="搜索团队" requestMethod="POST" path="?$c=Organization&amp;$m=Search">
+            <form name="Key" type="string" description="名称关键字"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                string Avatar ;//头像,
+                }...],
+                }
+            </response>
+        </api>
+        <api name="团队信息" requestMethod="POST" path="?$c=Organization&amp;$m=GetById">
+            <form name="OrgId" description="部门Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//名称,
+                string Avatar ;//头像,
+                string OrgName ;//公司名称,
+                string Address ;//公司地址,
+                Creater://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="退出团队" requestMethod="POST" path="?$c=Organization&amp;$m=Quit">
+            <form name="OrgId" type="string" description="团队ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="加入团队" requestMethod="POST" path="?$c=Organization&amp;$m=Join">
+            <form name="OrgId" type="string" description="团队ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="邀请加入" requestMethod="POST" path="?$c=Organization&amp;$m=Invite">
+            <form name="UserId" type="string" description="用户ID"/>
+            <form name="DepartmentId" type="string" description="部门Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="申请处理" requestMethod="POST" path="?$c=Organization&amp;$m=JoinAccept">
+            <form name="ApplyId" type="string" description="申请ID"/>
+            <form name="Accept" type="boolean" description="是否通过"/>
+            <form name="DepartmentId" nullable="true" type="string" description="部门Id（通过时必须）"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="邀请处理" requestMethod="POST" path="?$c=Organization&amp;$m=InviteAccept">
+            <form name="InviteId" type="string" description="邀请ID"/>
+            <form name="Accept" type="boolean" description="是否通过"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="创建部门" requestMethod="POST" path="?$c=Department&amp;$m=Create">
+            <form name="Name" description="名称" type="string"/>
+            <form name="OrgId" description="机构Id" type="string"/>
+            <form name="ParentId" nullable="true" description="上级部门Id（顶层部门可不传）" type="string"/>
+            <form name="ManagerId" nullable="true" description="管理人Id" type="string"/>
+            <form name="Branches" nullable="true" description="子部门名称（可多个）" type="string" example="财务部,行政部"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="更新部门" requestMethod="POST" path="?$c=Department&amp;$m=Update">
+            <form name="DepartmentId" description="部门Id" type="string"/>
+            <form name="Name" description="名称" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Sort ;//排序,
+                string GongXuId ;//工序Id,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="获取部门" requestMethod="POST" path="?$c=Department&amp;$m=GetById">
+            <form name="DepartmentId" description="部门Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//名称,
+                }
+                }
+            </response>
+        </api>
+        <api name="删除部门" requestMethod="POST" path="?$c=Department&amp;$m=Delete">
+            <form name="DepartmentId" description="部门Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:
+                }
+            </response>
+        </api>
+        <api name="部门列表" requestMethod="POST" path="?$c=Department&amp;$m=GetBranchListById">
+            <form name="OrgId" nullable="true" description="机构Id" type="string"/>
+            <form name="DepartmentId" nullable="true" description="上级部门Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="部门树形" requestMethod="POST" path="?$c=Department&amp;$m=GetDepartmentTree">
+            <form name="OrgId" nullable="true" description="机构Id" type="string"/>
+            <form name="DepartmentId" nullable="true" description="上级部门Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                string ParentId ;//父级Id
+                int MemberCount ;//成员数量,
+                Items:[];//树形嵌套,
+                }...]
+                }
+            </response>
+        </api>
+
+        <api name="接收列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMyRecvedMessageList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="发布列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMySendedMessageList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                Date Time;       //时间,
+                Recipient://接收人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="消息详情" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Title;    //公告标题,
+                String Content;  //公告内容,
+                Date Time;       //发布时间,
+                Images://图片["url","url",...];,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="阅读消息" requestMethod="POST" path="?$c=UserMessage&amp;$m=ReadById">
+            <form name="Id" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                }
+            </response>
+        </api>
+        <api name="发送信息" requestMethod="POST" path="?$c=UserMessage&amp;$m=Send">
+            <form name="Title" description="公告标题" type="string"/>
+            <form name="Content" description="公告内容" type="string"/>
+            <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
                 }
             </response>
         </api>
