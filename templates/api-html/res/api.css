@@ -53,7 +53,9 @@ nav.apileft {
     width: 200px;
     padding: 0;
     background-color: #fafafa;
-    color: #333333
+    color: #333333;
+    max-height: 80%;
+    overflow-y:auto; /*控制Y方向的滚动条*/
 }
 
 nav.apileft h2 {
