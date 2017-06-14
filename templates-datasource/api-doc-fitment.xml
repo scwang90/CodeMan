@@ -161,6 +161,10 @@
                 String Id;      //Id,
                 String Name;    //名称,
                 String Avatar;  //头像,
+                },
+                Department://部门信息{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }
                 }
@@ -201,6 +205,10 @@
                 String Id;      //Id,
                 String Name;    //名称,
                 String Avatar;  //头像,
+                },
+                Department://部门信息{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }
                 }
@@ -1703,6 +1711,20 @@
                 }
             </response>
         </api>
+        <api name="更新团队" requestMethod="POST" path="?$c=Organization&amp;$m=Update">
+            <form name="OrgId" type="string" description="机构Id"/>
+            <form name="Name" description="名称" type="string"/>
+            <form name="LogoUrl" description="头像" type="string"/>
+            <form name="OrgName" description="公司名称" type="string"/>
+            <form name="Address" description="公司地址" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
         <api name="搜索团队" requestMethod="POST" path="?$c=Organization&amp;$m=Search">
             <form name="Key" type="string" description="名称关键字"/>
             <response contentType="Json">
@@ -1792,6 +1814,20 @@
                 }
             </response>
         </api>
+        <api name="搜索员工" requestMethod="POST" path="?$c=Organization&amp;$m=SearchUser">
+            <form name="Key" type="string" description="关键字"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                string Avatar ;//头像,
+                }...],
+                }
+            </response>
+        </api>
         <api name="移动员工" requestMethod="POST" path="?$c=Organization&amp;$m=MoveUsers">
             <form name="UserIds" type="string" description="人员Id" example="001,002,003"/>
             <form name="DepartmatnId" type="string" description="部门Id"/>
@@ -1826,6 +1862,8 @@
                 data:[{
                 string Id ;//Id,
                 string Name ;//名称,
+                string OrgId ;//机构Id,
+                string ParentId ;//父级Id,
                 }...]
                 }
             </response>
@@ -1840,7 +1878,8 @@
                 data:[{
                 string Id ;//Id,
                 string Name ;//名称,
-                string ParentId ;//父级Id
+                string OrgId ;//机构Id,
+                string ParentId ;//父级Id,
                 int MemberCount ;//成员数量,
                 Items:[];//树形嵌套,
                 }...]
