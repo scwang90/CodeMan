@@ -214,6 +214,15 @@
                 }
             </response>
         </api>
+        <api name="注销登录" requestMethod="POST" path="?$c=User&amp;$m=Logout">
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:
+                }
+            </response>
+        </api>
         <api name="修改资料" requestMethod="POST" path="?$c=User&amp;$m=Update">
             <form name="PersonName" description="昵称（姓名）" type="string" nullable="true"/>
             <form name="Address" description="地址" type="string" nullable="true"/>
