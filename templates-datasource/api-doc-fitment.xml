@@ -153,7 +153,7 @@
                 String Signature ;/// 签名,
                 String HeadUrl ;/// 头像Url,
                 String Password ;/// (原Pwd)	MD5密码,
-                String PersonName ,/// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                String PersonName; /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
                 int SexNum ,
                 String Mobile ,
                 Date Birthday;///生日,
@@ -202,18 +202,23 @@
                 String Signature ;/// 签名,
                 String HeadUrl ;/// 头像Url,
                 String Password ;/// (原Pwd)	MD5密码,
-                String PersonName ,/// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                String PersonName; /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
                 int SexNum ,
                 String Mobile ,
                 Date Birthday;///生日,
                 Organization://组织机构{
-                String Id;      //Id,
-                String Name;    //名称,
-                String Avatar;  //头像,
+                    String Id;      //Id,
+                    String Name;    //名称,
+                    String Avatar;  //头像,
+                    Creater://创建者{
+                        String Id;      //Id,
+                        String Name;    //名称,
+                        String Avatar;  //头像,
+                    },
                 },
                 Department://部门信息{
-                String Id;      //Id,
-                String Name;    //名称,
+                    String Id;      //Id,
+                    String Name;    //名称,
                 }
                 }
                 }
