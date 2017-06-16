@@ -158,14 +158,19 @@
                 String Mobile ,
                 Date Birthday;///生日,
                 Organization://组织机构{
-                String Id;      //Id,
-                String Name;    //名称,
-                String Avatar;  //头像,
-                },
-                Department://部门信息{
-                String Id;      //Id,
-                String Name;    //名称,
-                }
+                    String Id;      //Id,
+                    String Name;    //名称,
+                    String Avatar;  //头像,
+                    Creater://创建者{
+                        String Id;      //Id,
+                        String Name;    //名称,
+                        String Avatar;  //头像,
+                        },
+                    },
+                    Department://部门信息{
+                    String Id;      //Id,
+                    String Name;    //名称,
+                    }
                 }
                 }
             </response>
