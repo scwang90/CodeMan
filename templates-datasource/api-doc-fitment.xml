@@ -1620,7 +1620,7 @@
         </api>
     </module>
 
-    <module name="消息相关">
+    <module name="用户消息">
         <api name="接收列表" requestMethod="POST" path="?$c=UserMessage&amp;$m=GetMyRecvedMessageList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
@@ -1714,6 +1714,52 @@
             </response>
         </api>
     </module>
+
+    <module name="消息通知">
+        <api name="消息数量" requestMethod="POST" path="?$c=Message&amp;$m=GetMyNewMessageCount">
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:0//数量
+                }
+            </response>
+        </api>
+        <api name="消息列表" requestMethod="POST" path="?$c=Message&amp;$m=GetMyMessageList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String Content;  //内容,
+                String TargetId; //与消息相关的Id（可空）,
+                int Type;        //消息类型（用户审核 = 1,团队申请 = 2,团队邀请 = 3）
+                bool IsReaded;   //是否阅读,
+                Date Time;       //时间,
+                Initiator://发布人（可空）{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="阅读消息" requestMethod="POST" path="?$c=Message&amp;$m=ReadById">
+            <form name="Id" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                }
+            </response>
+        </api>
+    </module>
+
 
     <module name="机构相关">
         <api name="创建团队" requestMethod="POST" path="?$c=Organization&amp;$m=Create">
