@@ -1879,6 +1879,61 @@
                 }
             </response>
         </api>
+        <api name="申请详情" requestMethod="POST" path="?$c=Organization&amp;$m=GetJoinById">
+            <form name="ApplyId" description="申请Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                int Status ;//状态 （0:未处理 1:通过 2:拒绝）,
+                date ApplyTime ;//申请时间,
+                Applyer://申请人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                String Contact; //联系方式
+                },
+                Organization://团队机构{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
+        <api name="邀请详情" requestMethod="POST" path="?$c=Organization&amp;$m=GetInviteById">
+            <form name="InviteId" description="邀请Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                int Status ;//状态 （0:未处理 1:通过 2:拒绝）,
+                date ApplyTime ;//申请时间,
+                Inviter://申请人{
+                String Id;      //Id,
+                String Name;    //名称,
+                String Avatar;  //头像,
+                String Contact; //联系方式
+                },
+                Organization://团队机构{
+                String Id;      //Id,
+                String Name;    //名称,
+                String Avatar;  //头像,
+                },
+                Department://分配部门{
+                String Id;      //Id,
+                String Name;    //名称,
+                String Avatar;  //头像,
+                }
+                }
+                }
+            </response>
+        </api>
         <api name="搜索员工" requestMethod="POST" path="?$c=Organization&amp;$m=SearchUser">
             <form name="Key" type="string" description="关键字"/>
             <response contentType="Json">
