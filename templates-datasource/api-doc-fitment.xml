@@ -1914,7 +1914,7 @@
                 string Id ;//Id,
                 int Status ;//状态 （0:未处理 1:通过 2:拒绝）,
                 date ApplyTime ;//申请时间,
-                Inviter://申请人{
+                Inviter://邀请人{
                 String Id;      //Id,
                 String Name;    //名称,
                 String Avatar;  //头像,
