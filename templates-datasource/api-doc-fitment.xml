@@ -139,9 +139,9 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
-                int Age;
-                String Name;
-                String Token;
+                int Age,
+                String Name,
+                String Token,
 
                 String Id ;/// 用户ID(自增),
                 String UserName ;/// (原Id)	用户名,
@@ -154,6 +154,7 @@
                 String HeadUrl ;/// 头像Url,
                 String Password ;/// (原Pwd)	MD5密码,
                 String PersonName; /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                bool NoticeAuthority;//发公告权限,
                 int SexNum ,
                 String Mobile ,
                 Date Birthday;///生日,
@@ -188,9 +189,9 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
-                int Age;
-                String Name;
-                String Token;
+                int Age,
+                String Name,
+                String Token,
 
                 String Id ;/// 用户ID(自增),
                 String UserName ;/// (原Id)	用户名,
@@ -203,6 +204,7 @@
                 String HeadUrl ;/// 头像Url,
                 String Password ;/// (原Pwd)	MD5密码,
                 String PersonName; /// 姓名【住建部标准】【按该人员证件上的姓名填写】,
+                bool NoticeAuthority;//发公告权限,
                 int SexNum ,
                 String Mobile ,
                 Date Birthday;///生日,
