@@ -1624,7 +1624,12 @@
 
     <module name="用户消息">
         <api name="消息轮询" requestMethod="POST" path="/ios-r.ashx?$c=UserMessage&amp;$m=GetNewMyMessage">
-            <description>访问的接口需要需要把超时时间设长大于必须1分钟</description>
+            <description>
+                访问的接口需要需要把超时时间设长大于必须1分钟。
+                本接口需要不断的重复调用，来获取实时消息数据。
+                LastTime 第一次使用0，调用结束之后，LastTime取值为列表中最大的LongTime,下一次继续调用
+            </description>
+            <form name="LastTime" type="long" description="看接口说明"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -1635,6 +1640,7 @@
                 String Content;  //内容,
                 bool IsReaded;   //是否阅读,
                 Date Time;       //时间,
+                long LongTime;   //long格式的时间:用于再次请求本接口使用的：LastTime,
                 Initiator://发布人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
@@ -1740,7 +1746,13 @@
 
     <module name="消息通知">
         <api name="消息轮询" requestMethod="POST" path="/ios-r.ashx?$c=Message&amp;$m=GetMyNewMessage">
-            <description>访问的接口需要需要把超时时间设长大于必须1分钟</description>
+            <description>
+                访问的接口需要需要把超时时间设长大于必须1分钟。
+                本接口需要不断的重复调用，来获取实时消息数据。
+                LastTime 第一次使用0，调用结束之后，LastTime取值为列表中最大的LongTime,下一次继续调用；
+                注意处理消息数据：当时【Type=团队申请结果】时候，需要获取结果详情，来判断是否通过申请，来实时改变团队状态。
+            </description>
+            <form name="LastTime" type="long" description="看接口说明"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -1753,6 +1765,7 @@
                 int Type;        //消息类型（用户审核 = 1,团队申请 = 2,团队邀请 = 3, 团队申请结果 = 4, 团队邀请结果 = 5）,
                 bool IsReaded;   //是否阅读,
                 Date Time;       //时间,
+                long LongTime;       //long格式的时间:用于再次请求本接口使用的：LastTime,
                 Initiator://发布人（可空）{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
