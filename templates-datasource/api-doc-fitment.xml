@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
-<service name="装修APP 服务接口" basePath="http://192.168.1.110:8099/api">
+<service name="装修APP 服务接口" basePath="http://192.168.1.110:8099/api/">
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
@@ -44,7 +44,7 @@
     </module>
 
     <module name="全局通用">
-        <api name="首页数据" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Common&amp;$m=GetHomeData$OPEN">
+        <api name="首页数据" requestMethod="POST" path="ios.ashx?$c=Common&amp;$m=GetHomeData$OPEN">
             <description>
                 获取APP顶部幻灯片和消息数量
             </description>
@@ -65,7 +65,7 @@
                 }
             </response>
         </api>
-        <api name="联系列表" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Common&amp;$m=GetContactsList" >
+        <api name="联系列表" requestMethod="POST" path="ios.ashx?$c=Common&amp;$m=GetContactsList" >
             <description>
                 需要多次获取才能拿到完整的联系人树形列表
             </description>
@@ -84,7 +84,7 @@
                 }
             </response>
         </api>
-        <api name="图片上传" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=ImageFile&#38;$m=Upload">
+        <api name="图片上传" requestMethod="POST" path="ios.ashx?$c=ImageFile&#38;$m=Upload">
             <description>
                 infoType 的枚举
                 用户 = 10,
@@ -115,7 +115,7 @@
                 }
             </response>
         </api>
-        <api name="删除图片" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=ImageFile&#38;$m=Delete">
+        <api name="删除图片" requestMethod="POST" path="ios.ashx?$c=ImageFile&#38;$m=Delete">
             <param name="Id" description="上传图片返回的Id" type="string"/>
             <response contentType="Json">
                 {
@@ -128,7 +128,7 @@
     </module>
 
     <module name="用户相关">
-        <api name="用户注册" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=Regist$OPEN">
+        <api name="用户注册" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=Regist$OPEN">
             <form name="mobile" description="账户" type="string"/>
             <form name="password" description="密码（未加密）" type="string"/>
             <form name="verifycode" description="手机验证码" type="string"/>
@@ -176,7 +176,7 @@
                 }
             </response>
         </api>
-        <api name="用户登录" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=Login$OPEN">
+        <api name="用户登录" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=Login$OPEN">
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
@@ -226,7 +226,7 @@
                 }
             </response>
         </api>
-        <api name="注销登录" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=Logout">
+        <api name="注销登录" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=Logout">
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -235,7 +235,7 @@
                 }
             </response>
         </api>
-        <api name="修改资料" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=Update">
+        <api name="修改资料" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=Update">
             <form name="PersonName" description="昵称（姓名）" type="string" nullable="true"/>
             <form name="Address" description="地址" type="string" nullable="true"/>
             <form name="IDCard" description="身份证号" type="string" nullable="true"/>
@@ -252,7 +252,7 @@
                 }
             </response>
         </api>
-        <api name="重置手机" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=ResetMobile">
+        <api name="重置手机" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=ResetMobile">
             <form name="mobile" description="手机号码" type="string"/>
             <form name="verifycode" description="手机验证码" type="string"/>
             <response contentType="Json">
@@ -264,7 +264,7 @@
                 }
             </response>
         </api>
-        <api name="重置密码" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=ResetPassword">
+        <api name="重置密码" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=ResetPassword">
             <form name="oldpassword" description="原密码（未加密）" type="string"/>
             <form name="newpassword" description="新密码（未加密）" type="string"/>
             <response contentType="Json">
@@ -276,7 +276,7 @@
                 }
             </response>
         </api>
-        <api name="忘记密码" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=ForgetPassword$OPEN">
+        <api name="忘记密码" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=ForgetPassword$OPEN">
             <description>用于忘记密码，验证之后的重置</description>
             <form name="mobile" description="手机号码" type="string"/>
             <form name="password" description="新密码（未加密）" type="string"/>
@@ -290,7 +290,7 @@
                 }
             </response>
         </api>
-        <api name="注册验证" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">
+        <api name="注册验证" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">
             <description>
                 用户注册时发送手机验证码，也可以更改手机号码时发送
             </description>
@@ -303,7 +303,7 @@
                 }
             </response>
         </api>
-        <api name="手机验证" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">
+        <api name="手机验证" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=SendVerificationCodeBeforeRegist$OPEN">
             <description>
                 用户注册时发送手机验证码，也可以更改手机号码时发送
             </description>
@@ -316,7 +316,7 @@
                 }
             </response>
         </api>
-        <api name="重置验证" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=User&amp;$m=SendVerificationCodeReset$OPEN">
+        <api name="重置验证" requestMethod="POST" path="ios.ashx?$c=User&amp;$m=SendVerificationCodeReset$OPEN">
             <description>
                 重置密码时发送手机验证码
             </description>
@@ -332,7 +332,7 @@
     </module>
 
     <module name="拜访相关">
-        <api name="拜访列表" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Visit&amp;$m=GetList">
+        <api name="拜访列表" requestMethod="POST" path="ios.ashx?$c=Visit&amp;$m=GetList">
             <description>
                 主页拜访列表
             </description>
@@ -356,7 +356,7 @@
                 }
             </response>
         </api>
-        <api name="拜访详情" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Visit&amp;$m=GetById">
+        <api name="拜访详情" requestMethod="POST" path="ios.ashx?$c=Visit&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -381,7 +381,7 @@
                 }
             </response>
         </api>
-        <api name="添加拜访" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Visit&amp;$m=Submit">
+        <api name="添加拜访" requestMethod="POST" path="ios.ashx?$c=Visit&amp;$m=Submit">
             <form name="Target" description="拜访对象" type="string"/>
             <form name="Address" description="拜访地点" type="string"/>
             <form name="Remark" nullable="true" description="备注信息" type="string"/>
@@ -399,7 +399,7 @@
     </module>
 
     <module name="公告相关">
-        <api name="公告列表" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Notice&amp;$m=GetMyNoticeList">
+        <api name="公告列表" requestMethod="POST" path="ios.ashx?$c=Notice&amp;$m=GetMyNoticeList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -421,7 +421,7 @@
                 }
             </response>
         </api>
-        <api name="公告详情" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Notice&amp;$m=GetById">
+        <api name="公告详情" requestMethod="POST" path="ios.ashx?$c=Notice&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -443,7 +443,7 @@
                 }
             </response>
         </api>
-        <api name="阅读公告" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Notice&amp;$m=ReadById">
+        <api name="阅读公告" requestMethod="POST" path="ios.ashx?$c=Notice&amp;$m=ReadById">
             <form name="Id" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -452,7 +452,7 @@
                 }
             </response>
         </api>
-        <api name="发送对象" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Notice&amp;$m=GetTargetTree" >
+        <api name="发送对象" requestMethod="POST" path="ios.ashx?$c=Notice&amp;$m=GetTargetTree" >
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -467,7 +467,7 @@
                 }
             </response>
         </api>
-        <api name="发布公告" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Notice&amp;$m=Publish">
+        <api name="发布公告" requestMethod="POST" path="ios.ashx?$c=Notice&amp;$m=Publish">
             <form name="Title" description="公告标题" type="string"/>
             <form name="Content" description="公告内容" type="string"/>
             <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
@@ -481,7 +481,7 @@
                 }
             </response>
         </api>
-        <api name="未读公告" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Notice&amp;$m=GetMyNewNoticeList">
+        <api name="未读公告" requestMethod="POST" path="ios.ashx?$c=Notice&amp;$m=GetMyNewNoticeList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -502,7 +502,7 @@
                 }
             </response>
         </api>
-        <api name="已读公告" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Notice&amp;$m=GetMyReadedNoticeList">
+        <api name="已读公告" requestMethod="POST" path="ios.ashx?$c=Notice&amp;$m=GetMyReadedNoticeList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -526,7 +526,7 @@
     </module>
 
     <module name="任务备忘">
-        <api name="发布列表" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Task&amp;$m=GetMySendedTaskList">
+        <api name="发布列表" requestMethod="POST" path="ios.ashx?$c=Task&amp;$m=GetMySendedTaskList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -547,7 +547,7 @@
                 }
             </response>
         </api>
-        <api name="接收列表" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Task&amp;$m=GetMyRecvedTaskList">
+        <api name="接收列表" requestMethod="POST" path="ios.ashx?$c=Task&amp;$m=GetMyRecvedTaskList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -568,7 +568,7 @@
                 }
             </response>
         </api>
-        <api name="任务详情" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Task&amp;$m=GetById">
+        <api name="任务详情" requestMethod="POST" path="ios.ashx?$c=Task&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -597,7 +597,7 @@
                 }
             </response>
         </api>
-        <api name="发布任务" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Task&amp;$m=Publish">
+        <api name="发布任务" requestMethod="POST" path="ios.ashx?$c=Task&amp;$m=Publish">
             <form name="Title" description="任务名称" type="string"/>
             <form name="Content" description="任务内容" type="string"/>
             <form name="Address" description="位置信息" type="string"/>
@@ -616,7 +616,7 @@
                 }
             </response>
         </api>
-        <api name="我的备忘" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Memo&amp;$m=GetMyMemoList">
+        <api name="我的备忘" requestMethod="POST" path="ios.ashx?$c=Memo&amp;$m=GetMyMemoList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -632,7 +632,7 @@
                 }
             </response>
         </api>
-        <api name="备忘详情" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Memo&amp;$m=GetMyDemoById">
+        <api name="备忘详情" requestMethod="POST" path="ios.ashx?$c=Memo&amp;$m=GetMyDemoById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -654,7 +654,7 @@
                 }
             </response>
         </api>
-        <api name="提交备忘" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Memo&amp;$m=Submit">
+        <api name="提交备忘" requestMethod="POST" path="ios.ashx?$c=Memo&amp;$m=Submit">
             <form name="Title" description="标题" type="string"/>
             <form name="Content" description="内容" type="string"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
@@ -666,7 +666,7 @@
                 }
             </response>
         </api>
-        <api name="删除备忘" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=Memo&amp;$m=DeleteMyDemoById">
+        <api name="删除备忘" requestMethod="POST" path="ios.ashx?$c=Memo&amp;$m=DeleteMyDemoById">
             <form name="Id" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -679,7 +679,7 @@
     </module>
 
     <module name="日志打卡">
-        <api name="发布列表" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=WorkDiary&amp;$m=GetMySendedDiaryList">
+        <api name="发布列表" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetMySendedDiaryList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -702,7 +702,7 @@
                 }
             </response>
         </api>
-        <api name="接收列表" requestMethod="POST" path="/ios.ashx/ios.ashx?$c=WorkDiary&amp;$m=GetMyRecvedDiaryList">
+        <api name="接收列表" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetMyRecvedDiaryList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -725,7 +725,7 @@
                 }
             </response>
         </api>
-        <api name="日志详情" requestMethod="POST" path="/ios.ashx?$c=WorkDiary&amp;$m=GetById">
+        <api name="日志详情" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -749,7 +749,7 @@
                 }
             </response>
         </api>
-        <api name="发布日志" requestMethod="POST" path="/ios.ashx?$c=WorkDiary&amp;$m=Submit">
+        <api name="发布日志" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=Submit">
             <form name="Title" description="日志标题" type="string"/>
             <form name="CompleteWork" description="今日完成工作" type="string"/>
             <form name="UncompletedWork" description="今日未完成工作" type="string"/>
@@ -763,7 +763,7 @@
                 }
             </response>
         </api>
-        <api name="打卡签到" requestMethod="POST" path="/ios.ashx?$c=Signed&amp;$m=Signin">
+        <api name="打卡签到" requestMethod="POST" path="ios.ashx?$c=Signed&amp;$m=Signin">
             <form name="Address" type="string" description="定位信息"/>
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
             <form name="longitude" nullable="true" type="double" description="定位信息"/>
@@ -775,7 +775,7 @@
                 }
             </response>
         </api>
-        <api name="打卡签退" requestMethod="POST" path="/ios.ashx?$c=Signed&amp;$m=Signout">
+        <api name="打卡签退" requestMethod="POST" path="ios.ashx?$c=Signed&amp;$m=Signout">
             <form name="Address" type="string" description="定位信息"/>
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
             <form name="longitude" nullable="true" type="double" description="定位信息"/>
@@ -787,7 +787,7 @@
                 }
             </response>
         </api>
-        <api name="打卡统计" requestMethod="POST" path="/ios.ashx?$c=Signed&amp;$m=StatisticsAttendanceByMonth" >
+        <api name="打卡统计" requestMethod="POST" path="ios.ashx?$c=Signed&amp;$m=StatisticsAttendanceByMonth" >
             <description>
                 按月统计考勤
             </description>
@@ -814,7 +814,7 @@
     </module>
 
     <module name="质量处理">
-        <api name="发布列表" requestMethod="POST" path="/ios.ashx?$c=QualityHandle&amp;$m=GetMySendedQualityHandleList">
+        <api name="发布列表" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetMySendedQualityHandleList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -838,7 +838,7 @@
                 }
             </response>
         </api>
-        <api name="接收列表" requestMethod="POST" path="/ios.ashx?$c=QualityHandle&amp;$m=GetMyRecvedQualityHandleList">
+        <api name="接收列表" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetMyRecvedQualityHandleList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -862,7 +862,7 @@
                 }
             </response>
         </api>
-        <api name="处理详情" requestMethod="POST" path="/ios.ashx?$c=QualityHandle&amp;$m=GetById">
+        <api name="处理详情" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -886,7 +886,7 @@
                 }
             </response>
         </api>
-        <api name="发布处理" requestMethod="POST" path="/ios.ashx?$c=QualityHandle&amp;$m=Submit">
+        <api name="发布处理" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=Submit">
             <form name="Name" description="标题" type="string"/>
             <form name="Position" description="隐患位置" type="string"/>
             <form name="Cause" description="隐患原因" type="string"/>
@@ -901,7 +901,7 @@
                 }
             </response>
         </api>
-        <api name="更新状态" requestMethod="POST" path="/ios.ashx?$c=QualityHandle&amp;$m=UpdateStatusById">
+        <api name="更新状态" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=UpdateStatusById">
             <form name="Status" type="int" description="处理状态" example="待处理 = 1,进行中 = 2,已完结 = 3"/>
             <form name="Id" type="string" description="质量处理Id"/>
             <response contentType="Json">
@@ -915,7 +915,7 @@
     </module>
 
     <module name="审批相关">
-        <api name="待我审批" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetMyPendingList">
+        <api name="待我审批" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetMyPendingList">
             <description>
                 获取带我审批的列表
             </description>
@@ -941,7 +941,7 @@
                 }
             </response>
         </api>
-        <api name="我的申请" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetMyApplyList">
+        <api name="我的申请" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetMyApplyList">
             <description>
                 我发出的申请
             </description>
@@ -967,7 +967,7 @@
                 }
             </response>
         </api>
-        <api name="申请请假" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=ApplyVacate">
+        <api name="申请请假" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=ApplyVacate">
             <description>
                 请假类别:
                 事假 = 1,
@@ -993,7 +993,7 @@
                 }
             </response>
         </api>
-        <api name="申请休息" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=ApplyRest">
+        <api name="申请休息" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=ApplyRest">
             <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
             <form name="EndTime" type="string" description="结束时间（yyyy-MM-dd HH:mm）"/>
             <form name="Duration" type="float" description="请假时长（单位为小时）"/>
@@ -1008,7 +1008,7 @@
                 }
             </response>
         </api>
-        <api name="申请出差" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=ApplyEvection">
+        <api name="申请出差" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=ApplyEvection">
             <form name="Address" description="出差地点（最大长度100）" type="string"/>
             <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
             <form name="EndTime" type="string" description="结束时间（yyyy-MM-dd HH:mm）"/>
@@ -1024,7 +1024,7 @@
                 }
             </response>
         </api>
-        <api name="申请报销" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=ApplyPayment">
+        <api name="申请报销" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=ApplyPayment">
             <description>
                 报销类别:
                 差旅费 = 1,//火车票、飞机票、长途汽车票、订票费发票、住宿费发票、餐饮发票、打车票、地铁票、加油费、过路过桥费、租车费
@@ -1055,7 +1055,7 @@
                 }
             </response>
         </api>
-        <api name="申请物品" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=ApplyGoods">
+        <api name="申请物品" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=ApplyGoods">
             <form name="YongTu" description="物品领用用途（最大长度200）" type="string"/>
             <form name="Name" description="物品领用名称" type="float"/>
             <form name="Amounts" description="物品领用数量" type="int"/>
@@ -1070,7 +1070,7 @@
                 }
             </response>
         </api>
-        <api name="通用申请" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=ApplyCommon">
+        <api name="通用申请" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=ApplyCommon">
             <form name="Content" description="申请内容（最大长度200）" type="string"/>
             <form name="Reason" type="string" description="申请原因（最大长度500）"/>
             <form name="ApproverId" description="审批人Id" type="string"/>
@@ -1083,7 +1083,7 @@
                 }
             </response>
         </api>
-        <api name="请假详情" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetVacateById">
+        <api name="请假详情" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetVacateById">
             <form name="Id" type="string" description="申请Id"/>
             <response contentType="Json">
                 {
@@ -1114,7 +1114,7 @@
                 }
             </response>
         </api>
-        <api name="休息详情" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetRestById">
+        <api name="休息详情" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetRestById">
             <form name="Id" type="string" description="申请Id"/>
             <response contentType="Json">
                 {
@@ -1144,7 +1144,7 @@
                 }
             </response>
         </api>
-        <api name="出差详情" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetEvectionById">
+        <api name="出差详情" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetEvectionById">
             <form name="Id" type="string" description="申请Id"/>
             <response contentType="Json">
                 {
@@ -1175,7 +1175,7 @@
                 }
             </response>
         </api>
-        <api name="报销详情" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetPaymentById">
+        <api name="报销详情" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetPaymentById">
             <description>
                 报销类别:
                 差旅费 = 1,//火车票、飞机票、长途汽车票、订票费发票、住宿费发票、餐饮发票、打车票、地铁票、加油费、过路过桥费、租车费
@@ -1221,7 +1221,7 @@
                 }
             </response>
         </api>
-        <api name="物品详情" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetGoodsById">
+        <api name="物品详情" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetGoodsById">
             <form name="YongTu" description="物品领用用途（最大长度200）" type="string"/>
             <form name="Name" description="物品领用名称" type="float"/>
             <form name="Amounts" description="物品领用数量" type="int"/>
@@ -1256,7 +1256,7 @@
                 }
             </response>
         </api>
-        <api name="通用详情" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=GetCommonById">
+        <api name="通用详情" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetCommonById">
             <form name="Id" type="string" description="申请Id"/>
             <response contentType="Json">
                 {
@@ -1284,7 +1284,7 @@
                 }
             </response>
         </api>
-        <api name="审批通过" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=Approve">
+        <api name="审批通过" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=Approve">
             <description>
                 申请类型:
                 请假 = 1,
@@ -1304,7 +1304,7 @@
                 }
             </response>
         </api>
-        <api name="不予通过" requestMethod="POST" path="/ios.ashx?$c=Approval&amp;$m=Disapprove">
+        <api name="不予通过" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=Disapprove">
             <description>
                 申请类型:
                 请假 = 1,
@@ -1327,7 +1327,7 @@
     </module>
 
     <module name="项目相关">
-        <api name="进度列表" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=GetProjectProgressList">
+        <api name="进度列表" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProjectProgressList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -1353,7 +1353,7 @@
                 }
             </response>
         </api>
-        <api name="流程列表" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=GetProjectFlowListByProcessId">
+        <api name="流程列表" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProjectFlowListByProcessId">
             <form name="Id" description="工序Id" type="string"/>
             <response contentType="Json">
                 {
@@ -1368,7 +1368,7 @@
                 }
             </response>
         </api>
-        <api name="项目详情" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=GetById">
+        <api name="项目详情" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -1406,7 +1406,7 @@
                 }
             </response>
         </api>
-        <api name="项目内容" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=GetProjectContentById">
+        <api name="项目内容" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProjectContentById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -1435,7 +1435,7 @@
                 }
             </response>
         </api>
-        <api name="创建项目" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=Create">
+        <api name="创建项目" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=Create">
             <form name="Name" description="标题" type="string"/>
             <form name="StartTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
             <form name="Address" description="项目位置" type="string"/>
@@ -1455,7 +1455,7 @@
                 }
             </response>
         </api>
-        <api name="创建阶段" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=CreateStage">
+        <api name="创建阶段" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=CreateStage">
             <form name="Name" description="标题" type="string"/>
             <form name="EndDateTime" type="string" description="预计结束时间（yyyy-MM-dd HH:mm）"/>
             <form name="DownPayment" description="阶段款项（元）" type="decimal"/>
@@ -1469,7 +1469,7 @@
                 }
             </response>
         </api>
-        <api name="创建工序" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=CreateProcess">
+        <api name="创建工序" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=CreateProcess">
             <form name="Name" description="标题" type="string"/>
             <form name="StartDateTime" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
             <form name="Period" description="工期（单位为天）" type="float"/>
@@ -1486,7 +1486,7 @@
                 }
             </response>
         </api>
-        <api name="创建流程" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=CreateFlow">
+        <api name="创建流程" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=CreateFlow">
             <form name="Name" description="标题" type="string"/>
             <form name="GongXuId" description="工序Id" type="string"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
@@ -1498,7 +1498,7 @@
                 }
             </response>
         </api>
-        <api name="更新项目" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=UpdateProject">
+        <api name="更新项目" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateProject">
             <form name="Id" type="string" description="指定Id"/>
             <form name="Name" nullable="true" description="标题" type="string"/>
             <form name="StartTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
@@ -1519,7 +1519,7 @@
                 }
             </response>
         </api>
-        <api name="更新阶段" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=UpdateStage">
+        <api name="更新阶段" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateStage">
             <form name="Id" type="string" description="指定Id"/>
             <form name="Name" description="标题" type="string"/>
             <form name="DownPayment" description="阶段款项（元）" type="decimal"/>
@@ -1532,7 +1532,7 @@
                 }
             </response>
         </api>
-        <api name="更新工序" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=UpdateProcess">
+        <api name="更新工序" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateProcess">
             <form name="Id" type="string" description="指定Id"/>
             <form name="Name" nullable="true" description="标题" type="string"/>
             <form name="StartDateTime" nullable="true" type="string" description="开始时间（yyyy-MM-dd HH:mm）"/>
@@ -1547,7 +1547,7 @@
                 }
             </response>
         </api>
-        <api name="流程排序" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=UpdateFlowSort">
+        <api name="流程排序" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateFlowSort">
             <form name="Ids" description="指定流程Id（可多个）" type="string" example="001,002,003 或者 001"/>
             <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
             <response contentType="Json">
@@ -1558,7 +1558,7 @@
                 }
             </response>
         </api>
-        <api name="工序排序" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=UpdateProcessSort">
+        <api name="工序排序" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateProcessSort">
             <form name="Ids" description="指定工序Id（可多个）" type="string" example="001,002,003 或者 001"/>
             <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
             <response contentType="Json">
@@ -1569,7 +1569,7 @@
                 }
             </response>
         </api>
-        <api name="阶段排序" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=UpdateStageSort">
+        <api name="阶段排序" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateStageSort">
             <form name="Ids" description="指定阶段Id（可多个）" type="string" example="001,002,003 或者 001"/>
             <form name="Sorts" description="排序索引（可多个）" type="string" example="0,1,2,3 或者 0"/>
             <response contentType="Json">
@@ -1580,7 +1580,7 @@
                 }
             </response>
         </api>
-        <api name="删除流程" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=DeleteFlow">
+        <api name="删除流程" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DeleteFlow">
             <form name="Ids" type="string" description="流程Id（可多个）" example="001,002 或者 001"/>
             <response contentType="Json">
                 {
@@ -1590,7 +1590,7 @@
                 }
             </response>
         </api>
-        <api name="删除工序" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=DeleteProcess">
+        <api name="删除工序" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DeleteProcess">
             <form name="Ids" type="string" description="工序Id（可多个）" example="001,002 或者 001"/>
             <response contentType="Json">
                 {
@@ -1600,7 +1600,7 @@
                 }
             </response>
         </api>
-        <api name="删除阶段" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=DeleteStage">
+        <api name="删除阶段" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DeleteStage">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -1610,7 +1610,7 @@
                 }
             </response>
         </api>
-        <api name="删除项目" requestMethod="POST" path="/ios.ashx?$c=Project&amp;$m=DeleteProject">
+        <api name="删除项目" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DeleteProject">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -1650,7 +1650,7 @@
                 }
             </response>
         </api>
-        <api name="接收列表" requestMethod="POST" path="/ios.ashx?$c=UserMessage&amp;$m=GetMyRecvedMessageList">
+        <api name="接收列表" requestMethod="POST" path="ios.ashx?$c=UserMessage&amp;$m=GetMyRecvedMessageList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -1672,7 +1672,7 @@
                 }
             </response>
         </api>
-        <api name="发送列表" requestMethod="POST" path="/ios.ashx?$c=UserMessage&amp;$m=GetMySendedMessageList">
+        <api name="发送列表" requestMethod="POST" path="ios.ashx?$c=UserMessage&amp;$m=GetMySendedMessageList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -1693,7 +1693,7 @@
                 }
             </response>
         </api>
-        <api name="消息详情" requestMethod="POST" path="/ios.ashx?$c=UserMessage&amp;$m=GetById">
+        <api name="消息详情" requestMethod="POST" path="ios.ashx?$c=UserMessage&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -1720,7 +1720,7 @@
                 }
             </response>
         </api>
-        <api name="阅读消息" requestMethod="POST" path="/ios.ashx?$c=UserMessage&amp;$m=ReadById">
+        <api name="阅读消息" requestMethod="POST" path="ios.ashx?$c=UserMessage&amp;$m=ReadById">
             <form name="Id" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -1729,7 +1729,7 @@
                 }
             </response>
         </api>
-        <api name="发送信息" requestMethod="POST" path="/ios.ashx?$c=UserMessage&amp;$m=Send">
+        <api name="发送信息" requestMethod="POST" path="ios.ashx?$c=UserMessage&amp;$m=Send">
             <form name="Title" description="公告标题" type="string"/>
             <form name="Content" description="公告内容" type="string"/>
             <form name="TargetIds" description="接收对象Id" example="001,002,003" type="string"/>
@@ -1775,7 +1775,7 @@
                 }
             </response>
         </api>
-        <api name="消息数量" requestMethod="POST" path="/ios.ashx?$c=Message&amp;$m=GetMyNewMessageCount">
+        <api name="消息数量" requestMethod="POST" path="ios.ashx?$c=Message&amp;$m=GetMyNewMessageCount">
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -1784,7 +1784,7 @@
                 }
             </response>
         </api>
-        <api name="消息列表" requestMethod="POST" path="/ios.ashx?$c=Message&amp;$m=GetMyMessageList">
+        <api name="消息列表" requestMethod="POST" path="ios.ashx?$c=Message&amp;$m=GetMyMessageList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -1808,7 +1808,7 @@
                 }
             </response>
         </api>
-        <api name="阅读消息" requestMethod="POST" path="/ios.ashx?$c=Message&amp;$m=ReadById">
+        <api name="阅读消息" requestMethod="POST" path="ios.ashx?$c=Message&amp;$m=ReadById">
             <form name="Id" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -1821,7 +1821,7 @@
 
 
     <module name="机构相关">
-        <api name="创建团队" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=Create">
+        <api name="创建团队" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Create">
             <form name="Name" description="名称" type="string"/>
             <form name="LogoUrl" description="头像" type="string"/>
             <form name="OrgName" description="公司名称" type="string"/>
@@ -1835,7 +1835,7 @@
                 }
             </response>
         </api>
-        <api name="更新团队" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=Update">
+        <api name="更新团队" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Update">
             <form name="OrgId" type="string" description="机构Id"/>
             <form name="Name" description="名称" type="string"/>
             <form name="LogoUrl" description="头像" type="string"/>
@@ -1849,7 +1849,7 @@
                 }
             </response>
         </api>
-        <api name="搜索团队" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=Search">
+        <api name="搜索团队" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Search">
             <form name="Key" type="string" description="名称关键字"/>
             <response contentType="Json">
                 {
@@ -1863,7 +1863,7 @@
                 }
             </response>
         </api>
-        <api name="团队信息" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=GetById">
+        <api name="团队信息" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=GetById">
             <form name="OrgId" description="部门Id" type="string"/>
             <response contentType="Json">
                 {
@@ -1884,7 +1884,7 @@
                 }
             </response>
         </api>
-        <api name="退出团队" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=Quit">
+        <api name="退出团队" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Quit">
             <form name="OrgId" type="string" description="团队ID"/>
             <response contentType="Json">
                 {
@@ -1894,7 +1894,7 @@
                 }
             </response>
         </api>
-        <api name="加入团队" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=Join">
+        <api name="加入团队" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Join">
             <form name="OrgId" type="string" description="团队ID"/>
             <response contentType="Json">
                 {
@@ -1904,7 +1904,7 @@
                 }
             </response>
         </api>
-        <api name="邀请加入" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=Invite">
+        <api name="邀请加入" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Invite">
             <form name="UserIds" type="string" description="用户ID" example="001,002"/>
             <form name="DepartmentId" type="string" description="部门Id"/>
             <response contentType="Json">
@@ -1915,7 +1915,7 @@
                 }
             </response>
         </api>
-        <api name="申请处理" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=JoinAccept">
+        <api name="申请处理" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=JoinAccept">
             <form name="ApplyId" type="string" description="申请ID"/>
             <form name="Accept" type="boolean" description="是否通过"/>
             <form name="DepartmentId" nullable="true" type="string" description="部门Id（通过时必须）"/>
@@ -1927,7 +1927,7 @@
                 }
             </response>
         </api>
-        <api name="邀请处理" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=InviteAccept">
+        <api name="邀请处理" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=InviteAccept">
             <form name="InviteId" type="string" description="邀请ID"/>
             <form name="Accept" type="boolean" description="是否通过"/>
             <response contentType="Json">
@@ -1938,7 +1938,7 @@
                 }
             </response>
         </api>
-        <api name="申请详情" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=GetJoinById">
+        <api name="申请详情" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=GetJoinById">
             <form name="ApplyId" description="申请Id" type="string"/>
             <response contentType="Json">
                 {
@@ -1963,7 +1963,7 @@
                 }
             </response>
         </api>
-        <api name="邀请详情" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=GetInviteById">
+        <api name="邀请详情" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=GetInviteById">
             <form name="InviteId" description="邀请Id" type="string"/>
             <response contentType="Json">
                 {
@@ -1993,7 +1993,7 @@
                 }
             </response>
         </api>
-        <api name="搜索员工" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=SearchUser">
+        <api name="搜索员工" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=SearchUser">
             <form name="Key" type="string" description="关键字"/>
             <response contentType="Json">
                 {
@@ -2007,7 +2007,7 @@
                 }
             </response>
         </api>
-        <api name="移动员工" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=MoveUsers">
+        <api name="移动员工" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=MoveUsers">
             <form name="UserIds" type="string" description="人员Id" example="001,002,003"/>
             <form name="DepartmatnId" type="string" description="部门Id"/>
             <response contentType="Json">
@@ -2018,7 +2018,7 @@
                 }
             </response>
         </api>
-        <api name="移除员工" requestMethod="POST" path="/ios.ashx?$c=Organization&amp;$m=RemoveUsers">
+        <api name="移除员工" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=RemoveUsers">
             <form name="UserIds" type="string" description="人员Id" example="001,002,003"/>
             <response contentType="Json">
                 {
@@ -2031,7 +2031,7 @@
     </module>
 
     <module name="部门相关">
-        <api name="部门列表" requestMethod="POST" path="/ios.ashx?$c=Department&amp;$m=GetBranchListById">
+        <api name="部门列表" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=GetBranchListById">
             <form name="OrgId" nullable="true" description="机构Id" type="string"/>
             <form name="DepartmentId" nullable="true" description="上级部门Id" type="string"/>
             <response contentType="Json">
@@ -2047,7 +2047,7 @@
                 }
             </response>
         </api>
-        <api name="部门树形" requestMethod="POST" path="/ios.ashx?$c=Department&amp;$m=GetDepartmentTree">
+        <api name="部门树形" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=GetDepartmentTree">
             <form name="OrgId" nullable="true" description="机构Id" type="string"/>
             <form name="DepartmentId" nullable="true" description="上级部门Id" type="string"/>
             <response contentType="Json">
@@ -2065,7 +2065,7 @@
                 }
             </response>
         </api>
-        <api name="创建部门" requestMethod="POST" path="/ios.ashx?$c=Department&amp;$m=Create">
+        <api name="创建部门" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=Create">
             <form name="Name" description="名称" type="string"/>
             <form name="OrgId" description="机构Id" type="string"/>
             <form name="ParentId" nullable="true" description="上级部门Id（顶层部门可不传）" type="string"/>
@@ -2080,7 +2080,7 @@
                 }
             </response>
         </api>
-        <api name="更新部门" requestMethod="POST" path="/ios.ashx?$c=Department&amp;$m=Update">
+        <api name="更新部门" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=Update">
             <form name="DepartmentId" description="部门Id" type="string"/>
             <form name="Name" description="名称" type="string"/>
             <response contentType="Json">
@@ -2096,7 +2096,7 @@
                 }
             </response>
         </api>
-        <api name="获取部门" requestMethod="POST" path="/ios.ashx?$c=Department&amp;$m=GetById">
+        <api name="获取部门" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=GetById">
             <form name="DepartmentId" description="部门Id" type="string"/>
             <response contentType="Json">
                 {
@@ -2109,7 +2109,7 @@
                 }
             </response>
         </api>
-        <api name="删除部门" requestMethod="POST" path="/ios.ashx?$c=Department&amp;$m=Delete">
+        <api name="删除部门" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=Delete">
             <form name="DepartmentId" description="部门Id" type="string"/>
             <response contentType="Json">
                 {
