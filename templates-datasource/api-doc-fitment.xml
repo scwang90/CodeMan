@@ -1348,6 +1348,11 @@
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                QualityPrincipal://质量负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
                 }
                 }...]
                 }
@@ -1385,6 +1390,12 @@
                 float Area ;// 面积（单位㎡）,
                 string Remark ;// 备注,
                 bool Complete ;// 项目是否完成（true标示完成，false表示未完成）,
+
+                string Avatar ;//头像,
+                int StageCount ;//阶段,
+                int ProcessCount ;//工序总数,
+                int ProcessFinishedCount ;//已完成工序,
+                int ProcessOvertimeCount ;//超期工序,
 
                 Images://图片["url","url",...];,
                 Initiator://创建人{
@@ -1617,6 +1628,55 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:,
+                }
+            </response>
+        </api>
+        <api name="成员列表" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetMemberListById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                String Avatar;  //头像,
+                int Type ;//0 普通成员 1 质量负责人 2 项目负责人 3 项目创建人
+                }...]
+                }
+            </response>
+        </api>
+        <api name="添加成员" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=AddMembers">
+            <form name="Id"  type="string" description="项目Id"/>
+            <form name="Ids"  type="string" description="用户Id" example="001,002,003"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://,
+                }
+            </response>
+        </api>
+        <api name="移除成员" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DelMembers">
+            <form name="Id"  type="string" description="项目Id"/>
+            <form name="Ids"  type="string" description="用户Id" example="001,002,003"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://,
+                }
+            </response>
+        </api>
+        <api name="成员角色" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DelMembers">
+            <form name="Id"  type="string" description="项目Id"/>
+            <form name="UserId"  type="string" description="用户Id"/>
+            <form name="Type"  type="string" description="0 普通成员 1 质量负责人 2 项目负责人"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://,
                 }
             </response>
         </api>
