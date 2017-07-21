@@ -1339,6 +1339,10 @@
                 string Name ;//名称,
                 int Progress ;//进度 0-100,
                 Date Time ;//创建时间,
+
+                string PrincipalIds;//项目负责人Ids,
+                string QualityPrincipalIds;//质量创建人Ids,
+
                 Initiator://创建人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
