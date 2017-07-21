@@ -1340,8 +1340,8 @@
                 int Progress ;//进度 0-100,
                 Date Time ;//创建时间,
 
-                string PrincipalIds;//项目负责人Ids,
-                string QualityPrincipalIds;//质量创建人Ids,
+                string PrincipalIds;//项目负责人Ids（用于权限判断）,
+                string QualityPrincipalIds;//质量创建人Ids（用于权限判断）,
 
                 Initiator://创建人{
                 String Id;      //用户Id,
@@ -1440,6 +1440,12 @@
                 Date StartDateTime;开始时间,
                 int Period;//工期单位(天),
                 bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
+
+                int FlowCount ;//流程总数
+                int DrawingCount ;//图纸总量
+                int DiaryCount ;//日志总量
+                int QualityCount ;//质量总量
+
                 Principal://负责人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
