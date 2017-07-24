@@ -682,6 +682,7 @@
         <api name="发布列表" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetMySendedDiaryList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -705,6 +706,7 @@
         <api name="接收列表" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetMyRecvedDiaryList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -754,6 +756,8 @@
             <form name="CompleteWork" description="今日完成工作" type="string"/>
             <form name="UncompletedWork" description="今日未完成工作" type="string"/>
             <form name="ConcertWork" type="string" description="工作协调" />
+            <form name="GongXuId" nullable="true" type="string" description="工序Id"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -813,10 +817,12 @@
         </api>
     </module>
 
+
     <module name="质量处理">
         <api name="发布列表" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetMySendedQualityHandleList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -841,6 +847,7 @@
         <api name="接收列表" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetMyRecvedQualityHandleList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -892,6 +899,8 @@
             <form name="Cause" description="隐患原因" type="string"/>
             <form name="ConcertWork" type="string" description="协调工作" />
             <form name="HandleStatus" type="int" description="处理状态" example="待处理 = 1;进行中 = 2;已完结 = 3" />
+            <form name="GongXuId" nullable="true" type="string" description="工序Id"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -1395,6 +1404,9 @@
                 string Remark ;// 备注,
                 bool Complete ;// 项目是否完成（true标示完成，false表示未完成）,
 
+                string PrincipalIds;//项目负责人Ids（用于权限判断）,
+                string QualityPrincipalIds;//质量创建人Ids（用于权限判断）,
+
                 string Avatar ;//头像,
                 int StageCount ;//阶段,
                 int ProcessCount ;//工序总数,
@@ -1670,6 +1682,7 @@
         <api name="移除成员" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DelMembers">
             <form name="Id"  type="string" description="项目Id"/>
             <form name="Ids"  type="string" description="用户Id" example="001,002,003"/>
+            <form name="Types"  type="string" description="Ids对应角色：0 普通成员 1 质量负责人 2 项目负责人" example="0,1,2"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -1888,7 +1901,6 @@
             </response>
         </api>
     </module>
-
 
     <module name="机构相关">
         <api name="创建团队" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Create">
