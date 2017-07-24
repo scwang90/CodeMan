@@ -1678,7 +1678,7 @@
                 }
             </response>
         </api>
-        <api name="成员角色" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DelMembers">
+        <api name="成员角色" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=SetMemberRole">
             <form name="Id"  type="string" description="项目Id"/>
             <form name="UserId"  type="string" description="用户Id"/>
             <form name="Type"  type="string" description="0 普通成员 1 质量负责人 2 项目负责人"/>
