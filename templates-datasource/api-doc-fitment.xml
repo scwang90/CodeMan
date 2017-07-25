@@ -162,6 +162,7 @@
                     String Id;      //Id,
                     String Name;    //名称,
                     String Avatar;  //头像,
+                    String ManagerIds ;//管理员Ids，用于判断权限,
                     Creater://创建者{
                         String Id;      //Id,
                         String Name;    //名称,
@@ -868,7 +869,6 @@
             </response>
         </api>
     </module>
-
 
     <module name="质量处理">
         <api name="发布列表" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetMySendedQualityHandleList">
@@ -1954,7 +1954,7 @@
         </api>
     </module>
 
-    <module name="机构相关">
+    <module name="团队相关">
         <api name="创建团队" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=Create">
             <form name="Name" description="名称" type="string"/>
             <form name="LogoUrl" description="头像" type="string"/>
@@ -2009,6 +2009,7 @@
                 string Avatar ;//头像,
                 string OrgName ;//公司名称,
                 string Address ;//公司地址,
+                string ManagerIds ;//管理员Ids，用于判断权限,
                 Creater://发布人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
@@ -2162,7 +2163,82 @@
                 }
             </response>
         </api>
+        <api name="权限列表" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=GetManagerListById">
+            <description>获取指定团队管理员列表</description>
+            <form name="OrgId" type="string" description="团队ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="移动管理" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=AddManagers">
+            <form name="UserIds" type="string" description="人员Id" example="001,002,003"/>
+            <form name="OrgId" type="string" description="团队ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="移除管理" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=DelManagers">
+            <form name="OrgId" type="string" description="团队ID"/>
+            <form name="UserIds" type="string" description="人员Id" example="001,002,003"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="获取考勤" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=GetAttendanceSetById">
+            <form name="OrgId" type="string" description="团队ID"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id;//Id,
+                string AMStart;//上班时间,
+                string PMEnd;//下班时间,
+                string Weekday;//周期（0星期天 ... 6 星期六）,
+                string Address;//打卡位置,
+                Location://定位信息（可能为null）{
+                double latitude,
+                double longitude
+                }
+                },
+                }
+            </response>
+        </api>
+        <api name="修改考勤" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=GetAttendanceSetById">
+            <form name="OrgId" type="string" description="团队ID"/>
+            <form name="AMStart" nullable="true" type="string" description="上班时间"/>
+            <form name="PMEnd" nullable="true" type="string" description="下班时间"/>
+            <form name="Weekday" nullable="true" type="string" description="周期"/>
+            <form name="Address" nullable="true" type="string" description="打卡位置"/>
+            <form name="latitude" nullable="true" type="double" description="位置信息"/>
+            <form name="longitude" nullable="true" type="double" description="位置信息"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
     </module>
+
+
 
     <module name="部门相关">
         <api name="部门列表" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=GetBranchListById">
