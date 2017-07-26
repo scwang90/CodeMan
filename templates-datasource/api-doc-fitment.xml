@@ -2212,6 +2212,7 @@
                 string PMEnd;//下班时间,
                 string Weekday;//周期（0星期天 ... 6 星期六）,
                 string Address;//打卡位置,
+                string SignScope,//签到范围 单位米
                 Location://定位信息（可能为null）{
                 double latitude,
                 double longitude
@@ -2226,6 +2227,7 @@
             <form name="PMEnd" nullable="true" type="string" description="下班时间"/>
             <form name="Weekday" nullable="true" type="string" description="周期"/>
             <form name="Address" nullable="true" type="string" description="打卡位置"/>
+            <form name="SignScope" nullable="true" type="int" description="签到范围 单位米"/>
             <form name="latitude" nullable="true" type="double" description="位置信息"/>
             <form name="longitude" nullable="true" type="double" description="位置信息"/>
             <response contentType="Json">
