@@ -699,6 +699,14 @@
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }...]
                 }
@@ -723,6 +731,14 @@
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }...]
                 }
@@ -747,6 +763,14 @@
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }
                 }
@@ -891,6 +915,14 @@
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }...]
                 }
@@ -916,6 +948,14 @@
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }...]
                 }
@@ -940,6 +980,14 @@
                 String Id;      //用户Id,
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
                 }
                 }
                 }
@@ -1485,6 +1533,50 @@
                 }
             </response>
         </api>
+        <api name="阶段详情" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetStageById">
+            <form name="StageId" type="string" description="阶段Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//名称,
+                Date EndDateTime ;// 预计结束时间,
+                decimal DownPayment;// 阶段款项（元）
+                bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
+                }
+                }
+            </response>
+        </api>
+        <api name="工序详情" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProcessById">
+            <form name="ProcessId" type="string" description="工序Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Sort ;// 流程排序,
+                Date StartDateTime;开始时间,
+                int Period;//工期单位(天),
+                bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
+
+                int FlowCount ;//流程总数
+                int DrawingCount ;//图纸总量
+                int DiaryCount ;//日志总量
+                int QualityCount ;//质量总量
+
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }
+                }
+            </response>
+        </api>
         <api name="项目内容" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProjectContentById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
@@ -2010,6 +2102,7 @@
                 string OrgName ;//公司名称,
                 string Address ;//公司地址,
                 string ManagerIds ;//管理员Ids，用于判断权限,
+                int MemberCount;//成员数量,
                 Creater://发布人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
@@ -2221,7 +2314,7 @@
                 }
             </response>
         </api>
-        <api name="修改考勤" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=GetAttendanceSetById">
+        <api name="修改考勤" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=SetAttendanceSetById">
             <form name="OrgId" type="string" description="团队ID"/>
             <form name="AMStart" nullable="true" type="string" description="上班时间"/>
             <form name="PMEnd" nullable="true" type="string" description="下班时间"/>
@@ -2239,8 +2332,6 @@
             </response>
         </api>
     </module>
-
-
 
     <module name="部门相关">
         <api name="部门列表" requestMethod="POST" path="ios.ashx?$c=Department&amp;$m=GetBranchListById">
