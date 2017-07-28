@@ -898,7 +898,7 @@
                 }
             </response>
         </api>
-        <api name="打卡详情" requestMethod="POST" path="ios.ashx?$c=Signed&amp;$m=GetById">
+        <api name="打卡详情" requestMethod="POST" path="ios.ashx?$c=Signed&amp;$m=GetSignInfoById">
             <form name="Id" type="string" description="签到Id"/>
             <response contentType="Json">
                 {
