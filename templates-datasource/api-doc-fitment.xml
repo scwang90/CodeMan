@@ -1101,7 +1101,7 @@
                 }
             </response>
         </api>
-        <api name="图纸详情" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetById">
+        <api name="图纸详情" requestMethod="POST" path="ios.ashx?$c=ConstructDrawing&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
                 {
@@ -2391,7 +2391,7 @@
                 }
             </response>
         </api>
-        <api name="移动管理" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=AddManagers">
+        <api name="添加管理" requestMethod="POST" path="ios.ashx?$c=Organization&amp;$m=AddManagers">
             <form name="UserIds" type="string" description="人员Id" example="001,002,003"/>
             <form name="OrgId" type="string" description="团队ID"/>
             <response contentType="Json">
