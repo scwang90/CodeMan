@@ -796,6 +796,9 @@
             <form name="Address" type="string" description="定位信息"/>
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
             <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <form name="Remark" nullable="true" type="string" description="备注信息"/>
+            <form name="Type" nullable="true" type="int" description="类型：1日常签到2工地签到"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -808,6 +811,9 @@
             <form name="Address" type="string" description="定位信息"/>
             <form name="latitude" nullable="true" type="double" description="定位信息"/>
             <form name="longitude" nullable="true" type="double" description="定位信息"/>
+            <form name="Remark" nullable="true" type="string" description="备注信息"/>
+            <form name="Type" nullable="true" type="int" description="类型：1日常签到2工地签到"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -892,9 +898,39 @@
                 }
             </response>
         </api>
+        <api name="打卡详情" requestMethod="POST" path="ios.ashx?$c=Signed&amp;$m=GetById">
+            <form name="Id" type="string" description="签到Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                string Id ;//Id,
+                Date Time ;// 时间,
+                string Address ;// 项目地址,
+                int Type ;// 类型:1日常签到2工地签到,
+                int Status ;//状态:1签到2签退,
+                string Remark ;// 备注,
+                Signer://签到人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Project://项目（可能为null）{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                },
+                Location://定位信息（可能为null）{
+                double latitude,
+                double longitude
+                }
+                }
+                }
+            </response>
+        </api>
     </module>
 
-    <module name="质量处理">
+    <module name="质量图纸">
         <api name="发布列表" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetMySendedQualityHandleList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
@@ -1018,6 +1054,81 @@
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="图纸列表" requestMethod="POST" path="ios.ashx?$c=ConstructDrawing&amp;$m=GetConstructDrawingList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Name ;   // 标题,
+                String Avatar;  //头像,
+                String Time ;// 时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="发布图纸" requestMethod="POST" path="ios.ashx?$c=ConstructDrawing&amp;$m=Submit">
+            <form name="Name" description="名称" type="string"/>
+            <form name="Description" description="描述信息" type="string"/>
+            <form name="Cause" description="隐患原因" type="string"/>
+            <form name="GongXuId" type="string" description="工序Id"/>
+            <form name="ProjectId" type="string" description="项目Id"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="图纸详情" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetById">
+            <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                String Id;       //Id,
+                String Name ;// 名称,
+                String Description ;// 描述信息,
+                String Time ;// 时间,
+                Images://图片["url","url",...];,
+                Date Time;       //发布时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }
                 }
             </response>
         </api>
