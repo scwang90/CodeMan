@@ -1090,7 +1090,6 @@
         <api name="发布图纸" requestMethod="POST" path="ios.ashx?$c=ConstructDrawing&amp;$m=Submit">
             <form name="Name" description="名称" type="string"/>
             <form name="Description" description="描述信息" type="string"/>
-            <form name="Cause" description="隐患原因" type="string"/>
             <form name="GongXuId" type="string" description="工序Id"/>
             <form name="ProjectId" type="string" description="项目Id"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
@@ -1900,6 +1899,16 @@
         </api>
         <api name="删除项目" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DeleteProject">
             <form name="Id" type="string" description="Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
+        <api name="完成工序" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=FinishProcess">
+            <form name="ProcessId" type="string" description="工序Id"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
