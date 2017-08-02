@@ -862,6 +862,7 @@
                 String Address ;//地址,
                 string TypeName ;//类型名称,
                 string Department ;//部门,
+                int Type;//类型：日常签到1 工地签到2
 
                 Initiator://发布人{
                 String Id;      //用户Id,
@@ -888,6 +889,7 @@
                 String Address ;//地址,
                 string TypeName ;//类型名称,
                 string Department ;//部门,
+                int Type;//类型：日常签到1 工地签到2
 
                 Initiator://发布人{
                 String Id;      //用户Id,
@@ -1704,6 +1706,7 @@
                 string Name ;//名称,
                 int Sort ;// 流程排序,
                 Date StartDateTime;开始时间,
+                Date EndDateTime; 结束时间,
                 int Period;//工期单位(天),
                 bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
 
