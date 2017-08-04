@@ -744,6 +744,38 @@
                 }
             </response>
         </api>
+        <api name="工序日志" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetDiaryListByProcessId">
+            <form name="ProcessId" type="string" description="工序Id"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String CompleteWork ;// 今日完成工作,
+                String UncompletedWork ;// 今日未完成工作,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }...]
+                }
+            </response>
+        </api>
         <api name="日志详情" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
@@ -999,6 +1031,39 @@
                 }
             </response>
         </api>
+        <api name="工序质量" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetQualityHandleListByProcessId">
+            <form name="ProcessId" type="string" description="工序Id"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Name ;// 问题标题,
+                String Position ;// 隐患位置,
+                String Cause ;// 隐患原因,
+                String ConcertWork ;// 协调工作,
+                int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }...]
+                }
+            </response>
+        </api>
         <api name="处理详情" requestMethod="POST" path="ios.ashx?$c=QualityHandle&amp;$m=GetById">
             <form name="Id" type="string" description="Id"/>
             <response contentType="Json">
@@ -1063,6 +1128,36 @@
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <form name="ProjectId" nullable="true" type="string" description="项目Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Name ;   // 标题,
+                String Avatar;  //头像,
+                String Time ;// 时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="工序图纸" requestMethod="POST" path="ios.ashx?$c=ConstructDrawing&amp;$m=GetConstructDrawingListByProcessId">
+            <form name="ProcessId" type="string" description="工序Id"/>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
