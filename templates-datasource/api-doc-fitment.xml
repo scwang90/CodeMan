@@ -744,7 +744,7 @@
                 }
             </response>
         </api>
-        <api name="工序日志" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetDiaryListByProcessId">
+        <api name="工序日志" requestMethod="POST" path="ios.ashx?$c=WorkDiary&amp;$m=GetWorkDiaryListByProcessId">
             <form name="ProcessId" type="string" description="工序Id"/>
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
