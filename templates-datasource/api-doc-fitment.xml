@@ -1678,6 +1678,41 @@
                 }
             </response>
         </api>
+        <api name="我的项目" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetMyProjectList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Progress ;//进度 0-100,
+                Date Time ;//创建时间,
+
+                string PrincipalIds;//项目负责人Ids（用于权限判断）,
+                string QualityPrincipalIds;//质量创建人Ids（用于权限判断）,
+
+                Initiator://创建人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                QualityPrincipal://质量负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
         <api name="流程列表" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProjectFlowListByProcessId">
             <form name="Id" description="工序Id" type="string"/>
             <response contentType="Json">
@@ -2637,6 +2672,70 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="工人版本">
+        <api name="我的项目" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetMyProjectList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Progress ;//进度 0-100,
+                Date Time ;//创建时间,
+
+                string PrincipalIds;//项目负责人Ids（用于权限判断）,
+                string QualityPrincipalIds;//质量创建人Ids（用于权限判断）,
+
+                Initiator://创建人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                QualityPrincipal://质量负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="我的申请" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetMyApplyList">
+            <description>
+                我发出的申请
+            </description>
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//申请名称,
+                string Content ;//申请内容,
+                DateTime Time ;//申请时间,
+                int ApprovalType;//类型 请假 = 1;休息 = 2;出差 = 3;报销 = 4;物品领用 = 5;通用申请 = 15,
+                int Status ;//状态 未审批 = 1；审批通过 = 2；审批不通过 = 3,
+                Approver://审批人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
                 }
             </response>
         </api>
