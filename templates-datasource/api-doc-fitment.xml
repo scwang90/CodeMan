@@ -2713,7 +2713,7 @@
                 }
             </response>
         </api>
-        <api name="我的申请" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetMyApplyList">
+        <api name="请假列表" requestMethod="POST" path="ios.ashx?$c=Approval&amp;$m=GetMyVacateList">
             <description>
                 我发出的申请
             </description>
