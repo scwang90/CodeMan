@@ -2225,7 +2225,7 @@
     </module>
 
     <module name="消息通知">
-        <api name="消息轮询" requestMethod="POST" path="/ios-r.ashx?$c=Message&amp;$m=GetMyNewMessage">
+        <api name="消息轮询" requestMethod="POST" path="ios-r.ashx?$c=Message&amp;$m=GetMyNewMessage">
             <description>
                 访问的接口需要需要把超时时间设长大于必须1分钟。
                 本接口需要不断的重复调用，来获取实时消息数据。
