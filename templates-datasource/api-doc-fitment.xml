@@ -1657,7 +1657,7 @@
                 Date Time ;//创建时间,
 
                 string PrincipalIds;//项目负责人Ids（用于权限判断）,
-                string QualityPrincipalIds;//质量创建人Ids（用于权限判断）,
+                string QualityPrincipalIds;//质量人Ids（用于权限判断）,
 
                 Initiator://创建人{
                 String Id;      //用户Id,
