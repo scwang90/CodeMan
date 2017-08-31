@@ -2101,6 +2101,148 @@
             </response>
         </api>
     </module>
+    
+    <module name="项目资金">
+        <api name="添加记录" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=CreateFinance">
+            <form name="Remark" description="备注" type="string"/>
+            <form name="DateTime" type="string" description="日期（yyyy-MM-dd HH:mm）"/>
+            <form name="FinancingValue" description="金额（元）" type="decimal"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="更新记录" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateFinance">
+            <form name="Id" type="string" description="指定Id"/>
+            <form name="Remark" description="备注" type="string"/>
+            <form name="DateTime" type="string" description="日期（yyyy-MM-dd HH:mm）"/>
+            <form name="FinancingValue" description="金额（元）" type="decimal"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="每月统计" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetFinanceInfoByProjectId">
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="month" type="string" description="统计月份(yyyy-MM-01 00:00)" />
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                double Residue;//剩余资金,
+                double Income;//月收入,
+                double Expense;//月支出,
+                Items://日期[{
+                String Date;            //日期和星期,
+                String FinancingValue;  //总值,
+                String Items://详细列表[{
+                String Id;            //Id,
+                String ProjectId;     //项目Id,
+                String Remark;        //备注,
+                float FinancingValue;  //金额,
+                },...]
+                },...]
+                }
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="项目材料">
+        <api name="添加材料" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=CreateMaterial">
+            <form name="Remark" description="备注" type="string"/>
+            <form name="DateTime" type="string" description="日期（yyyy-MM-dd HH:mm）"/>
+            <form name="Number" description="数量" type="float"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="添加类型" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=CreateMaterialType">
+            <form name="Name" description="名称" type="string"/>
+            <form name="Unit" description="单位" type="string"/>
+            <form name="Id" nullable="true" type="string" description="指定Id"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="更新材料" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=UpdateMaterial">
+            <form name="Id" type="string" description="指定Id"/>
+            <form name="Remark" description="备注" type="string"/>
+            <form name="DateTime" type="string" description="日期（yyyy-MM-dd HH:mm）"/>
+            <form name="Number" description="数量" type="float"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="材料统计" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetMaterialInfoByProjectId">
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                Types://顶部类型[{
+                String Id;            //Id,
+                String Name;          //名称,
+                String Unit;          //单位,
+                float Number;         //数量,
+                },...]
+                Items://日期[{
+                String Date;            //日期和星期,
+                String Number;          //总值,
+                String Items://详细列表[{
+                String Id;            //Id,
+                String Unit;          //单位,
+                String ProjectId;     //项目Id,
+                String MaterialTypeId;//类型Id,
+                String TypeName;      //类型名称,
+                String Remark;        //备注,
+                float Number;         //数量,
+                },...]
+                },...]
+                }
+                }
+            </response>
+        </api>
+        <api name="类型列表" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetMaterialTypeList">
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;            //Id,
+                String Name;          //名称,
+                String Unit;          //单位,
+                },...]
+                }
+            </response>
+        </api>
+    </module>
 
     <module name="用户消息">
         <api name="消息轮询" requestMethod="POST" path="/ios-r.ashx?$c=UserMessage&amp;$m=GetNewMyMessage">
