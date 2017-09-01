@@ -1829,7 +1829,8 @@
                 string Id ;//Id,
                 string Name ;//名称,
                 Date EndDateTime ;// 预计结束时间,
-                decimal DownPayment;// 阶段款项（元）
+                decimal DownPayment;// 阶段款项（元）,
+                int AcceptanceStatus;//验收状态 未验收 = 0；验收未完成 = 1；验收通过 = 2；验收未通过 = 3,
                 bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
                 Process:[{
                 string Id ;//Id,
@@ -1839,6 +1840,7 @@
                 Date EndDateTime; 结束时间,
                 int Period;//工期单位(天),
                 bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
+                int AcceptanceStatus;//验收状态 未验收 = 0；验收未完成 = 1；验收通过 = 2；验收未通过 = 3,
 
                 int FlowCount ;//流程总数
                 int DrawingCount ;//图纸总量
@@ -2131,6 +2133,16 @@
                 }
             </response>
         </api>
+        <api name="删除记录" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DeleteFinance">
+            <form name="Id" type="string" description="Id" example=""/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
+                }
+            </response>
+        </api>
         <api name="每月统计" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetFinanceInfoByProjectId">
             <form name="ProjectId" description="项目Id" type="string"/>
             <form name="month" type="string" description="统计月份(yyyy-MM-01 00:00)" />
@@ -2164,6 +2176,7 @@
             <form name="DateTime" type="string" description="日期（yyyy-MM-dd HH:mm）"/>
             <form name="Number" description="数量" type="float"/>
             <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="MaterialTypeId" description="类型Id" type="string"/>
             <form name="Id" nullable="true" type="string" description="指定Id"/>
             <response contentType="Json">
                 {
@@ -2190,12 +2203,23 @@
             <form name="Remark" description="备注" type="string"/>
             <form name="DateTime" type="string" description="日期（yyyy-MM-dd HH:mm）"/>
             <form name="Number" description="数量" type="float"/>
+            <form name="MaterialTypeId" description="类型Id" type="string"/>
             <form name="ProjectId" description="项目Id" type="string"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="删除材料" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=DeleteMaterial">
+            <form name="Id" type="string" description="Id" example=""/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:,
                 }
             </response>
         </api>
@@ -2214,7 +2238,6 @@
                 },...]
                 Items://日期[{
                 String Date;            //日期和星期,
-                String Number;          //总值,
                 String Items://详细列表[{
                 String Id;            //Id,
                 String Unit;          //单位,
@@ -2239,6 +2262,50 @@
                 String Name;          //名称,
                 String Unit;          //单位,
                 },...]
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="项目验收">
+        <api name="验收详细" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetAcceptanceByStageId">
+            <form name="StageId" description="阶段Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;              //工序Id,
+                String Name;            //名称,
+                String AcceptanceRemark;//验收备注,
+                int AcceptanceStatus;   //验收状态 未验收 = 0；验收未完成 = 1；验收未通过 = 2；验收通过 = 3,
+                },...]
+                }
+            </response>
+        </api>
+        <api name="验收列表" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetAcceptanceByProjectId">
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;              //阶段Id,
+                String Name;            //名称,
+                int AcceptanceStatus;   //验收状态 未验收 = 0；验收未完成 = 1；验收未通过 = 2；验收通过 = 3；已经竣工移交 = 4,
+                },...]
+                }
+            </response>
+        </api>
+        <api name="提交验收" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=SubmitAcceptance">
+            <form name="StageId" description="阶段Id" type="string"/>
+            <form name="ProcessIds" description="工序Ids" type="string" example="001,002,003"/>
+            <form name="Acceptances" description="工序Ids" type="string" example="true,false:不合格,true"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
                 }
             </response>
         </api>
