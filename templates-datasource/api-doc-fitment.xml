@@ -2300,12 +2300,71 @@
         <api name="提交验收" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=SubmitAcceptance">
             <form name="StageId" description="阶段Id" type="string"/>
             <form name="ProcessIds" description="工序Ids" type="string" example="001,002,003"/>
-            <form name="Acceptances" description="工序Ids" type="string" example="true,false:不合格,true"/>
+            <form name="Acceptances" description="验收结果" type="string" example="true,false:不合格原因,true"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data://新的Id,
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="项目竣工">
+        <api name="阶段列表" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetStageCompleteListByProjectId">
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;              //阶段Id,
+                String Name;            //名称,
+                int AcceptanceStatus;   //验收状态 未验收 = 0；验收未完成 = 1；验收未通过 = 2；验收通过 = 3；已经竣工移交 = 4,
+                },...]
+                }
+            </response>
+        </api>
+        <api name="提交竣工" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=SubmitCompleteTransfer">
+            <form name="StageId" description="阶段Id" type="string"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="StageIds" description="阶段Ids" type="string" example="001,002,003"/>
+            <form name="Contents" description="阶段验收内容s" type="string" example="内容1,内容2,内容3"/>
+            <form name="Qualifys" description="是否合格s(1 合格 2 不合格)" type="string" example="1,2,1"/>
+            <form name="Gradiess" description="质量等级(1 A级别 2 B级 3 C级)" type="string" example="1,2,3"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
+                }
+            </response>
+        </api>
+        <api name="合格证书" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetCompletionCertificateByProjectId">
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;              //证书Id,
+                String Name;            //名称,
+                Date Date;              //证书日期,
+                Date StartDate;         //开工日期,
+                Date CloseDate;         //竣工日期,
+                String OwnerName;       //业主名称,
+                String ConstructionUnits//施工单位,
+                String Address;         //项目位置,
+                double ContractValue;   //合同金额,
+                Stages:[{
+                    String Id；         //阶段Id,
+                    String Name;        //阶段名称,
+                    String Content;     //检查内容,
+                    String QualityGrade;//质量等级,
+                    String IsQualified; //是否合格,
+                },...]
+                },...]
                 }
             </response>
         </api>
