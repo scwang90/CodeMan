@@ -101,6 +101,7 @@
                 审批申请 = 120,
                 项目= 130,
                 用户消息= 140,
+                项目群组消息 = 300
             </description>
             <param name="infoType" description="如果是用户头像：用户，如果是工作日志：工作日志" type="string"/>
             <param name="infoId" description="图片所属对象的ID，如用户ID，日志ID" type="string"/>
@@ -2365,6 +2366,58 @@
                     String IsQualified; //是否合格,
                 },...]
                 },...]
+                }
+            </response>
+        </api>
+    </module>
+    
+    <module name="项目群组">
+        <api name="我的群组" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetMyProjectGroupList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                string Address;//项目地址,
+                }...]
+                }
+            </response>
+        </api>
+        <api name="群组消息" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProjectGroupMessageListByProjectId">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Content ;//名称,
+                Date CreateTime;//时间,
+                int ContentType;//类型：文字 0 图片 1,
+                User://用户{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="发送消息" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=SubmitProjectGroupMessage">
+            <form name="Id" description="指定Id" nullable="true" type="string"/>
+            <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="Content" description="内容或图片连接" type="string" />
+            <form name="ContentType" description="类型：文字 0 图片 1" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data://新的Id,
                 }
             </response>
         </api>
