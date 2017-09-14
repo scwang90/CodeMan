@@ -2388,6 +2388,7 @@
             </response>
         </api>
         <api name="群组消息" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=GetProjectGroupMessageListByProjectId">
+            <form name="ProjectId" description="项目Id" type="string"/>
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
