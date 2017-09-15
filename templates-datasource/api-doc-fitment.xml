@@ -1831,7 +1831,7 @@
                 string Name ;//名称,
                 Date EndDateTime ;// 预计结束时间,
                 decimal DownPayment;// 阶段款项（元）,
-                int AcceptanceStatus;//验收状态 未验收 = 0；验收未完成 = 1；验收通过 = 2；验收未通过 = 3,
+                int AcceptanceStatus;//验收状态 未验收 = 0；验收未完成 = 1；验收通过 = 2；验收未通过 = 3；竣工完成 = 4,
                 bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
                 Process:[{
                 string Id ;//Id,
