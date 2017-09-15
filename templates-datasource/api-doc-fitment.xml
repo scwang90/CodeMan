@@ -1841,12 +1841,12 @@
                 Date EndDateTime; 结束时间,
                 int Period;//工期单位(天),
                 bool Complete ;// 施工工序是否完成（true标示完成，false表示未完成）,
-                int AcceptanceStatus;//验收状态 未验收 = 0；验收未完成 = 1；验收通过 = 2；验收未通过 = 3,
+                int AcceptanceStatus;//验收状态 未验收 = 0；验收未完成 = 1；验收通过 = 2；验收未通过 = 3；竣工完成 = 4,
 
-                int FlowCount ;//流程总数
-                int DrawingCount ;//图纸总量
-                int DiaryCount ;//日志总量
-                int QualityCount ;//质量总量
+                int FlowCount ;//流程总数,
+                int DrawingCount ;//图纸总量,
+                int DiaryCount ;//日志总量,
+                int QualityCount ;//质量总量,
 
                 Principal://负责人{
                 String Id;      //用户Id,
