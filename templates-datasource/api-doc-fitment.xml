@@ -1767,6 +1767,11 @@
                 String Name;    //显示名称,
                 String Avatar;  //用户头像,
                 },
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
                 QualityPrincipal://质量负责人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
@@ -2063,7 +2068,7 @@
                 string Id ;//Id,
                 string Name ;//名称,
                 String Avatar;  //头像,
-                int Type ;//0 普通成员 1 质量负责人 2 项目负责人 3 项目创建人
+                int Type ;//0 普通成员 1 质量负责人 2 项目负责人 3 项目创建人 4 项目业主
                 }...]
                 }
             </response>
@@ -2328,8 +2333,9 @@
             </response>
         </api>
         <api name="提交竣工" requestMethod="POST" path="ios.ashx?$c=Project&amp;$m=SubmitCompleteTransfer">
-            <form name="StageId" description="阶段Id" type="string"/>
             <form name="ProjectId" description="项目Id" type="string"/>
+            <form name="OwnerName" description="业主名称" type="string"/>
+            <form name="ConstructionUnits" description="施工单位" type="string"/>
             <form name="StageIds" description="阶段Ids" type="string" example="001,002,003"/>
             <form name="Contents" description="阶段验收内容s" type="string" example="内容1,内容2,内容3"/>
             <form name="Qualifys" description="是否合格s(1 合格 2 不合格)" type="string" example="1,2,1"/>
