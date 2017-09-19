@@ -1870,6 +1870,7 @@
             <form name="GongQi" description="工期" type="string"/>
             <form name="ContractValue" description="合同金额(元)" type="decimal"/>
             <form name="DirectorId" description="项目负责人" type="string"/>
+            <form name="OwnerId" description="项目业主ID" type="string"/>
             <form name="QualityDirectorId" description="质量负责人" type="string"/>
             <form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>
             <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
@@ -1936,6 +1937,7 @@
             <form name="Area" nullable="true" description="面积（单位㎡）" type="float"/>
             <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
             <form name="DirectorId" nullable="true" description="项目负责人" type="string"/>
+            <form name="OwnerId" description="项目业主ID" type="string"/>
             <form name="QualityDirectorId" nullable="true" description="质量负责人" type="string"/>
             <form name="Floor" nullable="true" description="楼层（单位层）" type="int"/>
             <form name="Remark" nullable="true" description="备注" type="string"/>

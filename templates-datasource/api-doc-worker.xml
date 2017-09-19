@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
-<service name="民工APP 服务接口" basePath="http://192.168.1.207:8080/api/ios.ashx">
+<service name="民工APP 服务接口" basePath="http://192.168.1.110:8090/api/ios.ashx">
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
@@ -1312,6 +1312,136 @@
                 }
             </response>
 
+        </api>
+    </module>
+
+    <module name="装修档案">
+        <api name="业主项目" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetMyProjectList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                string Id ;//Id,
+                string Name ;//名称,
+                int Progress ;//进度 0-100,
+                Date Time ;//创建时间,
+
+                string PrincipalIds;//项目负责人Ids（用于权限判断）,
+                string QualityPrincipalIds;//质量创建人Ids（用于权限判断）,
+
+                Initiator://创建人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Principal://负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                QualityPrincipal://质量负责人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="业主日志" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetProprietorWorkDiaryList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Title;    //标题,
+                String CompleteWork ;// 今日完成工作,
+                String UncompletedWork ;// 今日未完成工作,
+                String ConcertWork ;// 协调工作,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="业主质量" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetProprietorQualityHandleList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Name ;// 问题标题,
+                String Position ;// 隐患位置,
+                String Cause ;// 隐患原因,
+                String ConcertWork ;// 协调工作,
+                int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
+                Date Time;       //时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }...]
+                }
+            </response>
+        </api>
+        <api name="业主图纸" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetProprietorConstructDrawingList">
+            <param name="pageSize" description="分页大小" type="int"/>
+            <param name="page" description="页数" type="int"/>
+            <response contentType="Json">
+                {
+                success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                String Id;       //Id,
+                String Name ;   // 标题,
+                String Avatar;  //头像,
+                String Time ;// 时间,
+                Initiator://发布人{
+                String Id;      //用户Id,
+                String Name;    //显示名称,
+                String Avatar;  //用户头像,
+                },
+                Stage://阶段（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                },
+                Process://工序（可能为null）{
+                String Id;      //Id,
+                String Name;    //名称,
+                }
+                }...]
+                }
+            </response>
         </api>
     </module>
 </service>
