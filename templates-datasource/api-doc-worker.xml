@@ -1316,7 +1316,7 @@
     </module>
 
     <module name="装修档案">
-        <api name="业主项目" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetMyProjectList">
+        <api name="业主项目" requestMethod="POST" path="?$c=Fixment&amp;$m=GetMyProjectList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -1351,7 +1351,7 @@
                 }
             </response>
         </api>
-        <api name="业主日志" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetProprietorWorkDiaryList">
+        <api name="业主日志" requestMethod="POST" path="?$c=Fixment&amp;$m=GetProprietorWorkDiaryList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -1382,7 +1382,7 @@
                 }
             </response>
         </api>
-        <api name="业主质量" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetProprietorQualityHandleList">
+        <api name="业主质量" requestMethod="POST" path="?$c=Fixment&amp;$m=GetProprietorQualityHandleList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
@@ -1414,7 +1414,7 @@
                 }
             </response>
         </api>
-        <api name="业主图纸" requestMethod="POST" path="ios.ashx?$c=Fixment&amp;$m=GetProprietorConstructDrawingList">
+        <api name="业主图纸" requestMethod="POST" path="?$c=Fixment&amp;$m=GetProprietorConstructDrawingList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
             <response contentType="Json">
