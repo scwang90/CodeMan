@@ -82,6 +82,46 @@
                 }
             </response>
         </api>
+        <api name="跨服登录" requestMethod="POST" path="?$c=Common&amp;$m=UserLogin$OPEN">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <header name="token" type="cancel"/>
+            <!--<param name="UserNo" description="账户" type="string"/>-->
+            <!--<param name="Password" description="密码（未加密）" type="string"/>-->
+            <body contentType="Json">
+                {
+                "Signature":"" //登录用户ID,
+                "Param":{
+                UserNo:        //"账户",
+                Password:      //"密码（未加密）"
+                }
+                }
+            </body>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                ResultCode:0 //0 表示成功 否则 Data 为null ErrorMsg 可以获取错误信息,
+                ErrorMsg:"",
+                Data:{
+                String Id,
+                String Name,
+                int TitleCode,
+                int Status,
+                String HeadUrl,
+                String ServiceId;       //客服Id（有的用户没有）,
+                String Token;           //要保存下载，在登录之后的所有接口的头部都要加上这个参数,
+                String OrgId:           // 机构ID,
+                Authority{
+                boolean Collect;    //是否有收样的权限,
+                boolean Sample;     //是否有取样的权限,
+                boolean Witness;    //是否有见证的权限,
+                boolean Test;       //是否有测试的权限
+                }
+                }
+                }
+            </response>
+        </api>
         <api name="图片上传" requestMethod="POST" path="?$c=Common&#38;$m=UploadImage">
             <param name="infoType" description="固定为“样品”" type="string"/>
             <param name="infoId" description="图片所属对象的ID" type="string"/>
