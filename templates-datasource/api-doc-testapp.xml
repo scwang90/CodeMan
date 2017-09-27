@@ -414,7 +414,8 @@
                         String Name;            //设备名称,
                         String Model;           //设备型号,
                         String MakerCode;       //设备出厂编号,
-                        String TestOrgName:     //设备所属检测机构名称
+                        String TestOrgName:     //设备所属检测机构名称,
+                        String DeviceManageNo;  //设备管理号 2017-9-8 添加,
                     }
                 }
             </response>
