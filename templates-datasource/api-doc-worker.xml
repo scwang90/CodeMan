@@ -1354,6 +1354,7 @@
         <api name="业主日志" requestMethod="POST" path="?$c=Fixment&amp;$m=GetProprietorWorkDiaryList">
             <param name="pageSize" description="分页大小" type="int"/>
             <param name="page" description="页数" type="int"/>
+            <param name="ProjectId" nullable="true" description="页数" type="int"/>
             <response contentType="Json">
                 {
                 success:0 //0 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -1364,6 +1365,8 @@
                 String CompleteWork ;// 今日完成工作,
                 String UncompletedWork ;// 今日未完成工作,
                 String ConcertWork ;// 协调工作,
+                String ProjectId ;// 项目Id,
+                String ProjectName ;// 项目名称,
                 Date Time;       //时间,
                 Initiator://发布人{
                 String Id;      //用户Id,
@@ -1395,6 +1398,8 @@
                 String Position ;// 隐患位置,
                 String Cause ;// 隐患原因,
                 String ConcertWork ;// 协调工作,
+                String ProjectId ;// 项目Id,
+                String ProjectName ;// 项目名称,
                 int Status ;// 任务处理状态:待处理 = 1;进行中 = 2;已完结 = 3,
                 Date Time;       //时间,
                 Initiator://发布人{
@@ -1426,6 +1431,9 @@
                 String Name ;   // 标题,
                 String Avatar;  //头像,
                 String Time ;// 时间,
+                String ProjectId ;// 项目Id,
+                String ProjectName ;// 项目名称,
+
                 Initiator://发布人{
                 String Id;      //用户Id,
                 String Name;    //显示名称,
