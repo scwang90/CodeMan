@@ -10,11 +10,7 @@ import com.codesmither.project.base.model.Table;
 import com.codesmither.project.base.model.TableColumn;
 import com.codesmither.project.base.util.StringUtil;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +53,7 @@ public class DbTableSource implements TableSource {
 		}
 		if (this.connection != null) {
 			databaseMetaData = this.connection.getMetaData();
-			ResultSet tableset = databaseMetaData.getTables(null, "%", "%",
+			ResultSet tableset = databaseMetaData.getTables(connection.getCatalog(), "%", "%",
 					new String[] { "TABLE" });
 			return buildTables(tableset);
 		}
@@ -74,6 +70,10 @@ public class DbTableSource implements TableSource {
 			table.setClassNameUpper(table.getClassName().toUpperCase());
 			table.setClassNameLower(table.getClassName().toLowerCase());
 			table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
+
+			if (table.getRemark() == null || table.getRemark().trim().length()==0) {
+				table.setRemark(getTableRemarks(table.getName()));
+			}
 			if (table.getRemark() == null || table.getRemark().trim().length()==0) {
 				table.setRemark(remarker.getTableRemark(table.getName()));
 			}
@@ -92,7 +92,7 @@ public class DbTableSource implements TableSource {
 
 	protected TableColumn buildIdColumn(String tableName) throws SQLException{
 		TableColumn column = new TableColumn();
-		ResultSet keyset = databaseMetaData.getPrimaryKeys(null, null, tableName);
+		ResultSet keyset = databaseMetaData.getPrimaryKeys(connection.getCatalog(), null, tableName);
 		if (keyset.next()) {
 			column.setName(keyset.getString("COLUMN_NAME"));
 		} else {
@@ -116,7 +116,7 @@ public class DbTableSource implements TableSource {
 	}
 
 	protected List<TableColumn> buildColumns(String tableName) throws SQLException {
-		ResultSet resultSet = databaseMetaData.getColumns(null, "%", tableName, "%");
+		ResultSet resultSet = databaseMetaData.getColumns(connection.getCatalog(), "%", tableName, "%");
 		List<TableColumn> columns = new ArrayList<>();
 		while (resultSet.next()) {
 			TableColumn column = new TableColumn();
@@ -127,7 +127,9 @@ public class DbTableSource implements TableSource {
 			column.setDefvalue(resultSet.getString("COLUMN_DEF"));
 			column.setNullable(resultSet.getBoolean("NULLABLE"));
 			column.setRemark(resultSet.getString("REMARKS"));
-			column.setAutoIncrement(resultSet.getBoolean("IS_AUTOINCREMENT"));
+
+			Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
+			column.setAutoIncrement(Boolean.valueOf(true).equals(is_autoincrement) || "YES".equalsIgnoreCase(is_autoincrement + "") || Integer.valueOf("1").equals(is_autoincrement));
 
 			column.setFieldName(this.converter.converterFieldName(column.getName()));
 			column.setFieldType(this.converter.converterFieldType(column.getTypeInt()));
@@ -140,6 +142,24 @@ public class DbTableSource implements TableSource {
 			columns.add(column);
 		}
 		return columns;
+	}
+
+	private String getTableRemarks(String table) throws SQLException {
+		try (Statement statement = this.connection.createStatement()){
+			ResultSet rs = statement.executeQuery("SHOW CREATE TABLE `" + table+"`");
+			if (rs.next()) {
+				String createDDL = rs.getString(2);
+				String comment = null;
+				int index = createDDL.indexOf("COMMENT='");
+				if (index > 0) {
+					comment = createDDL.substring(index + 9);
+					comment = comment.substring(0, comment.length() - 1);
+				}
+				return comment;
+			}
+			rs.close();
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("unused")
