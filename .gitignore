@@ -1,7 +1,8 @@
 /bin/
 /target/
 /apidoc/
-/CodeSmither.iml
+/*.iml
+/*.ipr
 /.idea
 /src/main/resources/c3p0.properties
 /src/main/resources/config.properties
