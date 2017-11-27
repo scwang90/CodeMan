@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
+<service name="拖车侠APP-C端 服务接口" basePath="http://192.168.1.110:8090/trailer/api/app/v1">
+    <description>
+        接入简单、异常监控&#x000A; 完善的机制、丰富的接口
+    </description>
+    <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+    <module name="接口说明">
+        <apidescription name="接口访问">
+            <![CDATA[
+            本服务所有接口都已 Post 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
+            <br/><br/>
+            <li><b>发送-头部（Header）</b>：</li>
+                <p>主要用于保持登录 的 token，作用在于当Cookie和Session失效之后，继续生成新的Cookie</p>
+            <br/>
+            <li><b>发送-参数（Url）</b>：</li>
+                <p>目前用于发送分页参数 offset（返回起始条数，0开始），limit（返回数据最大条数）</p>
+                <p>例如：</p>
+                <code>url/skip/0/limit/20</code>
+            <br/>
+            <li><b>发送-实体（Body）</b>：</li>
+                <p>除了分页参数，一般其他数据都是以实体（Body）的Form格式发送</p>
+            <br/>
+            <li><b>返回-实体（Body）</b>：Json</li>
+                <p>最外层格式都有 success，data，msg</p>
+                <pre><code>{
+    success:true, //true 表示成功 否则 data 为null msg 可以获取错误信息
+    data:{}, //根据不同接口有不同的数据格式
+    msg:"", //字符串格式，如：密码错误
+}</code></pre>
+            ]]>
+        </apidescription>
+        <apidescription name="登录保持">
+            调用登录接口之后，服务器会返回一个 Set-Cookie ，客户端必须把 Cookie 保存下来，在之后的接口中发送到服务器，才能保持登录会话。
+
+            由于 Cookie 和 Session 会在短时间内过期，客户端也必须保存下 服务站在登录接口中返回的 Token ，之后一起发送到服务器，
+            可以在 Session 过期的时候继续创建新的 Cookie。
+        </apidescription>
+    </module>
+
+    <module name="全局通用">
+        <api name="用户登录" requestMethod="POST" path="/user/login">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <header name="token" type="cancel"/>
+            <form name="account" description="账户" type="string"/>
+            <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                int id;
+                String token;
+                String nickName;
+                String name;
+                String avatar;
+                String phone;
+                String address;
+                }
+                }
+            </response>
+        </api>
+        <api name="图片上传" requestMethod="POST" path="/image/upload">
+            <description>
+                infoType 的枚举
+                用户 = 1,
+            </description>
+            <param name="type" description="如果是用户头像：用户:1" type="int"/>
+            <param name="targetId" description="图片所属对象的ID，如用户ID" type="string"/>
+            <body contentType="Multipart">
+                图片二进制文件
+            </body>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="用户相关" path="/user">
+        <api name="用户注册" requestMethod="POST" path="/regist">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <header name="token" type="cancel"/>
+            <form name="account" description="账户" type="string"/>
+            <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
+            <form name="verifyCode" description="手机验证码" type="string"/>
+            <form name="nickName" description="用户昵称" type="string" nullable="true"/>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                int id;
+                String token;
+                String name;
+                String avatar;
+                String phone;
+                String address;
+                }
+                }
+            </response>
+        </api>
+        <api name="用户登录" requestMethod="POST" path="/login">
+            <description>
+                返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
+            </description>
+            <header name="token" type="cancel"/>
+            <form name="account" description="账户" type="string"/>
+            <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
+            <response contentType="Json">
+                <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                int id;
+                String token;
+                String nickName;
+                String name;
+                String avatar;
+                String phone;
+                String address;
+                }
+                }
+            </response>
+        </api>
+        <api name="修改资料" requestMethod="POST" path="/update">
+            <form name="nickName" description="昵称（姓名）" type="string" nullable="true"/>
+            <form name="address" description="地址" type="string" nullable="true"/>
+            <form name="name" description="地址" type="string" nullable="true"/>
+            <form name="sex" description="性别" type="int" nullable="true"/>
+            <form name="avatar" description="头像地址" type="string" nullable="true"/>
+            <form name="age" description="年龄" type="int" nullable="true"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                }
+                }
+            </response>
+        </api>
+        <api name="重置密码" requestMethod="POST" path="/reset/password">
+            <form name="phone" description="手机号码" type="string"/>
+            <form name="password" description="新密码（未加密）" type="string"/>
+            <form name="verifyCode" description="手机验证码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                }
+                }
+            </response>
+        </api>
+        <api name="重置手机" requestMethod="POST" path="/reset/phone">
+            <form name="phone" description="手机号码" type="string"/>
+            <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
+            <form name="verifyCode" description="手机收到的验证码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+        <api name="验证短信" requestMethod="POST" path="/verify/sms">
+            <description>
+                找回密码页面点击验证按钮，发送手机号和验证码到服务器验证
+            </description>
+            <form name="phone" description="手机号码" type="string"/>
+            <form name="verifyCode" description="手机收到的验证码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="短信发送" path="/sms">
+        <api name="用户注册" requestMethod="POST" path="/user/regist">
+            <description>
+                用户注册时发送手机验证码
+            </description>
+            <form name="phone" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+        <api name="用户重置" requestMethod="POST" path="/user/reset">
+            <description>
+                用户忘记密码、修改密码、修改手机号码时候发送短信
+            </description>
+            <form name="phone" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+    </module>
+
+</service>
