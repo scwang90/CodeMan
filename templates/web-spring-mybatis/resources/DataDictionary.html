@@ -9,7 +9,7 @@
 <div class="container"><h1 style="text-align:center;">数据字典 ${projectName}</h1>
 
     <#list tables as table>
-        <h3><span>${table.name}</span> <b>表</b></h3>
+        <h3><b>表</b> : <span>${table.name}</span> = ${table.remark}</h3>
         <table class="table table-hover table-bordered table-condensed table-striped">
             <thead>
             <tr>
@@ -17,7 +17,7 @@
                 <th>数据类型</th>
                 <th>列长</th>
                 <th>默认值</th>
-                <th>允许非空</th>
+                <th>非空</th>
                 <th>自动递增</th>
                 <th>备注</th>
             </tr>
@@ -30,7 +30,7 @@
                     <td>${column.type}</td>
                     <td>${column.lenght}</td>
                     <td>${column.defvalue}</td>
-                    <td><#if column.nullable>允许</#if><#if !column.nullable>不允许</#if></td>
+                    <td><#if column.nullable></#if><#if !column.nullable>是</#if></td>
                     <td><#if column.autoIncrement>自增</#if></td>
                     <td>${column.remark}</td>
                 </tr>
