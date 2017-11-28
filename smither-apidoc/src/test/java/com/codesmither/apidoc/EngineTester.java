@@ -65,14 +65,4 @@ public class EngineTester {
         }
     }
 
-    @Test
-    public void engineTrailerCustom() {
-        try {
-            XmlApidocConfig config = ConfigFactory.loadConfig("trailer-custom.properties");
-            ApidocEngine engine = new ApidocEngine(config);
-            engine.launch();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
 }

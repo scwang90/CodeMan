@@ -19,6 +19,12 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.codesmither.project.database</groupId>
+            <artifactId>smither-project-database</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--Excel-->
         <dependency>
             <groupId>org.apache.poi</groupId>

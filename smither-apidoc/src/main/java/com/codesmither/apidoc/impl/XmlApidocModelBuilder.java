@@ -98,6 +98,15 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             }
             return service.getBasePath() + api.getPath();
         }
+        if (module.getPath().startsWith("/")) {
+            int index = service.getBasePath().indexOf('/');
+            if (service.getBasePath().startsWith("http://")) {
+                index = service.getBasePath().indexOf('/', "http://".length());
+            }
+            if (index > 0) {
+                return service.getBasePath().substring(0, index) + module.getPath() + api.getPath();
+            }
+        }
         return service.getBasePath() + module.getPath() + api.getPath();
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
-<service name="拖车侠APP-C端 服务接口" basePath="http://192.168.1.110:8090/trailer/api/app/custom/v1">
+<service name="拖车侠APP-C端 服务接口" basePath="http://192.168.1.110:8090/trailer/api/app/custom/v1/">
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
@@ -16,7 +16,7 @@
             <li><b>发送-参数（Url）</b>：</li>
                 <p>目前用于发送分页参数 offset（返回起始条数，0开始），limit（返回数据最大条数）</p>
                 <p>例如：</p>
-                <code>url/skip/0/limit/20</code>
+                <code>url?offset=0&limit=20</code>
             <br/>
             <li><b>发送-实体（Body）</b>：</li>
                 <p>除了分页参数，一般其他数据都是以实体（Body）的Form格式发送</p>
@@ -83,8 +83,8 @@
         </api>
     </module>
 
-    <module name="用户相关" path="/user">
-        <api name="用户注册" requestMethod="POST" path="/regist">
+    <module name="用户相关" path="user/">
+        <api name="用户注册" requestMethod="POST" path="regist">
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
@@ -109,7 +109,7 @@
                 }
             </response>
         </api>
-        <api name="用户登录" requestMethod="POST" path="/login">
+        <api name="用户登录" requestMethod="POST" path="login">
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
@@ -133,8 +133,9 @@
                 }
             </response>
         </api>
-        <api name="短信登录" requestMethod="POST" path="/login/sms">
+        <api name="短信登录" requestMethod="POST" path="login/sms">
             <description>
+                如果没有就注册
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
             <header name="token" type="cancel"/>
@@ -157,7 +158,8 @@
                 }
             </response>
         </api>
-        <api name="修改资料" requestMethod="POST" path="/update">
+        <api name="注销登录" requestMethod="POST" path="logout"/>
+        <api name="修改资料" requestMethod="POST" path="update">
             <form name="nickName" description="昵称（姓名）" type="string" nullable="true"/>
             <form name="address" description="地址" type="string" nullable="true"/>
             <form name="name" description="地址" type="string" nullable="true"/>
@@ -173,7 +175,7 @@
                 }
             </response>
         </api>
-        <api name="重置密码" requestMethod="POST" path="/reset/password">
+        <api name="重置密码" requestMethod="POST" path="reset/password">
             <form name="phone" description="手机号码" type="string"/>
             <form name="password" description="新密码（未加密）" type="string"/>
             <form name="verifyCode" description="手机验证码" type="string"/>
@@ -186,7 +188,7 @@
                 }
             </response>
         </api>
-        <api name="重置手机" requestMethod="POST" path="/reset/phone">
+        <api name="重置手机" requestMethod="POST" path="reset/phone">
             <form name="phone" description="手机号码" type="string"/>
             <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
             <form name="verifyCode" description="手机收到的验证码" type="string"/>
@@ -198,7 +200,7 @@
                 }
             </response>
         </api>
-        <api name="验证短信" requestMethod="POST" path="/verify/sms">
+        <api name="验证短信" requestMethod="POST" path="verify/sms">
             <description>
                 找回密码页面点击验证按钮，发送手机号和验证码到服务器验证
             </description>
@@ -214,8 +216,8 @@
         </api>
     </module>
 
-    <module name="短信发送" path="/sms">
-        <api name="注册发送" requestMethod="POST" path="/user/regist">
+    <module name="短信发送" path="sms/">
+        <api name="注册发送" requestMethod="POST" path="regist">
             <description>
                 用户注册时发送手机验证码
             </description>
@@ -228,7 +230,7 @@
                 }
             </response>
         </api>
-        <api name="重置发送" requestMethod="POST" path="/user/reset">
+        <api name="重置发送" requestMethod="POST" path="reset">
             <description>
                 用户忘记密码、修改密码、修改手机号码时候发送短信
             </description>
@@ -238,6 +240,172 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{}
+                }
+            </response>
+        </api>
+        <api name="登录发送" requestMethod="POST" path="login">
+            <description>
+                用户注册时发送手机验证码
+            </description>
+            <form name="phone" description="手机号码" type="string"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{}
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="订单相关" path="order/">
+        <api name="我的订单" requestMethod="POST" path="list">
+            <description>
+                用户获取我的订单列表，offset/limit为分页参数，后面的值根据情况更改
+            </description>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                    id:0,
+                    orderNo:"订单编号",
+                    type:0,
+                    price:0,
+                    number:0,
+                    payStatus:0,
+                    createTime:"yyyy-MM-dd HH:mm:ss"
+                },...]
+                }
+            </response>
+        </api>
+
+    </module>
+
+    <module name="消息相关" path="message/">
+        <api name="我的消息" requestMethod="POST" path="list">
+            <description>
+                获取登陆用户相关的所有消息，分页获取
+            </description>
+            <param name="limit" type="int" description="分页参数-最大记录数"/>
+            <param name="offset" type="int" description="分页参数-记录开始位置"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                id:0,
+                type:0,
+                targetId:0,
+                title:"标题",
+                message:"摘要",
+                createTime:"yyyy-MM-dd HH:mm:ss"
+                },...]
+                }
+            </response>
+        </api>
+        <api name="订单消息" requestMethod="POST" path="list/order">
+            <description>
+                只获取与订单相关的消息列表，分页获取
+            </description>
+            <param name="limit" type="int" description="分页参数-最大记录数"/>
+            <param name="offset" type="int" description="分页参数-记录开始位置"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                id:0,
+                type:0,
+                targetId:0,
+                title:"标题",
+                message:"摘要",
+                order:{
+                    id:0,
+                    orderNo:"订单编号",
+                    placeOfDeparture:"出发地",
+                    placeOfDelivery:"目的地",
+                    companyName:"拖车公司名称",
+                }
+                createTime:"yyyy-MM-dd HH:mm:ss"
+                },...]
+                }
+            </response>
+        </api>
+    </module>
+
+    <module name="代步相关" path="scooter/">
+        <api name="车辆列表" requestMethod="POST" path="list">
+            <description>获取代步车类型列表</description>
+            <form name="typeId" type="int" nullable="true" description="类型ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                id:0,
+                name:"名称",
+                optional:"可选项",
+                description:"描述",
+                motorcycleType:"车型",
+                initiatePrice:0,
+                brand:0,
+                price:0,
+                },...]
+                }
+            </response>
+        </api>
+        <api name="类型列表" requestMethod="POST" path="types">
+            <description>获取代步车类型列表</description>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                    id:0,
+                    name:"名称",
+                    description:"描述",
+                    initiatePrice:0,
+                },...]
+                }
+            </response>
+        </api>
+        <api name="服务列表" requestMethod="POST" path="services">
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                id:0,
+                name:"名称",
+                price:0,
+                },...]
+                }
+            </response>
+        </api>
+        <api name="提交订单" requestMethod="POST" path="order">
+            <form name="scooterId" type="int" description="代步车ID"/>
+            <form name="isDelivery" type="boolean" description="是否专人送达"/>
+            <form name="timeOfPickUp" type="string" description="取车时间" example="yyyy-MM-dd HH:mm"/>
+            <form name="timeOfGiveBack" type="string" description="归还时间" example="yyyy-MM-dd HH:mm"/>
+            <form name="placeOfPickUp" type="string" description="取车地址"/>
+            <form name="placeOfGiveBack" type="string" description="归还地址"/>
+            <form name="serviceIds" type="string" description="增值服务Ids如：001,002"/>
+            <form name="couponIds" type="string" description="优惠卷Ids如：001，002"/>
+
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                orderNo:"订单编号",
+                type:0,
+                price:0,
+                number:0,
+                payStatus:0,
+                createTime:"yyyy-MM-dd HH:mm:ss"
+                }
                 }
             </response>
         </api>

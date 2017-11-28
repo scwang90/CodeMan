@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
 	<!--如果需要切换其它类型的数据库（mysql/sqlserver/oracle），可以在main/test/resources/c3p0-config.xml查看配置参考-->
-	<named-config name="WifiProbe">
-		<property name="user">builder</property>
-		<property name="password">builder</property>
+	<named-config name="Trailer">
+		<property name="user">root</property>
+		<property name="password">123456</property>
 		<property name="driverClass">com.mysql.jdbc.Driver </property>
-		<property name="jdbcUrl">jdbc:mysql://108.108.108.8:3306/wifiprobe</property>
+		<property name="jdbcUrl">jdbc:mysql://192.168.1.205:3316/trailer</property>
 		<property name="initialPoolSize">10</property>
 		<property name="maxIdleTime">30</property>
 		<property name="maxPoolSize">100</property>
 		<property name="minPoolSize">10</property>
-	</named-config>
-	<named-config name="SqlServer">
-		<property name="user">sa</property>
-		<property name="password">000000</property>
-		<property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="jdbcUrl">jdbc:sqlserver://192.168.1.110;databaseName=YX-TestCloud</property>
-		<!--<property name="jdbcUrl">jdbc:sqlserver://[IP地址|域名][\\数据库实例];databaseName=[数据库名称]</property>-->
-	</named-config>
-	<named-config name="SqlServer-Worker">
-		<property name="user">sa</property>
-		<property name="password">000000</property>
-		<property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="jdbcUrl">jdbc:sqlserver://192.168.1.110;databaseName=YX-Worker</property>
 	</named-config>
 </c3p0-config>
