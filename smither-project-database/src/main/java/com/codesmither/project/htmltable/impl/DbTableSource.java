@@ -97,8 +97,6 @@ public class DbTableSource implements TableSource {
 			column.setName(keyset.getString("COLUMN_NAME"));
 		} else {
 			column.setName("hasNoPrimaryKey");
-
-			column.setName("hasNoPrimaryKey");
 			column.setType("VARCHAR");
 			column.setLenght(256);
 			column.setDefvalue("");
@@ -144,21 +142,7 @@ public class DbTableSource implements TableSource {
 		return columns;
 	}
 
-	private String getTableRemarks(String table) throws SQLException {
-		try (Statement statement = this.connection.createStatement()){
-			ResultSet rs = statement.executeQuery("SHOW CREATE TABLE `" + table+"`");
-			if (rs.next()) {
-				String createDDL = rs.getString(2);
-				String comment = null;
-				int index = createDDL.indexOf("COMMENT='");
-				if (index > 0) {
-					comment = createDDL.substring(index + 9);
-					comment = comment.substring(0, comment.length() - 1);
-				}
-				return comment;
-			}
-			rs.close();
-		}
+	protected String getTableRemarks(String table) throws SQLException {
 		return null;
 	}
 	

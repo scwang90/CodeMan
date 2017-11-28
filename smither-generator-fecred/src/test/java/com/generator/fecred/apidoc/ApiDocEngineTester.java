@@ -5,11 +5,18 @@ import com.codesmither.apidoc.XmlApidocConfig;
 import com.codesmither.apidoc.factory.ConfigFactory;
 import org.junit.Test;
 
+import java.text.DecimalFormat;
+
 /**
  * EngineTester
  * Created by SCWANG on 2016/8/19.
  */
 public class ApiDocEngineTester {
+
+    public static void main(String[] args) {
+        double f = 116.459461;
+        System.out.println(new DecimalFormat("#.################").format(f));
+    }
 
     @Test
     public void engineTrailerCustom() {

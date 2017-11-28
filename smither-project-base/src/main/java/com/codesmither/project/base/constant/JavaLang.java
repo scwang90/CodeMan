@@ -85,7 +85,7 @@ public class JavaLang extends ProgLang {
             case Types.OTHER:
                 return Object.class.getSimpleName();
             case Types.REAL:
-                return Double.class.getSimpleName();
+                return Float.class.getSimpleName();
             case Types.REF:
                 break;
             case Types.ROWID:

@@ -99,12 +99,15 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
-                int id;
-                String token;
-                String name;
-                String avatar;
-                String phone;
-                String address;
+                id:0,
+                sex:0,
+                age:0,
+                token:"登录验证",
+                name:"姓名",
+                nickName:"昵称",
+                avatar:"头像链接",
+                phone:"电话号码",
+                address:"详细地址",
                 }
                 }
             </response>
@@ -122,13 +125,15 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
-                int id;
-                String token;
-                String nickName;
-                String name;
-                String avatar;
-                String phone;
-                String address;
+                id:0,
+                sex:0,
+                age:0,
+                token:"登录验证",
+                name:"姓名",
+                nickName:"昵称",
+                avatar:"头像链接",
+                phone:"电话号码",
+                address:"详细地址",
                 }
                 }
             </response>
@@ -147,13 +152,15 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
-                int id;
-                String token;
-                String nickName;
-                String name;
-                String avatar;
-                String phone;
-                String address;
+                id:0,
+                sex:0,
+                age:0,
+                token:"登录验证",
+                name:"姓名",
+                nickName:"昵称",
+                avatar:"头像链接",
+                phone:"电话号码",
+                address:"详细地址",
                 }
                 }
             </response>
@@ -166,6 +173,19 @@
             <form name="sex" description="性别" type="int" nullable="true"/>
             <form name="avatar" description="头像地址" type="string" nullable="true"/>
             <form name="age" description="年龄" type="int" nullable="true"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                }
+                }
+            </response>
+        </api>
+        <api name="设置密码" requestMethod="POST" path="init/password">
+            <form name="phone" description="手机号码" type="string"/>
+            <form name="password" description="新密码（未加密）" type="string"/>
+            <form name="verifyCode" description="手机验证码" type="string"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
@@ -392,7 +412,12 @@
             <form name="placeOfGiveBack" type="string" description="归还地址"/>
             <form name="serviceIds" type="string" description="增值服务Ids如：001,002"/>
             <form name="couponIds" type="string" description="优惠卷Ids如：001，002"/>
-
+            <form name="priceDeposit" type="float" description="押金"/>
+            <form name="priceProcedure" type="float" description="手续费"/>
+            <form name="pricePremium" type="float" description="保险费"/>
+            <form name="priceScooter" type="float" description="代步费"/>
+            <form name="priceCoupon" type="float" description="优惠卷抵扣"/>
+            <form name="price" type="float" description="合计总价"/>
             <response contentType="Json">
                 {
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
