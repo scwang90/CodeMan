@@ -1,9 +1,6 @@
 package com.codesmither.apidoc;
 
 import com.codesmither.apidoc.factory.ConfigFactory;
-import com.codesmither.apidoc.model.*;
-import com.codesmither.engine.api.IModelBuilder;
-import com.codesmither.engine.api.IRootModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,7 +10,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -70,36 +66,13 @@ public class EngineTester {
     }
 
     @Test
-    public void engineTestApp() {
+    public void engineTrailerCustom() {
         try {
-            XmlApidocConfig config = ConfigFactory.loadConfig("testapp.properties");
+            XmlApidocConfig config = ConfigFactory.loadConfig("trailer-custom.properties");
             ApidocEngine engine = new ApidocEngine(config);
             engine.launch();
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
-
-    @Test
-    public void engineWorker() {
-        try {
-            XmlApidocConfig config = ConfigFactory.loadConfig("worker.properties");
-            ApidocEngine engine = new ApidocEngine(config);
-            engine.launch();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void engineFitment() {
-        try {
-            XmlApidocConfig config = ConfigFactory.loadConfig("fitment.properties");
-            ApidocEngine engine = new ApidocEngine(config);
-            engine.launch();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
-
 }

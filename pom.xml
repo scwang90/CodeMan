@@ -11,6 +11,7 @@
 		<module>smither-project-htmltable</module>
 		<module>smither-project-base</module>
 		<module>smither-apidoc</module>
+		<module>smither-generator-fecred</module>
 		<module>smither-generator-yxtech</module>
 		<module>smither-generator-meteor</module>
 	</modules>
