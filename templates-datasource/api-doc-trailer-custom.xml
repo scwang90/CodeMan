@@ -436,4 +436,8 @@
         </api>
     </module>
 
+    <module name="拖车相关" path="trailer/">
+
+    </module>
+
 </service>

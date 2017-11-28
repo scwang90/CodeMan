@@ -55,12 +55,12 @@ public class DefaultFileFilter implements IFileFilter {
 
     @Override
     public boolean isNeedFilteFile(File file) {
-        return include.isNeedFilteFile(file) && exclude.isNeedFilteFile(file);
+        return include.isNeedFilteFile(file) || exclude.isNeedFilteFile(file);
     }
 
     @Override
     public boolean isNeedFiltePath(File path) {
-        return include.isNeedFiltePath(path) && exclude.isNeedFiltePath(path);
+        return include.isNeedFiltePath(path) || exclude.isNeedFiltePath(path);
     }
     /**
      * 文件过滤 - 排除
