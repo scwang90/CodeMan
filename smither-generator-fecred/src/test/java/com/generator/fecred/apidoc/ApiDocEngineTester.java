@@ -13,11 +13,6 @@ import java.text.DecimalFormat;
  */
 public class ApiDocEngineTester {
 
-    public static void main(String[] args) {
-        double f = 116.459461;
-        System.out.println(new DecimalFormat("#.################").format(f));
-    }
-
     @Test
     public void engineTrailerCustom() {
         try {

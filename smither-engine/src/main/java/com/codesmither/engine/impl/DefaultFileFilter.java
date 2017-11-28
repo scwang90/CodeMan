@@ -23,7 +23,7 @@ public class DefaultFileFilter implements IFileFilter {
             this.include = new FileFilterInclude(includefiles, includepaths);
             this.exclude = new FileFilterExclude(filterfiles, filterpaths);
         } else {
-            this.include = new FileFilterInclude(new String[0], new String[0]);
+            this.include = new FileFilterInclude(new String[]{".*\\..*"}, new String[]{".*"});
             this.exclude = new FileFilterExclude(new String[0], new String[0]);
         }
     }
