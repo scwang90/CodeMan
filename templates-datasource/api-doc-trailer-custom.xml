@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE service SYSTEM "./api-doc-source/api-doc.dtd">
-<service name="拖车侠APP-C端 服务接口" basePath="http://192.168.1.110:8090/trailer/api/app/custom/v1/">
+<service name="拖车侠APP-C端 服务接口" basePath="http://[IP]:[端口]/trailer/api/app/custom/v1/">
     <description>
         接入简单、异常监控&#x000A; 完善的机制、丰富的接口
     </description>
@@ -314,6 +314,11 @@
                 placeOfDeparture:"出发地",
                 placeOfDelivery:"目的地",
 
+                priceInitiate:0,
+                priceMileage:0,
+                pricePremium:0,
+                priceService:0,
+
                 trailerCompany:{
                     id:0,
                     name:"拖车公司名称",
@@ -352,19 +357,36 @@
                 placeOfDeparture:"出发地",
                 placeOfDelivery:"目的地",
 
-                trailer:{
+                priceDeposit:0,
+                priceProcedure:0,
+                pricePremium:0,
+                priceScooter:0,
+                priceCoupon:0,
+                price:0,
+
                 scooterId:0,
-                    licencePlateNo:"车牌号",
-                    motorcycleType:"车型",
-                }
+                licencePlateNo:"车牌号",
+                motorcycleType:"车型",
 
                 createTime:"yyyy-MM-dd HH:mm:ss"
                 }
                 }
             </response>
         </api>
-        <api name="详细记录" requestMethod="POST" path="detail/trailer/records">
+        <api name="详细记录（拖车）" requestMethod="POST" path="detail/trailer/records">
             <form name="orderId" type="int" description="订单ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                record:"记录内容",
+                name:"相关姓名",
+                phone:"相关电话",
+                time:"yyyy-MM-dd HH:mm:ss"
+                },...]
+                }
+            </response>
         </api>
     </module>
 
@@ -552,7 +574,69 @@
                 }
             </response>
         </api>
+    </module>
 
+    <module name="区域信息" path="area/">
+        <description>拖车订单需要通过区域选择维修工厂</description>
+        <api name="省份信息" requestMethod="POST" path="provinces">
+            <description>获取全国省份列表</description>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                shortName:"短名",
+                }
+                }
+            </response>
+        </api>
+        <api name="城市信息" requestMethod="POST" path="citys">
+            <description>获取指定省份城市列表</description>
+            <form name="provinceId" type="int" description="省份ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                shortName:"短名",
+                }
+                }
+            </response>
+        </api>
+        <api name="区域信息" requestMethod="POST" path="areas">
+            <description>获取指定城市区域列表</description>
+            <form name="cityId" type="int" description="城市ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                shortName:"短名",
+                }
+                }
+            </response>
+        </api>
+        <api name="维修工厂" requestMethod="POST" path="maintains">
+            <description>根据区域信息获取工厂列表</description>
+            <form name="areaId" type="int" description="区域ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                address:"位置信息",
+                }
+                }
+            </response>
+        </api>
     </module>
 
 </service>
