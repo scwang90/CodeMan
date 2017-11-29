@@ -299,7 +299,73 @@
                 }
             </response>
         </api>
+        <api name="订单详情（拖车）" requestMethod="POST" path="detail/trailer">
+            <description>拖车订单详情页面数据</description>
+            <form name="orderId" type="int" description="订单ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                status:0,
+                serviceStatus:0,
+                orderNo:"订单编号",
+                placeOfDeparture:"出发地",
+                placeOfDelivery:"目的地",
 
+                trailerCompany:{
+                    id:0,
+                    name:"拖车公司名称",
+                    avatar:"公司头像",
+                    contactTel:"联系电话",
+                },
+
+                trailerDriver:{
+                    id:0,
+                    name:"司机姓名",
+                    avatar:"头像",
+                    contactTel:"联系电话",
+                },
+
+                trailerId:0,
+                licencePlateNo:"车牌号",
+                motorcycleType:"车型",
+
+                createTime:"yyyy-MM-dd HH:mm:ss"
+                }
+                }
+            </response>
+        </api>
+        <api name="订单详情（代步）" requestMethod="POST" path="detail/scooter">
+            <description>拖车订单详情页面数据</description>
+            <form name="orderId" type="int" description="订单ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                status:0,
+                serviceStatus:0,
+                orderNo:"订单编号",
+                placeOfDeparture:"出发地",
+                placeOfDelivery:"目的地",
+
+                trailer:{
+                scooterId:0,
+                    licencePlateNo:"车牌号",
+                    motorcycleType:"车型",
+                }
+
+                createTime:"yyyy-MM-dd HH:mm:ss"
+                }
+                }
+            </response>
+        </api>
+        <api name="详细记录" requestMethod="POST" path="detail/trailer/records">
+            <form name="orderId" type="int" description="订单ID"/>
+        </api>
     </module>
 
     <module name="消息相关" path="message/">
@@ -458,26 +524,17 @@
         </api>
         <api name="提交订单" requestMethod="POST" path="order">
             <form name="trailerId" type="int" description="拖车ID"/>
-
-
+            <form name="maintainCompanyId" type="string" description="维修公司Id"/>
             <form name="name" type="string" description="姓名"/>
             <form name="phone" type="string" description="电话"/>
             <form name="latitude" type="double" description="维度"/>
             <form name="longitude" type="double" description="经度"/>
             <form name="address" type="string" description="位置信息"/>
             <form name="remark" type="string" description="订单备注"/>
-
-            <form name="timeOfPickUp" type="string" description="取车时间" example="yyyy-MM-dd HH:mm"/>
-            <form name="timeOfGiveBack" type="string" description="归还时间" example="yyyy-MM-dd HH:mm"/>
-            <form name="placeOfPickUp" type="string" description="取车地址"/>
-            <form name="placeOfGiveBack" type="string" description="归还地址"/>
-            <form name="serviceIds" type="string" description="增值服务Ids如：001,002"/>
-            <form name="couponIds" type="string" description="优惠卷Ids如：001，002"/>
-            <form name="priceDeposit" type="float" description="押金"/>
-            <form name="priceProcedure" type="float" description="手续费"/>
+            <form name="priceInitiate" type="float" description="起步价"/>
+            <form name="priceMileage" type="float" description="里程费"/>
             <form name="pricePremium" type="float" description="保险费"/>
-            <form name="priceScooter" type="float" description="代步费"/>
-            <form name="priceCoupon" type="float" description="优惠卷抵扣"/>
+            <form name="priceService" type="float" description="服务费"/>
             <form name="price" type="float" description="合计总价"/>
             <response contentType="Json">
                 {
