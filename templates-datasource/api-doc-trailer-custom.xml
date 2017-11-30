@@ -39,7 +39,7 @@
     </module>
 
     <module name="全局通用">
-        <api name="用户登录" requestMethod="POST" path="/user/login">
+        <api name="用户登录" requestMethod="POST" path="user/login">
             <description>
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
@@ -63,7 +63,7 @@
                 }
             </response>
         </api>
-        <api name="图片上传" requestMethod="POST" path="/image/upload">
+        <api name="图片上传" requestMethod="POST" path="image/upload">
             <description>
                 infoType 的枚举
                 用户 = 1,
@@ -78,6 +78,65 @@
                 success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:true
+                }
+            </response>
+        </api>
+        <api name="删除图片" requestMethod="POST" path="image/delete">
+            <description>
+                特殊原因需要上传图片
+                imageId 和 imageUrl 必须传一个
+            </description>
+            <form name="imageId" type="int" description="图片Id" nullable="true"/>
+            <form name="imageUrl" type="string" description="图片Id" nullable="true"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:true
+                }
+            </response>
+        </api>
+        <api name="省份信息" requestMethod="POST" path="area/provinces">
+            <description>获取全国省份列表</description>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                shortName:"短名",
+                }
+                }
+            </response>
+        </api>
+        <api name="城市信息" requestMethod="POST" path="area/citys">
+            <description>获取指定省份城市列表</description>
+            <form name="provinceId" type="int" description="省份ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                shortName:"短名",
+                }
+                }
+            </response>
+        </api>
+        <api name="区域信息" requestMethod="POST" path="area/districts">
+            <description>获取指定城市区域列表</description>
+            <form name="cityId" type="int" description="城市ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                shortName:"短名",
+                }
                 }
             </response>
         </api>
@@ -388,6 +447,44 @@
                 }
             </response>
         </api>
+        <api name="阿里支付" requestMethod="POST" path="alipay">
+            <description>支付订单</description>
+            <form name="orderId" type="string" description="订单ID"/>
+            <form name="price" type="double" description="价格"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:"app_id=2016120203743292&amp;biz_content=%7b%22subject%22%3a%22%e8%85%be%e4%ba%
+                91%e6%95%99%e8%82%b2%e7%a7%91%e6%8a%80%e5%85%85%e5%80%bc50%e5%ad%a6%e5%b8%81%22%2c%22o
+                ut_trade_no%22%3a%22201612501242%22%2c%22total_amount%22%3a%2247.5%22%2c%22product_cod
+                e%22%3a%22QUICK_MSECURITY_PAY%22%7d&amp;charset=utf-8&amp;format=json&amp;method=alipay.trade.app.
+                pay&amp;sign_type=RSA&amp;timestamp=2016-12-25+18%3a19%3a54&amp;version=1.0&amp;sign=TCShz9Mjoxngnid9j
+                lFE1q7T9D%2fvL2sOOeo3t8yyj5JfkC3MlUc%2f5%2fz1km650p8YtaD2FVB9DbrBsBOZcHdQrZ7PFLtd3LQvr
+                cXSG5nKM3542cKpdkjH5dKCN%2f4cHMtScb6y7i8XBeDIbaRmgDEbcbIGOFo2uNWCcAAoJfesn70%3d"
+                }
+            </response>
+        </api>
+        <api name="维修支付" requestMethod="POST" path="wxpay">
+            <description>支付订单</description>
+            <form name="orderId" type="string" description="订单ID"/>
+            <form name="price" type="double" description="价格"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                "appId":"App Id",
+                "nonceStr":"随机字符串",
+                "package":"固定值 Sign=WXPay",
+                "partnerId":"商户 Id",
+                "prepayId":"prepay Id",
+                "timeStamp":"时间戳",
+                "sign":"签名"
+                }
+                }
+            </response>
+        </api>
     </module>
 
     <module name="消息相关" path="message/">
@@ -544,6 +641,21 @@
                 }
             </response>
         </api>
+        <api name="维修工厂" requestMethod="POST" path="maintains">
+            <description>根据区域信息获取工厂列表</description>
+            <form name="districtId" type="int" description="区域ID"/>
+            <response contentType="Json">
+                {
+                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                id:0,
+                name:"名称",
+                address:"位置信息",
+                }
+                }
+            </response>
+        </api>
         <api name="提交订单" requestMethod="POST" path="order">
             <form name="trailerId" type="int" description="拖车ID"/>
             <form name="maintainCompanyId" type="string" description="维修公司Id"/>
@@ -570,69 +682,6 @@
                 number:0,
                 payStatus:0,
                 createTime:"yyyy-MM-dd HH:mm:ss"
-                }
-                }
-            </response>
-        </api>
-    </module>
-
-    <module name="区域信息" path="area/">
-        <description>拖车订单需要通过区域选择维修工厂</description>
-        <api name="省份信息" requestMethod="POST" path="provinces">
-            <description>获取全国省份列表</description>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                id:0,
-                name:"名称",
-                shortName:"短名",
-                }
-                }
-            </response>
-        </api>
-        <api name="城市信息" requestMethod="POST" path="citys">
-            <description>获取指定省份城市列表</description>
-            <form name="provinceId" type="int" description="省份ID"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                id:0,
-                name:"名称",
-                shortName:"短名",
-                }
-                }
-            </response>
-        </api>
-        <api name="区域信息" requestMethod="POST" path="areas">
-            <description>获取指定城市区域列表</description>
-            <form name="cityId" type="int" description="城市ID"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                id:0,
-                name:"名称",
-                shortName:"短名",
-                }
-                }
-            </response>
-        </api>
-        <api name="维修工厂" requestMethod="POST" path="maintains">
-            <description>根据区域信息获取工厂列表</description>
-            <form name="areaId" type="int" description="区域ID"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{
-                id:0,
-                name:"名称",
-                address:"位置信息",
                 }
                 }
             </response>
