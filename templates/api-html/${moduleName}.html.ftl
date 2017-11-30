@@ -21,7 +21,7 @@
 <header id="top" class="clearfix">
     <div class="top clearfix">
         <div class="logo">
-            <img src="./res/yunpian.png">
+            <img src="res/logo.png">
         </div>
         <nav class="top-nav">
             <ul class="top-nav-ul item clearfix">
@@ -202,7 +202,7 @@
             $("nav.apileft li>a").removeClass("selected");
             var id = $(this).addClass("selected").attr('id');
             $(".api-div").each(function () {
-                if ($(this).attr('id') == id) {
+                if ($(this).attr('id') === id) {
                     $(this).find("div.frame").show();
                 } else {
                     $(this).find("div.frame").hide();

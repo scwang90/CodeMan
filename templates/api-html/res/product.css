@@ -58,7 +58,7 @@
 
 #phoneGprs .banner {
 	height: 390px;
-	background: #44b9c2 url(../res/gprs-banner.jpg?t=1) center no-repeat;
+	background: #44b9c2 url(banner.jpg?t=1) center no-repeat;
 	background-size: cover
 }
 

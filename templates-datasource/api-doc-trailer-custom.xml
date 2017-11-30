@@ -428,6 +428,7 @@
                 targetId:0,
                 title:"标题",
                 message:"摘要",
+                createTime:"yyyy-MM-dd HH:mm:ss",
                 order:{
                     id:0,
                     orderNo:"订单编号",
@@ -435,7 +436,6 @@
                     placeOfDelivery:"目的地",
                     companyName:"拖车公司名称",
                 }
-                createTime:"yyyy-MM-dd HH:mm:ss"
                 },...]
                 }
             </response>
