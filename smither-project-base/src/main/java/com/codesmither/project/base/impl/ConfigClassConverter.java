@@ -10,11 +10,11 @@ import com.codesmither.project.base.util.StringUtil;
  * 根据表名和列名转成类名和字段名
  * Created by SCWANG on 2015-07-04.
  */
-public class ConfigConverter extends LangConverter {
+public class ConfigClassConverter extends LangClassConverter {
 
     private final ProjectConfig config;
 
-    public ConfigConverter(ProjectConfig config) {
+    public ConfigClassConverter(ProjectConfig config) {
         super(ProgLang.getLang(config.getTemplateLang()));
         this.config = config;
     }

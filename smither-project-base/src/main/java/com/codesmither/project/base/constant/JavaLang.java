@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class JavaLang extends ProgLang {
 
-    public static final String[] javakeywords = {"abstract", "assert",
+    public static final String[] keywords = {"abstract", "assert",
             "boolean", "break", "byte", "case", "catch", "char", "class",
             "const", "continue", "default", "do", "double", "else", "enum",
             "extends", "final", "finally", "float", "for", "goto", "if",
@@ -25,7 +25,7 @@ public class JavaLang extends ProgLang {
 
     @Override
     public boolean isKeyword(String value) {
-        for (String keyword : javakeywords) {
+        for (String keyword : keywords) {
             if (keyword.equals(value)) {
                 return true;
             }

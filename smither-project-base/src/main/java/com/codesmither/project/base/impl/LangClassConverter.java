@@ -1,6 +1,6 @@
 package com.codesmither.project.base.impl;
 
-import com.codesmither.project.base.api.Converter;
+import com.codesmither.project.base.api.ClassConverter;
 import com.codesmither.project.base.constant.ProgLang;
 
 /**
@@ -8,11 +8,11 @@ import com.codesmither.project.base.constant.ProgLang;
  * 根据表名和列名转成类名和字段名
  * Created by SCWANG on 2015-07-04.
  */
-public abstract class LangConverter implements Converter {
+public abstract class LangClassConverter implements ClassConverter {
 
 	protected ProgLang lang;
 
-	public LangConverter(ProgLang lang) {
+	public LangClassConverter(ProgLang lang) {
 		this.lang = lang;
 	}
 

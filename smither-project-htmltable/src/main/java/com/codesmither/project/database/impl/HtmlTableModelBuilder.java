@@ -1,4 +1,4 @@
-package com.codesmither.project.htmltable.impl;
+package com.codesmither.project.database.impl;
 
 import com.codesmither.engine.api.IModelBuilder;
 import com.codesmither.engine.api.IRootModel;

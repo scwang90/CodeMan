@@ -1,7 +1,7 @@
 package com.codesmither.project.htmltable;
 
 import com.codesmither.project.base.ProjectEngine;
-import com.codesmither.project.htmltable.impl.HtmlTableModelBuilder;
+import com.codesmither.project.database.impl.HtmlTableModelBuilder;
 
 /**
  * Html表格 生成代码引擎

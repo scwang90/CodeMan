@@ -2,9 +2,9 @@ package com.codesmither.project.base;
 
 import com.codesmither.engine.Config;
 import com.codesmither.engine.api.IFilterConfig;
-import com.codesmither.project.base.api.Converter;
+import com.codesmither.project.base.api.ClassConverter;
 import com.codesmither.project.base.constant.ProgLang;
-import com.codesmither.project.base.impl.ConfigConverter;
+import com.codesmither.project.base.impl.ConfigClassConverter;
 
 /**
  * 项目配置信息
@@ -36,23 +36,23 @@ public class ProjectConfig extends Config implements IFilterConfig {
     protected String targetProjectAuthor = "scwang";
     protected String targetProjectPackage = "com.codesmither.target";
 
-    protected transient Converter converter;
+    protected transient ClassConverter classConverter;
 
     @Override
     public Config initEmptyFieldsWithDefaultValues() {
         super.initEmptyFieldsWithDefaultValues();
-        if (converter == null) {
-            converter = new ConfigConverter(this);
+        if (classConverter == null) {
+            classConverter = new ConfigClassConverter(this);
         }
         return this;
     }
 
-    public void setConverter(Converter converter) {
-        this.converter = converter;
+    public void setClassConverter(ClassConverter classConverter) {
+        this.classConverter = classConverter;
     }
 
-    public Converter getConverter() {
-        return converter;
+    public ClassConverter getClassConverter() {
+        return classConverter;
     }
 
     //<editor-fold desc="接口实现">

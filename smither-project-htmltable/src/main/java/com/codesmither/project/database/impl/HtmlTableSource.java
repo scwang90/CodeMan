@@ -1,8 +1,9 @@
-package com.codesmither.project.htmltable.impl;
+package com.codesmither.project.database.impl;
 
-import com.codesmither.project.base.api.Converter;
+import com.codesmither.project.base.api.ClassConverter;
 import com.codesmither.project.base.api.Remarker;
 import com.codesmither.project.base.api.TableSource;
+import com.codesmither.project.base.constant.Database;
 import com.codesmither.project.base.impl.DbRemarker;
 import com.codesmither.project.base.model.Table;
 import com.codesmither.project.base.model.TableColumn;
@@ -54,14 +55,14 @@ public class HtmlTableSource implements TableSource {
         }
     };
 
-    protected Converter converter;
+    protected ClassConverter classConverter;
     protected String charset = "UTF-8";
     protected List<File> htmlfiles = new ArrayList<>();
     protected Remarker remarker = new DbRemarker();
     protected HtmlTableMetaData metaData = new HtmlTableMetaDataImpl();
 
     public HtmlTableSource(HtmlTableConfig config) {
-        this.converter = config.getConverter();
+        this.classConverter = config.getClassConverter();
         this.charset = config.getHtmlTableCharset();
         File file = new File(config.getHtmlTablePath());
         if (file.isDirectory()) {
@@ -77,6 +78,11 @@ public class HtmlTableSource implements TableSource {
         } else {
             htmlfiles = Collections.singletonList(file);
         }
+    }
+
+    @Override
+    public Database getDatabase() {
+        return null;
     }
 
     @Override
@@ -99,7 +105,7 @@ public class HtmlTableSource implements TableSource {
     protected Table buildTable(Element tableElement) {
         Table table = new Table();
         buildTableMetaData(tableElement, table);
-        table.setClassName(this.converter.converterClassName(table.getName()));
+        table.setClassName(this.classConverter.converterClassName(table.getName()));
         table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
         table.setClassNameUpper(table.getClassName().toUpperCase());
         table.setClassNameLower(table.getClassName().toLowerCase());
@@ -121,8 +127,8 @@ public class HtmlTableSource implements TableSource {
         Elements columnMetaData = metaData.getMetaData(columnElement);
         buildColumnMetaData(column, columnMetaData);
 
-        column.setFieldName(this.converter.converterFieldName(column.getName()));
-        column.setFieldType(this.converter.converterFieldType(column.getTypeInt()));
+        column.setFieldName(this.classConverter.converterFieldName(column.getName()));
+        column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
         column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
         column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 

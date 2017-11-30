@@ -1,14 +1,13 @@
 package com.codesmither.project;
 
 import com.codesmither.project.base.api.DbFactory;
-import com.codesmither.project.htmltable.factory.C3P0Factory;
+import com.codesmither.project.database.factory.C3P0Factory;
 import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

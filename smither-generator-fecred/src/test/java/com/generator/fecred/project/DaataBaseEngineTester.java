@@ -2,7 +2,7 @@ package com.generator.fecred.project;
 
 import com.codesmither.project.database.DataBaseConfig;
 import com.codesmither.project.database.DataBaseEngine;
-import com.codesmither.project.htmltable.factory.ConfigFactory;
+import com.codesmither.project.database.factory.ConfigFactory;
 import org.junit.Test;
 
 public class DaataBaseEngineTester {

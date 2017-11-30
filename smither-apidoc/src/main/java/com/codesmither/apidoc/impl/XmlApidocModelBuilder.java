@@ -128,6 +128,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             apiModule.setName(module.attr("name"));
             apiModule.setDisplayName(module.attr("displayName"));
             apiModule.setPath(module.attr("path"));
+            apiModule.setAssistant(module.attr("assistant"));
             apiModule.setDescription(module.attr("description"));
 
             Element description = module.select(">description").first();

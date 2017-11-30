@@ -1,12 +1,12 @@
-package com.codesmither.project.htmltable.factory;
+package com.codesmither.project.database.factory;
 
 import com.codesmither.project.base.ProjectConfig;
 import com.codesmither.project.base.api.DbFactory;
 import com.codesmither.project.base.api.TableSource;
-import com.codesmither.project.htmltable.impl.DbTableSource;
-import com.codesmither.project.htmltable.impl.MySqlTableSource;
-import com.codesmither.project.htmltable.impl.OracleTableSource;
-import com.codesmither.project.htmltable.impl.SqlServerTableSource;
+import com.codesmither.project.database.impl.DbTableSource;
+import com.codesmither.project.database.impl.MySqlTableSource;
+import com.codesmither.project.database.impl.OracleTableSource;
+import com.codesmither.project.database.impl.SqlServerTableSource;
 
 /**
  * 表源工厂

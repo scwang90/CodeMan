@@ -14,6 +14,7 @@ public class ApiModule extends HtmlModel implements IModel {
     private String name;
     private String displayName;
     private String path;
+    private String assistant;
     private String description;
     private List<Api> apis;
     private List<ApiHeader> headers;
@@ -40,6 +41,14 @@ public class ApiModule extends HtmlModel implements IModel {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getAssistant() {
+        return assistant;
+    }
+
+    public void setAssistant(String assistant) {
+        this.assistant = assistant;
     }
 
     public String getDescription() {

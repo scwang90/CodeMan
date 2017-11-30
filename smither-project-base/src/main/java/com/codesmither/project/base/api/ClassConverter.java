@@ -5,7 +5,7 @@ package com.codesmither.project.base.api;
  * 根据表名和列名转成类名和字段名
  * Created by SCWANG on 2016/8/18.
  */
-public interface Converter {
+public interface ClassConverter {
 
     /**
      * 根据表名转换成类名

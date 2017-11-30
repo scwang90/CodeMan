@@ -4,8 +4,8 @@ import com.codesmither.engine.Config;
 import com.codesmither.project.base.ProjectConfig;
 import com.codesmither.project.base.api.DbFactory;
 import com.codesmither.project.base.api.TableSource;
-import com.codesmither.project.htmltable.factory.C3P0Factory;
-import com.codesmither.project.htmltable.factory.TableSourceFactory;
+import com.codesmither.project.database.factory.C3P0Factory;
+import com.codesmither.project.database.factory.TableSourceFactory;
 
 /**
  * 带数据库的配置

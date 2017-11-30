@@ -1,10 +1,11 @@
-package com.codesmither.project.htmltable.impl;
+package com.codesmither.project.database.impl;
 
 import com.codesmither.project.base.ProjectConfig;
-import com.codesmither.project.base.api.Converter;
+import com.codesmither.project.base.api.ClassConverter;
 import com.codesmither.project.base.api.DbFactory;
 import com.codesmither.project.base.api.Remarker;
 import com.codesmither.project.base.api.TableSource;
+import com.codesmither.project.base.constant.Database;
 import com.codesmither.project.base.impl.DbRemarker;
 import com.codesmither.project.base.model.Table;
 import com.codesmither.project.base.model.TableColumn;
@@ -23,7 +24,7 @@ public class DbTableSource implements TableSource {
 
 	protected boolean autoclose = false;
 	protected DbFactory dbFactory = null;
-	protected Converter converter = null;
+	protected ClassConverter classConverter = null;
 	protected Connection connection = null;
 	protected DatabaseMetaData databaseMetaData = null;
 	protected Remarker remarker = new DbRemarker();
@@ -36,7 +37,7 @@ public class DbTableSource implements TableSource {
 		super();
 		this.dbFactory = dbFactory;
 		this.autoclose = autoclose;
-		this.converter = config.getConverter();
+		this.classConverter = config.getClassConverter();
 	}
 
 	@Override
@@ -45,6 +46,11 @@ public class DbTableSource implements TableSource {
 			this.connection.close();
 		}
 		super.finalize();
+	}
+
+	@Override
+	public Database getDatabase() {
+		return null;
 	}
 
 	public List<Table> build() throws SQLException {
@@ -64,9 +70,9 @@ public class DbTableSource implements TableSource {
 		List<Table> tables = new ArrayList<>();
 		while (tableset.next()) {
 			Table table = new Table();
-			table.setName(tableset.getString("TABLE_NAME"));
+			table.setName(tableset.getString("TABLE_NAME"), getDatabase());
 			table.setRemark(tableset.getString("REMARKS"));
-			table.setClassName(this.converter.converterClassName(table.getName()));
+			table.setClassName(this.classConverter.converterClassName(table.getName()));
 			table.setClassNameUpper(table.getClassName().toUpperCase());
 			table.setClassNameLower(table.getClassName().toLowerCase());
 			table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
@@ -94,7 +100,7 @@ public class DbTableSource implements TableSource {
 		TableColumn column = new TableColumn();
 		ResultSet keyset = databaseMetaData.getPrimaryKeys(connection.getCatalog(), null, tableName);
 		if (keyset.next()) {
-			column.setName(keyset.getString("COLUMN_NAME"));
+			column.setName(keyset.getString("COLUMN_NAME"), getDatabase());
 		} else {
 			column.setName("hasNoPrimaryKey");
 			column.setType("VARCHAR");
@@ -105,8 +111,8 @@ public class DbTableSource implements TableSource {
 			column.setRemark("没有主键");
 			column.setTypeInt(java.sql.Types.VARCHAR);
 
-			column.setFieldName(this.converter.converterFieldName(column.getName()));
-			column.setFieldType(this.converter.converterFieldType(column.getTypeInt()));
+			column.setFieldName(this.classConverter.converterFieldName(column.getName()));
+			column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
 			column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 		}
@@ -118,7 +124,7 @@ public class DbTableSource implements TableSource {
 		List<TableColumn> columns = new ArrayList<>();
 		while (resultSet.next()) {
 			TableColumn column = new TableColumn();
-			column.setName(resultSet.getString("COLUMN_NAME"));
+			column.setName(resultSet.getString("COLUMN_NAME"), getDatabase());
 			column.setType(resultSet.getString("TYPE_NAME"));
 			column.setTypeInt(resultSet.getInt("DATA_TYPE"));
 			column.setLenght(resultSet.getInt("COLUMN_SIZE"));
@@ -129,8 +135,8 @@ public class DbTableSource implements TableSource {
 			Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
 			column.setAutoIncrement(Boolean.valueOf(true).equals(is_autoincrement) || "YES".equalsIgnoreCase(is_autoincrement + "") || Integer.valueOf("1").equals(is_autoincrement));
 
-			column.setFieldName(this.converter.converterFieldName(column.getName()));
-			column.setFieldType(this.converter.converterFieldType(column.getTypeInt()));
+			column.setFieldName(this.classConverter.converterFieldName(column.getName()));
+			column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
 			column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 

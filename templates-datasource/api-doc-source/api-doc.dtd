@@ -17,6 +17,7 @@
         <!ATTLIST module name CDATA #REQUIRED >
         <!ATTLIST module displayName CDATA >
         <!ATTLIST module path CDATA "">
+        <!ATTLIST module assistant CDATA "">
         <!ATTLIST module description CDATA "">
 
         <!ATTLIST api name CDATA #REQUIRED>

@@ -1,6 +1,6 @@
-package com.codesmither.project.htmltable.factory;
+package com.codesmither.project.database.factory;
 
-import com.codesmither.project.database.DataBaseConfig;
+import com.codesmither.project.htmltable.HtmlTableConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,15 +12,16 @@ import java.util.Properties;
  */
 public class ConfigFactory {
 
-	public static DataBaseConfig loadConfig(String path) throws IOException {
+	public static HtmlTableConfig loadConfig(String path) throws IOException {
 
 		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
 		Properties propty = new Properties();
 		propty.load(stream);
 
-		DataBaseConfig config = new DataBaseConfig();
+		HtmlTableConfig config = new HtmlTableConfig();
 
-		config.setDbConfigName(propty.getProperty("codesmither.database.config.name",config.getDbConfigName()));
+		config.setHtmlTablePath(propty.getProperty("codesmither.htmltable.path",config.getHtmlTablePath()));
+		config.setHtmlTableCharset(propty.getProperty("codesmither.htmltable.charset",config.getHtmlTableCharset()));
 
 		config.setTablePrefix(propty.getProperty("codesmither.database.table.prefix",config.getTablePrefix()));
 		config.setTableSuffix(propty.getProperty("codesmither.database.table.suffix",config.getTableSuffix()));

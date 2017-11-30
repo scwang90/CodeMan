@@ -10,18 +10,18 @@
             <![CDATA[
             本服务所有接口都已 Post 方式访问，发送的参数包括：头部（Header）,参数（Url）,实体（Body）。返回数据都是 Json格式
             <br/><br/>
-            <li><b>发送-头部（Header）</b>：</li>
+            <b>发送-头部（Header）</b>：
                 <p>主要用于保持登录 的 token，作用在于当Cookie和Session失效之后，继续生成新的Cookie</p>
             <br/>
-            <li><b>发送-参数（Url）</b>：</li>
+            <p><b>发送-参数（Url）</b>：</p>
                 <p>目前用于发送分页参数 offset（返回起始条数，0开始），limit（返回数据最大条数）</p>
                 <p>例如：</p>
                 <code>url?offset=0&limit=20</code>
             <br/>
-            <li><b>发送-实体（Body）</b>：</li>
+            <p><b>发送-实体（Body）</b>：</p>
                 <p>除了分页参数，一般其他数据都是以实体（Body）的Form格式发送</p>
             <br/>
-            <li><b>返回-实体（Body）</b>：Json</li>
+            <p><b>返回-实体（Body）</b>：Json</p>
                 <p>最外层格式都有 success，data，msg</p>
                 <pre><code>{
     success:true, //true 表示成功 否则 data 为null msg 可以获取错误信息
@@ -32,7 +32,6 @@
         </apidescription>
         <apidescription name="登录保持">
             调用登录接口之后，服务器会返回一个 Set-Cookie ，客户端必须把 Cookie 保存下来，在之后的接口中发送到服务器，才能保持登录会话。
-
             由于 Cookie 和 Session 会在短时间内过期，客户端也必须保存下 服务站在登录接口中返回的 Token ，之后一起发送到服务器，
             可以在 Session 过期的时候继续创建新的 Cookie。
         </apidescription>
@@ -49,7 +48,7 @@
             <response contentType="Json">
                 <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 int id;
@@ -65,17 +64,19 @@
         </api>
         <api name="图片上传" requestMethod="POST" path="image/upload">
             <description>
-                infoType 的枚举
-                用户 = 1,
+                imageType 的枚举
+                0=头像,
+                1=拖车取证图片,
+                2=拖车票据图片,
             </description>
-            <param name="type" description="如果是用户头像：用户:1" type="int"/>
+            <param name="type" description="图片类型" type="int"/>
             <param name="targetId" description="图片所属对象的ID，如用户ID" type="string"/>
             <body contentType="Multipart">
                 图片二进制文件
             </body>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:true
                 }
@@ -90,7 +91,7 @@
             <form name="imageUrl" type="string" description="图片Id" nullable="true"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:true
                 }
@@ -100,7 +101,7 @@
             <description>获取全国省份列表</description>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -115,7 +116,7 @@
             <form name="provinceId" type="int" description="省份ID"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -130,7 +131,7 @@
             <form name="cityId" type="int" description="城市ID"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -148,14 +149,14 @@
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
             <header name="token" type="cancel"/>
-            <form name="account" description="账户" type="string"/>
+            <form name="account" description="账户（手机号码）" type="string"/>
             <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
             <form name="verifyCode" description="手机验证码" type="string"/>
             <form name="nickName" description="用户昵称" type="string" nullable="true"/>
             <response contentType="Json">
                 <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -167,6 +168,7 @@
                 avatar:"头像链接",
                 phone:"电话号码",
                 address:"详细地址",
+                isPhoneAuthentic:true,
                 }
                 }
             </response>
@@ -176,12 +178,12 @@
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
             <header name="token" type="cancel"/>
-            <form name="account" description="账户" type="string"/>
+            <form name="account" description="账户（手机号码）" type="string"/>
             <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
             <response contentType="Json">
                 <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -193,6 +195,7 @@
                 avatar:"头像链接",
                 phone:"电话号码",
                 address:"详细地址",
+                isPhoneAuthentic:true,
                 }
                 }
             </response>
@@ -203,12 +206,12 @@
                 返回值中的token很重要，要保存下载，在登录之后的所有接口的头部都要加上这个参数
             </description>
             <header name="token" type="cancel"/>
-            <form name="account" description="账户" type="string"/>
+            <form name="account" description="账户（手机号码）" type="string"/>
             <form name="password" description="密码（双MD5加密：MD5(MD5(password))）" type="string"/>
             <response contentType="Json">
                 <header name="token" type="string" description="登录接口返回的Token，用于保持登录状态不过期"/>
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -220,6 +223,7 @@
                 avatar:"头像链接",
                 phone:"电话号码",
                 address:"详细地址",
+                isPhoneAuthentic:true,
                 }
                 }
             </response>
@@ -231,10 +235,10 @@
             <form name="name" description="地址" type="string" nullable="true"/>
             <form name="sex" description="性别" type="int" nullable="true"/>
             <form name="avatar" description="头像地址" type="string" nullable="true"/>
-            <form name="age" description="年龄" type="int" nullable="true"/>
+            <form name="age" description="年龄(修改birthday字段)" type="int" nullable="true"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 }
@@ -242,12 +246,11 @@
             </response>
         </api>
         <api name="设置密码" requestMethod="POST" path="init/password">
-            <form name="phone" description="手机号码" type="string"/>
-            <form name="password" description="新密码（未加密）" type="string"/>
-            <form name="verifyCode" description="手机验证码" type="string"/>
+            <form name="newPassword" description="新密码（双MD5加密：MD5(MD5(password))）" type="string"/>
+            <form name="oldPassword" description="老密码（双MD5加密：MD5(MD5(password))）" type="string"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 }
@@ -256,11 +259,11 @@
         </api>
         <api name="重置密码" requestMethod="POST" path="reset/password">
             <form name="phone" description="手机号码" type="string"/>
-            <form name="password" description="新密码（未加密）" type="string"/>
             <form name="verifyCode" description="手机验证码" type="string"/>
+            <form name="password" description="新密码（双MD5加密：MD5(MD5(password))）" type="string"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 }
@@ -273,21 +276,7 @@
             <form name="verifyCode" description="手机收到的验证码" type="string"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{}
-                }
-            </response>
-        </api>
-        <api name="验证短信" requestMethod="POST" path="verify/sms">
-            <description>
-                找回密码页面点击验证按钮，发送手机号和验证码到服务器验证
-            </description>
-            <form name="phone" description="手机号码" type="string"/>
-            <form name="verifyCode" description="手机收到的验证码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{}
                 }
@@ -295,41 +284,48 @@
         </api>
     </module>
 
-    <module name="短信发送" path="sms/">
-        <api name="注册发送" requestMethod="POST" path="regist">
+    <module name="短信相关" path="sms/">
+        <description>
+            短信类型枚举：
+            0-短信注册
+            1-短信登录
+            2-重置信息
+        </description>
+        <api name="发送短信" requestMethod="POST" path="send">
             <description>
-                用户注册时发送手机验证码
+                短信注册、短信登录、重置信息时发送手机验证码
+                对同一个手机号码需要在一天内限制 5 条
+                每条短信之间相隔大于 60 秒
+                如果超出限制 返回 success:false 并在 msg 给出原因
+                短信类型枚举：
+                0-短信注册
+                1-短信登录
+                2-重置信息
             </description>
             <form name="phone" description="手机号码" type="string"/>
+            <form name="type" type="int" description="短信类型"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{}
                 }
             </response>
         </api>
-        <api name="重置发送" requestMethod="POST" path="reset">
+        <api name="验证短信" requestMethod="POST" path="verify">
             <description>
-                用户忘记密码、修改密码、修改手机号码时候发送短信
+                验证发送的短信
+                短信类型枚举：
+                0-短信注册
+                1-短信登录
+                2-重置信息
             </description>
             <form name="phone" description="手机号码" type="string"/>
+            <form name="type" type="int" description="短信类型"/>
+            <form name="verifyCode" description="手机收到的验证码" type="string"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
-                msg:"",
-                data:{}
-                }
-            </response>
-        </api>
-        <api name="登录发送" requestMethod="POST" path="login">
-            <description>
-                用户注册时发送手机验证码
-            </description>
-            <form name="phone" description="手机号码" type="string"/>
-            <response contentType="Json">
-                {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{}
                 }
@@ -338,13 +334,31 @@
     </module>
 
     <module name="订单相关" path="order/">
+        <description>
+            订单状态枚举：
+            0-未确认
+            1-未支付
+            2-已支付
+            拖车订单服务状态枚举
+            0-请求救援
+            1-司机接单
+            2-赶往救援
+            3-到达救援
+            4-取证上传
+            5-前往修理
+            6-到达修理
+            7-修理完毕
+            8-取车归还
+        </description>
         <api name="我的订单" requestMethod="POST" path="list">
             <description>
-                用户获取我的订单列表，offset/limit为分页参数，后面的值根据情况更改
+                用户获取我的订单列表，多种订单混合显示
             </description>
+            <param name="limit" type="int" description="分页参数-最大记录数"/>
+            <param name="offset" type="int" description="分页参数-记录开始位置"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
                     id:0,
@@ -358,16 +372,63 @@
                 }
             </response>
         </api>
+        <api name="订单列表（拖车）" requestMethod="POST" path="list/trailer">
+            <description>
+                用户获取我的拖车订单列表，单一种类订单列表
+            </description>
+            <param name="limit" type="int" description="分页参数-最大记录数"/>
+            <param name="offset" type="int" description="分页参数-记录开始位置"/>
+            <response contentType="Json">
+                {
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                id:0,
+                orderNo:"订单编号",
+                price:0,
+                number:0,
+                payStatus:0,
+                serviceStatus:0,
+
+                placeOfDeparture:"出发地",
+                placeOfDelivery:"目的地",
+                createTime:"yyyy-MM-dd HH:mm:ss"
+                },...]
+                }
+            </response>
+        </api>
+        <api name="订单列表（代步）" requestMethod="POST" path="list/trailer">
+            <description>
+                用户获取我的代步车订单列表，单一种类订单列表
+            </description>
+            <param name="limit" type="int" description="分页参数-最大记录数"/>
+            <param name="offset" type="int" description="分页参数-记录开始位置"/>
+            <response contentType="Json">
+                {
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                id:0,
+                orderNo:"订单编号",
+                type:0,
+                price:0,
+                number:0,
+                payStatus:0,
+                createTime:"yyyy-MM-dd HH:mm:ss"
+                },...]
+                }
+            </response>
+        </api>
         <api name="订单详情（拖车）" requestMethod="POST" path="detail/trailer">
             <description>拖车订单详情页面数据</description>
             <form name="orderId" type="int" description="订单ID"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
-                status:0,
+                payStatus:0,
                 serviceStatus:0,
                 orderNo:"订单编号",
                 placeOfDeparture:"出发地",
@@ -377,6 +438,7 @@
                 priceMileage:0,
                 pricePremium:0,
                 priceService:0,
+                priceCoupon:0,
 
                 trailerCompany:{
                     id:0,
@@ -406,15 +468,14 @@
             <form name="orderId" type="int" description="订单ID"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
-                status:0,
-                serviceStatus:0,
+                payStatus:0,
                 orderNo:"订单编号",
-                placeOfDeparture:"出发地",
-                placeOfDelivery:"目的地",
+                placeOfPickUp:"出发地",
+                placeOfGiveBack:"目的地",
 
                 priceDeposit:0,
                 priceProcedure:0,
@@ -426,6 +487,7 @@
                 scooterId:0,
                 licencePlateNo:"车牌号",
                 motorcycleType:"车型",
+                brand:0,
 
                 createTime:"yyyy-MM-dd HH:mm:ss"
                 }
@@ -436,9 +498,10 @@
             <form name="orderId" type="int" description="订单ID"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
+                id:0,
                 record:"记录内容",
                 name:"相关姓名",
                 phone:"相关电话",
@@ -453,7 +516,7 @@
             <form name="price" type="double" description="价格"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:"app_id=2016120203743292&amp;biz_content=%7b%22subject%22%3a%22%e8%85%be%e4%ba%
                 91%e6%95%99%e8%82%b2%e7%a7%91%e6%8a%80%e5%85%85%e5%80%bc50%e5%ad%a6%e5%b8%81%22%2c%22o
@@ -465,13 +528,13 @@
                 }
             </response>
         </api>
-        <api name="维修支付" requestMethod="POST" path="wxpay">
+        <api name="微信支付" requestMethod="POST" path="wxpay">
             <description>支付订单</description>
             <form name="orderId" type="string" description="订单ID"/>
             <form name="price" type="double" description="价格"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 "appId":"App Id",
@@ -488,6 +551,12 @@
     </module>
 
     <module name="消息相关" path="message/">
+        <description>
+            消息类型枚举：
+            0-系统通知消息
+            1-拖车订单消息
+            2-代步车订单消息
+        </description>
         <api name="我的消息" requestMethod="POST" path="list">
             <description>
                 获取登陆用户相关的所有消息，分页获取
@@ -496,7 +565,7 @@
             <param name="offset" type="int" description="分页参数-记录开始位置"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
                 id:0,
@@ -509,7 +578,7 @@
                 }
             </response>
         </api>
-        <api name="订单消息" requestMethod="POST" path="list/order">
+        <api name="订单消息（整合）" requestMethod="POST" path="list/order">
             <description>
                 只获取与订单相关的消息列表，分页获取
             </description>
@@ -517,7 +586,45 @@
             <param name="offset" type="int" description="分页参数-记录开始位置"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                    id:0,
+                    type:0,
+                    targetId:0,
+                    title:"标题",
+                    message:"摘要",
+                    createTime:"yyyy-MM-dd HH:mm:ss",
+                    trailerOrder:{
+                        id:0,
+                        orderNo:"订单编号",
+                        placeOfDeparture:"出发地",
+                        placeOfDelivery:"目的地",
+                        companyName:"拖车公司名称",
+                    },
+                    scooterOrder:{
+                        id:0,
+                        scooterId:0,
+                        brand:0,
+                        orderNo:"订单编号",
+                        placeOfPickUp:"出发地",
+                        placeOfGiveBack:"目的地",
+                        licencePlateNo:"车牌号",
+                        motorcycleType:"车型",
+                    }
+                },...]
+                }
+            </response>
+        </api>
+        <api name="订单消息（拖车|待定）" requestMethod="POST" path="list/order/trailer">
+            <description>
+                只获取与拖车订单相关的消息列表，分页获取
+            </description>
+            <param name="limit" type="int" description="分页参数-最大记录数"/>
+            <param name="offset" type="int" description="分页参数-记录开始位置"/>
+            <response contentType="Json">
+                {
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
                 id:0,
@@ -526,7 +633,7 @@
                 title:"标题",
                 message:"摘要",
                 createTime:"yyyy-MM-dd HH:mm:ss",
-                order:{
+                trailerOrder:{
                     id:0,
                     orderNo:"订单编号",
                     placeOfDeparture:"出发地",
@@ -537,15 +644,46 @@
                 }
             </response>
         </api>
+        <api name="订单消息（代步|待定）" requestMethod="POST" path="list/order/scooter">
+            <description>
+                只获取与订单相关的消息列表，分页获取
+            </description>
+            <param name="limit" type="int" description="分页参数-最大记录数"/>
+            <param name="offset" type="int" description="分页参数-记录开始位置"/>
+            <response contentType="Json">
+                {
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:[{
+                id:0,
+                type:0,
+                targetId:0,
+                title:"标题",
+                message:"摘要",
+                createTime:"yyyy-MM-dd HH:mm:ss",
+                scooterOrder:{
+                id:0,
+                orderNo:"订单编号",
+                placeOfPickUp:"出发地",
+                placeOfGiveBack:"目的地",
+                scooterId:0,
+                licencePlateNo:"车牌号",
+                motorcycleType:"车型",
+                brand:0,
+                }
+                },...]
+                }
+            </response>
+        </api>
     </module>
 
     <module name="代步相关" path="scooter/">
         <api name="车辆列表" requestMethod="POST" path="list">
             <description>获取代步车类型列表</description>
-            <form name="typeId" type="int" nullable="true" description="类型ID"/>
+            <form name="typeId" type="int" nullable="true" description="代步车类型ID"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
                 id:0,
@@ -564,7 +702,7 @@
             <description>获取代步车类型列表</description>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
                     id:0,
@@ -578,13 +716,29 @@
         <api name="服务列表" requestMethod="POST" path="services">
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
                 id:0,
                 name:"名称",
                 price:0,
                 },...]
+                }
+            </response>
+        </api>
+        <api name="基础价格" requestMethod="POST" path="prices">
+            <description>
+                获取代步车订单的 押金、手续费、保险费 等基础价格
+            </description>
+            <response contentType="Json">
+                {
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                priceDeposit:0,
+                priceProcedure:0,
+                pricePremium:0,
+                }
                 }
             </response>
         </api>
@@ -605,7 +759,7 @@
             <form name="price" type="float" description="合计总价"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -622,11 +776,23 @@
     </module>
 
     <module name="拖车相关" path="trailer/">
+        <description>
+            订单服务状态枚举
+            0-请求救援
+            1-司机接单
+            2-赶往救援
+            3-到达救援
+            4-取证上传
+            5-前往修理
+            6-到达修理
+            7-修理完毕
+            8-取车归还
+        </description>
         <api name="附近拖车" requestMethod="POST" path="nearby">
             <description>搜索附近的拖车</description>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:[{
                 id:0,
@@ -642,11 +808,14 @@
             </response>
         </api>
         <api name="维修工厂" requestMethod="POST" path="maintains">
-            <description>根据区域信息获取工厂列表</description>
-            <form name="districtId" type="int" description="区域ID"/>
+            <description>
+                根据区域信息获取维修工厂（维修公司表）列表
+                districtId 为空的话 返回所有的数据
+            </description>
+            <form name="districtId" type="int" description="区域ID" nullable="true"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,
@@ -656,15 +825,31 @@
                 }
             </response>
         </api>
+        <api name="基础价格" requestMethod="POST" path="prices">
+            <description>
+                获取拖车订单的 起步费、保险费 等基础价格
+            </description>
+            <response contentType="Json">
+                {
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                msg:"",
+                data:{
+                priceInitiate:0,
+                pricePremium:0,
+                }
+                }
+            </response>
+        </api>
         <api name="提交订单" requestMethod="POST" path="order">
             <form name="trailerId" type="int" description="拖车ID"/>
-            <form name="maintainCompanyId" type="string" description="维修公司Id"/>
+            <form name="maintainCompanyId" type="string" description="维修公司Id" nullable="true"/>
             <form name="name" type="string" description="姓名"/>
             <form name="phone" type="string" description="电话"/>
             <form name="latitude" type="double" description="维度"/>
             <form name="longitude" type="double" description="经度"/>
             <form name="address" type="string" description="位置信息"/>
-            <form name="remark" type="string" description="订单备注"/>
+            <form name="remark" type="string" description="订单备注" nullable="true"/>
+            <form name="isReimburse" type="boolean" description="是否报销" nullable="true"/>
             <form name="priceInitiate" type="float" description="起步价"/>
             <form name="priceMileage" type="float" description="里程费"/>
             <form name="pricePremium" type="float" description="保险费"/>
@@ -672,7 +857,7 @@
             <form name="price" type="float" description="合计总价"/>
             <response contentType="Json">
                 {
-                success:0 //true 表示成功 否则 data 为null msg 可以获取错误信息,
+                success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
                 data:{
                 id:0,

@@ -1,6 +1,7 @@
 package com.codesmither.project.base.model;
 
 import com.codesmither.engine.api.IModel;
+import com.codesmither.project.base.constant.Database;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class Table implements IModel {
 
     private String name;// 原表名称
+    private String nameSQL;// SQL语句中使用的名称
     private String remark;// 字段注释
 
     private String className;// 原类名称
@@ -29,6 +31,22 @@ public class Table implements IModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setName(String name, Database database) {
+        this.name = name;
+        this.nameSQL = name;
+        if (database != null && database.isKeyword(name)) {
+            this.nameSQL = database.wrapperKeyword(name);
+        }
+    }
+
+    public String getNameSQL() {
+        return nameSQL;
+    }
+
+    public void setNameSQL(String nameSQL) {
+        this.nameSQL = nameSQL;
     }
 
     public String getRemark() {

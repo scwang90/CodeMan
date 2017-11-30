@@ -3,7 +3,7 @@ package com.codesmither.project.htmltable;
 import com.codesmither.engine.Config;
 import com.codesmither.project.base.ProjectConfig;
 import com.codesmither.project.base.api.TableSource;
-import com.codesmither.project.htmltable.impl.HtmlTableSource;
+import com.codesmither.project.database.impl.HtmlTableSource;
 
 /**
  * 带Html的配置

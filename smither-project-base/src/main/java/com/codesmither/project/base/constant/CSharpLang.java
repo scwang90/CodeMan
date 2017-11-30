@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class CSharpLang extends ProgLang {
 
-    public static final String[] javakeywords = {
+    public static final String[] keywords = {
             "event",
             "abstract",
             "new",
@@ -95,7 +95,7 @@ public class CSharpLang extends ProgLang {
 
     @Override
     public boolean isKeyword(String value) {
-        for (String keyword : javakeywords) {
+        for (String keyword : keywords) {
             if (keyword.equals(value)) {
                 return true;
             }

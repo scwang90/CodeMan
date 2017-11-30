@@ -1,5 +1,7 @@
 package com.codesmither.project.base.model;
 
+import com.codesmither.project.base.constant.Database;
+
 /**
  * 模板Model-table-column
  * Created by SCWANG on 2015-07-04.
@@ -8,7 +10,8 @@ package com.codesmither.project.base.model;
 public class TableColumn {
 	
 	private String name;// 原名称
-	private String type;// 字段类型名称
+	private String nameSQL;// SQL语句中使用的名称
+	private String type;// 字段类型名称`
 	private String remark;// 字段注释
 	private String defvalue;// 字段注释
 
@@ -34,6 +37,23 @@ public class TableColumn {
 			name = "";
 		}
 		this.name = name;
+		this.nameSQL = nameSQL == null ? name : nameSQL;
+	}
+
+	public void setName(String name, Database database) {
+		this.name = name;
+		this.nameSQL = name;
+		if (database != null && database.isKeyword(name)) {
+			this.nameSQL = database.wrapperKeyword(name);
+		}
+	}
+
+	public String getNameSQL() {
+		return nameSQL;
+	}
+
+	public void setNameSQL(String nameSQL) {
+		this.nameSQL = nameSQL;
 	}
 
 	public String getType() {
