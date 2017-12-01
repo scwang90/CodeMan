@@ -109,7 +109,7 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 					field.set(old, nfield);
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 
 		}
 		return old;

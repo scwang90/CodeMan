@@ -17,8 +17,8 @@ import ${packageName}.model.base.ModelBase;
  * @author ${author}
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
-@Table("${table.name}")
-public class ${className} extends ModelBase{
+@Table("${table.nameSQL}")
+public class ${className} extends ModelBase {
 
 	<#list table.columns as column>
 	/**
@@ -27,8 +27,8 @@ public class ${className} extends ModelBase{
 	<#if column.name==table.idColumn.name>
 	@Id
 	</#if>
-	<#if column.name!=column.fieldName>
-	@Column("${column.name}")
+	<#if column.nameSQL!=column.fieldName>
+	@Column("${column.nameSQL}")
 	</#if>
 	private ${column.fieldType} ${column.fieldName};
 	</#list>

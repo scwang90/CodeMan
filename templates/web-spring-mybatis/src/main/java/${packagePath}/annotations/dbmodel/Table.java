@@ -31,8 +31,7 @@ import java.lang.annotation.Target;
 public @interface Table {
 	/**
 	 * 表名.
-	 *
 	 * @return the string
 	 */
-	public String value() default "";
+	String value() default "";
 }

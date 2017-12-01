@@ -434,6 +434,9 @@
                 placeOfDeparture:"出发地",
                 placeOfDelivery:"目的地",
 
+                latitude:0,
+                longitude:0,
+
                 priceInitiate:0,
                 priceMileage:0,
                 pricePremium:0,
@@ -821,6 +824,8 @@
                 id:0,
                 name:"名称",
                 address:"位置信息",
+                latitude:0,
+                longitude:0,
                 }
                 }
             </response>

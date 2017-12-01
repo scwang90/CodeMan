@@ -72,11 +72,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 		model = loadModel(clazz);
 	}
 
-	/**
-	 * 
-	 * @param clazz
-	 * @return
-	 */
 	private BaseDaoDbUtilMYSQLImpl<T>.Model loadModel(Class<T> clazz) {
 		Model model = new Model();
 
@@ -101,11 +96,10 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * 根据 fields 拼出 insert table(@{column}) values(@{values}) insert into
 	 * table(@{column}) values(@{values})
 	 * 
-	 * @param fields
 	 * @return ?,?
 	 */
 	private String getValues(Field[] fields) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < fields.length; i++) {
 			buffer.append("?,");
 		}
@@ -117,11 +111,10 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	 * 根据 fields 拼出 insert table(@{column}) insert into table(name,sex)
 	 * values(@{values})
 	 * 
-	 * @param fields
 	 * @return name,sex
 	 */
 	private String getColumn(Field[] fields) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (Field field : fields) {
 			buffer.append("`"+Interpreter.getColumnName(field)+"`");
 			buffer.append(",");
@@ -133,13 +126,11 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	/**
 	 * 根据T的数据拼出 update set name='hello',sex=false 对应的 set string
 	 * 
-	 * @param fields
-	 * @param t
 	 * @return name=?,sex=?
 	 * @throws Exception
 	 */
 	protected String getSeters(Field[] fields) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (Field field : fields) {
 			buffer.append("`"+Interpreter.getColumnName(field)+"`");
 			buffer.append("=?,");
@@ -150,10 +141,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	/**
 	 * 根据T的数据拼出 insert values(?,?,?,?) 对应的 Object[]
-	 * 
-	 * @param t
-	 * @return
-	 * @throws Exception
 	 */
 	private Object[] getValues(T t) throws Exception {
 		List<Object> list = new ArrayList<Object>();
@@ -166,10 +153,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	/**
 	 * 根据T的数据拼出 insert values(?,?,?,?) 对应的 Object[]
-	 * 
-	 * @param t
-	 * @return
-	 * @throws Exception
 	 */
 	private List<Object> getValuesAsList(T t) throws Exception {
 		List<Object> list = new ArrayList<Object>();
@@ -182,10 +165,6 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	/**
 	 * 获取对象 t 的 Id
-	 * 
-	 * @param t
-	 * @return
-	 * @throws Exception
 	 */
 	private Object getId(T t) throws Exception {
 		Field field = model.idfield;

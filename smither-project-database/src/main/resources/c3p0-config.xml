@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
+	<named-config name="TestSqlite">
+		<property name="driverClass">org.sqlite.JDBC</property>
+		<property name="jdbcUrl">jdbc:sqlite:sqlite.db</property>
+		<!--<property name="jdbcUrl">jdbc:sqlite:[文件路劲]/property>-->
+	</named-config>
 	<named-config name="TestMysql">
 		<property name="user">builder</property>
 		<property name="password">builder</property>

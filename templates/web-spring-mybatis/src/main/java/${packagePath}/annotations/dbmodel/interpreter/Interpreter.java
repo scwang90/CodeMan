@@ -21,8 +21,6 @@ public class Interpreter {
 	
 	/**
 	 * 获取field是否是数据库列
-	 * @param field
-	 * @return
 	 */
 	public static boolean isColumn(Field field) {
 		int modify = field.getModifiers();
@@ -32,8 +30,6 @@ public class Interpreter {
 	}
 	/**
 	 * 获取field的列名称
-	 * @param field
-	 * @return
 	 */
 	public static String getColumnName(Field field) {
 		if (field.isAnnotationPresent(Column.class)) {
@@ -52,13 +48,11 @@ public class Interpreter {
 	}
 	/**
 	 * 获取clazz数据表名称
-	 * @param clazz
-	 * @return
 	 */
 	public static String getTableName(Class<?> clazz) {
 		if (clazz.isAnnotationPresent(Table.class)) {
 			Table table = clazz.getAnnotation(Table.class);
-			if (table.value() != null && table.value().length() > 0) {
+			if (table.value().length() > 0) {
 				return table.value();
 			}
 		}
@@ -66,8 +60,6 @@ public class Interpreter {
 	}
 	/**
 	 * 获取clazz的主键ID名称
-	 * @param clazz
-	 * @return
 	 */
 	public static String getIdName(Class<?> clazz) {
 		Field field = getIdField(clazz);
@@ -83,8 +75,6 @@ public class Interpreter {
 
 	/**
 	 * 获取clazz的主键ID名称
-	 * @param clazz
-	 * @return
 	 */
 	public static Field getIdField(Class<?> clazz) {
 		List<Field> fields = new ArrayList<Field>();
@@ -114,8 +104,6 @@ public class Interpreter {
 
 	/**
 	 * 判断 Field 是否为 ID字段
-	 * @param field
-	 * @return
 	 */
 	public static boolean isPrimaryKey(Field field) {
 		return field.isAnnotationPresent(Id.class)

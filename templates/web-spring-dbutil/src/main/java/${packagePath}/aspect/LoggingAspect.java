@@ -32,7 +32,7 @@ public class LoggingAspect {
 					} catch (Throwable e) {
 						if (object instanceof HttpServletRequest) {
 							HttpServletRequest request = (HttpServletRequest) object;
-							out.print("{"+request.getQueryString()+","+JacksonUtil.toJson(request.getCookies())+"},");
+							out.print("{"+request.getQueryString()+","+JacksonUtil.toJsonNoException(request.getCookies())+"},");
 						} else {
 							out.print(object+",");
 						}
@@ -60,7 +60,7 @@ public class LoggingAspect {
 			out.print(LoggingAspect.class.getSimpleName()+"-");
 			out.print(point.getTarget().getClass().getSimpleName()+".");
 			out.print(point.getSignature().getName()+"-returned-result-");
-			out.print((result instanceof String)?result:JacksonUtil.toJson(result));
+			out.print((result instanceof String)?result:JacksonUtil.toJsonNoException(result));
 			out.println();
 		}
 	}
