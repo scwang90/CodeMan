@@ -19,6 +19,11 @@ public class OracleTableSource extends DbTableSource implements Database {
     }
 
     @Override
+    public String name() {
+        return "oracle";
+    }
+
+    @Override
     public Database getDatabase() {
         return this;
     }
@@ -26,7 +31,7 @@ public class OracleTableSource extends DbTableSource implements Database {
     @Override
     public boolean isKeyword(String value) {
         for (String keyword : keywords) {
-            if (keyword.equals(value)) {
+            if (keyword.equalsIgnoreCase(value)) {
                 return true;
             }
         }

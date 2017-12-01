@@ -11,7 +11,7 @@ public class TableColumn {
 	
 	private String name;// 原名称
 	private String nameSQL;// SQL语句中使用的名称
-	private String type;// 字段类型名称`
+	private String type;// 字段类型名称
 	private String remark;// 字段注释
 	private String defvalue;// 字段注释
 
@@ -71,15 +71,15 @@ public class TableColumn {
 		return remark;
 	}
 
+	public String getDefvalue() {
+		return defvalue;
+	}
+
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
 		}
 		this.remark = remark;
-	}
-
-	public String getDefvalue() {
-		return defvalue;
 	}
 
 	public void setDefvalue(String defvalue) {

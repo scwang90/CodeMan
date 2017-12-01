@@ -1,6 +1,7 @@
 package com.codesmither.project.database;
 
 import com.codesmither.project.base.ProjectEngine;
+import com.codesmither.project.database.model.DbModelBuilder;
 
 /**
  * 数据库生成代码引擎
@@ -17,6 +18,6 @@ public class DataBaseEngine extends ProjectEngine {
     }
 
     public void launch() throws Exception {
-        super.launch(config.getDbFactory(), config.getTableSource());
+        super.launch(new DbModelBuilder(config, config.getDbFactory(), config.getTableSource()));
     }
 }

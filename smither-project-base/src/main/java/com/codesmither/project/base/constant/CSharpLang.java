@@ -107,17 +107,12 @@ public class CSharpLang extends ProgLang {
     public String getType(int columnType) {
         switch (columnType) {
             case Types.DISTINCT:
-                break;
             case Types.REF:
-                break;
             case Types.NULL:
-                break;
             case Types.STRUCT:
                 break;
             case Types.BINARY:
-                return "byte[]";
             case Types.VARBINARY:
-                return "byte[]";
             case Types.LONGVARBINARY:
                 return "byte[]";
             case Types.DATE:
@@ -161,7 +156,7 @@ public class CSharpLang extends ProgLang {
             case Types.OTHER:
                 return Object.class.getSimpleName();
             case Types.REAL:
-                return Double.class.getSimpleName();
+                return Float.class.getSimpleName();
             case Types.ROWID:
                 return RowId.class.getSimpleName();
             case Types.SMALLINT:

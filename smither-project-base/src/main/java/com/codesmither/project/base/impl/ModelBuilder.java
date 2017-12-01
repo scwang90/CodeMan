@@ -13,9 +13,9 @@ import java.util.List;
 
 public class ModelBuilder implements IModelBuilder {
 
-	private final ProjectConfig config;
-	private final DbFactory factory;
-	private final TableSource tableSource;
+	protected final ProjectConfig config;
+	protected final DbFactory factory;
+	protected final TableSource tableSource;
 
 	public ModelBuilder(ProjectConfig config, DbFactory factory, TableSource tableSource) {
 		this.config = config;
@@ -25,11 +25,10 @@ public class ModelBuilder implements IModelBuilder {
 
 	@Override
 	public IRootModel build() throws Exception {
-		return build(config, factory, tableSource.build());
+		return build(new Model(), config, factory, tableSource.build());
 	}
 
-	public static Model build(ProjectConfig config, DbFactory factory, List<Table> tables) {
-		Model model = new Model();
+	public static Model build(Model model, ProjectConfig config, DbFactory factory, List<Table> tables) {
 		model.setAuthor(config.getTargetProjectAuthor());
 		model.setCharset(config.getTargetCharset());
 		model.setPackageName(config.getTargetProjectPackage());

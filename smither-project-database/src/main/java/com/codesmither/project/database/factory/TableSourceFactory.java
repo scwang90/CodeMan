@@ -3,10 +3,7 @@ package com.codesmither.project.database.factory;
 import com.codesmither.project.base.ProjectConfig;
 import com.codesmither.project.base.api.DbFactory;
 import com.codesmither.project.base.api.TableSource;
-import com.codesmither.project.database.impl.DbTableSource;
-import com.codesmither.project.database.impl.MySqlTableSource;
-import com.codesmither.project.database.impl.OracleTableSource;
-import com.codesmither.project.database.impl.SqlServerTableSource;
+import com.codesmither.project.database.impl.*;
 
 /**
  * 表源工厂
@@ -17,8 +14,9 @@ public class TableSourceFactory {
     private static final String PATTERN_MYSQL = "jdbc:mysql:.*";
     private static final String PATTERN_SQLERVER = "jdbc:sqlserver:.*";
     private static final String PATTERN_ORACLE = "jdbc:oracle:.*";
+    private static final String PATTERN_SQLITE = "jdbc:sqlite:.*";
 
-    public static TableSource getInstance(ProjectConfig config, DbFactory factory) {
+    public static DbTableSource getInstance(ProjectConfig config, DbFactory factory) {
         String jdbcUrl = factory.getJdbcUrl();
         if (jdbcUrl.matches(PATTERN_MYSQL)) {
             return new MySqlTableSource(config, factory);
@@ -26,6 +24,8 @@ public class TableSourceFactory {
             return new OracleTableSource(config, factory);
         } else if (jdbcUrl.matches(PATTERN_SQLERVER)) {
             return new SqlServerTableSource(config, factory);
+        } else if (jdbcUrl.matches(PATTERN_SQLITE)) {
+            return new SqliteTableSource(config, factory);
         }
         return new DbTableSource(config, factory);
     }

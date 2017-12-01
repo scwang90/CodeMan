@@ -9,11 +9,11 @@ import com.codesmither.project.base.api.Remarker;
 public class DbRemarker implements Remarker {
     @Override
     public String getTableRemark(String name) {
-        return "数据库表" + name;
+        return "" + name;
     }
 
     @Override
     public String getColumnRemark(String name) {
-        return "数据库列" + name;
+        return "" + name;
     }
 }

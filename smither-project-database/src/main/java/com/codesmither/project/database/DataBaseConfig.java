@@ -6,6 +6,7 @@ import com.codesmither.project.base.api.DbFactory;
 import com.codesmither.project.base.api.TableSource;
 import com.codesmither.project.database.factory.C3P0Factory;
 import com.codesmither.project.database.factory.TableSourceFactory;
+import com.codesmither.project.database.impl.DbTableSource;
 
 /**
  * 带数据库的配置
@@ -17,7 +18,7 @@ public class DataBaseConfig extends ProjectConfig {
     protected String dbConfigName;
 
     protected transient DbFactory dbFactory = null;
-    protected transient TableSource tableSource = null;
+    protected transient DbTableSource tableSource = null;
 
     @Override
     public Config initEmptyFieldsWithDefaultValues() {
@@ -47,11 +48,11 @@ public class DataBaseConfig extends ProjectConfig {
         this.dbFactory = dbFactory;
     }
 
-    public TableSource getTableSource() {
+    public DbTableSource getTableSource() {
         return tableSource;
     }
 
-    public void setTableSource(TableSource tableSource) {
+    public void setTableSource(DbTableSource tableSource) {
         this.tableSource = tableSource;
     }
 }

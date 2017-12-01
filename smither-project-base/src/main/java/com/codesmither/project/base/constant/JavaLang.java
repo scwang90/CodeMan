@@ -38,74 +38,60 @@ public class JavaLang extends ProgLang {
         switch (columnType) {
             case Types.ARRAY:
                 return Array.class.getSimpleName();
-            case Types.BIGINT:
-                return Long.class.getSimpleName();
-            case Types.BINARY:
-                return "byte[]";
-            case Types.BIT:
-                return Boolean.class.getSimpleName();
             case Types.BLOB:
                 return Blob.class.getName();
-            case Types.BOOLEAN:
-                return Boolean.class.getSimpleName();
-            case Types.CHAR:
-                return String.class.getSimpleName();
             case Types.CLOB:
                 return Clob.class.getName();
-            case Types.DATE:
-                return java.util.Date.class.getName();
-            case Types.DECIMAL:
-                return BigDecimal.class.getName();
-            case Types.DISTINCT:
-                break;
+            case Types.TINYINT:
+                return Byte.class.getSimpleName();
+            case Types.SMALLINT:
+                return Short.class.getSimpleName();
+            case Types.BIGINT:
+                return Long.class.getSimpleName();
+            case Types.FLOAT:
+            case Types.REAL:
+                return Float.class.getSimpleName();
             case Types.DOUBLE:
                 return Double.class.getSimpleName();
-            case Types.FLOAT:
-                return Float.class.getSimpleName();
+            case Types.DECIMAL:
+                return BigDecimal.class.getName();
             case Types.INTEGER:
                 return Integer.class.getSimpleName();
             case Types.JAVA_OBJECT:
                 return Object.class.getSimpleName();
-            case Types.LONGVARCHAR:
-                return String.class.getSimpleName();
-            case Types.LONGNVARCHAR:
-                return String.class.getSimpleName();
+            case Types.BIT:
+            case Types.BOOLEAN:
+                return Boolean.class.getSimpleName();
+            case Types.BINARY:
+            case Types.VARBINARY:
             case Types.LONGVARBINARY:
                 return "byte[]";
+            case Types.CHAR:
             case Types.NCHAR:
-                return String.class.getName();
+            case Types.VARCHAR:
+            case Types.NVARCHAR:
+            case Types.LONGVARCHAR:
+            case Types.LONGNVARCHAR:
+                return String.class.getSimpleName();
             case Types.NCLOB:
                 return NClob.class.getName();
-            case Types.NULL:
-                break;
             case Types.NUMERIC:
                 return BigDecimal.class.getName();
-            case Types.NVARCHAR:
-                return String.class.getSimpleName();
             case Types.OTHER:
                 return Object.class.getSimpleName();
-            case Types.REAL:
-                return Float.class.getSimpleName();
-            case Types.REF:
-                break;
             case Types.ROWID:
                 return RowId.class.getName();
-            case Types.SMALLINT:
-                return Short.class.getSimpleName();
             case Types.SQLXML:
                 return SQLXML.class.getName();
-            case Types.STRUCT:
-                break;
             case Types.TIME:
                 return Time.class.getName();
+            case Types.DATE:
             case Types.TIMESTAMP:
                 return java.util.Date.class.getName();
-            case Types.TINYINT:
-                return Byte.class.getSimpleName();
-            case Types.VARBINARY:
-                return "byte[]";
-            case Types.VARCHAR:
-                return String.class.getSimpleName();
+            case Types.STRUCT:
+            case Types.REF:
+            case Types.DISTINCT:
+            case Types.NULL:
             default:
                 break;
         }

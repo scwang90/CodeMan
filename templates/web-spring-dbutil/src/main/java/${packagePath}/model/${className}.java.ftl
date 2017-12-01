@@ -1,7 +1,7 @@
 package ${packageName}.model;
 
 <#list table.columns as column>
-<#if column.name!=column.fieldName>
+<#if column.nameSQL!=column.fieldName>
 <#if (columnAdded!false)==false>
 import ${packageName}.annotations.dbmodel.Column;
 <#assign columnAdded=true>

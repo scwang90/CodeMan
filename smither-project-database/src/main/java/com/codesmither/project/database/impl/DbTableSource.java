@@ -50,7 +50,7 @@ public class DbTableSource implements TableSource {
 
 	@Override
 	public Database getDatabase() {
-		return null;
+		return new DefaultDatabase(new String[0]);
 	}
 
 	public List<Table> build() throws SQLException {
@@ -157,6 +157,35 @@ public class DbTableSource implements TableSource {
 		ResultSetMetaData metaData = resultSet.getMetaData(); 
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
         	System.out.println(metaData.getColumnName(i)+"="+resultSet.getObject(i));
+		}
+	}
+
+	public static class DefaultDatabase implements Database {
+
+		private String[] keywords;
+
+		public DefaultDatabase(String[] keywords) {
+			this.keywords = keywords;
+		}
+
+		@Override
+		public String name() {
+			return "";
+		}
+
+		@Override
+		public boolean isKeyword(String value) {
+			for (String keyword : keywords) {
+				if (keyword.equalsIgnoreCase(value)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public String wrapperKeyword(String name) {
+			return name;
 		}
 	}
 }
