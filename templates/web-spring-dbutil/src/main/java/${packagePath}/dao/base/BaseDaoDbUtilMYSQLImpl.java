@@ -203,7 +203,7 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 	public int countAll() throws Exception {
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
-		Long count = qr.query(sql, new ScalarHandler<Long>());
+		Object count = qr.query(sql, new ScalarHandler<Long>());
 		return Integer.valueOf(String.valueOf(count));
 	}
 
