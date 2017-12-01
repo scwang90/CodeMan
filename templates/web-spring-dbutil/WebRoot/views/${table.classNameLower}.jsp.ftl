@@ -37,14 +37,14 @@
             if($scope.index > 0){
                 $http.post("list/10/"+(--$scope.index),{page:10}).success(function(res) {
                     console.log(res);
-                    $scope.arrays = res.results;
+                    $scope.arrays = res.result.datas;
                 });
             }
         };
         $scope.next = function(){
             $http.post("list/10/"+(++$scope.index),{page:10}).success(function(res) {
                 console.log(res);
-                $scope.arrays = res.results;
+                $scope.arrays = res.result.datas;
             });
         };
         $scope.next();
