@@ -8,6 +8,9 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -63,6 +66,19 @@ public class EngineTester {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        XmlApidocConfig config = ConfigFactory.loadConfig("config.properties");
+        System.out.println(formatXML(config));
+    }
+
+    public static <T> String formatXML(T entity) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(out));
+        encoder.writeObject(entity);
+        encoder.close();
+        return out.toString();
     }
 
 }

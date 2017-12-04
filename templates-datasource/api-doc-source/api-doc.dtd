@@ -5,9 +5,12 @@
         <!ELEMENT param             (#PCDATA,description?)>
         <!ELEMENT form              (#PCDATA,description?)>
         <!ELEMENT body              (#PCDATA)>
-        <!ELEMENT response          (#PCDATA,header*)>
+        <!ELEMENT response          (#PCDATA,header*,xml?)>
         <!ELEMENT description       (#PCDATA)>
         <!ELEMENT apidescription    (#PCDATA)>
+        <!ELEMENT xml               (xml*)>
+
+        <!ATTLIST xml name CDATA #REQUIRED>
 
         <!ATTLIST service name CDATA #REQUIRED >
         <!ATTLIST service displayName CDATA >

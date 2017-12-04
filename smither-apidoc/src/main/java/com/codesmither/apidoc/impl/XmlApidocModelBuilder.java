@@ -7,9 +7,7 @@ import com.codesmither.engine.api.IModelBuilder;
 import com.codesmither.engine.api.IRootModel;
 import com.codesmither.engine.util.Reflecter;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Parser;
 import org.jsoup.parser.Tag;
 import org.jsoup.parser.XmlTreeBuilder;
@@ -73,9 +71,9 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             for (Api api : apiModule.getApis()) {
                 Map<String, ApiHeader> headers = new LinkedHashMap<>();
                 List<ApiHeader> apiHeaders = api.getHeaders();
-                couverHeaders(headers, serviceHeaders);
-                couverHeaders(headers, moduleHeaders);
-                couverHeaders(headers, apiHeaders);
+                convertHeaders(headers, serviceHeaders);
+                convertHeaders(headers, moduleHeaders);
+                convertHeaders(headers, apiHeaders);
                 api.setHeaders(new ArrayList<>(headers.values()));
                 api.setUrl(buildApiUrl(api, apiService, apiModule));
             }
@@ -110,7 +108,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         return service.getBasePath() + module.getPath() + api.getPath();
     }
 
-    private void couverHeaders(Map<String, ApiHeader> headers, List<ApiHeader> apiHeaders) {
+    private void convertHeaders(Map<String, ApiHeader> headers, List<ApiHeader> apiHeaders) {
         for (ApiHeader header : apiHeaders) {
             if (KEY_CANCEL.equals(header.getType())) {
                 headers.remove(header.getName());
@@ -173,14 +171,6 @@ public class XmlApidocModelBuilder implements IModelBuilder {
 
             apiList.add(apiMpdel);
         }
-
-//        Elements apidescriptions = module.select(">apidescription");
-//        for (Element apidescription : apidescriptions) {
-//            Api apiMpdel = new Api();
-//            apiMpdel.setName(apidescription.attr("name"));
-//            apiMpdel.setDescription(getHtml(apidescription));
-//            apiList.add(apiMpdel);
-//        }
 
         return apiList;
     }
@@ -284,19 +274,17 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             String text = response.text();
             if (text != null && text.length() > 0) {
                 apiResponse.setExample(text);
+                if ("json".equalsIgnoreCase(apiResponse.getContentType())) {
+                    apiResponse.setExample(FormatUtil.formatJson(apiResponse.getExample()));
+                }
             }
-            if (apiResponse.getContentType().toLowerCase().equals("json")) {
-                apiResponse.setExample(FormatUtil.formatJson(apiResponse.getExample()));
+            Element xml = response.select(">xml").first();
+            if (xml != null) {
+                apiResponse.setExample(xml.html());
+                if ("json".equalsIgnoreCase(apiResponse.getContentType())) {
+
+                }
             }
-//            if (apiResponse.getContentType().toLowerCase().equals("xml")) {
-//                Element cresponse = response.clone();
-//                cresponse.select("header").remove();
-//                String html = cresponse.html();
-//                if (html != null && html.length() > 0) {
-//                    apiResponse.setSample(html);
-//                }
-//            } else {
-//            }
 
             apiResponse.setHeaders(buildHeaders(response));
 
