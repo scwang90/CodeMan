@@ -6,7 +6,10 @@ import com.codesmither.apidoc.util.FormatUtil;
 import com.codesmither.engine.api.IModelBuilder;
 import com.codesmither.engine.api.IRootModel;
 import com.codesmither.engine.util.Reflecter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.parser.Tag;
@@ -118,7 +121,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         }
     }
 
-    private List<ApiModule> buildModules(Element service) {
+    private List<ApiModule> buildModules(Element service) throws JsonProcessingException {
         List<ApiModule> apiModules = new ArrayList<>();
         Elements modules = service.select(">module");
         for (Element module : modules) {
@@ -142,7 +145,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         return apiModules;
     }
 
-    private List<Api> buildApis(Element module) {
+    private List<Api> buildApis(Element module) throws JsonProcessingException {
         List<Api> apiList = new ArrayList<>();
         Elements apis = module.select(">*");
         for (Element api : apis) {
@@ -264,7 +267,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
         return null;
     }
 
-    private ApiResponse buildResponse(Element api) {
+    private ApiResponse buildResponse(Element api) throws JsonProcessingException {
         Element response = api.select(">response").first();
         if (response != null) {
             ApiResponse apiResponse = new ApiResponse();
@@ -278,11 +281,12 @@ public class XmlApidocModelBuilder implements IModelBuilder {
                     apiResponse.setExample(FormatUtil.formatJson(apiResponse.getExample()));
                 }
             }
+
             Element xml = response.select(">xml").first();
             if (xml != null) {
-                apiResponse.setExample(xml.html());
+                apiResponse.setExample(xml.outerHtml());
                 if ("json".equalsIgnoreCase(apiResponse.getContentType())) {
-
+                    apiResponse.setExample(FormatUtil.formatJson(new ObjectMapper().writeValueAsString(xmlToMap(xml.outerHtml()))));
                 }
             }
 
@@ -291,6 +295,36 @@ public class XmlApidocModelBuilder implements IModelBuilder {
             return apiResponse;
         }
         return null;
+    }
+
+    private Object xmlToMap(String xml) {
+        return parseElement(Jsoup.parse(xml).select("body>xml").first());
+    }
+
+    private Object parseElement(Element root) {
+        Elements children = root.children();
+        if (children.size() > 0) {
+            Map<String, Object> map = new LinkedHashMap<>();
+            for (Element element : children) {
+                map.put(element.attr("name"), parseElement(element));
+            }
+            return map;
+        } else {
+            String data = root.text();
+            try {
+                return Integer.parseInt(data);
+            } catch (NumberFormatException ignored) {
+            }
+            try {
+                return Float.parseFloat(data);
+            } catch (NumberFormatException ignored) {
+            }
+            try {
+                return Boolean.parseBoolean(data);
+            } catch (NumberFormatException ignored) {
+            }
+            return data;
+        }
     }
 
     private static String getHtml(Element description) {

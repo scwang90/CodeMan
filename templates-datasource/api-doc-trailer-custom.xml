@@ -860,7 +860,7 @@
             <form name="pricePremium" type="float" description="保险费"/>
             <form name="priceService" type="float" description="服务费"/>
             <form name="price" type="float" description="合计总价"/>
-            <response contentType="XML">
+            <response contentType="Json">
                 {
                 success:true //true 表示成功 否则 data 为null msg 可以获取错误信息,
                 msg:"",
@@ -880,7 +880,7 @@
                         <xml name="currentPage">10</xml>
                         <xml name="pageSize">10</xml>
                         <xml name="totalPage">1122</xml>
-                        <xml name="totalRecord">154898</xml>
+                        <xml name="totalRecord">231</xml>
                     </xml>
                 </xml>
             </response>
