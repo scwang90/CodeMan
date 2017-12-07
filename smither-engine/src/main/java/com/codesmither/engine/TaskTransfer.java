@@ -71,7 +71,16 @@ public class TaskTransfer {
         File outfile = task.getTargetFile();
 
         StringBuilder log = new StringBuilder(outfile.getAbsolutePath()+"\r\n");
-        if (task.getTemplateFile().getName().endsWith(".ftl")) {
+        if (task.getTemplateFile().getName().matches("\\w+\\.\\w+\\.\\w+\\.ftl")) {
+            String outpath = replacePath(outfile.getAbsolutePath().replaceAll("\\.\\w*\\.ftl",""));
+            log.append("  =>>");
+            log.append(outpath);
+            log.append("\r\n");
+            Template template = getTemplate(task.getTemplateFile());
+            Writer out = getFileWriter(new File(outpath));
+            template.process(rootModel, out);
+            out.close();
+        } else if (task.getTemplateFile().getName().endsWith(".ftl")) {
             Template template = getTemplate(task.getTemplateFile());
             for (IModel model : rootModel.getModels()) {
                 rootModel.bindModel(model);

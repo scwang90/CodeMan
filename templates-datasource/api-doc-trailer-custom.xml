@@ -397,7 +397,7 @@
                 }
             </response>
         </api>
-        <api name="订单列表（代步）" requestMethod="POST" path="list/trailer">
+        <api name="订单列表（代步）" requestMethod="POST" path="list/scooter">
             <description>
                 用户获取我的代步车订单列表，单一种类订单列表
             </description>
