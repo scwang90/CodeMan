@@ -8,7 +8,7 @@ import org.junit.Test;
 public class DataBaseEngineTester {
 
     @Test
-    public void DataBaseTemplete() {
+    public void DataBaseTemplate() {
         try {
             DataBaseConfig config = ConfigFactory.loadConfig("trailer-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
@@ -22,6 +22,17 @@ public class DataBaseEngineTester {
     public void DataBaseCredit() {
         try {
             DataBaseConfig config = ConfigFactory.loadConfig("credit-project.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void DataBaseExhibition() {
+        try {
+            DataBaseConfig config = ConfigFactory.loadConfig("exhibition-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {

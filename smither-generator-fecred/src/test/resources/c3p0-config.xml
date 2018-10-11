@@ -15,4 +15,10 @@
 		<property name="driverClass">org.sqlite.JDBC</property>
 		<property name="jdbcUrl">jdbc:sqlite:Z:/DataComparison/credit.db</property>
 	</named-config>
+	<named-config name="Exhibition">
+		<property name="user">root</property>
+		<property name="password">scwang</property>
+		<property name="driverClass">com.mysql.jdbc.Driver </property>
+		<property name="jdbcUrl">jdbc:mysql://192.168.226.125:3306/exhibition</property>
+	</named-config>
 </c3p0-config>

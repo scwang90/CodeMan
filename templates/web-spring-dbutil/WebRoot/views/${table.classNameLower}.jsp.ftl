@@ -3,7 +3,7 @@
 <head>
     <title>${table.remark}</title>
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
-    <link href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div ng-app="app" ng-controller="main" ng-init="arrays=[{},{},{},{},{},{}]" class="container">
