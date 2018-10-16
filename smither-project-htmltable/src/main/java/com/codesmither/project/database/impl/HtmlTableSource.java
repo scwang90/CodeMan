@@ -33,10 +33,10 @@ public class HtmlTableSource implements TableSource {
         Elements getMetaData(Element columnElement);
 
         int getColumnTypeInt(Elements columnMetaData);
-        int getColumnLenght(Elements columnMetaData);
+        int getColumnLength(Elements columnMetaData);
         String getColumnName(Elements columnMetaData);
         String getColumnType(Elements columnMetaData);
-        String getColumnDefvalue(Elements columnMetaData);
+        String getColumnDefValue(Elements columnMetaData);
         String getColumnRemark(Elements columnMetaData);
         boolean getColumnNullable(Elements columnMetaData);
         boolean getColumnAutoIncrement(Elements columnMetaData);
@@ -157,8 +157,8 @@ public class HtmlTableSource implements TableSource {
         column.setName      (metaData.getColumnName    (columnMetaData));
         column.setType      (metaData.getColumnType    (columnMetaData));
         column.setTypeInt   (metaData.getColumnTypeInt (columnMetaData));
-        column.setLenght    (metaData.getColumnLenght  (columnMetaData));
-        column.setDefvalue  (metaData.getColumnDefvalue(columnMetaData));
+        column.setLength    (metaData.getColumnLength  (columnMetaData));
+        column.setDefValue  (metaData.getColumnDefValue(columnMetaData));
         column.setNullable  (metaData.getColumnNullable(columnMetaData));
         column.setRemark    (metaData.getColumnRemark  (columnMetaData));
         column.setAutoIncrement(metaData.getColumnAutoIncrement(columnMetaData));
@@ -189,7 +189,7 @@ public class HtmlTableSource implements TableSource {
         }
 
         @Override
-        public int getColumnLenght(Elements columnMetaData) {
+        public int getColumnLength(Elements columnMetaData) {
             if (columnMetaData.size() > 2) {
                 return Integer.parseInt(columnMetaData.get(2).text().replace(",",""));
             }
@@ -213,7 +213,7 @@ public class HtmlTableSource implements TableSource {
         }
 
         @Override
-        public String getColumnDefvalue(Elements columnMetaData) {
+        public String getColumnDefValue(Elements columnMetaData) {
             if (columnMetaData.size() > 3) {
                 return columnMetaData.get(3).text();
             }

@@ -6,13 +6,13 @@ package com.codesmither.project.base.constant;
  */
 public abstract class ProgLang {
 
-    public enum Lang{
-        Java("java",new JavaLang()),CSharp("C#",new CSharpLang());
+    public enum Lang {
+        Java("java", new JavaLang()), CSharp("C#", new CSharpLang()), Kotlin("kotlin", new KotlinLang()),;
 
         public final String value;
         public final ProgLang lang;
 
-        Lang(String value,ProgLang lang) {
+        Lang(String value, ProgLang lang) {
             this.value = value;
             this.lang = lang;
         }

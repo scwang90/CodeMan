@@ -40,4 +40,15 @@ public class DataBaseEngineTester {
         }
     }
 
+    @Test
+    public void DataBaseSimpleCrm() {
+        try {
+            DataBaseConfig config = ConfigFactory.loadConfig("simple-crm-project.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

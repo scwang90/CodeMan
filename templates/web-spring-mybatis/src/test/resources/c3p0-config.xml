@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
 	<default-config>
-		<property name="user">${jdbc.usename}</property>
+		<property name="user">${jdbc.username}</property>
 		<property name="password">${jdbc.password}</property>
 		<property name="driverClass">${jdbc.driver}</property>
 		<property name="jdbcUrl">${jdbc.url}</property>
@@ -11,7 +11,7 @@
 		<property name="minPoolSize">10</property>
 	</default-config>
 	<named-config name="${projectName}">
-		<property name="user">${jdbc.usename}</property>
+		<property name="user">${jdbc.username}</property>
 		<property name="password">${jdbc.password}</property>
 		<property name="driverClass">${jdbc.driver}</property>
 		<property name="jdbcUrl">${jdbc.url}</property>

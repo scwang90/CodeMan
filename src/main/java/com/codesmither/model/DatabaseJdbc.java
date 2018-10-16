@@ -8,18 +8,18 @@ public class DatabaseJdbc {
 
     private String driver;
     private String url;
-    private String usename;
+    private String username;
     private String password;
 
     public DatabaseJdbc() {
     }
 
-    public String getUsename() {
-        return usename;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsename(String usename) {
-        this.usename = usename;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

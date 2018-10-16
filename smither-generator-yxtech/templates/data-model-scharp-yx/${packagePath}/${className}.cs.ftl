@@ -16,9 +16,9 @@ namespace ${packageName}
     	/// <summary>
         ///${column.remark}
         /// </summary>
-		<#if column.lenght!=-1>
+		<#if column.length!=-1>
         [Column(TypeName = "${column.type}")]
-        [StringLength(${column.lenght})]
+        [StringLength(${column.length})]
 		</#if>
     	public virtual ${column.fieldType} ${column.fieldName} { get; set; }
 	</#if>

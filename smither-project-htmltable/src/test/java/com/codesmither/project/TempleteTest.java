@@ -47,7 +47,7 @@ public class TempleteTest {
                     metaData = new HtmlTableMetaDataImpl(){
                         @Override
                         public String getColumnType(Elements columnMetaData) {
-                            if (getColumnLenght(columnMetaData) > 0) {
+                            if (getColumnLength(columnMetaData) > 0) {
                                 return "varchar";
                             }
                             return columnMetaData.get(3).text();
@@ -79,7 +79,7 @@ public class TempleteTest {
                         }
 
                         @Override
-                        public int getColumnLenght(Elements columnMetaData) {
+                        public int getColumnLength(Elements columnMetaData) {
                             try {
                                 return Integer.parseInt(columnMetaData.get(4).text().replace(",",""));
                             } catch (NumberFormatException ignored) {
@@ -101,8 +101,8 @@ public class TempleteTest {
                     column.setName      (columnMetaData.get(1).text().replace(" ",""));
                     column.setType      (metaData.getColumnType     (columnMetaData));
                     column.setTypeInt   (metaData.getColumnTypeInt  (columnMetaData));
-                    column.setLenght    (metaData.getColumnLenght   (columnMetaData));
-                    column.setDefvalue  ("");
+                    column.setLength    (metaData.getColumnLength   (columnMetaData));
+                    column.setDefValue  ("");
                     column.setNullable  (true);
                     column.setRemark    (columnMetaData.get(2).text());
                     column.setAutoIncrement(false);

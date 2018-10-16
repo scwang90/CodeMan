@@ -9,9 +9,9 @@ public class TableColumn {
 	private String name;// 原名称
 	private String type;// 字段类型名称
 	private String remark;// 字段注释
-	private String defvalue;// 字段注释
+	private String defValue;// 字段注释
 
-	private int lenght;//列长度
+	private int length;//列长度
 	private int typeInt;//数据库列类型
 
 	private String fieldName;// 字段
@@ -57,23 +57,23 @@ public class TableColumn {
 		this.remark = remark;
 	}
 
-	public String getDefvalue() {
-		return defvalue;
+	public String getDefValue() {
+		return defValue;
 	}
 
-	public void setDefvalue(String defvalue) {
-		if (defvalue == null) {
-			defvalue = "";
+	public void setDefValue(String defValue) {
+		if (defValue == null) {
+			defValue = "";
 		}
-		this.defvalue = defvalue;
+		this.defValue = defValue;
 	}
 
-	public int getLenght() {
-		return lenght;
+	public int getLength() {
+		return length;
 	}
 
-	public void setLenght(int lenght) {
-		this.lenght = lenght;
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 	public int getTypeInt() {

@@ -94,8 +94,8 @@ public class DbTableSource implements TableSource {
 			column.setName("hasNoPrimaryKey");
 			column.setType("VARCHAR");
 			column.setTypeInt(java.sql.Types.VARCHAR);
-			column.setLenght(256);
-			column.setDefvalue("");
+			column.setLength(256);
+			column.setDefValue("");
 			column.setNullable(true);
 			column.setAutoIncrement(false);
 			column.setRemark("没有主键");
@@ -116,8 +116,8 @@ public class DbTableSource implements TableSource {
 			column.setName(resultSet.getString("COLUMN_NAME"));
 			column.setType(resultSet.getString("TYPE_NAME"));
 			column.setTypeInt(resultSet.getInt("DATA_TYPE"));
-			column.setLenght(resultSet.getInt("COLUMN_SIZE"));
-			column.setDefvalue(resultSet.getString("COLUMN_DEF"));
+			column.setLength(resultSet.getInt("COLUMN_SIZE"));
+			column.setDefValue(resultSet.getString("COLUMN_DEF"));
 			column.setNullable(resultSet.getBoolean("NULLABLE"));
 			column.setAutoIncrement(resultSet.getBoolean("IS_AUTOINCREMENT"));
 			column.setRemark(resultSet.getString("REMARKS"));

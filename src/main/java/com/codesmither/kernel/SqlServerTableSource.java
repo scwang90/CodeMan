@@ -32,8 +32,8 @@ public class SqlServerTableSource extends DbTableSource {
             column.setName(resultSet.getString("COLUMN_NAME"));
             column.setType(resultSet.getString("TYPE_NAME"));
             column.setTypeInt(resultSet.getInt("DATA_TYPE"));
-            column.setLenght(resultSet.getInt("COLUMN_SIZE"));
-            column.setDefvalue(resultSet.getString("COLUMN_DEF"));
+            column.setLength(resultSet.getInt("COLUMN_SIZE"));
+            column.setDefValue(resultSet.getString("COLUMN_DEF"));
             column.setNullable(resultSet.getBoolean("NULLABLE"));
             column.setAutoIncrement(!"NO".equals(resultSet.getString("IS_AUTOINCREMENT")));
             column.setRemark(resultSet.getString("REMARKS"));

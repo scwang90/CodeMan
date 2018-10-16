@@ -36,7 +36,7 @@ public class ModelBuilder implements IModelBuilder {
 		model.setJdbc(new DatabaseJdbc());
 		model.getJdbc().setUrl(factory.getJdbcUrl());
 		model.getJdbc().setDriver(factory.getDriverClass());
-		model.getJdbc().setUsename(factory.getUser());
+		model.getJdbc().setUsername(factory.getUser());
 		model.getJdbc().setPassword(factory.getPassword());
 		model.setTables(tables);
 		return model;

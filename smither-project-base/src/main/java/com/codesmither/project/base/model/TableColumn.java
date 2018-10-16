@@ -13,9 +13,9 @@ public class TableColumn {
 	private String nameSQL;// SQL语句中使用的名称
 	private String type;// 字段类型名称
 	private String remark;// 字段注释
-	private String defvalue;// 字段注释
+	private String defValue;// 字段注释
 
-	private int lenght;//列长度
+	private int length;//列长度
 	private int typeInt;//数据库列类型
 
 	private String fieldName;// 字段
@@ -24,6 +24,7 @@ public class TableColumn {
 	private String fieldType;// 字段类型
 	private String fieldJavaType;//java 字段类型
 	private String fieldCSharpType;//C# 字段类型
+	private String fieldKotlinType;//kotlin 字段类型
 
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增
@@ -71,8 +72,8 @@ public class TableColumn {
 		return remark;
 	}
 
-	public String getDefvalue() {
-		return defvalue;
+	public String getDefValue() {
+		return defValue;
 	}
 
 	public void setRemark(String remark) {
@@ -82,19 +83,19 @@ public class TableColumn {
 		this.remark = remark;
 	}
 
-	public void setDefvalue(String defvalue) {
-		if (defvalue == null) {
-			defvalue = "";
+	public void setDefValue(String defValue) {
+		if (defValue == null) {
+			defValue = "";
 		}
-		this.defvalue = defvalue;
+		this.defValue = defValue;
 	}
 
-	public int getLenght() {
-		return lenght;
+	public int getLength() {
+		return length;
 	}
 
-	public void setLenght(int lenght) {
-		this.lenght = lenght;
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 	public int getTypeInt() {
@@ -169,6 +170,14 @@ public class TableColumn {
 			fieldCSharpType = "";
 		}
 		this.fieldCSharpType = fieldCSharpType;
+	}
+
+	public String getFieldKotlinType() {
+		return fieldKotlinType;
+	}
+
+	public void setFieldKotlinType(String fieldKotlinType) {
+		this.fieldKotlinType = fieldKotlinType;
 	}
 
 	public boolean isNullable() {
