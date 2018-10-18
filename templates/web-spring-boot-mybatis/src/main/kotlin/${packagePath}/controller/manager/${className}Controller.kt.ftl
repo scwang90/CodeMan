@@ -1,6 +1,6 @@
-package ${packageName}.controller;
+package ${packageName}.controller.manager
 
-import ${packageName}.mapper.${className}Mapper
+import ${packageName}.mapper.common.${className}Mapper
 import ${packageName}.model.api.ApiResult
 import ${packageName}.model.api.Paged
 import ${packageName}.model.api.Paging
@@ -17,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore
  * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
 @RestController
-@Api("${table.remark}API")
+@Api("${table.classNameLower}", description = "${table.remark}API")
 @RequestMapping("/api/v1/${table.classNameLower}")
 class ${className}Controller {
 
@@ -45,12 +45,12 @@ class ${className}Controller {
     @ApiImplicitParams(
 		<#list table.columns as column>
 		<#if column.name!=table.idColumn.name>
-		ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}", dataType = "${column.fieldType}" <#if column.nullable==true>, required = true</#if><#if column.defValue??>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
+		ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue??>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
 		</#if>
 		</#list>
     )
-    fun insert(@Validated @ApiIgnore user: ${className}): ApiResult<Boolean> {
-        mapper.insert(user)
+    fun insert(@Validated @ApiIgnore model: ${className}): ApiResult<Boolean> {
+        mapper.insert(model)
         return ApiResult(true)
 	}
 
@@ -59,11 +59,11 @@ class ${className}Controller {
 	@ApiOperation(value = "更新${table.remark}", notes = "")
 	@ApiImplicitParams(
 	<#list table.columns as column>
-		ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}", dataType = "${column.fieldType}" <#if column.nullable==true>, required = true</#if><#if column.defValue??>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
+		ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue??>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
 	</#list>
 	)
-	fun update(@Validated @ApiIgnore user: ${className}): ApiResult<Int> {
-		return ApiResult(mapper.update(user))
+	fun update(@Validated @ApiIgnore model: ${className}): ApiResult<Int> {
+		return ApiResult(mapper.update(model))
 	}
 
 

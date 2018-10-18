@@ -4,6 +4,7 @@ package com.codesmither.model;
  * 模板Model-jdbc
  * Created by SCWANG on 2015-07-04.
  */
+@SuppressWarnings("unused")
 public class DatabaseJdbc {
 
     private String driver;

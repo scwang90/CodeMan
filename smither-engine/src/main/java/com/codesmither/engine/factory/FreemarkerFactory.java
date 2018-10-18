@@ -1,7 +1,9 @@
 package com.codesmither.engine.factory;
 
+import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Template;
 
 import java.io.File;
@@ -37,6 +39,14 @@ public class FreemarkerFactory {
 		String path = file.getParentFile().getAbsolutePath();
 		Configuration configuration = getConfiguration(path);
 		return configuration.getTemplate(file.getName());
+	}
+
+	public static Template getTemplate(String template) throws IOException {
+		Configuration cfg = new Configuration();
+		StringTemplateLoader stringLoader = new StringTemplateLoader();
+		stringLoader.putTemplate("template",template);
+		cfg.setTemplateLoader(stringLoader);
+		return cfg.getTemplate("template");
 	}
 
 }

@@ -6,9 +6,12 @@ import com.codesmither.engine.util.FileUtil;
 import com.codesmither.engine.util.Reflecter;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateHashModelEx2;
+import javafx.animation.KeyValue;
+import jdk.nashorn.internal.runtime.options.KeyValueOption;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,42 +75,64 @@ public class TaskTransfer {
 
         StringBuilder log = new StringBuilder(outfile.getAbsolutePath()+"\r\n");
         if (task.getTemplateFile().getName().matches("\\w+\\.\\w+\\.\\w+\\.ftl")) {
-            String outpath = replacePath(outfile.getAbsolutePath().replaceAll("\\.\\w*\\.ftl",""));
+            String path = replacePath(outfile.getAbsolutePath().replaceAll("\\.\\w*\\.ftl",""));
             log.append("  =>>");
-            log.append(outpath);
+            log.append(path);
             log.append("\r\n");
             Template template = getTemplate(task.getTemplateFile());
-            Writer out = getFileWriter(new File(outpath));
+            Writer out = getFileWriter(new File(path));
             template.process(rootModel, out);
             out.close();
         } else if (task.getTemplateFile().getName().endsWith(".ftl")) {
+
+            Set<String> set = new LinkedHashSet<>();
             Template template = getTemplate(task.getTemplateFile());
+            Template nameTemplate = FreemarkerFactory.getTemplate(outfile.getAbsolutePath());
             for (IModel model : rootModel.getModels()) {
                 rootModel.bindModel(model);
-                String outpath = replacePath(outfile.getAbsolutePath().replace(".ftl", ""));
-                log.append("  =>>");
-                log.append(outpath);
-                log.append("\r\n");
-                Writer out = getFileWriter(new File(outpath));
-                template.process(rootModel, out);
-                out.close();
+                StringWriter writer = new StringWriter();
+                nameTemplate.process(rootModel, writer);
+                String name = writer.getBuffer().toString();
+                if (!set.contains(name)) {
+                    File file = new File(name.replace(".ftl", ""));
+                    log.append("  =>>");
+                    log.append(file.getAbsolutePath());
+                    log.append("\r\n");
+                    Writer out = getFileWriter(file);
+                    template.process(rootModel, out);
+                    out.close();
+                }
+                set.add(name);
             }
+
+//            Template template = getTemplate(task.getTemplateFile());
+//
+//            for (IModel model : rootModel.getModels()) {
+//                rootModel.bindModel(model);
+//                String path = replacePath(outfile.getAbsolutePath().replace(".ftl", ""));
+//                log.append("  =>>");
+//                log.append(path);
+//                log.append("\r\n");
+//                Writer out = getFileWriter(new File(path));
+//                template.process(rootModel, out);
+//                out.close();
+//            }
         } else if(FileUtil.isTextFile(task.getTemplateFile())){
-            String outpath = replacePath(outfile.getAbsolutePath());
+            String path = replacePath(outfile.getAbsolutePath());
             log.append("  =>>");
-            log.append(outpath);
+            log.append(path);
             log.append("\r\n");
             Template template = getTemplate(task.getTemplateFile());
-            Writer out = getFileWriter(new File(outpath));
+            Writer out = getFileWriter(new File(path));
             template.process(rootModel, out);
             out.close();
         } else {
-            String outpath = replacePath(outfile.getAbsolutePath());
+            String path = replacePath(outfile.getAbsolutePath());
             log.append("  =>>");
-            log.append(outpath);
+            log.append(path);
             log.append("\r\n");
             FileInputStream inputStream = new FileInputStream(task.getTemplateFile());
-            FileOutputStream outputStream = new FileOutputStream(checkpath(new File(outpath)));
+            FileOutputStream outputStream = new FileOutputStream(checkPath(new File(path)));
             byte[] bytes = new byte[inputStream.available()];
             if (inputStream.read(bytes) > 0) {
                 outputStream.write(bytes);
@@ -118,6 +143,23 @@ public class TaskTransfer {
         }
         return log.toString();
     }
+
+//    private List<Map.Entry<String, IModel>> loadModels(ITask task) throws Exception {
+//        Set<String> set = new LinkedHashSet<>();
+//        List<Map.Entry<String, IModel>> models = new ArrayList<>();
+//        Template template = FreemarkerFactory.getTemplate(task.getTemplateFile().getName());
+//        for (IModel model : rootModel.getModels()) {
+//            rootModel.bindModel(model);
+//            StringWriter writer = new StringWriter();
+//            template.process(rootModel, writer);
+//            String name = writer.getBuffer().toString();
+//            if (!set.contains(name)) {
+//
+//            }
+//            set.add(name);
+//        }
+//        return models;
+//    }
 
     private String replacePath(String outpath) {
         Matcher matcher = Pattern.compile("\\$\\{([a-zA-Z0-9\\.]+)\\}", Pattern.CASE_INSENSITIVE).matcher(outpath);
@@ -142,7 +184,7 @@ public class TaskTransfer {
     }
 
     private Writer getFileWriter(File file) throws IOException{
-        checkpath(file);
+        checkPath(file);
         String charset = config.getTargetCharset();
         if (charset != null && charset.trim().length() > 0) {
             return new OutputStreamWriter(new FileOutputStream(file),charset);
@@ -150,7 +192,7 @@ public class TaskTransfer {
         return new FileWriter(file);
     }
 
-    private File checkpath(File file) {
+    private File checkPath(File file) {
         File path = file.getParentFile();
         if (!path.exists() && !path.mkdirs()) {
             throw new RuntimeException("创建目标目录失败："+path);

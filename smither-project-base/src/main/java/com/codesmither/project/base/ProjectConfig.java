@@ -22,7 +22,7 @@ public class ProjectConfig extends Config implements IFilterConfig {
     protected String columnDivision = "";
 
     protected String templateLang = ProgLang.Lang.Java.value;
-    protected String templatePath = "../templates/dbutil-spring-web";
+    protected String templatePath = "../templates/web-spring-boot-mybatis";
     protected String templateCharset = "UTF-8";
 
     protected String templateIncludeFile = "*.*";

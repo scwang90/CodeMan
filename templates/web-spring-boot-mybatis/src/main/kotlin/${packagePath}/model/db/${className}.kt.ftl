@@ -1,5 +1,6 @@
-package ${packageName}.model;
+package ${packageName}.model.db;
 
+import ${packageName}.model.Entity
 import io.swagger.annotations.ApiModelProperty
 
 /**
@@ -7,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty
  * @author ${author}
  * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
-public class ${className} {
+public class ${className} : Entity() {
 
 	<#list table.columns as column>
 	/**

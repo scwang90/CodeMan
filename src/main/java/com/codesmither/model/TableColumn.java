@@ -1,12 +1,16 @@
 package com.codesmither.model;
 
+import com.codesmither.project.base.constant.Database;
+
 /**
  * 模板Model-table-column
  * Created by SCWANG on 2015-07-04.
  */
+@SuppressWarnings("unused")
 public class TableColumn {
 	
 	private String name;// 原名称
+	private String nameSQL;// SQL语句中使用的名称
 	private String type;// 字段类型名称
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
@@ -20,6 +24,7 @@ public class TableColumn {
 	private String fieldType;// 字段类型
 	private String fieldJavaType;//java 字段类型
 	private String fieldCSharpType;//C# 字段类型
+	private String fieldKotlinType;//kotlin 字段类型
 
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增
@@ -33,6 +38,23 @@ public class TableColumn {
 			name = "";
 		}
 		this.name = name;
+		this.nameSQL = nameSQL == null ? name : nameSQL;
+	}
+
+	public void setName(String name, Database database) {
+		this.name = name;
+		this.nameSQL = name;
+		if (database != null && database.isKeyword(name)) {
+			this.nameSQL = database.wrapperKeyword(name);
+		}
+	}
+
+	public String getNameSQL() {
+		return nameSQL;
+	}
+
+	public void setNameSQL(String nameSQL) {
+		this.nameSQL = nameSQL;
 	}
 
 	public String getType() {
@@ -50,15 +72,15 @@ public class TableColumn {
 		return remark;
 	}
 
+	public String getDefValue() {
+		return defValue;
+	}
+
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
 		}
 		this.remark = remark;
-	}
-
-	public String getDefValue() {
-		return defValue;
 	}
 
 	public void setDefValue(String defValue) {
@@ -148,6 +170,14 @@ public class TableColumn {
 			fieldCSharpType = "";
 		}
 		this.fieldCSharpType = fieldCSharpType;
+	}
+
+	public String getFieldKotlinType() {
+		return fieldKotlinType;
+	}
+
+	public void setFieldKotlinType(String fieldKotlinType) {
+		this.fieldKotlinType = fieldKotlinType;
 	}
 
 	public boolean isNullable() {

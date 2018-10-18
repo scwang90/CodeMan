@@ -1,112 +1,139 @@
 package com.codesmither.model;
 
+
+import com.codesmither.api.IModel;
+import com.codesmither.api.IRootModel;
+
+import java.io.File;
 import java.util.List;
 
 /**
  * 模板根Model
- * Created by SCWANG on 2015-07-04.
+ * Created by SCWANG on 2016/8/18.
  */
-public class Model {
-	
-	private Table table;
-	private List<Table> tables;
-	private DatabaseJdbc jdbc;
-	private String className;
-	private String tableName;
-	private String author;
-	private String packageName;
-	private String projectName;
-	private String charset;
+@SuppressWarnings("unused")
+public class Model implements IRootModel {
 
-	public Model() {
-	}
+    private Table table;
+    private List<Table> tables;
+    private DatabaseJdbc jdbc;
+    private String className;
+    private String tableName;
+    private String author;
+    private String packageName;
+    private String packagePath;
+    private String projectName;
+    private String charset;
 
-	public Model(String author, String packageName) {
-		super();
-		this.author = author;
-		this.packageName = packageName;
-	}
+    public Model() {
+    }
 
-	public Model(Table table) {
-		this.table = table;
-		this.className = table.getClassName();
-	}
+    public Model(String author, String packageName) {
+        super();
+        this.author = author;
+        this.packageName = packageName;
+    }
 
-	public void bindTable(Table table) {
-		this.table = table;
-		this.tableName = table.getName();
-		this.className = table.getClassName();
-	}
-	
-	public List<Table> getTables() {
-		return tables;
-	}
-	
-	public void setTables(List<Table> tables) {
-		this.tables = tables;
-	}
-	
-	public String getProjectName() {
-		return projectName;
-	}
+    public Model(Table table) {
+        this.table = table;
+        this.className = table.getClassName();
+    }
 
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
+    public List<Table> getTables() {
+        return tables;
+    }
 
-	public Table getTable() {
-		return table;
-	}
+    public void setTables(List<Table> tables) {
+        this.tables = tables;
+    }
 
-	public void setTable(Table table) {
-		this.table = table;
-	}
+    public String getProjectName() {
+        return projectName;
+    }
 
-	public String getClassName() {
-		return className;
-	}
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    public Table getTable() {
+        return table;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public void setTable(Table table) {
+        this.table = table;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	public String getPackageName() {
-		return packageName;
-	}
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public String getTableName() {
-		return tableName;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    public String getPackageName() {
+        return packageName;
+    }
 
-	public String getCharset() {
-		return charset;
-	}
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+        this.packagePath = packageName.replace(".", File.separatorChar + "");
+//        this.packagePath = packagePath.replace("::", File.separatorChar + "");
+    }
 
-	public void setCharset(String charset) {
-		this.charset = charset;
-	}
+    public String getPackagePath() {
+        return packagePath;
+    }
 
-	public DatabaseJdbc getJdbc() {
-		return jdbc;
-	}
+    public void setPackagePath(String packagePath) {
+        this.packagePath = packagePath;
+    }
 
-	public void setJdbc(DatabaseJdbc jdbc) {
-		this.jdbc = jdbc;
-	}
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
+    public DatabaseJdbc getJdbc() {
+        return jdbc;
+    }
+
+    public void setJdbc(DatabaseJdbc jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    //<editor-fold desc="接口实现">
+    @Override
+    public List<? extends IModel> getModels() {
+        return tables;
+    }
+
+    @Override
+    public void bindModel(IModel model) {
+        if (model instanceof Table) {
+            this.table = (Table) model;
+            this.tableName = ((Table) model).getName();
+            this.className = ((Table) model).getClassName();
+        }
+    }
+    //</editor-fold>
 }

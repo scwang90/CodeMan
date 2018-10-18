@@ -1,0 +1,7 @@
+[#ftl]
+[#-- @implicitly included --]
+[#-- @ftlvariable name="projectName" type="String" --]
+[#-- @ftlvariable name="table" type="com.codesmither.model.Table" --]
+[#-- @ftlvariable name="author" type="java.lang.String" --]
+[#-- @ftlvariable name="className" type="java.lang.String" --]
+[#-- @ftlvariable name="packageName" type="String" --]

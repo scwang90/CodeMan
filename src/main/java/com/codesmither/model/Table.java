@@ -1,88 +1,107 @@
 package com.codesmither.model;
 
+import com.codesmither.engine.api.IModel;
+import com.codesmither.project.base.constant.Database;
+
 import java.util.List;
 
 /**
  * 模板Model-table
- * Created by SCWANG on 2015-07-04.
+ * Created by SCWANG on 2016/8/18.
  */
-public class Table {
+@SuppressWarnings("unused")
+public class Table implements IModel {
 
-	private String name;// 原表名称
-	private String remark;// 字段注释
+    private String name;// 原表名称
+    private String nameSQL;// SQL语句中使用的名称
+    private String remark;// 字段注释
 
-	private String className;// 原类名称
-	private String classNameCamel;// 骆驼峰类名
-	private String classNameUpper;// 类名全大写
-	private String classNameLower;// 类名全小写
+    private String className;// 原类名称
+    private String classNameCamel;// 骆驼峰类名
+    private String classNameUpper;// 类名全大写
+    private String classNameLower;// 类名全小写
 
-	private TableColumn idColumn; // ID列
+    private TableColumn idColumn; // ID列
 
-	private List<TableColumn> columns;// 表字段
-	// private List<TableIndex> tableIndexs;// 表索引
-	// private List<TableBind> tableBinds;// 表主外键
+    private List<TableColumn> columns;// 表字段
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setName(String name, Database database) {
+        this.name = name;
+        this.nameSQL = name;
+        if (database != null && database.isKeyword(name)) {
+            this.nameSQL = database.wrapperKeyword(name);
+        }
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public String getNameSQL() {
+        return nameSQL;
+    }
 
-	public String getClassName() {
-		return className;
-	}
+    public void setNameSQL(String nameSQL) {
+        this.nameSQL = nameSQL;
+    }
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    public String getRemark() {
+        return remark;
+    }
 
-	public String getClassNameCamel() {
-		return classNameCamel;
-	}
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
-	public void setClassNameCamel(String classNameCamel) {
-		this.classNameCamel = classNameCamel;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	public String getClassNameUpper() {
-		return classNameUpper;
-	}
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-	public void setClassNameUpper(String classNameUpper) {
-		this.classNameUpper = classNameUpper;
-	}
+    public String getClassNameCamel() {
+        return classNameCamel;
+    }
 
-	public String getClassNameLower() {
-		return classNameLower;
-	}
+    public void setClassNameCamel(String classNameCamel) {
+        this.classNameCamel = classNameCamel;
+    }
 
-	public void setClassNameLower(String classNameLower) {
-		this.classNameLower = classNameLower;
-	}
+    public String getClassNameUpper() {
+        return classNameUpper;
+    }
 
-	public TableColumn getIdColumn() {
-		return idColumn;
-	}
+    public void setClassNameUpper(String classNameUpper) {
+        this.classNameUpper = classNameUpper;
+    }
 
-	public void setIdColumn(TableColumn idColumn) {
-		this.idColumn = idColumn;
-	}
+    public String getClassNameLower() {
+        return classNameLower;
+    }
 
-	public List<TableColumn> getColumns() {
-		return columns;
-	}
+    public void setClassNameLower(String classNameLower) {
+        this.classNameLower = classNameLower;
+    }
 
-	public void setColumns(List<TableColumn> columns) {
-		this.columns = columns;
-	}
+    public TableColumn getIdColumn() {
+        return idColumn;
+    }
+
+    public void setIdColumn(TableColumn idColumn) {
+        this.idColumn = idColumn;
+    }
+
+    public List<TableColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<TableColumn> columns) {
+        this.columns = columns;
+    }
 }
