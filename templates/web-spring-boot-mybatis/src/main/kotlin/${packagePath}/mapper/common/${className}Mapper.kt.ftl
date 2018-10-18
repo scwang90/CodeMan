@@ -1,7 +1,7 @@
 package ${packageName}.mapper.common
 
 import ${packageName}.mapper.TypedMapper
-import ${packageName}.model.db.Admin
+import ${packageName}.model.db.${className}
 import org.apache.ibatis.annotations.*
 import org.springframework.stereotype.Component
 
@@ -38,7 +38,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 			</#list>
 		)")
 	</@single_line>
-	fun insert(${className} model): Int
+	override fun insert(model: ${className}): Int
 
 	/**
 	 * 根据ID删除
@@ -46,7 +46,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @return 改变的行数
 	 */
 	@Delete("DELETE FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
-	fun delete(@Param("id") Object id): Int
+	override fun delete(@Param("id") id: Any): Int
 
 	/**
 	 * 更新一条数据
@@ -61,14 +61,14 @@ interface ${className}Mapper : TypedMapper<${className}>{
 			WHERE ${table.idColumn.name}=${r"#"}{${table.idColumn.fieldName}}
 	")
 	</@single_line>
-	fun update(${className} model): Int
+	override fun update(model: ${className}): Int
 
 	/**
 	 * 统计全部出数据
 	 * @return 统计数
 	 */
 	@Select("SELECT COUNT(*) FROM ${table.nameSQL}")
-	fun countAll(): Int
+	override fun countAll(): Int
 
 	/**
 	 * 根据ID获取
@@ -87,7 +87,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 		</#list>
 		FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
 	</@single_line>
-	fun findById(@Param("id") Object id): ${className}
+	override fun findById(@Param("id") id: Any): ${className}
 
 	/**
 	 * 获取全部数据
@@ -103,9 +103,9 @@ interface ${className}Mapper : TypedMapper<${className}>{
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${order}"}")
+		FROM ${table.nameSQL} ${r"\${order}"}")
 	</@single_line>
-	fun findAll(@Param("order") String order): List<${className}>
+	override fun findAll(@Param("order") order: String): List<${className}>
 
 	/**
 	 * 分页查询数据
@@ -123,17 +123,17 @@ interface ${className}Mapper : TypedMapper<${className}>{
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+		FROM ${table.nameSQL} ${r"\${order}"} LIMIT ${r"\${start}"},${r"\${limit}"}")
 	</@single_line>
-	fun findByPage(@Param("order") String order,@Param("limit") int limit,@Param("start") int start): List<${className}>
+	override fun findByPage(@Param("order") order: String, @Param("limit") limit: Int, @Param("start") start: Int): List<${className}>
 
 	/**
 	 * 选择性删除
 	 * @param where SQL条件语句
 	 * @return 改变的行数
 	 */
-	@Delete("DELETE FROM ${table.nameSQL} ${r"${where}"}")
-	fun deleteWhere(@Param("where") String where): Int
+	@Delete("DELETE FROM ${table.nameSQL} ${r"\${where}"}")
+	override fun deleteWhere(@Param("where") where: String): Int
 
 	/**
 	 * 根据属性值删除
@@ -141,16 +141,16 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param value 值
 	 * @return 改变的行数
 	 */
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${propertyName}"}=${r"#{value}"}")
-	fun deleteByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value): Int
+	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"\${propertyName}"}=${r"#{value}"}")
+	override fun deleteByPropertyName(@Param("propertyName") propertyName: String, @Param("value") value: Any): Int
 
 	/**
 	 * 选择性统计
 	 * @param where SQL条件语句
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM ${table.nameSQL} ${r"${where}"}")
-	fun countWhere(@Param("where") String where): Int
+	@Select("SELECT COUNT(*) FROM ${table.nameSQL} ${r"\${where}"}")
+	override fun countWhere(@Param("where") where: String): Int
 
 	/**
 	 * 根据属性统计
@@ -158,8 +158,8 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param value 值
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM WHERE ${r"${propertyName}"}=${r"#{value}"}")
-	fun countByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value): Int
+	@Select("SELECT COUNT(*) FROM WHERE ${r"\${propertyName}"}=${r"#{value}"}")
+	override fun countByPropertyName(@Param("propertyName") propertyName: String, @Param("value") value: Any): Int
 
 	/**
 	 * 选择性查询
@@ -176,9 +176,9 @@ interface ${className}Mapper : TypedMapper<${className}>{
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"}")
+		FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"}")
 	</@single_line>
-	fun findWhere(@Param("order") String order,@Param("where") String where): List<${className}>
+	override fun findWhere(@Param("order") order: String, @Param("where") where: String): List<${className}>
 
 	/**
 	 * 选择性分页查询
@@ -197,9 +197,9 @@ interface ${className}Mapper : TypedMapper<${className}>{
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+		FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"} LIMIT ${r"\${start}"},${r"\${limit}"}")
 	</@single_line>
-	fun findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start): List<${className}>
+	override fun findWhereByPage(@Param("order") order: String, @Param("where") where: String, @Param("limit") limit: Int, @Param("start") start: Int): List<${className}>
 
 	/**
 	 * 根据属性查询
@@ -217,7 +217,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} WHERE ${r"${propertyName}"}=${r"#{value}"} ${r"${order}"}")
+		FROM ${table.nameSQL} WHERE ${r"\${propertyName}"}=${r"#{value}"} ${r"\${order}"}")
 	</@single_line>
-	fun findByPropertyName(@Param("order") String order,@Param("propertyName") String propertyName,@Param("value") Object value): List<${className}>
+	override fun findByPropertyName(@Param("order") order: String, @Param("propertyName") propertyName: String, @Param("value") value: Any): List<${className}>
 }
