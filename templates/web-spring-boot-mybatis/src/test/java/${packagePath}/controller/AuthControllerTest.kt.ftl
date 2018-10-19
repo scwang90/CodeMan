@@ -1,4 +1,4 @@
-package ${packageName}.controller.manager
+package ${packageName}.controller
 
 import ${packageName}.${projectName}ApplicationTests
 import org.junit.Test
