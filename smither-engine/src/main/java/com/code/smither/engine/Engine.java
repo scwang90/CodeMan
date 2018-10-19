@@ -79,10 +79,8 @@ public class Engine implements ITaskRunner {
             StringWriter writer = new StringWriter();
             nameTemplate.process(root, writer);
             String path = writer.getBuffer().toString();
-            boolean isText = false;
             if (path.endsWith(".ftl")) {
                 path = path.substring(0, path.length() - 4);
-                isText = true;
             }
 
             if (!set.contains(path)) {
@@ -90,7 +88,7 @@ public class Engine implements ITaskRunner {
                 print.println("  =>>" + path);
 
                 File file = new File(path);
-                if (isText || FileUtil.isTextFile(file)) {
+                if (FileUtil.isTextFile(task.getTemplateFile())) {
                     Writer out = getFileWriter(file);
                     template.process(root, out);
                     out.close();
