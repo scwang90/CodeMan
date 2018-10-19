@@ -42,10 +42,10 @@ class ${projectName}Application : WebMvcConfigurer {
     fun createManagerApi(): Docket {
         return Docket(DocumentationType.SWAGGER_2).groupName("后台管理")
                 .apiInfo(ApiInfoBuilder()
-                        .title("SimpleCRM 后台文档")//页面标题
+                        .title("${projectName} 后台文档")//页面标题
                         .contact(Contact("${author}", "", "example@hotmail.com"))//创建人
                         .version("1.0")//版本号
-                        .description("蔬菜基地人工管理系统 管理后台 API")//描述
+                        .description("${projectName} 管理后台 API")//描述
                         .build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("${packageName}.controller.manager"))

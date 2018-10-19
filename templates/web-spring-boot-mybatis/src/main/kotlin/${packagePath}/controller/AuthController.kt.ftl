@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
 import io.swagger.annotations.ApiOperation
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.DigestUtils
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -28,11 +27,11 @@ import javax.servlet.http.HttpSession
 @RequestMapping("/api/v1/auth")
 class AuthController {
 
-//    private val logger = LoggerFactory.getLogger(this.javaClass)
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 //
 //    @Autowired
 //    private lateinit var mapper : AdminMapper
-//
+
     @PostMapping("login")
     @ApiOperation(value = "管理员登录", notes = "后台管理相关API都需要先登录")
     @ApiImplicitParams(
@@ -46,8 +45,6 @@ class AuthController {
                 setLength(0)
                 append(this)
             }
-        }
-        if () {
         }
 //        if (mapper.countAll() == 0) {
 //            mapper.insert(Admin().apply {
@@ -63,7 +60,7 @@ class AuthController {
         if (list.isEmpty()) {
             throw ServiceException("用户名或密码错误")
         } else {
-            session.setAttribute(UserType.admin.name, list[0])
+            session.setAttribute(UserType.Admin.name, list[0])
             return ApiResult(result = list[0])
         }
     }
@@ -71,8 +68,8 @@ class AuthController {
     @ApiOperation(value = "管理员注销登录")
     @GetMapping("logout")
     fun logout(@ApiIgnore session: HttpSession): ApiResult<String>? {
-        if (session.getAttribute(UserType.admin.name) != null) {
-            session.removeAttribute(UserType.admin.name)
+        if (session.getAttribute(UserType.Admin.name) != null) {
+            session.removeAttribute(UserType.Admin.name)
             return ApiResult.success("注销登录成功")
         } else {
             throw ServiceException("请先登录")
