@@ -13,7 +13,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.codesmither.engine</groupId>
+            <groupId>com.code.smither.engine</groupId>
             <artifactId>smither-engine</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

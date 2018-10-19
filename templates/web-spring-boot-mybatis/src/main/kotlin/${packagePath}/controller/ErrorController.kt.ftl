@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import springfox.documentation.annotations.ApiIgnore
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest
  * @author ${author}
  * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
+@ApiIgnore
 @Controller
 class ErrorController : BasicErrorController(DefaultErrorAttributes(), ErrorProperties()) {
 

@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty
 
 /**
  * Api 通用返回格式实体类
+ * @author ${author}
+ * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
 @Suppress("unused")
 @ApiModel(description = "通用返回格式")
@@ -15,7 +17,7 @@ class ApiResult<T>(
         @ApiModelProperty("返回代码：200-成功 401-未登录 400-客户端错误 500-服务端错误")
         var code: Int = 200,
         @ApiModelProperty("失败原因")
-        var reason: String? = null) : Model() {
+        var reason: String? = "调用成功") : Model() {
 
     companion object {
         fun <TT> success(result: TT?): ApiResult<TT> {

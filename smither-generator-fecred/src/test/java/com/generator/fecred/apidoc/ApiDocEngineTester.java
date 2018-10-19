@@ -1,11 +1,9 @@
 package com.generator.fecred.apidoc;
 
-import com.codesmither.apidoc.ApidocEngine;
-import com.codesmither.apidoc.XmlApidocConfig;
-import com.codesmither.apidoc.factory.ConfigFactory;
+import com.code.smither.apidoc.ApiDocEngine;
+import com.code.smither.apidoc.XmlApiDocConfig;
+import com.code.smither.apidoc.factory.ConfigFactory;
 import org.junit.Test;
-
-import java.text.DecimalFormat;
 
 /**
  * EngineTester
@@ -16,8 +14,8 @@ public class ApiDocEngineTester {
     @Test
     public void engineTrailerCustom() {
         try {
-            XmlApidocConfig config = ConfigFactory.loadConfig("trailer-apidoc-custom.properties");
-            ApidocEngine engine = new ApidocEngine(config);
+            XmlApiDocConfig config = ConfigFactory.loadConfig("trailer-apidoc-custom.properties");
+            ApiDocEngine engine = new ApiDocEngine(config);
             engine.launch();
         } catch (Throwable e) {
             e.printStackTrace();

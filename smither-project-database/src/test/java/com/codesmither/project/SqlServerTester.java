@@ -1,7 +1,7 @@
-package com.codesmither.project;
+package com.code.smither.project;
 
-import com.codesmither.project.base.api.DbFactory;
-import com.codesmither.project.database.factory.C3P0Factory;
+import com.code.smither.project.base.api.DbFactory;
+import com.code.smither.project.database.factory.C3P0Factory;
 import org.junit.Test;
 
 import javax.sql.DataSource;

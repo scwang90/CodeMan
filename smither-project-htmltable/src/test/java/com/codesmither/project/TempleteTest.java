@@ -1,13 +1,13 @@
-package com.codesmither.project;
+package com.code.smither.project;
 
-import com.codesmither.project.base.ProjectEngine;
-import com.codesmither.project.base.model.Table;
-import com.codesmither.project.base.model.TableColumn;
-import com.codesmither.project.htmltable.HtmlTableConfig;
-import com.codesmither.project.htmltable.HtmlTableEngine;
-import com.codesmither.project.database.factory.ConfigFactory;
-import com.codesmither.project.database.impl.HtmlTableModelBuilder;
-import com.codesmither.project.database.impl.HtmlTableSource;
+import com.code.smither.project.base.ProjectEngine;
+import com.code.smither.project.base.model.Table;
+import com.code.smither.project.base.model.TableColumn;
+import com.code.smither.project.htmltable.HtmlTableConfig;
+import com.code.smither.project.htmltable.HtmlTableEngine;
+import com.code.smither.project.database.factory.ConfigFactory;
+import com.code.smither.project.database.impl.HtmlTableModelBuilder;
+import com.code.smither.project.database.impl.HtmlTableSource;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import java.sql.Types;
 public class TempleteTest {
 
     @Test
-    public void HtmlTableTemplete() {
+    public void HtmlTableTemplate() {
         try {
             HtmlTableConfig config = ConfigFactory.loadConfig("config.properties");
             HtmlTableEngine engine = new HtmlTableEngine(config);
@@ -32,7 +32,7 @@ public class TempleteTest {
     }
 
     @Test
-    public void HtmlTableTestCloudTemplete() {
+    public void HtmlTableTestCloudTemplate() {
         try {
             HtmlTableConfig config = ConfigFactory.loadConfig("config.properties");
             config.setHtmlTablePath("../htmltable/TestCloud.html");

@@ -14,7 +14,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.codesmither.apidoc</groupId>
+            <groupId>com.code.smither.apidoc</groupId>
             <artifactId>smither-apidoc</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

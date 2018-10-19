@@ -1,7 +1,7 @@
 package com.generator.poetry.drawable2svg;
 
-import com.codesmither.engine.Config;
-import com.codesmither.engine.api.*;
+import com.code.smither.engine.Config;
+import com.code.smither.engine.api.*;
 import com.generator.poetry.drawable2svg.model.Drawable;
 import com.generator.poetry.drawable2svg.model.Path;
 import com.generator.poetry.drawable2svg.model.Root;
@@ -14,7 +14,6 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,14 +33,14 @@ public class DrawableBuilder implements IModelBuilder {
         Config con = new Config();
         con.setTemplatePath(config.getDrawablePath());
         con.initEmptyFieldsWithDefaultValues();
-        TaskLoader taskLoader = con.getTaskLoader();
+        ITaskLoader taskLoader = con.getTaskLoader();
         List<ITask> tasks = taskLoader.loadTask(new File(config.getDrawablePath()), new File(config.getDrawablePath()), new IFileFilter() {
             @Override
-            public boolean isNeedFilteFile(File file) {
+            public boolean isNeedFilterFile(File file) {
                 return !file.getName().endsWith(".xml");
             }
             @Override
-            public boolean isNeedFiltePath(File path) {
+            public boolean isNeedFilterPath(File path) {
                 return false;
             }
         });

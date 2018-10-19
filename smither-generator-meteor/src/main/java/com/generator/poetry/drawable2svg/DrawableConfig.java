@@ -1,6 +1,6 @@
 package com.generator.poetry.drawable2svg;
 
-import com.codesmither.engine.Config;
+import com.code.smither.engine.Config;
 
 /**
  *

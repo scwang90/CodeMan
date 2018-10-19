@@ -1,5 +1,10 @@
 package ${packageName}.model.api
 
+/**
+ * @apiNote 数据分页列表信息
+ * @author ${author}
+ * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ */
 data class Paging (
         var skip: Int = 0,
         var page: Int = 0,

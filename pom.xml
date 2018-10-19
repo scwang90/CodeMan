@@ -19,7 +19,7 @@
 	<dependencies>
 
 		<!--<dependency>-->
-			<!--<groupId>com.codesmither.project.database</groupId>-->
+			<!--<groupId>com.code.smither.project.database</groupId>-->
 			<!--<artifactId>smither-project-database</artifactId>-->
 			<!--<version>0.0.1-SNAPSHOT</version>-->
 		<!--</dependency>-->
@@ -44,6 +44,11 @@
 			<version>2.4.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.25-incubating</version>
+		</dependency>
 	</dependencies>
 
 	<build>

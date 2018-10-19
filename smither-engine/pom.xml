@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.codesmither.engine</groupId>
+    <groupId>com.code.smither.engine</groupId>
     <artifactId>smither-engine</artifactId>
 
     <dependencies>

@@ -14,13 +14,13 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.codesmither.apidoc</groupId>
+            <groupId>com.code.smither.apidoc</groupId>
             <artifactId>smither-apidoc</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.codesmither.project.database</groupId>
+            <groupId>com.code.smither.project.database</groupId>
             <artifactId>smither-project-database</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

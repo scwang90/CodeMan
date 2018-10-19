@@ -1,6 +1,6 @@
 package com.generator.poetry.drawable2svg.model;
 
-import com.codesmither.engine.api.IModel;
+import com.code.smither.engine.api.IModel;
 
 import java.util.ArrayList;
 import java.util.List;

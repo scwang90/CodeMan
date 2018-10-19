@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.codesmither.project.database</groupId>
+    <groupId>com.code.smither.project.database</groupId>
     <artifactId>smither-project-database</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.codesmither.project.base</groupId>
+            <groupId>com.code.smither.project.base</groupId>
             <artifactId>smither-project-base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

@@ -1,6 +1,6 @@
-package com.codesmither.apidoc;
+package com.code.smither.apidoc;
 
-import com.codesmither.apidoc.factory.ConfigFactory;
+import com.code.smither.apidoc.factory.ConfigFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -60,8 +60,8 @@ public class EngineTester {
     @Test
     public void engine() {
         try {
-            XmlApidocConfig config = ConfigFactory.loadConfig("config.properties");
-            ApidocEngine engine = new ApidocEngine(config);
+            XmlApiDocConfig config = ConfigFactory.loadConfig("config.properties");
+            ApiDocEngine engine = new ApiDocEngine(config);
             engine.launch();
         } catch (Throwable e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class EngineTester {
     }
 
     public static void main(String[] args) throws IOException {
-        XmlApidocConfig config = ConfigFactory.loadConfig("config.properties");
+        XmlApiDocConfig config = ConfigFactory.loadConfig("config.properties");
         System.out.println(formatXML(config));
     }
 
