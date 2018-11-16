@@ -35,10 +35,10 @@ public class ConfigFactory {
 		config.setTemplatePath(properties.getProperty("code.smither.template.path",config.getTemplatePath()));
 		config.setTemplateCharset(properties.getProperty("code.smither.template.charset",config.getTemplateCharset()));
 
-		config.setTemplateIncludeFile(properties.getProperty("code.smither.template.include.file",config.getTemplateIncludeFile()));
-		config.setTemplateIncludePath(properties.getProperty("code.smither.template.include.path",config.getTemplateIncludePath()));
-		config.setTemplateFilterFile(properties.getProperty("code.smither.template.filter.file",config.getTemplateFilterFile()));
-		config.setTemplateFilterPath(properties.getProperty("code.smither.template.filter.path",config.getTemplateFilterPath()));
+		config.setIncludeFile(properties.getProperty("code.smither.template.include.file",config.getIncludeFile()));
+		config.setIncludePath(properties.getProperty("code.smither.template.include.path",config.getIncludePath()));
+		config.setFilterFile(properties.getProperty("code.smither.template.filter.file",config.getFilterFile()));
+		config.setFilterPath(properties.getProperty("code.smither.template.filter.path",config.getFilterPath()));
 
 		config.setTargetPath(properties.getProperty("code.smither.target.path",config.getTargetPath()));
 		config.setTargetCharset(properties.getProperty("code.smither.target.charset",config.getTargetCharset()));
