@@ -121,7 +121,7 @@ public class Config implements IConfig {
 
     @Override
     public IFileFilter getFileFilter() {
-        return null;
+        return fileFilter;
     }
 
     public void setFileFilter(IFileFilter fileFilter) {

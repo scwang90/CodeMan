@@ -6,7 +6,7 @@
     <#if table.idColumn.nameSQL == column.nameSQL>
       <id column="${column.nameSQL}" jdbcType="${column.typeMyBatis}" property="${column.fieldType}" />
     <#else >
-      <result column="${column.nameSQL}" jdbcType="${column.typeMyBatis}" property="${column.fieldType}" />
+      <result column="${column.nameSQL}" jdbcType="${column.typeMyBatis}" property="${column.fieldName}" />
     </#if>
     </#list>
   </resultMap>

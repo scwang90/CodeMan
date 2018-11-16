@@ -75,36 +75,14 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param id 主键ID
 	 * @return null 或者 主键等于id的数据
 	 */
-	<@single_line>@Select("SELECT
-		<#list table.columns as column>
-			<#if column.name==column.fieldName>
-				${column.nameSQL}
-			</#if>
-			<#if column.name!=column.fieldName>
-				${column.nameSQL} ${column.fieldName}
-			</#if>
-			<#if column_has_next>,</#if>
-		</#list>
-		FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
-	</@single_line>
+	@Select("SELECT * FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
 	override fun findById(@Param("id") id: Any): ${className}
 
 	/**
 	 * 获取全部数据
 	 * @return 全部数据列表
 	 */
-	<@single_line>@Select("SELECT
-		<#list table.columns as column>
-			<#if column.name==column.fieldName>
-			${column.nameSQL}
-			</#if>
-			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
-			</#if>
-			<#if column_has_next>,</#if>
-		</#list>
-		FROM ${table.nameSQL} ${r"\${order}"}")
-	</@single_line>
+	@Select("SELECT * FROM ${table.nameSQL} ${r"\${order}"}")
 	override fun findAll(@Param("order") order: String): List<${className}>
 
 	/**
@@ -113,18 +91,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param start 起始返回
 	 * @return 分页列表数据
 	 */
-	<@single_line>@Select("SELECT
-		<#list table.columns as column>
-			<#if column.name==column.fieldName>
-			${column.nameSQL}
-			</#if>
-			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
-			</#if>
-			<#if column_has_next>,</#if>
-		</#list>
-		FROM ${table.nameSQL} ${r"\${order}"} LIMIT ${r"\${start}"},${r"\${limit}"}")
-	</@single_line>
+	@Select("SELECT * FROM ${table.nameSQL} ${r"\${order}"} LIMIT ${r"\${start}"},${r"\${limit}"}")
 	override fun findByPage(@Param("order") order: String, @Param("limit") limit: Int, @Param("start") start: Int): List<${className}>
 
 	/**
@@ -166,18 +133,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param where SQL条件语句
 	 * @return 符合条件的列表数据
 	 */
-	<@single_line>@Select("SELECT
-		<#list table.columns as column>
-			<#if column.name==column.fieldName>
-			${column.nameSQL}
-			</#if>
-			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
-			</#if>
-			<#if column_has_next>,</#if>
-		</#list>
-		FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"}")
-	</@single_line>
+	@Select("SELECT * FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"}")
 	override fun findWhere(@Param("order") order: String, @Param("where") where: String): List<${className}>
 
 	/**
@@ -187,18 +143,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param start 起始返回
 	 * @return 符合条件的列表数据
 	 */
-	<@single_line>@Select("SELECT
-		<#list table.columns as column>
-			<#if column.name==column.fieldName>
-			${column.nameSQL}
-			</#if>
-			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
-			</#if>
-			<#if column_has_next>,</#if>
-		</#list>
-		FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"} LIMIT ${r"\${start}"},${r"\${limit}"}")
-	</@single_line>
+	@Select("SELECT * FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"} LIMIT ${r"\${start}"},${r"\${limit}"}")
 	override fun findWhereByPage(@Param("order") order: String, @Param("where") where: String, @Param("limit") limit: Int, @Param("start") start: Int): List<${className}>
 
 	/**
@@ -207,17 +152,6 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param value 值
 	 * @return 返回符合条件的数据列表
 	 */
-	<@single_line>@Select("SELECT
-		<#list table.columns as column>
-			<#if column.name==column.fieldName>
-			${column.nameSQL}
-			</#if>
-			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
-			</#if>
-			<#if column_has_next>,</#if>
-		</#list>
-		FROM ${table.nameSQL} WHERE ${r"\${propertyName}"}=${r"#{value}"} ${r"\${order}"}")
-	</@single_line>
+	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"\${propertyName}"}=${r"#{value}"} ${r"\${order}"}")
 	override fun findByPropertyName(@Param("order") order: String, @Param("propertyName") propertyName: String, @Param("value") value: Any): List<${className}>
 }
