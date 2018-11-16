@@ -30,13 +30,13 @@ class ${className}Controller {
 	@GetMapping
 	@ApiOperation(value = "${table.remark}列表", notes = "")
 	@ApiImplicitParams(
-		ApiImplicitParam(paramType = "form", name = "size", value = "分页大小", required = true, defaultValue = "20"),
-		ApiImplicitParam(paramType = "form", name = "page", value = "分页页码（0开始）", defaultValue = "0"),
-		ApiImplicitParam(paramType = "form", name = "skip", value = "分页开始（0开始）", defaultValue = "0")
+		ApiImplicitParam(paramType = "query", name = "size", value = "分页大小", required = true, defaultValue = "20"),
+		ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始）", defaultValue = "0"),
+		ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始）", defaultValue = "0")
 	)
 	fun list(@ApiIgnore paging: Paging): ApiResult<Paged<${className}>> {
-		val count = mapper.countWhere("")
-		val list = mapper.findWhereByPage("", "", paging.count(), paging.start())
+		val count = mapper.countAll()
+		val list = mapper.findByPage("", paging.count(), paging.start())
 		return ApiResult(result = Paged(paging, list, count))
     }
 

@@ -48,7 +48,7 @@ class ${projectName}Application : WebMvcConfigurer {
                         .description("${projectName} 管理后台 API")//描述
                         .build())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("${packageName}.controller.manager"))
+                .apis(RequestHandlerSelectors.basePackage("${packageName}.controller"))
                 .paths(PathSelectors.any())
                 .build()
     }

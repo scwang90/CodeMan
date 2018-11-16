@@ -3,6 +3,7 @@ package ${packageName}.controller
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.RequestMapping
+import springfox.documentation.annotations.ApiIgnore
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest
 * @author ${author}
 * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
 */
+@ApiIgnore
 @Controller
 class IndexController {
     <#list tables as table>

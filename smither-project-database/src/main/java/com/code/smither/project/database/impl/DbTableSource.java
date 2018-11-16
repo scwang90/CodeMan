@@ -6,6 +6,7 @@ import com.code.smither.project.base.api.DbFactory;
 import com.code.smither.project.base.api.Remarker;
 import com.code.smither.project.base.api.TableSource;
 import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.base.constant.MybatisLang;
 import com.code.smither.project.base.impl.DbRemarker;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
@@ -28,6 +29,7 @@ public class DbTableSource implements TableSource {
 	protected Connection connection = null;
 	protected DatabaseMetaData databaseMetaData = null;
 	protected Remarker remarker = new DbRemarker();
+	protected MybatisLang mybatisLang = new MybatisLang();
 
 	public DbTableSource(ProjectConfig config, DbFactory dbFactory) {
 		this(config, dbFactory, false);
@@ -131,6 +133,7 @@ public class DbTableSource implements TableSource {
 			column.setDefValue(resultSet.getString("COLUMN_DEF"));
 			column.setNullable(resultSet.getBoolean("NULLABLE"));
 			column.setRemark(resultSet.getString("REMARKS"));
+			column.setTypeMyBatis(mybatisLang.getType(column.getTypeInt()));
 
 			Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
 			column.setAutoIncrement(Boolean.valueOf(true).equals(is_autoincrement) || "YES".equalsIgnoreCase(is_autoincrement + "") || Integer.valueOf("1").equals(is_autoincrement));
