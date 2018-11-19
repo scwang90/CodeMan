@@ -51,4 +51,15 @@ public class DataBaseEngineTester {
         }
     }
 
+    @Test
+    public void DataBaseIntegrity() {
+        try {
+            DataBaseConfig config = ConfigFactory.loadConfig("qing-zhen-Integrity-manager.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

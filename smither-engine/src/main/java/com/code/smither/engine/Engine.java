@@ -4,6 +4,7 @@ import com.code.smither.engine.api.*;
 import com.code.smither.engine.factory.FreemarkerFactory;
 import com.code.smither.engine.util.FileUtil;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 import java.io.*;
 import java.util.LinkedHashSet;
@@ -74,31 +75,41 @@ public class Engine implements ITaskRunner {
         Template nameTemplate = getTemplate(outfile.getAbsolutePath());
 
         print.println(task.getTemplateFile());
-        for (IModel model : root.getModels()) {
-            root.bindModel(model);
-            StringWriter writer = new StringWriter();
-            nameTemplate.process(root, writer);
-            String path = writer.getBuffer().toString();
-            if (path.endsWith(".ftl")) {
-                path = path.substring(0, path.length() - 4);
+        if (root.getModels() != null && root.getModels().size() > 0) {
+            for (IModel model : root.getModels()) {
+                root.bindModel(model);
+                processTemplate(task, root, set, template, nameTemplate);
             }
-
-            if (!set.contains(path)) {
-
-                print.println("  =>>" + path);
-
-                File file = new File(path);
-                if (FileUtil.isTextFile(task.getTemplateFile())) {
-                    Writer out = getFileWriter(file);
-                    template.process(root, out);
-                    out.close();
-                } else {
-                    FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
-                }
-                set.add(path);
+        } else {
+            if (!task.getTemplateFile().getAbsolutePath().contains("{className}")) {
+                processTemplate(task, root, set, template, nameTemplate);
             }
         }
         print.println();
+    }
+
+    private void processTemplate(ITask task, IRootModel root, Set<String> set, Template template, Template nameTemplate) throws TemplateException, IOException {
+        StringWriter writer = new StringWriter();
+        nameTemplate.process(root, writer);
+        String path = writer.getBuffer().toString();
+        if (path.endsWith(".ftl")) {
+            path = path.substring(0, path.length() - 4);
+        }
+
+        if (!set.contains(path)) {
+
+            print.println("  =>>" + path);
+
+            File file = new File(path);
+            if (FileUtil.isTextFile(task.getTemplateFile())) {
+                Writer out = getFileWriter(file);
+                template.process(root, out);
+                out.close();
+            } else {
+                FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
+            }
+            set.add(path);
+        }
     }
 
     private Writer getFileWriter(File file) throws IOException{
