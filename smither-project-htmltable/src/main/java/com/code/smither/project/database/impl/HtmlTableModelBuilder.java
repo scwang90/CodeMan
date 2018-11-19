@@ -35,7 +35,7 @@ public class HtmlTableModelBuilder implements IModelBuilder {
         model.setJdbc(new DatabaseJdbc());
         model.getJdbc().setUrl("");
         model.getJdbc().setDriver("");
-        model.getJdbc().setUsename("");
+        model.getJdbc().setUsername("");
         model.getJdbc().setPassword("");
         model.setTables(source.build());
         return model;
