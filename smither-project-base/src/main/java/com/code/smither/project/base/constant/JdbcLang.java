@@ -12,7 +12,7 @@ import java.util.*;
  * Mybatis 语言规则实现
  * Created by root on 16-1-28.
  */
-public class MybatisLang extends ProgramLang {
+public class JdbcLang extends ProgramLang {
 
     private static final String[] extensions = {
             ".xml"

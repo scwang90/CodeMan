@@ -13,7 +13,7 @@
 	</named-config>
 	<named-config name="Credit">
 		<property name="driverClass">org.sqlite.JDBC</property>
-		<property name="jdbcUrl">jdbc:sqlite:Z:/DataComparison/credit.db</property>
+		<property name="jdbcUrl">jdbc:sqlite:E:\Workspaces\projects-idea\DataComparison\credit.db</property>
 	</named-config>
 	<named-config name="Exhibition">
 		<property name="user">root</property>

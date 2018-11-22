@@ -6,7 +6,7 @@ import com.code.smither.project.base.api.DbFactory;
 import com.code.smither.project.base.api.Remarker;
 import com.code.smither.project.base.api.TableSource;
 import com.code.smither.project.base.constant.Database;
-import com.code.smither.project.base.constant.MybatisLang;
+import com.code.smither.project.base.constant.JdbcLang;
 import com.code.smither.project.base.impl.DbRemarker;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
@@ -24,12 +24,13 @@ import java.util.List;
 public class DbTableSource implements TableSource {
 
 	protected boolean autoClose = false;
+	protected ProjectConfig config = null;
 	protected DbFactory dbFactory = null;
 	protected ClassConverter classConverter = null;
 	protected Connection connection = null;
 	protected DatabaseMetaData databaseMetaData = null;
 	protected Remarker remarker = new DbRemarker();
-	protected MybatisLang mybatisLang = new MybatisLang();
+	protected JdbcLang jdbcLang = new JdbcLang();
 
 	public DbTableSource(ProjectConfig config, DbFactory dbFactory) {
 		this(config, dbFactory, false);
@@ -37,6 +38,7 @@ public class DbTableSource implements TableSource {
 
 	DbTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoClose) {
 		super();
+		this.config = config;
 		this.dbFactory = dbFactory;
 		this.autoClose = autoClose;
 		this.classConverter = config.getClassConverter();
@@ -78,6 +80,12 @@ public class DbTableSource implements TableSource {
 			table.setClassNameUpper(table.getClassName().toUpperCase());
 			table.setClassNameLower(table.getClassName().toLowerCase());
 			table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
+
+			String division = this.config.getTableDivision();
+			if (division == null || division.length() == 0) {
+				division = "_";
+			}
+			table.setUrlPathName(table.getName().toLowerCase().replace(division,"-"));
 
 			if (table.getRemark() == null || table.getRemark().trim().length()==0) {
 				table.setRemark(getTableRemarks(table.getName()));
@@ -133,7 +141,7 @@ public class DbTableSource implements TableSource {
 			column.setDefValue(resultSet.getString("COLUMN_DEF"));
 			column.setNullable(resultSet.getBoolean("NULLABLE"));
 			column.setRemark(resultSet.getString("REMARKS"));
-			column.setTypeMyBatis(mybatisLang.getType(column.getTypeInt()));
+			column.setTypeJdbc(jdbcLang.getType(column.getTypeInt()));
 
 			Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
 			column.setAutoIncrement(Boolean.valueOf(true).equals(is_autoincrement) || "YES".equalsIgnoreCase(is_autoincrement + "") || Integer.valueOf("1").equals(is_autoincrement));

@@ -22,6 +22,17 @@ public class ConfigFactory {
 
 		config.setDbConfigName(property.getProperty("code.smither.database.config.name",config.getDbConfigName()));
 
+		config.setTemplateFtlOnly("true".equalsIgnoreCase(property.getProperty("code.smither.template.ftl-only")));
+		config.setTemplateLang(property.getProperty("code.smither.template.lang",config.getTemplateLang()));
+		config.setTemplatePath(property.getProperty("code.smither.template.path",config.getTemplatePath()));
+		config.setTemplateCharset(property.getProperty("code.smither.template.charset",config.getTemplateCharset()));
+
+		config.setTargetPath(property.getProperty("code.smither.target.path",config.getTargetPath()));
+		config.setTargetCharset(property.getProperty("code.smither.target.charset",config.getTargetCharset()));
+		config.setTargetProjectName(property.getProperty("code.smither.target.project.name",config.getTargetProjectName()));
+		config.setTargetProjectAuthor(property.getProperty("code.smither.target.project.author",config.getTargetProjectAuthor()));
+		config.setTargetProjectPackage(property.getProperty("code.smither.target.project.packagename",config.getTargetProjectPackage()));
+
 		config.setTablePrefix(property.getProperty("code.smither.database.table.prefix",config.getTablePrefix()));
 		config.setTableSuffix(property.getProperty("code.smither.database.table.suffix",config.getTableSuffix()));
 		config.setTableDivision(property.getProperty("code.smither.database.table.division",config.getTableDivision()));
@@ -30,20 +41,10 @@ public class ConfigFactory {
 		config.setColumnSuffix(property.getProperty("code.smither.database.column.suffix",config.getColumnSuffix()));
 		config.setColumnDivision(property.getProperty("code.smither.database.column.division",config.getColumnDivision()));
 
-		config.setTemplateLang(property.getProperty("code.smither.template.lang",config.getTemplateLang()));
-		config.setTemplatePath(property.getProperty("code.smither.template.path",config.getTemplatePath()));
-		config.setTemplateCharset(property.getProperty("code.smither.template.charset",config.getTemplateCharset()));
-
 		config.setIncludeFile(property.getProperty("code.smither.template.include.file",config.getIncludeFile()));
 		config.setIncludePath(property.getProperty("code.smither.template.include.path",config.getIncludePath()));
 		config.setFilterFile(property.getProperty("code.smither.template.filter.file",config.getFilterFile()));
 		config.setFilterPath(property.getProperty("code.smither.template.filter.path",config.getFilterPath()));
-
-		config.setTargetPath(property.getProperty("code.smither.target.path",config.getTargetPath()));
-		config.setTargetCharset(property.getProperty("code.smither.target.charset",config.getTargetCharset()));
-		config.setTargetProjectName(property.getProperty("code.smither.target.project.name",config.getTargetProjectName()));
-		config.setTargetProjectAuthor(property.getProperty("code.smither.target.project.author",config.getTargetProjectAuthor()));
-		config.setTargetProjectPackage(property.getProperty("code.smither.target.project.packagename",config.getTargetProjectPackage()));
 
 		return config;
 	}

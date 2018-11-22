@@ -19,6 +19,7 @@ public class Config {
     protected String templateLang = ProgramLang.Lang.Java.value;
     protected String templatePath = "templates/dbutil-spring-web";
     protected String templateCharset = "UTF-8";
+    protected boolean templateFtlOnly = false;
 
     protected String templateIncludeFile = "*.*";
     protected String templateIncludePath = "*";
@@ -109,6 +110,14 @@ public class Config {
 
     public void setTemplateCharset(String templateCharset) {
         this.templateCharset = templateCharset;
+    }
+
+    public void setTemplateFtlOnly(boolean templateFtlOnly) {
+        this.templateFtlOnly = templateFtlOnly;
+    }
+
+    public boolean isTemplateFtlOnly() {
+        return templateFtlOnly;
     }
 
     public String getTemplateIncludeFile() {

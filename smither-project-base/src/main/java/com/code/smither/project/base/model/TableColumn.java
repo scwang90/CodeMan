@@ -11,10 +11,10 @@ public class TableColumn {
 	
 	private String name;// 原名称
 	private String nameSQL;// SQL语句中使用的名称
-	private String type;// 字段类型名称
+	private String type;// 字段类型名称（数据库返回的值）
+	private String typeJdbc;// 字段类型名称（JDBC 枚举，所有数据库一致性）
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
-	private String typeMyBatis;// MyBatis XML 字段类型名称
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
@@ -69,12 +69,15 @@ public class TableColumn {
 		this.type = type;
 	}
 
-	public String getTypeMyBatis() {
-		return typeMyBatis;
+	public String getTypeJdbc() {
+		return typeJdbc;
 	}
 
-	public void setTypeMyBatis(String typeMyBatis) {
-		this.typeMyBatis = typeMyBatis;
+	public void setTypeJdbc(String typeJdbc) {
+		if (typeJdbc == null) {
+			typeJdbc = "";
+		}
+		this.typeJdbc = typeJdbc;
 	}
 
 	public String getRemark() {

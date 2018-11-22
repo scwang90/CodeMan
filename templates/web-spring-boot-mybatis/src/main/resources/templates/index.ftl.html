@@ -1,0 +1,370 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Xenon Boostrap Admin Panel"/>
+    <meta name="author" content=""/>
+
+    <title>${projectName}</title>
+
+    <!--<link rel="stylesheet" href="http://fonts.useso.com/css?family=Arimo:400,700,400italic">-->
+    <link rel="stylesheet" href="/assets/css/fonts/linecons/css/linecons.css">
+    <link rel="stylesheet" href="/assets/css/fonts/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/xenon-core.css">
+    <link rel="stylesheet" href="/assets/css/xenon-forms.css">
+    <link rel="stylesheet" href="/assets/css/xenon-components.css">
+    <link rel="stylesheet" href="/assets/css/xenon-skins.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <!-- Imported stylesheet on this page -->
+    <link rel="stylesheet" href="/assets/css/fonts/elusive/css/elusive.css">
+    <link rel="stylesheet" href="/assets/js/datatables/dataTables.bootstrap.css">
+
+    <script src="/assets/js/jquery-1.11.1.min.js"></script>
+    <script src="/js/vue.min.js"></script>
+    <script src="/js/vee-validate.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="page-body">
+
+<div id="vue-frame" style="height: 100%">
+    <div th:replace="component/setting.html :: setting-panel('scwang90')"></div>
+    <nav th:replace="component/navbar.html :: nav-bar" ></nav>
+
+    <div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+        <!-- Add "fixed" class to make the sidebar fixed always to the browser viewport. -->
+        <!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
+        <!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
+
+        <div th:replace="component/sidebar.html :: side-bar"></div>
+
+
+        <div id="users" class="main-content" >
+
+            <div class="page-title">
+
+                <div class="title-env">
+                    <h1 class="title">管理员首页</h1>
+                    <p class="description">展示一些东西</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">主面板</h3>
+
+                            <div class="panel-options">
+                                <a href="#">
+                                    <i class="linecons-cog"></i>
+                                </a>
+
+                                <a href="#" data-toggle="panel">
+                                    <span class="collapse-icon">&ndash;</span>
+                                    <span class="expand-icon">+</span>
+                                </a>
+
+                                <a href="#" data-toggle="reload">
+                                    <i class="fa-rotate-right"></i>
+                                </a>
+
+                                <a href="#" data-toggle="remove">
+                                    &times;
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div th:replace="component/footer.html :: footer-bar"></div>
+        </div>
+
+    </div>
+
+    <!-- Modal 编辑对话框-->
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form role="form" id="form-edit" method="post" action="javascript:void(0)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">用户信息</h4>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" :class="{'validate-has-error': errors.has('edit-username') }">
+                                    <label class="control-label">姓名</label>
+                                    <input type="text" name="edit-username" class="form-control" v-model="item.username"  v-validate="'required'">
+                                    <span v-show="errors.has('edit-username')" class="validate-has-error">必须输入名称</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="edit-gender" class="control-label">性别</label>
+                                    <select class="form-control" id="edit-gender" v-model="item.gender">
+                                        <option value="1">男</option>
+                                        <option value="0">女</option>
+                                    </select>
+                                    <script type="text/javascript">
+                                        // jQuery(document).ready(function($)
+                                        // {
+                                        //     $("#edit-gender").selectBoxIt().on('open', function()
+                                        //     {
+                                        //         // Adding Custom Scrollbar
+                                        //         $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                                        //     });
+                                        // });
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="edit-status" class="control-label">状态</label>
+                                    <select class="form-control" id="edit-status" v-model="item.status">
+                                        <option value="1">未认证</option>
+                                        <option value="2">审核中</option>
+                                        <option value="3">已认证</option>
+                                        <option value="4">认证不通过</option>
+                                    </select>
+                                    <script type="text/javascript">
+                                        // jQuery(document).ready(function($)
+                                        // {
+                                        //     $("#edit-status").selectBoxIt().on('open', function()
+                                        //     {
+                                        //         // Adding Custom Scrollbar
+                                        //         $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                                        //     });
+                                        // });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" :class="{'validate-has-error': errors.has('edit-mobile') }">
+                                    <label class="control-label">联系方式</label>
+                                    <input type="text" name="edit-mobile" class="form-control" v-model="item.mobile" v-validate="{regex:/^1[345789]\d{9}$/}" >
+                                    <span v-show="errors.has('edit-mobile')" class="validate-has-error">请输入正确的联系方式</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">身份号码</label>
+                                    <input type="text" class="form-control" v-model="item.identityNumber">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-success" @click="submit(item)">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 删除对话框-->
+    <div class="modal fade" id="modal-remove">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Basic Modal</h4>
+                </div>
+
+                <div class="modal-body" v-text="'确定要删除【'+(item.name || item.identityNumber)+'】吗'">
+                    Hello I am a Modal!
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" @click="remove(item)">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-loading-overlay">
+        <div class="loader-2"></div>
+    </div>
+</div>
+
+<!-- Bottom Scripts -->
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/TweenMax.min.js"></script>
+<script src="/assets/js/resizeable.js"></script>
+<script src="/assets/js/joinable.js"></script>
+<script src="/assets/js/xenon-api.js"></script>
+<script src="/assets/js/xenon-toggles.js"></script>
+
+
+<!-- Imported scripts on this page -->
+<script src="/assets/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="/assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
+<script src="/assets/js/toastr/toastr.min.js"></script>
+
+<!-- JavaScripts initializations and stuff -->
+<script src="/assets/js/xenon-custom.js"></script>
+
+</body>
+
+<script>
+    Vue.config.devtools = true;
+    Vue.use(VeeValidate);
+    new Vue({
+        el: '#vue-frame',
+        data: {
+            item:{},
+            size: 10,
+            page: 0,
+            sizes: [10,20,35,50],
+            paged: {},
+            items: []
+        },
+        mounted: function() {
+            public_vars.$body = $(this.$el);
+            this.loading();
+        },
+        watch: {
+            size: function (newValue, oldValue) {
+                console.log("size",newValue,oldValue);
+                if (newValue !== oldValue) {
+                    this.page = 0;
+                    this.loading();
+                    console.log("this.page = 0");
+                }
+            },
+            page: function (newValue, oldValue) {
+                console.log("page",newValue,oldValue);
+                if (newValue !== oldValue) {
+                    this.loading();
+                }
+            }
+        },
+        methods: {
+            modalEdit: function(item) {
+                this.item = JSON.parse(JSON.stringify(item));
+                this.errors = {};
+                jQuery("#modal-edit").modal('show', {backdrop: 'static'});
+            },
+            modalRemove: function(item) {
+                this.item = JSON.parse(JSON.stringify(item));
+                this.errors = {};
+                jQuery("#modal-remove").modal('show',{backdrop: 'static'});
+            },
+            submit: function(item) {
+                this.items = item;
+                console.log(this.errors);
+                if (this.errors.items.length > 0) {
+                    return false;
+                }
+                var vue = this;
+                show_loading_bar(70); // Fill progress bar to 70% (just a given value)
+                var ajax = new XMLHttpRequest();
+                ajax.open("PUT","/api/v1/user/" + item.id);
+                ajax.setRequestHeader('content-type', 'application/json');
+                ajax.send(JSON.stringify(item));
+                ajax.onload = function () {
+                    show_loading_bar({
+                        delay: 0.5,
+                        pct: 100,
+                        finish: function(){
+                            if (ajax.status === 200) {
+                                var data = JSON.parse(ajax.responseText);
+                                if (data.code === 200) {
+                                    vue.loading();
+                                    jQuery("#modal-edit").modal('hide');
+                                    toastr.success(data.result, "修改成功")
+                                } else {
+                                    toastr.error(data.reason, "修改失败！");
+                                }
+                            } else {
+                                toastr.error(ajax.responseText, "修改失败！");
+                            }
+                        }
+                    });
+                }
+            },
+            remove: function(item) {
+                var vue = this;
+                show_loading_bar(70); // Fill progress bar to 70% (just a given value)
+                var ajax = new XMLHttpRequest();
+                ajax.open("DELETE","/api/v1/user/" + item.id);
+                ajax.send();
+                ajax.onload = function () {
+                    show_loading_bar({
+                        delay: 0.5,
+                        pct: 100,
+                        finish: function(){
+                            if (ajax.status === 200) {
+                                var data = JSON.parse(ajax.responseText);
+                                if (data.code === 200) {
+                                    vue.loading();
+                                    jQuery("#modal-remove").modal('hide');
+                                    toastr.success(data.result, "删除成功")
+                                } else {
+                                    toastr.error(data.reason, "删除失败！");
+                                }
+                            } else {
+                                toastr.error(ajax.responseText, "删除失败！");
+                            }
+                        }
+                    });
+                }
+            },
+            loading: function () {
+                var vue = this;
+                show_loading_bar(70); // Fill progress bar to 70% (just a given value)
+                var ajax = new XMLHttpRequest();
+                ajax.open("GET","/api/v1/user?page=" + vue.page + "&size=" + vue.size);
+                ajax.send();
+                ajax.onload = function () {
+                    show_loading_bar({
+                        delay: 0.5,
+                        pct: 100,
+                        finish: function(){
+                            if (ajax.status === 200) {
+                                var data = JSON.parse(ajax.responseText);
+                                if (data.code === 200) {
+                                    vue.paged = data.result;
+                                    vue.items = data.result.list;
+                                } else {
+                                    toastr.error(data.reason, "获取用户数据失败！");
+                                }
+                            } else {
+                                toastr.error(ajax.responseText, "获取用户数据失败！");
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    });
+</script>
+</html>

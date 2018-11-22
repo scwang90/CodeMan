@@ -16,6 +16,8 @@ public class Table implements IModel {
     private String nameSQL;// SQL语句中使用的名称
     private String remark;// 字段注释
 
+    private String urlPathName;// 对应的 url 路劲名称
+
     private String className;// 原类名称
     private String classNameCamel;// 骆驼峰类名
     private String classNameUpper;// 类名全大写
@@ -103,5 +105,13 @@ public class Table implements IModel {
 
     public void setColumns(List<TableColumn> columns) {
         this.columns = columns;
+    }
+
+    public String getUrlPathName() {
+        return urlPathName;
+    }
+
+    public void setUrlPathName(String urlPathName) {
+        this.urlPathName = urlPathName;
     }
 }

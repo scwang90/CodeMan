@@ -14,7 +14,7 @@ public class TableColumn {
 	private String type;// 字段类型名称
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
-	private String typeMyBatis;// MyBatis XML 字段类型名称
+	private String typeJdbc;// MyBatis XML 字段类型名称
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
@@ -107,12 +107,12 @@ public class TableColumn {
 		this.typeInt = typeInt;
 	}
 
-	public String getTypeMyBatis() {
-		return typeMyBatis;
+	public String getTypeJdbc() {
+		return typeJdbc;
 	}
 
-	public void setTypeMyBatis(String typeMyBatis) {
-		this.typeMyBatis = typeMyBatis;
+	public void setTypeJdbc(String typeJdbc) {
+		this.typeJdbc = typeJdbc;
 	}
 
 

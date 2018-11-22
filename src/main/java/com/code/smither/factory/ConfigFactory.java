@@ -21,16 +21,7 @@ public class ConfigFactory {
 
 		Config config = new Config();
 
-		config.setDbConfigName(properties.getProperty("code.smither.database.config.name",config.getDbConfigName()));
-
-		config.setTablePrefix(properties.getProperty("code.smither.database.table.prefix",config.getTablePrefix()));
-		config.setTableSuffix(properties.getProperty("code.smither.database.table.suffix",config.getTableSuffix()));
-		config.setTableDivision(properties.getProperty("code.smither.database.table.division",config.getTableDivision()));
-
-		config.setColumnPrefix(properties.getProperty("code.smither.database.column.prefix",config.getColumnPrefix()));
-		config.setColumnSuffix(properties.getProperty("code.smither.database.column.suffix",config.getColumnSuffix()));
-		config.setColumnDivision(properties.getProperty("code.smither.database.column.division",config.getColumnDivision()));
-
+		config.setTemplateFtlOnly("true".equalsIgnoreCase(properties.getProperty("code.smither.template.ftl-only")));
 		config.setTemplateLang(properties.getProperty("code.smither.template.lang",config.getTemplateLang()));
 		config.setTemplatePath(properties.getProperty("code.smither.template.path",config.getTemplatePath()));
 		config.setTemplateCharset(properties.getProperty("code.smither.template.charset",config.getTemplateCharset()));
@@ -45,6 +36,17 @@ public class ConfigFactory {
 		config.setTargetProjectName(properties.getProperty("code.smither.target.project.name",config.getTargetProjectName()));
 		config.setTargetProjectAuthor(properties.getProperty("code.smither.target.project.author",config.getTargetProjectAuthor()));
 		config.setTargetProjectPackage(properties.getProperty("code.smither.target.project.packagename",config.getTargetProjectPackage()));
+
+
+		config.setDbConfigName(properties.getProperty("code.smither.database.config.name",config.getDbConfigName()));
+
+		config.setTablePrefix(properties.getProperty("code.smither.database.table.prefix",config.getTablePrefix()));
+		config.setTableSuffix(properties.getProperty("code.smither.database.table.suffix",config.getTableSuffix()));
+		config.setTableDivision(properties.getProperty("code.smither.database.table.division",config.getTableDivision()));
+
+		config.setColumnPrefix(properties.getProperty("code.smither.database.column.prefix",config.getColumnPrefix()));
+		config.setColumnSuffix(properties.getProperty("code.smither.database.column.suffix",config.getColumnSuffix()));
+		config.setColumnDivision(properties.getProperty("code.smither.database.column.division",config.getColumnDivision()));
 
 		return config;
 	}

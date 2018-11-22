@@ -69,31 +69,36 @@ public class Engine implements ITaskRunner {
     @Override
     public void run(ITask task, IRootModel root, IConfig config) throws Exception {
 
-        File outfile = task.getTargetFile();
         Set<String> set = new LinkedHashSet<>();
-        Template template = getTemplate(task.getTemplateFile());
-        Template nameTemplate = getTemplate(outfile.getAbsolutePath());
 
         print.println(task.getTemplateFile());
         if (root.getModels() != null && root.getModels().size() > 0) {
             for (IModel model : root.getModels()) {
                 root.bindModel(model);
-                processTemplate(task, root, set, template, nameTemplate);
+                processTemplate(task, root, set);
             }
         } else {
             if (!task.getTemplateFile().getAbsolutePath().contains("{className}")) {
-                processTemplate(task, root, set, template, nameTemplate);
+                processTemplate(task, root, set);
             }
         }
         print.println();
     }
 
-    private void processTemplate(ITask task, IRootModel root, Set<String> set, Template template, Template nameTemplate) throws TemplateException, IOException {
+    private void processTemplate(ITask task, IRootModel root, Set<String> set) throws TemplateException, IOException {
+
+        Template nameTemplate = getTemplate(task.getTargetFile().getAbsolutePath());
+
         StringWriter writer = new StringWriter();
         nameTemplate.process(root, writer);
         String path = writer.getBuffer().toString();
+        boolean isFtlFile = false;
         if (path.endsWith(".ftl")) {
+            isFtlFile = true;
             path = path.substring(0, path.length() - 4);
+        } else if (path.contains(".ftl.")) {
+            isFtlFile = true;
+            path = path.replace(".ftl.", ".");
         }
 
         if (!set.contains(path)) {
@@ -101,7 +106,8 @@ public class Engine implements ITaskRunner {
             print.println("  =>>" + path);
 
             File file = new File(path);
-            if (FileUtil.isTextFile(task.getTemplateFile())) {
+            if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || !config.isTemplateFtlOnly())) {
+                Template template = getTemplate(task.getTemplateFile());
                 Writer out = getFileWriter(file);
                 template.process(root, out);
                 out.close();

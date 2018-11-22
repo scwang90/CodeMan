@@ -1,0 +1,405 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Xenon Boostrap Admin Panel"/>
+    <meta name="author" content=""/>
+
+    <title>${projectName} - ${table.remark}管理</title>
+
+    <!--<link rel="stylesheet" href="http://fonts.useso.com/css?family=Arimo:400,700,400italic">-->
+    <link rel="stylesheet" href="/assets/css/fonts/linecons/css/linecons.css">
+    <link rel="stylesheet" href="/assets/css/fonts/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/xenon-core.css">
+    <link rel="stylesheet" href="/assets/css/xenon-forms.css">
+    <link rel="stylesheet" href="/assets/css/xenon-components.css">
+    <link rel="stylesheet" href="/assets/css/xenon-skins.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <!-- Imported stylesheet on this page -->
+    <link rel="stylesheet" href="/assets/css/fonts/elusive/css/elusive.css">
+    <link rel="stylesheet" href="/assets/js/datatables/dataTables.bootstrap.css">
+
+    <script src="/assets/js/jquery-1.11.1.min.js"></script>
+    <script src="/js/vue.min.js"></script>
+    <script src="/js/vee-validate.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="page-body">
+
+<div id="vue" style="height: 100%">
+    <div th:replace="component/setting.html :: setting-panel('scwang90')"></div>
+    <nav th:replace="component/navbar.html :: nav-bar" ></nav>
+
+    <div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+        <!-- Add "fixed" class to make the sidebar fixed always to the browser viewport. -->
+        <!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
+        <!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
+
+        <div th:replace="component/sidebar.html :: side-bar"></div>
+
+        <div id="users" class="main-content" >
+
+            <div class="page-title">
+
+                <div class="title-env">
+                    <h1 class="title">${table.remark}管理</h1>
+                    <p class="description">可以添加、删除、修改${table.remark}等等</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">${table.remark}列表</h3>
+
+                            <div class="panel-options">
+                                <a href="#">
+                                    <i class="linecons-cog"></i>
+                                </a>
+
+                                <a href="#" data-toggle="panel">
+                                    <span class="collapse-icon">&ndash;</span>
+                                    <span class="expand-icon">+</span>
+                                </a>
+
+                                <a href="#" data-toggle="reload">
+                                    <i class="fa-rotate-right"></i>
+                                </a>
+
+                                <a href="#" data-toggle="remove">
+                                    &times;
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="dataTables_length"><label>每页显示
+                                        <select v-model="size" class="form-control input-sm">
+                                            <option v-for="item in sizes" :value="item" v-text="item"></option>
+                                        </select> 条数</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="dataTables_filter">
+                                        <label>搜索: <input type="search" class="form-control input-sm" placeholder=""> </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+                                <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <!--<#list table.columns as column>${column.remark}列-->
+                                        <th >${column.remark}</th>
+                                        <!--</#list>-->
+                                        <!--<th data-priority="1">状态</th>-->
+                                        <th >操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(item,index) in items">
+                                        <th v-text="index+1"></th>
+
+                                        <!--<#list table.columns as column>${column.remark}列-->
+                                        <td v-text="${column.fieldName}"></td>
+                                        <!--</#list>-->
+                                        <!--<td v-text="item.statusName"></td>-->
+                                        <td >
+                                            <a href="javascript:void(0)" class="btn btn-secondary btn-sm" @click="modalEdit(item)">编辑</a>
+                                            <a href="javascript:void(0)" class="btn btn-danger btn-sm" @click="modalRemove(item)">删除</a>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="dataTables_info" role="status" aria-live="polite" v-text="'显示 '+ paged.total + ' 条中的第 ' + paged.startRow + ' 条到 ' + paged.endRow + ' 条'">
+                                        Showing 1 to 10 of 57 entries
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example-1_paginate">
+                                        <ul class="pagination">
+                                            <li class="paginate_button"><a href="#" @click="page = paged.navigateFirstPage - 1" v-if="paged.navigateFirstPage < page - 5"><i class="fa-long-arrow-left" ></i></a></li>
+                                            <li class="paginate_button previous" :class="{disabled:paged.firstPage}"><a href="#" @click="page = paged.prePage - 1"><i class="fa-angle-left"></i></a></li>
+                                            <li class="paginate_button" v-for="item in paged.navigatepageNums" :class="{active: item == page + 1 }" ><a href="#" @click="page = item - 1" v-text="item">1</a></li>
+                                            <li class="paginate_button next" :class="{disabled:paged.lastPage}"><a href="#" @click="page = paged.nextPage - 1"><i class="fa-angle-right"></i></a></li>
+                                            <li class="paginate_button"><a href="#" @click="page = paged.navigateLastPage - 1" v-if="paged.navigateLastPage > page + 5"><i class="fa-long-arrow-right" ></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div th:replace="component/footer.html :: footer-bar"></div>
+        </div>
+
+    </div>
+
+    <!-- Modal 编辑对话框-->
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form role="form" id="form-edit" method="post" action="javascript:void(0)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">${table.remark}信息</h4>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                            <!--列<#list table.columns as column>${column.remark}列-->
+                            <div class="col-md-4">
+                                <div class="form-group" :class="{'validate-has-error': errors.has('edit-${column.fieldName}') }">
+                                    <label class="control-label">${column.remark}</label>
+
+                                    <!--<#if column.typeJdbc?contains('CHAR')>-->
+                                        <!--<#if column.nullable>-->
+                                    <input type="text" name="edit-${column.fieldName}" class="form-control" v-model="item.${column.fieldName}" v-validate="'required'">
+                                    <span v-show="errors.has('edit-${column.fieldName}')" class="validate-has-error">必须输入${column.remark}</span>
+                                        <!--<#else>-->
+                                    <input type="text" name="edit-${column.fieldName}" class="form-control" v-model="item.${column.fieldName}">
+                                        <!--</#if>-->
+                                    <!--<#elseif column.typeJdbc?contains('INT')>-->
+                                    <select class="form-control" id="edit-${column.fieldName}" v-model="item.${column.fieldName}">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                    <script type="text/javascript">
+                                        // jQuery(document).ready(function($)
+                                        // {
+                                        //     $("#edit-gender").selectBoxIt().on('open', function()
+                                        //     {
+                                        //         // Adding Custom Scrollbar
+                                        //         $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                                        //     });
+                                        // });
+                                    </script>
+                                    <!--<#else>-->
+                                    <input type="text" name="edit-${column.fieldName}" class="form-control" v-model="item.${column.fieldName}">
+                                    <!--</#if>-->
+
+                                </div>
+                            </div>
+                            <!--</#list>-->
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-success" @click="submit(item)">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 删除对话框-->
+    <div class="modal fade" id="modal-remove">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Basic Modal</h4>
+                </div>
+
+                <div class="modal-body" v-text="'确定要删除【'+(item.name || item.identityNumber)+'】吗'">
+                    Hello I am a Modal!
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" @click="remove(item)">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-loading-overlay">
+        <div class="loader-2"></div>
+    </div>
+</div>
+
+<!-- Bottom Scripts -->
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/TweenMax.min.js"></script>
+<script src="/assets/js/resizeable.js"></script>
+<script src="/assets/js/joinable.js"></script>
+<script src="/assets/js/xenon-api.js"></script>
+<script src="/assets/js/xenon-toggles.js"></script>
+
+
+<!-- Imported scripts on this page -->
+<script src="/assets/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="/assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
+<script src="/assets/js/toastr/toastr.min.js"></script>
+
+<!-- JavaScripts initializations and stuff -->
+<script src="/assets/js/xenon-custom.js"></script>
+
+</body>
+
+<script>
+    Vue.config.devtools = true;
+    Vue.use(VeeValidate);
+    new Vue({
+        el: '#vue',
+        data: {
+            item:{},
+            size: 10,
+            page: 0,
+            sizes: [10,20,35,50],
+            paged: {},
+            items: []
+        },
+        mounted: function() {
+            public_vars.$body = $(this.$el);
+            this.loading();
+        },
+        watch: {
+            size: function (newValue, oldValue) {
+                console.log("size",newValue,oldValue);
+                if (newValue !== oldValue) {
+                    this.page = 0;
+                    this.loading();
+                    console.log("this.page = 0");
+                }
+            },
+            page: function (newValue, oldValue) {
+                console.log("page",newValue,oldValue);
+                if (newValue !== oldValue) {
+                    this.loading();
+                }
+            }
+        },
+        methods: {
+            modalEdit: function(item) {
+                this.item = JSON.parse(JSON.stringify(item));
+                this.errors = {};
+                jQuery("#modal-edit").modal('show', {backdrop: 'static'});
+            },
+            modalRemove: function(item) {
+                this.item = JSON.parse(JSON.stringify(item));
+                this.errors = {};
+                jQuery("#modal-remove").modal('show',{backdrop: 'static'});
+            },
+            submit: function(item) {
+                this.items = item;
+                console.log(this.errors);
+                if (this.errors.items.length > 0) {
+                    return false;
+                }
+                var vue = this;
+                show_loading_bar(70); // Fill progress bar to 70% (just a given value)
+                var ajax = new XMLHttpRequest();
+                ajax.open("PUT","/api/v1/${table.urlPathName}/" + item.id);
+                ajax.setRequestHeader('content-type', 'application/json');
+                ajax.send(JSON.stringify(item));
+                ajax.onload = function () {
+                    show_loading_bar({
+                        delay: 0.5,
+                        pct: 100,
+                        finish: function(){
+                            if (ajax.status === 200) {
+                                var data = JSON.parse(ajax.responseText);
+                                if (data.code === 200) {
+                                    vue.loading();
+                                    jQuery("#modal-edit").modal('hide');
+                                    toastr.success(data.result, "修改成功")
+                                } else {
+                                    toastr.error(data.reason, "修改失败！");
+                                }
+                            } else {
+                                toastr.error(ajax.responseText, "修改失败！");
+                            }
+                        }
+                    });
+                }
+            },
+            remove: function(item) {
+                var vue = this;
+                show_loading_bar(70); // Fill progress bar to 70% (just a given value)
+                var ajax = new XMLHttpRequest();
+                ajax.open("DELETE","/api/v1/${table.urlPathName}/" + item.id);
+                ajax.send();
+                ajax.onload = function () {
+                    show_loading_bar({
+                        delay: 0.5,
+                        pct: 100,
+                        finish: function(){
+                            if (ajax.status === 200) {
+                                var data = JSON.parse(ajax.responseText);
+                                if (data.code === 200) {
+                                    vue.loading();
+                                    jQuery("#modal-remove").modal('hide');
+                                    toastr.success(data.result, "删除成功")
+                                } else {
+                                    toastr.error(data.reason, "删除失败！");
+                                }
+                            } else {
+                                toastr.error(ajax.responseText, "删除失败！");
+                            }
+                        }
+                    });
+                }
+            },
+            loading: function () {
+                var vue = this;
+                show_loading_bar(70); // Fill progress bar to 70% (just a given value)
+                var ajax = new XMLHttpRequest();
+                ajax.open("GET","/api/v1/${table.urlPathName}?page=" + vue.page + "&size=" + vue.size);
+                ajax.send();
+                ajax.onload = function () {
+                    show_loading_bar({
+                        delay: 0.5,
+                        pct: 100,
+                        finish: function(){
+                            if (ajax.status === 200) {
+                                var data = JSON.parse(ajax.responseText);
+                                if (data.code === 200) {
+                                    vue.paged = data.result;
+                                    vue.items = data.result.list;
+                                } else {
+                                    toastr.error(data.reason, "获取用户数据失败！");
+                                }
+                            } else {
+                                toastr.error(ajax.responseText, "获取用户数据失败！");
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    });
+</script>
+</html>

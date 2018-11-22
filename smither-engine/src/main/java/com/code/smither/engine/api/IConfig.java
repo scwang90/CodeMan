@@ -6,6 +6,7 @@ public interface IConfig extends IFilterConfig {
     String getTemplatePath();
     String getTemplateCharset();
     String getTargetCharset();
+    boolean isTemplateFtlOnly();
 
     ITaskLoader getTaskLoader();
     IFieldFiller getFieldFiller();

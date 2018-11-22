@@ -14,10 +14,21 @@ import javax.servlet.http.HttpServletRequest
 @ApiIgnore
 @Controller
 class IndexController {
+
+	@RequestMapping("admin/index")
+	fun index(model: Model, request: HttpServletRequest): String {
+		return "index"
+	}
+
+	@RequestMapping("admin/login")
+	fun login(model: Model, request: HttpServletRequest): String {
+		return "login"
+	}
+
     <#list tables as table>
-	@RequestMapping(value=["${table.classNameLower}/view"])
+	@RequestMapping("admin/manager/${table.urlPathName}")
 	fun ${table.classNameCamel}(model: Model, request: HttpServletRequest): String {
-		return "${table.classNameLower}"
+		return "manager/${table.urlPathName}"
 	}
     </#list>
 }

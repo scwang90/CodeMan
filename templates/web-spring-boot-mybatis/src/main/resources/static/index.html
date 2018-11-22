@@ -6,8 +6,47 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <!--<link rel="stylesheet" href="http://fonts.useso.com/css?family=Arimo:400,700,400italic">-->
+    <link rel="stylesheet" href="assets/css/fonts/linecons/css/linecons.css">
+    <link rel="stylesheet" href="assets/css/fonts/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/xenon-core.css">
+    <link rel="stylesheet" href="assets/css/xenon-forms.css">
+    <link rel="stylesheet" href="assets/css/xenon-components.css">
+    <link rel="stylesheet" href="assets/css/xenon-skins.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <script src="js/vue.min.js"></script>
+    <script src="assets/js/jquery-1.11.1.min.js"></script>
 </head>
 <body>
 
+    <nav class="nav" id="nav">
+        <button @click="click"> 导航栏 {{name}} 5555</button>
+    </nav>
+
+    <div id="content" class="container">
+        <nav-></nav->
+    </div>
+
 </body>
+<script>
+    Vue.component("navbar", {
+        template: $("#nav").remove().prop("outerHTML"),
+        data: function () {
+            return {
+                name: "00"
+            }
+        },
+        methods: {
+            click: function () {
+                this.name += "`"
+            }
+        }
+    });
+    new Vue({
+        el: "#content",
+    });
+</script>
 </html>

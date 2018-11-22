@@ -18,7 +18,7 @@ import springfox.documentation.annotations.ApiIgnore
  */
 @RestController
 @Api("${table.classNameLower}", description = "${table.remark}API")
-@RequestMapping("/api/v1/${table.classNameLower}")
+@RequestMapping("/api/v1/${table.urlPathName}")
 class ${className}Controller {
 
 

@@ -19,6 +19,7 @@ public class Config implements IConfig {
     private String templatePath;
     private String templateCharset;
     private String targetCharset;
+    private boolean templateFtlOnly = false;
 
     private String includeFile = "*.*";
     private String includePath = "*";
@@ -28,6 +29,16 @@ public class Config implements IConfig {
     private transient ITaskLoader taskLoader;
     private transient IFieldFiller fieldFiller;
     private transient IFileFilter fileFilter;
+
+
+    @Override
+    public boolean isTemplateFtlOnly() {
+        return templateFtlOnly;
+    }
+
+    public void setTemplateFtlOnly(boolean templateFtlOnly) {
+        this.templateFtlOnly = templateFtlOnly;
+    }
 
     @Override
     public String getTargetPath() {
