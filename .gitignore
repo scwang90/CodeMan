@@ -4,6 +4,8 @@
 /*.iml
 /*.ipr
 /.idea
+.classpath
+.project
 /src/main/resources/c3p0.properties
 /src/main/resources/config.properties
 /src/test/resources/c3p0-config.xml
