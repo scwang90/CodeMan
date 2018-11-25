@@ -74,6 +74,22 @@
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="dataTables_filter">
+                                        <label>筛选：
+                                            <div class="btn-group">
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                                    Action <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <li class="checkbox-row">
+                                                        <input type="checkbox" class="cbr" id="toggle_all"><label for="toggle_all">全部</label>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li class="checkbox-row" v-for="(column,index) in columns">
+                                                        <input type="checkbox" class="cbr" :id="'toggle-'+column.field" v-model="column.show"><label  v-text="column.show+column.name"></label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </label>
                                         <label>搜索: <input type="search" class="form-control input-sm" placeholder=""> </label>
                                     </div>
                                 </div>
@@ -84,20 +100,15 @@
                                     <thead>
                                     <tr>
                                         <th>序号</th>
-                                        <!--<#list table.columns as column>${column.remark}列-->
-                                        <th >${column.remark}</th>
-                                        <!--</#list>-->
+                                        <th v-for="(column, index) in columns" v-text="column.name" v-show="column.show"></th>
                                         <!--<th data-priority="1">状态</th>-->
                                         <th >操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="(item,index) in items">
-                                        <th v-text="index+1"></th>
-
-                                        <!--<#list table.columns as column>${column.remark}列-->
-                                        <td v-text="item.${column.fieldName}"></td>
-                                        <!--</#list>-->
+                                        <th v-text="page*size+index+1"></th>
+                                        <td v-for="(column, index) in columns" v-text="item[column.field]" v-show="column.show"></td>
                                         <!--<td v-text="item.statusName"></td>-->
                                         <td >
                                             <a href="javascript:void(0)" class="btn btn-secondary btn-sm" @click="modalEdit(item)">编辑</a>
@@ -110,7 +121,7 @@
 
                             </div>
 
-                            <div class="row" th:include="component/pagination :: pagination-bar" th:with="auto=true,total='page.total',size='size',value='page+1'"></div>
+                            <div class="row" th:include="component/pagination :: pagination-bar" th:with="auto=true,total='paged.totalRecord',size='size',value='page+1'"></div>
                             <!--<div class="row">-->
                                 <!--<div class="col-xs-6">-->
                                     <!--<div class="dataTables_info" role="status" aria-live="polite" v-text="'显示 '+ paged.total + ' 条中的第 ' + paged.startRow + ' 条到 ' + paged.endRow + ' 条'">-->
@@ -229,17 +240,16 @@
 </div>
 
 <th:block th:replace="component/frame :: bottom(~{:: .bottom-script})">
-
     <!-- Imported scripts on this page -->
     <script class="bottom-script" th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>
     <script class="bottom-script" th:src="@{/assets/js/selectboxit/jquery.selectBoxIt.min.js}"></script>
     <script class="bottom-script" th:src="@{/assets/js/toastr/toastr.min.js}"></script>
-
 </th:block>
 
 </body>
 
 <script>
+    cbr_replace();
     Vue.config.devtools = true;
     Vue.use(VeeValidate);
     new Vue({
@@ -250,7 +260,16 @@
             page: 0,
             sizes: [10,20,35,50],
             paged: {},
-            items: []
+            items: [],
+            columns: [
+                // <#list table.columns as column>
+                {
+                    show: true,
+                    name: '${column.remark}',
+                    field: '${column.fieldName}'
+                },
+                // </#list>
+            ]
         },
         mounted: function() {
             public_vars.$body = $(this.$el);

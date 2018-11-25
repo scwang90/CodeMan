@@ -31,7 +31,9 @@ class ${projectName}Application : WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(LoginInterceptor())
                 .addPathPatterns("/api/**")
+                .addPathPatterns("/admin/**")
                 .excludePathPatterns("/api/v1/auth/*")
+                .excludePathPatterns("/admin/login")
         super.addInterceptors(registry)
     }
 

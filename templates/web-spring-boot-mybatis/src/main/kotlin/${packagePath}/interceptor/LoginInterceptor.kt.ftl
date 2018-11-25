@@ -20,7 +20,11 @@ class LoginInterceptor : HandlerInterceptor {
         val session = request.getSession(true)
         if (session.getAttribute(UserType.Admin.name) == null) {
             logger.info("需要登录-$url")
-            request.getRequestDispatcher("/api/v1/auth/failed").forward(request, response)
+            if (url.startsWith("/api/")) {
+                request.getRequestDispatcher("/api/v1/auth/failed").forward(request, response)
+            } else {
+                response.sendRedirect("/admin/login")
+            }
             return false
         }
         return super.preHandle(request, response, handler)
