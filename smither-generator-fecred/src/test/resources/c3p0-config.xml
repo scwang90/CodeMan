@@ -27,4 +27,10 @@
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="jdbcUrl">jdbc:mysql://192.168.1.19:19336/vegetable_base</property>
 	</named-config>
+	<named-config name="qh">
+		<property name="user">root</property>
+		<property name="password">scwang</property>
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+		<property name="jdbcUrl">jdbc:mysql://192.168.226.125:3306/qh</property>
+	</named-config>
 </c3p0-config>

@@ -7,6 +7,7 @@
     <!-- Imported styles on this page -->
     <link class="head-link" rel="stylesheet" th:href="@{/assets/css/fonts/elusive/css/elusive.css}">
     <link class="head-link" rel="stylesheet" th:href="@{/assets/js/datatables/dataTables.bootstrap.css}">
+    <link class="head-link" rel="stylesheet" th:href="@{/css/custom.css}">
 
     <!-- Imported scripts on this page -->
     <script class="head-script" th:src="@{/js/vee-validate.js}"></script>
@@ -80,8 +81,13 @@
                                                     Action <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <div>
+                                                        <input type="checkbox" id="toggle">
+                                                        <label style="width: 200px; text-align: right">00</label>
+                                                    </div>
                                                     <li class="checkbox-row">
-                                                        <input type="checkbox" class="cbr" id="toggle_all"><label for="toggle_all">全部</label>
+                                                        <input type="checkbox" id="toggle_all">
+                                                        <label style="width: 200px; text-align: right">全部</label>
                                                     </li>
                                                     <li class="divider"></li>
                                                     <li class="checkbox-row" v-for="(column,index) in columns">

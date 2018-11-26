@@ -30,6 +30,17 @@ public class DataBaseEngineTester {
     }
 
     @Test
+    public void DataBaseQh() {
+        try {
+            DataBaseConfig config = ConfigFactory.loadConfig("qh-project.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void DataBaseExhibition() {
         try {
             DataBaseConfig config = ConfigFactory.loadConfig("exhibition-project.properties");
