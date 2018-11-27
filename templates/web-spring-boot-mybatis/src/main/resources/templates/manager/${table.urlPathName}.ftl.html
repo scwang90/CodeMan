@@ -81,17 +81,80 @@
                                                     Action <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <div>
-                                                        <input type="checkbox" id="toggle">
-                                                        <label style="width: 200px; text-align: right">00</label>
-                                                    </div>
-                                                    <li class="checkbox-row">
-                                                        <input type="checkbox" id="toggle_all">
+                                                    <style>
+
+                                                        input.input-super {
+                                                            position: relative;
+                                                            vertical-align: middle;
+                                                            font-size: 12px;
+                                                            font-family: "Arimo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                                                            line-height: 1.42857143;
+                                                        }
+
+                                                        input[type='checkbox'].input-super:before {
+                                                            background: #FFF;
+                                                            border: 1px solid #dddddd;
+                                                            position: absolute;
+                                                            top: 0;
+                                                            right: 0;
+                                                            left: 0;
+                                                            bottom: 0;
+                                                            content: '';
+                                                        }
+
+                                                        input[type='checkbox'].input-super:checked:after {
+                                                            position: absolute;
+                                                            top: 0;
+                                                            right: 0;
+                                                            left: 0;
+                                                            bottom: 0;
+                                                            content: '';
+                                                            background: url(assets/images/ok.png) no-repeat center center;
+                                                        }
+
+                                                        input[type='radio'].input:before {
+                                                            background: #FFF;
+                                                            border: 1px solid #dddddd;
+                                                            position: absolute;
+                                                            top: 0;
+                                                            right: 0;
+                                                            left: 0;
+                                                            bottom: 0;
+                                                            content: '';
+                                                            border-radius: 50%;
+                                                            background-clip: padding-box;
+                                                        }
+
+                                                        input[type='radio'].input:checked:after {
+                                                            position: absolute;
+                                                            top: 3px;
+                                                            right: 3px;
+                                                            left: 3px;
+                                                            bottom: 3px;
+                                                            content: '';
+                                                            background: #bbb;
+                                                            border-radius: 50%;
+                                                        }
+                                                    </style>
+                                                    <li class="checkbox-row" style="background: orange">
+                                                        <div class="cbr-replaced" style="background: rebeccapurple">
+                                                            <div class="cbr-input" style="background: red"><input type="checkbox" id="toggle-id"
+                                                                                          class="cbr cbr-done"></div>
+                                                            <div class="cbr-state-0" style="background: blue"><span></span></div>
+                                                        </div>
+                                                        <!--<label>true XXXXXXXXX</label>-->
+                                                    </li>
+                                                    <li class="checkbox-row" style="background: orange">
+                                                        <div>
+                                                            ssssssssss
+                                                        </div>
+                                                        <input type="checkbox" id="toggle_all" style="width: auto">
                                                         <label style="width: 200px; text-align: right">全部</label>
                                                     </li>
                                                     <li class="divider"></li>
                                                     <li class="checkbox-row" v-for="(column,index) in columns">
-                                                        <input type="checkbox" class="cbr" :id="'toggle-'+column.field" v-model="column.show"><label  v-text="column.show+column.name"></label>
+                                                        <input type="checkbox" class="cbr" :id="'toggle-'+column.field"><label  v-text="column.show+' '+column.name"></label>
+                                                        <!--v-model="column.show"-->
                                                     </li>
                                                 </ul>
                                             </div>
@@ -240,20 +303,117 @@
         </div>
     </div>
 
-    <div class="page-loading-overlay">
-        <div class="loader-2"></div>
-    </div>
+    <!--<div class="page-loading-overlay">-->
+        <!--<div class="loader-2"></div>-->
+    <!--</div>-->
 </div>
 
 <th:block th:replace="component/frame :: bottom(~{:: .bottom-script})">
     <!-- Imported scripts on this page -->
-    <script class="bottom-script" th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>
-    <script class="bottom-script" th:src="@{/assets/js/selectboxit/jquery.selectBoxIt.min.js}"></script>
+    <!--<script class="bottom-script" th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>-->
+    <!--<script class="bottom-script" th:src="@{/assets/js/selectboxit/jquery.selectBoxIt.min.js}"></script>-->
     <script class="bottom-script" th:src="@{/assets/js/toastr/toastr.min.js}"></script>
 </th:block>
 
 </body>
+<script>
 
+    // Radio and Check box replacement by Arlind Nushi
+    function cbr_replace()
+    {
+        var $inputs = jQuery('input[type="checkbox"].cbr, input[type="radio"].cbr').filter(':not(.cbr-done)'),
+            $wrapper = '<div class="cbr-replaced"><div class="cbr-input"></div><div class="cbr-state"><span></span></div></div>';
+
+        $inputs.each(function(i, el)
+        {
+            var $el = jQuery(el),
+                is_radio = $el.is(':radio'),
+                is_checkbox = $el.is(':checkbox'),
+                is_disabled = $el.is(':disabled'),
+                styles = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'purple', 'blue', 'red', 'gray', 'pink', 'yellow', 'orange', 'turquoise'];
+
+            if( ! is_radio && ! is_checkbox)
+                return;
+
+            $el.after( $wrapper );
+            $el.addClass('cbr-done');
+
+            var $wrp = $el.next();
+            $wrp.find('.cbr-input').append( $el );
+
+            if(is_radio)
+                $wrp.addClass('cbr-radio');
+
+            if(is_disabled)
+                $wrp.addClass('cbr-disabled');
+
+            if($el.is(':checked'))
+            {
+                $wrp.addClass('cbr-checked');
+            }
+
+
+            // Style apply
+            jQuery.each(styles, function(key, val)
+            {
+                var cbr_class = 'cbr-' + val;
+
+                if( $el.hasClass(cbr_class))
+                {
+                    $wrp.addClass(cbr_class);
+                    $el.removeClass(cbr_class);
+                }
+            });
+
+            // Events
+            $wrp.on('click', function(ev)
+            {
+                if(is_radio && $el.prop('checked') || $wrp.parent().is('label'))
+                    return;
+
+                if(jQuery(ev.target).is($el) == false)
+                {
+                    $el.prop('checked', ! $el.is(':checked'));
+                    $el.trigger('change');
+                }
+            });
+
+            $el.on('change', function(ev)
+            {
+                $wrp.removeClass('cbr-checked');
+
+                if($el.is(':checked'))
+                    $wrp.addClass('cbr-checked');
+
+                cbr_recheck();
+            });
+        });
+    }
+
+
+    function cbr_recheck()
+    {
+        var $inputs = jQuery("input.cbr-done");
+
+        $inputs.each(function(i, el)
+        {
+            var $el = jQuery(el),
+                is_radio = $el.is(':radio'),
+                is_checkbox = $el.is(':checkbox'),
+                is_disabled = $el.is(':disabled'),
+                $wrp = $el.closest('.cbr-replaced');
+
+            if(is_disabled)
+                $wrp.addClass('cbr-disabled');
+
+            if(is_radio && ! $el.prop('checked') && $wrp.hasClass('cbr-checked'))
+            {
+                $wrp.removeClass('cbr-checked');
+            }
+        });
+    }
+
+</script>
 <script>
     cbr_replace();
     Vue.config.devtools = true;
@@ -278,7 +438,7 @@
             ]
         },
         mounted: function() {
-            public_vars.$body = $(this.$el);
+            // public_vars.$body = $(this.$el);
             this.loading();
         },
         watch: {
