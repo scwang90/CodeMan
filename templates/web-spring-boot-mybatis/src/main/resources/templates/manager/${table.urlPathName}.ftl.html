@@ -206,7 +206,7 @@
                                     <input type="text" name="edit-${column.fieldName}" class="form-control" v-model="item.${column.fieldName}">
                                         <!--</#if>-->
                                     <!--<#elseif column.typeJdbc?contains('INT')>-->
-                                    <select class="form-control" id="edit-${column.fieldName}" v-model="item.${column.fieldName}">
+                                    <select class="form-control" v-model="item.${column.fieldName}">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                     </select>
@@ -220,10 +220,23 @@
                                         //     });
                                         // });
                                     </script>
+                                    <!--<#elseif column.typeJdbc?contains('DATE')>-->
+                                    <div class="input-group">
+                                        <input type="text" class="form-control datepicker" data-format="yyyy-MM-dd">
+                                        <div class="input-group-addon">
+                                            <a href="#"><i class="linecons-calendar"></i></a>
+                                        </div>
+                                    </div>
+                                    <!--<#elseif column.typeJdbc?contains('TIMESTAMP')>-->
+                                    <div class="date-and-time">
+                                        <input type="text" class="form-control datepicker" data-format="yyyy-MM-dd HH:ss">
+                                        <input type="text" class="form-control timepicker" data-template="dropdown" data-show-seconds="true" data-default-time="11:25 AM" data-show-meridian="true" data-minute-step="5" data-second-step="5" />
+                                    </div>
                                     <!--<#else>-->
                                     <input type="text" name="edit-${column.fieldName}" class="form-control" v-model="item.${column.fieldName}">
                                     <!--</#if>-->
 
+                                    <!--${column.typeJdbc!}-->
                                 </div>
                             </div>
                             <!--</#if></#list>-->
@@ -270,6 +283,8 @@
 <th:block th:replace="component/frame :: bottom(~{:: .bottom-script})">
     <!-- Imported scripts on this page -->
     <script class="bottom-script" th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>
+    <script class="bottom-script" th:src="@{/assets/js/datepicker/bootstrap-datepicker.js}"></script>
+    <script class="bottom-script" th:src="@{/assets/js/timepicker/bootstrap-timepicker.min.js}"></script>
     <!--<script class="bottom-script" th:src="@{/assets/js/selectboxit/jquery.selectBoxIt.min.js}"></script>-->
     <script class="bottom-script" th:src="@{/assets/js/toastr/toastr.min.js}"></script>
 </th:block>
