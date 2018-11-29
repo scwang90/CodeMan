@@ -33,64 +33,66 @@
                             <h3 class="panel-title">效果演示</h3>
 
                             <div class="panel-options">
-                                <a href="#">
+                                <a href="javascript:void(0)">
                                     <i class="linecons-cog"></i>
                                 </a>
 
-                                <a href="#" data-toggle="panel">
+                                <a href="javascript:void(0)" data-toggle="panel">
                                     <span class="collapse-icon">&ndash;</span>
                                     <span class="expand-icon">+</span>
                                 </a>
 
-                                <a href="#" data-toggle="reload">
+                                <a href="javascript:void(0)" data-toggle="reload">
                                     <i class="fa-rotate-right"></i>
                                 </a>
 
-                                <a href="#" data-toggle="remove">
+                                <a href="javascript:void(0)" data-toggle="remove">
                                     &times;
                                 </a>
                             </div>
                         </div>
-                        <div class="panel-body dataTables_wrapper form-inline dt-bootstrap" th:with="auto=true,total='total',size='size',value='value'" >
+                        <div class="panel-body dataTables_wrapper form-inline dt-bootstrap" th:with="auto=true,total='total',size='size',value='value',change='change',changeSize='changeSize'" >
                             <div class="row" th:fragment="pagination-bar">
                                 <div class="col-xs-6">
-                                    <div class="dataTables_info" role="status" aria-live="polite" v-text="'显示 '+ total + ' 条中的第 ' + startRow + ' 条到 ' + endRow + ' 条'">
-                                        Showing 1 to 10 of 57 entries
+                                    <div class="dataTables_info" role="status" aria-live="polite"><label>每页显示</label>
+                                        <select v-model="size" class="form-control input-sm">
+                                            <option v-for="item in sizes" :value="item" v-text="item"></option>
+                                        </select> <label v-text="'条  当前显示 '+ total + ' 条中的第 ' + startRow + ' 条到 ' + endRow + ' 条'">条数</label>
                                     </div>
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="dataTables_paginate paging_simple_numbers" style="display: flex">
                                         <ul class="pagination">
                                             <!--上一页按钮-->
-                                            <li class="paginate_button previous" :class="{disabled:!_hasPrev()}" title="上一页"><a href="#" @click="_prev"><i class="fa-angle-left"></i></a></li>
+                                            <li class="paginate_button previous" :class="{disabled:!_hasPrev()}" title="上一页"><a href="javascript:void(0)" @click="_prev"><i class="fa-angle-left"></i></a></li>
 
                                             <!--第一页按钮-->
-                                            <li class="paginate_button" v-if="showFirstPager" title="第一页"><a href="#" @click="_handleChange(1)" >1</a></li>
+                                            <li class="paginate_button" v-if="showFirstPager" title="第一页"><a href="javascript:void(0)" @click="_handleChange(1)" >1</a></li>
 
                                             <!--向前5页按钮-->
-                                            <li class="paginate_button" v-if="showJumpPrev" title="向前5页"> <a href="#" @click="_jumpPrev"><i class="fa-ellipsis-h" style="color:#cccccc"></i></a> </li>
+                                            <li class="paginate_button" v-if="showJumpPrev" title="向前5页"> <a href="javascript:void(0)" @click="_jumpPrev"><i class="fa-ellipsis-h" style="color:#cccccc"></i></a> </li>
 
                                             <!--中间动态按钮-->
-                                            <li class="paginate_button" v-for="index in pageList" :class="{active: current == index }" :title="index" ><a href="#" @click="_handleChange(index)" v-text="index">1</a></li>
+                                            <li class="paginate_button" v-for="index in pageList" :class="{active: value == index }" :title="index" ><a href="javascript:void(0)" @click="_handleChange(index)" v-text="index">1</a></li>
 
                                             <!--向后5页按钮-->
-                                            <li class="paginate_button" v-if="showJumpNext" title="向后5页"> <a href="#" @click="_jumpNext"><i class="fa-ellipsis-h" style="color:#cccccc"></i></a> </li>
+                                            <li class="paginate_button" v-if="showJumpNext" title="向后5页"> <a href="javascript:void(0)" @click="_jumpNext"><i class="fa-ellipsis-h" style="color:#cccccc"></i></a> </li>
 
                                             <!--最后一页按钮-->
-                                            <li class="paginate_button" v-if="showLastPager" title="最后一页"><a href="#" @click="_handleChange(allPages)" v-text="allPages"></a></li>
+                                            <li class="paginate_button" v-if="showLastPager" title="最后一页"><a href="javascript:void(0)" @click="_handleChange(allPages)" v-text="allPages"></a></li>
 
                                             <!--下一页按钮-->
-                                            <li class="paginate_button next" :class="{disabled:!_hasNext()}" title="下一页"><a href="#" @click="_next"><i class="fa-angle-right"></i></a></li>
+                                            <li class="paginate_button next" :class="{disabled:!_hasNext()}" title="下一页"><a href="javascript:void(0)" @click="_next"><i class="fa-angle-right"></i></a></li>
                                         </ul>
                                         <div class="" style="margin: 2px 5px">
                                             <label style="margin-bottom: 0"> 跳至
-                                                <input type="text" :value="current" class="form-control input-sm" @keyup="_handleKeyUp($event)" @change="_handleKeyUp" style="width: 35px"> 页
+                                                <input type="text" :value="value" class="form-control input-sm" @keyup="_handleKeyUp($event)" @change="_handleKeyUp" style="width: 35px"> 页
                                             </label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <input type="hidden" id="input-hidden-pagination-bar" th:attr="value='<pagination-bar :total=\''+${total}+'\' :size=\''+${size}+'\' :value=\''+${value}+'\'></pagination-bar>'"/>
+                                <input type="hidden" id="input-hidden-pagination-bar" th:attr="value='<pagination-bar @change-size=\''+${changeSize}+'\' @change=\''+${change}+'\' :total=\''+${total}+'\' :size=\''+${size}+'\' v-model=\''+${value}+'\'></pagination-bar>'"/>
 
                                 <script th:if="${auto} == true">
                                     $('#input-hidden-pagination-bar').parent().before($('#input-hidden-pagination-bar').val());
@@ -117,28 +119,30 @@
                                         },
                                         data: function () {
                                             return {
-                                                current: this.value,
-                                                currentPageSize: this.size
+                                                sizes: [10,20,35,50]
                                             }
                                         },
                                         watch: {
-                                            current: function (val) {
+                                            value: function (val) {
                                                 this.$emit('input', val);
                                                 this.$emit('change', val);
                                             },
-                                            value: function () {
-                                                this.current = this.value;
+                                            size: function (newValue, oldValue) {
+                                                if (newValue !== oldValue) {
+                                                    this.value = 1;
+                                                    this.$emit('change-size', newValue);
+                                                }
                                             }
                                         },
                                         computed: {
                                             startRow: function(){
-                                                return 1 + (this.current - 1) * this.currentPageSize;
+                                                return 1 + (this.value - 1) * this.size;
                                             },
                                             endRow: function(){
-                                                return this.current * this.currentPageSize;
+                                                return this.value * this.size;
                                             },
                                             allPages: function () {
-                                                return Math.ceil(this.total / this.currentPageSize);
+                                                return Math.ceil(this.total / this.size);
                                             },
                                             pageList() {
                                                 var bigger = this.allPages <= 9;
@@ -151,10 +155,10 @@
                                                 return pageList;
                                             },
                                             showJumpPrev() {
-                                                return this.allPages > 9 && this.current - 1 >= 4;
+                                                return this.allPages > 9 && this.value - 1 >= 4;
                                             },
                                             showJumpNext() {
-                                                return this.allPages > 9 && this.allPages - this.current >= 4;
+                                                return this.allPages > 9 && this.allPages - this.value >= 4;
                                             },
                                             showFirstPager() {
                                                 return this.allPages > 9 && this.pageLeft !== 1;
@@ -163,59 +167,59 @@
                                                 return this.allPages > 9 && this.pageRight !== this.allPages;
                                             },
                                             pageLeft() {
-                                                var left = Math.max(1, this.current - 2);
-                                                if (this.allPages - this.current <= 2) {
+                                                var left = Math.max(1, this.value - 2);
+                                                if (this.allPages - this.value <= 2) {
                                                     left = this.allPages - 4;
                                                 }
                                                 return left;
                                             },
                                             pageRight() {
-                                                var right = Math.min(this.current + 2, this.allPages);
-                                                if (this.current - 1 <= 2) {
+                                                var right = Math.min(this.value + 2, this.allPages);
+                                                if (this.value - 1 <= 2) {
                                                     right = 1 + 4;
                                                 }
                                                 return right;
                                             },
                                             pageTitle() {
                                                 if (this.allPages) {
-                                                    return this.current;
+                                                    return this.value;
                                                 }
-                                                return this.current + '/' + this.allPages;
+                                                return this.value + '/' + this.allPages;
                                             }
                                         },
                                         methods: {
                                             _isValid(page) {
-                                                return typeof page === 'number' && page >= 1 && page !== this.current;
+                                                return typeof page === 'number' && page >= 1 && page !== this.value;
                                             },
                                             _handleChange: function(page) {
                                                 if (this._isValid(page)) {
                                                     if (this.total && page > this.allPages) {
                                                         page = this.allPages;
                                                     }
-                                                    this.current = page;
+                                                    this.value = page;
                                                 }
                                             },
                                             _prev() {
                                                 if (this._hasPrev()) {
-                                                    this._handleChange(this.current - 1);
+                                                    this._handleChange(this.value - 1);
                                                 }
                                             },
                                             _next() {
                                                 if (this._hasNext()) {
-                                                    this._handleChange(this.current + 1);
+                                                    this._handleChange(this.value + 1);
                                                 }
                                             },
                                             _jumpPrev() {
-                                                this._handleChange(Math.max(1, this.current - 5));
+                                                this._handleChange(Math.max(1, this.value - 5));
                                             },
                                             _jumpNext() {
-                                                this._handleChange(Math.min(this.allPages, this.current + 5));
+                                                this._handleChange(Math.min(this.allPages, this.value + 5));
                                             },
                                             _hasPrev() {
-                                                return this.current > 1;
+                                                return this.value > 1;
                                             },
                                             _hasNext() {
-                                                return this.current < this.allPages;
+                                                return this.value < this.allPages;
                                             },
                                             _handleKeyUp(e) {
                                                 var _val = e.target.value;

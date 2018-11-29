@@ -12,9 +12,32 @@
     <!-- Imported scripts on this page -->
     <script class="head-script" th:src="@{/js/vee-validate.js}"></script>
 </head>
+<style>
+    input.input-super {
+        display: none;
+    }
+    input.input-super + div {
+        position: relative;
+        vertical-align: middle;
+        font-size: 12px;
+        font-family: "Arimo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        line-height: 1.42857143;
 
+        background: #FFF;
+        border: 1px solid #dddddd;
+        width: 15px;
+        height: 15px;
+        content: '';
+    }
+    input[type='checkbox'].input-super:checked + div:after {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        content: '';
+        background: url(/assets/images/ok.png) no-repeat center center;
+    }
+</style>
 <body class="page-body">
-
 <div id="vue" style="height: 100%">
     <div th:replace="component/setting :: setting-panel('scwang90')"></div>
     <nav th:replace="component/navbar :: nav-bar" ></nav>
@@ -46,115 +69,67 @@
                             <h3 class="panel-title">${table.remark}列表</h3>
 
                             <div class="panel-options">
-                                <a href="#">
+                                <a href="javascript:void(0)">
                                     <i class="linecons-cog"></i>
                                 </a>
 
-                                <a href="#" data-toggle="panel">
+                                <a href="javascript:void(0)" data-toggle="panel">
                                     <span class="collapse-icon">&ndash;</span>
                                     <span class="expand-icon">+</span>
                                 </a>
 
-                                <a href="#" data-toggle="reload">
+                                <a href="javascript:void(0)" data-toggle="reload">
                                     <i class="fa-rotate-right"></i>
                                 </a>
 
-                                <a href="#" data-toggle="remove">
+                                <a href="javascript:void(0)" data-toggle="remove">
                                     &times;
                                 </a>
                             </div>
                         </div>
                         <div class="panel-body dataTables_wrapper form-inline dt-bootstrap">
                             <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="dataTables_length"><label>每页显示
-                                        <select v-model="size" class="form-control input-sm">
-                                            <option v-for="item in sizes" :value="item" v-text="item"></option>
-                                        </select> 条数</label>
+                                <div class="col-xs-6 btn-toolbar">
+                                    <div class="btn-group focus-btn-group">
+                                        <button class="btn btn-default" @click="modalAppend"><span class="fa-plus"></span> 添加</button>
                                     </div>
                                 </div>
                                 <div class="col-xs-6">
-                                    <div class="dataTables_filter">
-                                        <label>筛选：
+                                    <div class="dataTables_filter" >
+                                        <label style="padding-left: 5px">筛选：
                                             <div class="btn-group">
-                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                    Action <span class="caret"></span>
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 0">
+                                                    列头 <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <style>
-
-                                                        input.input-super {
-                                                            position: relative;
-                                                            vertical-align: middle;
-                                                            font-size: 12px;
-                                                            font-family: "Arimo", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                                                            line-height: 1.42857143;
-                                                        }
-
-                                                        input[type='checkbox'].input-super:before {
-                                                            background: #FFF;
-                                                            border: 1px solid #dddddd;
-                                                            position: absolute;
-                                                            top: 0;
-                                                            right: 0;
-                                                            left: 0;
-                                                            bottom: 0;
-                                                            content: '';
-                                                        }
-
-                                                        input[type='checkbox'].input-super:checked:after {
-                                                            position: absolute;
-                                                            top: 0;
-                                                            right: 0;
-                                                            left: 0;
-                                                            bottom: 0;
-                                                            content: '';
-                                                            background: url(assets/images/ok.png) no-repeat center center;
-                                                        }
-
-                                                        input[type='radio'].input:before {
-                                                            background: #FFF;
-                                                            border: 1px solid #dddddd;
-                                                            position: absolute;
-                                                            top: 0;
-                                                            right: 0;
-                                                            left: 0;
-                                                            bottom: 0;
-                                                            content: '';
-                                                            border-radius: 50%;
-                                                            background-clip: padding-box;
-                                                        }
-
-                                                        input[type='radio'].input:checked:after {
-                                                            position: absolute;
-                                                            top: 3px;
-                                                            right: 3px;
-                                                            left: 3px;
-                                                            bottom: 3px;
-                                                            content: '';
-                                                            background: #bbb;
-                                                            border-radius: 50%;
-                                                        }
-                                                    </style>
-                                                    <li class="checkbox-row" style="background: orange">
-                                                        <div class="cbr-replaced" style="background: rebeccapurple">
-                                                            <div class="cbr-input" style="background: red"><input type="checkbox" id="toggle-id"
-                                                                                          class="cbr cbr-done"></div>
-                                                            <div class="cbr-state-0" style="background: blue"><span></span></div>
+                                                    <li class="checkbox-row" >
+                                                        <div style="display: inline-block" >
+                                                            <input type="checkbox" v-model="column._all_" class="input-super">
+                                                            <div class="" @click="onColumnToggleClick('_all_')"></div>
                                                         </div>
-                                                        <!--<label>true XXXXXXXXX</label>-->
-                                                    </li>
-                                                    <li class="checkbox-row" style="background: orange">
-                                                        <div>
-                                                            ssssssssss
-                                                        </div>
-                                                        <input type="checkbox" id="toggle_all" style="width: auto">
-                                                        <label style="width: 200px; text-align: right">全部</label>
+                                                        <div style="float: right" @click="onColumnToggleClick('_all_')">全部</div>
                                                     </li>
                                                     <li class="divider"></li>
+                                                    <li class="checkbox-row" >
+                                                        <div style="display: inline-block" >
+                                                            <input type="checkbox" v-model="column._index_" class="input-super">
+                                                            <div class="" @click="onColumnToggleClick('_index_')"></div>
+                                                        </div>
+                                                        <div style="float: right" @click="onColumnToggleClick('_index_')">序号</div>
+                                                    </li>
                                                     <li class="checkbox-row" v-for="(column,index) in columns">
-                                                        <input type="checkbox" class="cbr" :id="'toggle-'+column.field"><label  v-text="column.show+' '+column.name"></label>
-                                                        <!--v-model="column.show"-->
+                                                        <div style="display: inline-block" >
+                                                            <input type="checkbox" v-model="column.show" class="input-super">
+                                                            <div class="" @click="onColumnToggleClick(column.field)"></div>
+                                                        </div>
+                                                        <div style="float: right" @click="onColumnToggleClick(column.field)" v-text="column.name"></div>
+                                                    </li>
+                                                    <li class="checkbox-row" >
+                                                        <div style="display: inline-block" >
+                                                            <input type="checkbox" v-model="column._operate_" class="input-super">
+                                                            <div class="" @click="onColumnToggleClick('_operate_')"></div>
+                                                        </div>
+                                                        <div style="float: right" @click="onColumnToggleClick('_operate_')">操作</div>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -167,19 +142,20 @@
                             <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
                                 <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                     <thead>
+
                                     <tr>
-                                        <th>序号</th>
+                                        <th v-show="column._index_">序号</th>
                                         <th v-for="(column, index) in columns" v-text="column.name" v-show="column.show"></th>
                                         <!--<th data-priority="1">状态</th>-->
-                                        <th >操作</th>
+                                        <th v-show="column._operate_">操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="(item,index) in items">
-                                        <th v-text="page*size+index+1"></th>
+                                        <th v-show="column._index_" v-text="(page-1)*size+index+1"></th>
                                         <td v-for="(column, index) in columns" v-text="item[column.field]" v-show="column.show"></td>
                                         <!--<td v-text="item.statusName"></td>-->
-                                        <td >
+                                        <td v-show="column._operate_" >
                                             <a href="javascript:void(0)" class="btn btn-secondary btn-sm" @click="modalEdit(item)">编辑</a>
                                             <a href="javascript:void(0)" class="btn btn-danger btn-sm" @click="modalRemove(item)">删除</a>
                                         </td>
@@ -190,25 +166,7 @@
 
                             </div>
 
-                            <div class="row" th:include="component/pagination :: pagination-bar" th:with="auto=true,total='paged.totalRecord',size='size',value='page+1'"></div>
-                            <!--<div class="row">-->
-                                <!--<div class="col-xs-6">-->
-                                    <!--<div class="dataTables_info" role="status" aria-live="polite" v-text="'显示 '+ paged.total + ' 条中的第 ' + paged.startRow + ' 条到 ' + paged.endRow + ' 条'">-->
-                                        <!--Showing 1 to 10 of 57 entries-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="col-xs-6">-->
-                                    <!--<div class="dataTables_paginate paging_simple_numbers" id="example-1_paginate">-->
-                                        <!--<ul class="pagination">-->
-                                            <!--<li class="paginate_button"><a href="#" @click="page = paged.navigateFirstPage - 1" v-if="paged.navigateFirstPage < page - 5"><i class="fa-long-arrow-left" ></i></a></li>-->
-                                            <!--<li class="paginate_button previous" :class="{disabled:paged.firstPage}"><a href="#" @click="page = paged.prePage - 1"><i class="fa-angle-left"></i></a></li>-->
-                                            <!--<li class="paginate_button" v-for="item in paged.navigatepageNums" :class="{active: item == page + 1 }" ><a href="#" @click="page = item - 1" v-text="item">1</a></li>-->
-                                            <!--<li class="paginate_button next" :class="{disabled:paged.lastPage}"><a href="#" @click="page = paged.nextPage - 1"><i class="fa-angle-right"></i></a></li>-->
-                                            <!--<li class="paginate_button"><a href="#" @click="page = paged.navigateLastPage - 1" v-if="paged.navigateLastPage > page + 5"><i class="fa-long-arrow-right" ></i></a></li>-->
-                                        <!--</ul>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="row" th:include="component/pagination :: pagination-bar" th:with="auto=true,total='paged.totalRecord',size='size',value='page',changeSize='changeSize'"></div>
 
                         </div>
 
@@ -228,14 +186,14 @@
                 <form role="form" id="form-edit" method="post" action="javascript:void(0)">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">${table.remark}信息</h4>
+                        <h4 class="modal-title" v-text="item['${table.idColumn.fieldName}'] ? '添加' : '编辑' + '${table.remark}信息'">${table.remark}信息</h4>
                     </div>
 
                     <div class="modal-body">
 
                         <div class="row">
 
-                            <!--列<#list table.columns as column>${column.remark}列-->
+                            <!--列<#list table.columns as column><#if column.name != table.idColumn.name>${column.remark}列-->
                             <div class="col-md-4">
                                 <div class="form-group" :class="{'validate-has-error': errors.has('edit-${column.fieldName}') }">
                                     <label class="control-label">${column.remark}</label>
@@ -268,12 +226,13 @@
 
                                 </div>
                             </div>
-                            <!--</#list>-->
+                            <!--</#if></#list>-->
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-blue" data-dismiss="modal" v-show="item['${table.idColumn.fieldName}']" @click="submit(item, true)">提交并继续</button>
                         <button type="submit" class="btn btn-success" @click="submit(item)">提交</button>
                     </div>
                 </form>
@@ -291,7 +250,7 @@
                     <h4 class="modal-title">Basic Modal</h4>
                 </div>
 
-                <div class="modal-body" v-text="'确定要删除【'+(item.name || item.identityNumber)+'】吗'">
+                <div class="modal-body" v-text="'确定要删除【'+(item.name || item.id)+'】吗'">
                     Hello I am a Modal!
                 </div>
 
@@ -310,112 +269,14 @@
 
 <th:block th:replace="component/frame :: bottom(~{:: .bottom-script})">
     <!-- Imported scripts on this page -->
-    <!--<script class="bottom-script" th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>-->
+    <script class="bottom-script" th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>
     <!--<script class="bottom-script" th:src="@{/assets/js/selectboxit/jquery.selectBoxIt.min.js}"></script>-->
     <script class="bottom-script" th:src="@{/assets/js/toastr/toastr.min.js}"></script>
 </th:block>
 
+
 </body>
 <script>
-
-    // Radio and Check box replacement by Arlind Nushi
-    function cbr_replace()
-    {
-        var $inputs = jQuery('input[type="checkbox"].cbr, input[type="radio"].cbr').filter(':not(.cbr-done)'),
-            $wrapper = '<div class="cbr-replaced"><div class="cbr-input"></div><div class="cbr-state"><span></span></div></div>';
-
-        $inputs.each(function(i, el)
-        {
-            var $el = jQuery(el),
-                is_radio = $el.is(':radio'),
-                is_checkbox = $el.is(':checkbox'),
-                is_disabled = $el.is(':disabled'),
-                styles = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'purple', 'blue', 'red', 'gray', 'pink', 'yellow', 'orange', 'turquoise'];
-
-            if( ! is_radio && ! is_checkbox)
-                return;
-
-            $el.after( $wrapper );
-            $el.addClass('cbr-done');
-
-            var $wrp = $el.next();
-            $wrp.find('.cbr-input').append( $el );
-
-            if(is_radio)
-                $wrp.addClass('cbr-radio');
-
-            if(is_disabled)
-                $wrp.addClass('cbr-disabled');
-
-            if($el.is(':checked'))
-            {
-                $wrp.addClass('cbr-checked');
-            }
-
-
-            // Style apply
-            jQuery.each(styles, function(key, val)
-            {
-                var cbr_class = 'cbr-' + val;
-
-                if( $el.hasClass(cbr_class))
-                {
-                    $wrp.addClass(cbr_class);
-                    $el.removeClass(cbr_class);
-                }
-            });
-
-            // Events
-            $wrp.on('click', function(ev)
-            {
-                if(is_radio && $el.prop('checked') || $wrp.parent().is('label'))
-                    return;
-
-                if(jQuery(ev.target).is($el) == false)
-                {
-                    $el.prop('checked', ! $el.is(':checked'));
-                    $el.trigger('change');
-                }
-            });
-
-            $el.on('change', function(ev)
-            {
-                $wrp.removeClass('cbr-checked');
-
-                if($el.is(':checked'))
-                    $wrp.addClass('cbr-checked');
-
-                cbr_recheck();
-            });
-        });
-    }
-
-
-    function cbr_recheck()
-    {
-        var $inputs = jQuery("input.cbr-done");
-
-        $inputs.each(function(i, el)
-        {
-            var $el = jQuery(el),
-                is_radio = $el.is(':radio'),
-                is_checkbox = $el.is(':checkbox'),
-                is_disabled = $el.is(':disabled'),
-                $wrp = $el.closest('.cbr-replaced');
-
-            if(is_disabled)
-                $wrp.addClass('cbr-disabled');
-
-            if(is_radio && ! $el.prop('checked') && $wrp.hasClass('cbr-checked'))
-            {
-                $wrp.removeClass('cbr-checked');
-            }
-        });
-    }
-
-</script>
-<script>
-    cbr_replace();
     Vue.config.devtools = true;
     Vue.use(VeeValidate);
     new Vue({
@@ -423,41 +284,90 @@
         data: {
             item:{},
             size: 10,
-            page: 0,
-            sizes: [10,20,35,50],
+            page: 1,
             paged: {},
             items: [],
+            column:{
+                '_all_': true,
+                '_index_': true,
+                '_operate_': true
+            },
             columns: [
                 // <#list table.columns as column>
                 {
                     show: true,
                     name: '${column.remark}',
                     field: '${column.fieldName}'
-                },
-                // </#list>
+                }
+                // <#if column_has_next>
+                ,
+                // </#if></#list>
             ]
         },
         mounted: function() {
-            // public_vars.$body = $(this.$el);
+            public_vars.$body = $(this.$el);
+            if(localStorage) {
+                var storage = localStorage['table-${table.urlPathName}'];
+                if (storage) {
+                    storage = JSON.parse(storage);
+                    for (var i = 0; i < this.columns.length; i++) {
+                        this.columns[i].show = storage[this.columns[i].field];
+                    }
+                    this.column['_all_'] = storage['_all_'];
+                    this.column['_index_'] = storage['_index_'];
+                    this.column['_operate_'] = storage['_operate_'];
+                }
+            }
             this.loading();
         },
         watch: {
             size: function (newValue, oldValue) {
-                console.log("size",newValue,oldValue);
                 if (newValue !== oldValue) {
-                    this.page = 0;
+                    this.page = 1;
                     this.loading();
-                    console.log("this.page = 0");
                 }
             },
             page: function (newValue, oldValue) {
-                console.log("page",newValue,oldValue);
                 if (newValue !== oldValue) {
                     this.loading();
                 }
             }
         },
         methods: {
+            changeSize: function(size) {
+                this.size = size;
+            },
+            onColumnToggleClick: function(field) {
+                if (field === '_all_') {
+                    this.column[field] = !this.column[field];
+                    for (var i = 0; i < this.columns.length; i++) {
+                        this.columns[i].show = this.column[field];
+                    }
+                } else if (field === '_index_') {
+                    this.column[field] = !this.column[field];
+                } else if (field === '_operate_') {
+                    this.column[field] = !this.column[field];
+                } else {
+                    for (var i = 0; i < this.columns.length; i++) {
+                        if (field === this.columns[i].field) {
+                            this.columns[i].show = !this.columns[i].show;
+                            break
+                        }
+                    }
+                }
+
+                if(localStorage) {
+                    for (var i = 0; i < this.columns.length; i++) {
+                        this.column[this.columns[i].field] = this.columns[i].show
+                    }
+                    localStorage['table-${table.urlPathName}'] = JSON.stringify(this.column);
+                }
+            },
+            modalAppend: function() {
+                this.item = {};
+                this.errors = {};
+                jQuery("#modal-edit").modal('show', {backdrop: 'static'});
+            },
             modalEdit: function(item) {
                 this.item = JSON.parse(JSON.stringify(item));
                 this.errors = {};
@@ -468,7 +378,7 @@
                 this.errors = {};
                 jQuery("#modal-remove").modal('show',{backdrop: 'static'});
             },
-            submit: function(item) {
+            submit: function(item, holdOn) {
                 this.items = item;
                 console.log(this.errors);
                 if (this.errors.items.length > 0) {
@@ -477,9 +387,18 @@
                 var vue = this;
                 show_loading_bar(70); // Fill progress bar to 70% (just a given value)
                 var ajax = new XMLHttpRequest();
-                ajax.open("PUT","/api/v1/${table.urlPathName}/" + item.id);
-                ajax.setRequestHeader('content-type', 'application/json');
-                ajax.send(JSON.stringify(item));
+                if(item['${table.idColumn.fieldName}']) {
+                    ajax.open("PUT","/api/v1/${table.urlPathName}/" + item['${table.idColumn.fieldName}']);
+                } else {
+                    ajax.open("POST","/api/v1/${table.urlPathName}");
+                }
+                // ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                var form_data = new FormData();
+                for(var key in item) {
+                    form_data.append(key,":",item[key]);
+                }
+                JSON.stringify(item);
+                ajax.send(form_data);
                 ajax.onload = function () {
                     show_loading_bar({
                         delay: 0.5,
@@ -489,7 +408,9 @@
                                 var data = JSON.parse(ajax.responseText);
                                 if (data.code === 200) {
                                     vue.loading();
-                                    jQuery("#modal-edit").modal('hide');
+                                    if(!holdOn) {
+                                        jQuery("#modal-edit").modal('hide');
+                                    }
                                     toastr.success(data.result, "修改成功")
                                 } else {
                                     toastr.error(data.reason, "修改失败！");
@@ -532,7 +453,7 @@
                 var vue = this;
                 show_loading_bar(70); // Fill progress bar to 70% (just a given value)
                 var ajax = new XMLHttpRequest();
-                ajax.open("GET","/api/v1/${table.urlPathName}?page=" + vue.page + "&size=" + vue.size);
+                ajax.open("GET","/api/v1/${table.urlPathName}?page=" + (vue.page-1) + "&size=" + vue.size);
                 ajax.send();
                 ajax.onload = function () {
                     show_loading_bar({
