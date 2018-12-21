@@ -227,6 +227,13 @@
                                             <a href="#"><i class="linecons-calendar"></i></a>
                                         </div>
                                     </div>
+                                    <!--<#elseif column.typeJdbc?contains('TIME')>-->
+                                    <div class="input-group">
+                                        <input type="text" class="form-control timepicker" data-template="dropdown" data-show-seconds="true" data-default-time="11:25 AM" data-show-meridian="true" data-minute-step="5" data-second-step="5" />
+                                        <div class="input-group-addon">
+                                            <a href="#"><i class="linecons-clock"></i></a>
+                                        </div>
+                                    </div>
                                     <!--<#elseif column.typeJdbc?contains('TIMESTAMP')>-->
                                     <div class="date-and-time">
                                         <input type="text" class="form-control datepicker" data-format="yyyy-MM-dd HH:ss">
