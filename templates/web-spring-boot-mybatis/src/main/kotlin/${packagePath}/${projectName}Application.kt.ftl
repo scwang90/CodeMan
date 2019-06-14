@@ -39,6 +39,7 @@ class ${projectName}Application : WebMvcConfigurer {
 
     /**
      * 创建Api文档
+     * path:/swagger-ui.html
      */
     @Bean
     fun createManagerApi(): Docket {
