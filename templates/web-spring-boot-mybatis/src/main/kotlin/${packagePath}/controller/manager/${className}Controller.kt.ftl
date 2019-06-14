@@ -5,11 +5,13 @@ import ${packageName}.model.api.ApiResult
 import ${packageName}.model.api.Paged
 import ${packageName}.model.api.Paging
 import ${packageName}.model.db.${className}
+import ${packageName}.util.ID22
 import io.swagger.annotations.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
+import java.util.*
 
 /**
  * ${table.remark} 的 Controller 层实现
@@ -50,6 +52,17 @@ class ${className}Controller {
 		</#list>
     )
     fun insert(@Validated @ApiIgnore model: ${className}): ApiResult<Boolean> {
+		<#if !table.idColumn.autoIncrement && table.idColumn.typeJdbc?contains('CHAR')>
+		model.${table.idColumn.fieldName} = ID22.randomID22()
+		</#if>
+		<#list table.columns as column>
+			<#if column.name == 'create_time'>
+		model.${column.fieldName} = Date()
+			</#if>
+			<#if column.name == 'update_time'>
+		model.${column.fieldName} = Date()
+			</#if>
+		</#list>
         mapper.insert(model)
         return ApiResult(true)
 	}
@@ -63,6 +76,11 @@ class ${className}Controller {
 	</#list>
 	)
 	fun update(@Validated @ApiIgnore model: ${className}): ApiResult<Int> {
+		<#list table.columns as column>
+			<#if column.name == 'update_time'>
+		model.${column.fieldName} = Date()
+			</#if>
+		</#list>
 		return ApiResult(mapper.update(model))
 	}
 
