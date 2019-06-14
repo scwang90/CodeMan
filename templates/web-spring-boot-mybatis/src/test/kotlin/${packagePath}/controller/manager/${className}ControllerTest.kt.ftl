@@ -13,7 +13,7 @@ class ${className}ManagerControllerTest : ${projectName}ApplicationTests() {
 
 	@Test
 	fun list() {
-		mockMvc.perform(get("/api/v1/${table.classNameLower}")
+		mockMvc.perform(get("/api/v1/${table.urlPathName}")
 				.accept(APPLICATION_JSON_UTF8)
 				.session(getLoginSession()))
 				.andExpect(status().isOk)
@@ -24,7 +24,7 @@ class ${className}ManagerControllerTest : ${projectName}ApplicationTests() {
 	@Ignore
 	@Test
 	fun insert() {
-		mockMvc.perform(post("/api/v1/${table.classNameLower}")
+		mockMvc.perform(post("/api/v1/${table.urlPathName}")
 				.accept(APPLICATION_JSON_UTF8)
 				.session(getLoginSession()))
 				.andExpect(status().isOk)
@@ -35,7 +35,7 @@ class ${className}ManagerControllerTest : ${projectName}ApplicationTests() {
 	@Ignore
 	@Test
 	fun update() {
-		mockMvc.perform(put("/api/v1/${table.classNameLower}")
+		mockMvc.perform(put("/api/v1/${table.urlPathName}")
 				.accept(APPLICATION_JSON_UTF8)
 				.session(getLoginSession()))
 				.andExpect(status().isOk)
@@ -46,7 +46,7 @@ class ${className}ManagerControllerTest : ${projectName}ApplicationTests() {
 	@Ignore
 	@Test
 	fun get() {
-		mockMvc.perform(get("/api/v1/${table.classNameLower}/{id}")
+		mockMvc.perform(get("/api/v1/${table.urlPathName}/{id}")
 				.accept(APPLICATION_JSON_UTF8)
 				.session(getLoginSession()))
 				.andExpect(status().isOk)
@@ -57,7 +57,7 @@ class ${className}ManagerControllerTest : ${projectName}ApplicationTests() {
 	@Ignore
 	@Test
 	fun delete() {
-		mockMvc.perform(delete("/api/v1/${table.classNameLower}/{id}")
+		mockMvc.perform(delete("/api/v1/${table.urlPathName}/{id}")
 				.accept(APPLICATION_JSON_UTF8)
 				.session(getLoginSession()))
 				.andExpect(status().isOk)

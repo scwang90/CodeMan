@@ -53,4 +53,9 @@ class ${projectName}ApplicationTests {
                 .andReturn().request.session as MockHttpSession
     }
 
+    @Test
+    fun test() {
+
+    }
+
 }

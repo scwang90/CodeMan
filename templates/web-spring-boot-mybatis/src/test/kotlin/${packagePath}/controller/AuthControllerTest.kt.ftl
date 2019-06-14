@@ -2,7 +2,6 @@ package ${packageName}.controller
 
 import ${packageName}.${projectName}ApplicationTests
 import org.junit.Test
-import org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -10,7 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-class ${className}ManagerControllerTest : ${projectName}ApplicationTests() {
+class AuthControllerTest : ${projectName}ApplicationTests() {
 
 	@Test
 	fun login() {
