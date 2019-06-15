@@ -1,12 +1,25 @@
 package ${packageName};
 
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
 import ${packageName}.interceptor.LoginInterceptor;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.MultipartConfigElement;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -14,6 +27,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 
 /**
  * SpringBoot 程序入口
@@ -56,6 +70,47 @@ public class ${projectName}Application implements WebMvcConfigurer {
                 .apis(RequestHandlerSelectors.basePackage("${packageName}.controller"))
                 .paths(PathSelectors.any())
                 .build();
+    }
+
+    /**
+     * 数据库连接池-数据监控
+     */
+    @Bean
+    public ServletRegistrationBean druidStatViewServlet() {
+        ServletRegistrationBean bean = new ServletRegistrationBean<>(new StatViewServlet(),"/druid/*");
+        Map<String, String> params = new HashMap<>();
+        //　可配的属性都在 StatViewServlet 和其父类下
+        params.put("loginUsername", "admin");
+        params.put("loginPassword", "admin");
+        bean.setInitParameters(params);
+        return bean;
+    }
+
+    /**
+     * 数据库连接池-数据监控
+     */
+    @Bean
+    public FilterRegistrationBean druidWebStatFilter() {
+        FilterRegistrationBean bean = new FilterRegistrationBean<>(new WebStatFilter());
+        Map<String, String> params = new HashMap<>();
+        params.put("exclusions", "*.js,*.css,/druid/*");
+        bean.setInitParameters(params);
+        bean.setUrlPatterns(Collections.singletonList("/*"));
+        return bean;
+    }
+
+
+    /**
+     * 文件上传配置
+     */
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        //单个文件最大
+        factory.setMaxFileSize("80MB"); //KB,MB
+        //设置总上传数据总大小
+        factory.setMaxRequestSize("102400KB");
+        return factory.createMultipartConfig();
     }
 
     public static void main(String[] args) {

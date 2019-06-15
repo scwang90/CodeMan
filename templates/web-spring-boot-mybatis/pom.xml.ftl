@@ -60,6 +60,13 @@
 		</dependency>
 		</#if>
 
+		<!--data source-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+
 		<!--spring starter-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,8 +88,8 @@
 
 		<!--jackson JSON -->
 		<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-kotlin</artifactId>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
 		<!--spring 配置-->
