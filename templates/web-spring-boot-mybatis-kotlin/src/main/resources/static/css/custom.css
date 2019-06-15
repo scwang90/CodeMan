@@ -1,0 +1,53 @@
+input[type='checkbox'].form-input,
+input[type='radio'].form-input {
+    display: none;
+}
+input[type='checkbox'].form-input + label,
+input[type='radio'].form-input + label {
+    position: relative;
+    vertical-align: middle;
+    font-size: 12px;
+    font-family: "Arimo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.42857143;
+}
+input[type='checkbox'].form-input + label:before {
+    background: #FFF;
+    border: 1px solid #dddddd;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: -22px;
+    content: '';
+}
+input[type='checkbox']:checked.form-input + label:after
+{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: -22px;
+    content: '';
+    background: url(../assets/images/ok.png) no-repeat center center;
+}
+
+input[type='radio'].form-input + label:before {
+    border: 1px solid #dddddd;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: -22px;
+    content: '';
+    background: #FFF;
+    border-radius: 50%;
+    background-clip: padding-box;
+}
+
+input[type='radio']:checked.form-input + label:after  {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    top: 3px;
+    left: -19px;
+    content: '';
+    background: #bbb;
+    border-radius: 50%;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="../../static/js/vue.min.js"></script>
+    <script src="../../static/assets/js/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<side-bar th:fragment="side-bar">
+    <div id="side-bar" class="sidebar-menu toggle-others fixed">
+        <div class="sidebar-menu-inner">
+
+            <!--
+                    <header class="logo-env">
+
+                        &lt;!&ndash; logo &ndash;&gt;
+                        <div class="logo">
+                            <a href="/" class="logo-expanded">
+                                <img src="/assets/images/logo@2x.png" width="80" alt="" />
+                            </a>
+
+                            <a href="/" class="logo-collapsed">
+                                <img src="/assets/images/logo-collapsed@2x.png" width="40" alt="" />
+                            </a>
+                        </div>
+
+                        &lt;!&ndash; This will toggle the mobile menu and will be visible only on mobile devices &ndash;&gt;
+                        <div class="mobile-menu-toggle visible-xs">
+                            <a href="javascript:void(0)" data-toggle="user-info-menu">
+                                <i class="fa-bell-o"></i>
+                                <span class="badge badge-success">7</span>
+                            </a>
+
+                            <a href="javascript:void(0)" data-toggle="mobile-menu">
+                                <i class="fa-bars"></i>
+                            </a>
+                        </div>
+
+                        &lt;!&ndash; This will open the popup with user profile settings, you can use for any purpose, just be creative &ndash;&gt;
+                        <div class="settings-icon">
+                            <a href="javascript:void(0)" data-toggle="settings-pane" data-animate="true">
+                                <i class="linecons-cog"></i>
+                            </a>
+                        </div>
+
+                    </header>
+            -->
+
+            <ul id="main-menu" class="main-menu">
+                <!-- add class "multiple-expanded" to allow multiple submenus to open -->
+                <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+
+                <#list tables as table>
+                <li>
+                    <a href="/admin/manager/${table.urlPathName}">
+                        <i class="linecons-key"></i>
+                        <span class="title">${table.remark}</span>
+                    </a>
+                </li>
+                </#list>
+            </ul>
+
+        </div>
+        <script>
+            Vue.component('side-bar', {
+                template: $('#side-bar').remove().prop('outerHTML'),
+                data: function () {
+                    return {
+
+                    }
+                }
+            });
+        </script>
+    </div>
+</side-bar>
+
+</body>
+</html>

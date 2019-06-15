@@ -52,7 +52,7 @@ public class JavaLang extends ProgramLang {
             case Types.CLOB:
                 return Clob.class.getName();
             case Types.TINYINT:
-                return Byte.class.getSimpleName();
+//                return Byte.class.getSimpleName();
             case Types.SMALLINT:
                 return Short.class.getSimpleName();
             case Types.BIGINT:

@@ -23,8 +23,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<!--<kotlin.version>1.2.20</kotlin.version>-->
-		<kotlin.version>1.2.41</kotlin.version>
 	</properties>
 
 	<dependencies>
@@ -87,16 +85,6 @@
 			<artifactId>jackson-module-kotlin</artifactId>
 		</dependency>
 
-		<!--kotlin 语言-->
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-stdlib-jdk8</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-reflect</artifactId>
-		</dependency>
-
 		<!--spring 配置-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -131,31 +119,10 @@
 	</dependencies>
 
 	<build>
-		<sourceDirectory>${r'${project.basedir}'}/src/main/kotlin</sourceDirectory>
-		<testSourceDirectory>${r'${project.basedir}'}/src/test/kotlin</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<artifactId>kotlin-maven-plugin</artifactId>
-				<groupId>org.jetbrains.kotlin</groupId>
-				<configuration>
-					<args>
-						<arg>-Xjsr305=strict</arg>
-					</args>
-					<compilerPlugins>
-						<plugin>spring</plugin>
-					</compilerPlugins>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.jetbrains.kotlin</groupId>
-						<artifactId>kotlin-maven-allopen</artifactId>
-						<version>${r'${kotlin.version}'}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
