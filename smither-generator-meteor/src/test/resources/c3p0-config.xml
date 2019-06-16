@@ -22,7 +22,7 @@
 		<property name="minPoolSize">10</property>
 	</named-config>
 	<named-config name="CreditChinaServer">
-		<property name="user"></property>z
+		<property name="user"></property>
 		<property name="password"></property>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="jdbcUrl"></property>
