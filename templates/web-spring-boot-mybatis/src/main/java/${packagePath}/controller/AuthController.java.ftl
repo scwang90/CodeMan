@@ -37,7 +37,7 @@ public class AuthController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 //    @Autowired
-//    private mapper extends AdminMapper;
+//    private AdminMapper mapper;
 
     @PostMapping("login")
     @ApiOperation(value = "管理员登录", notes = "后台管理相关API都需要先登录")
