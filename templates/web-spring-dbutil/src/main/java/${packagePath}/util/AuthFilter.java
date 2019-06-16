@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 登陆验证过滤器
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class AuthFilter implements Filter {
 

@@ -3,7 +3,7 @@ package ${packageName}.constant;
 /**
  * 统一返回错误代码
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 public enum ResultCode {
     C200(200, "请求成功"),

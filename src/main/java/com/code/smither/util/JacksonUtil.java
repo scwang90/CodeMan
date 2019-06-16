@@ -15,7 +15,7 @@ import java.util.List;
  * Jackson工具类
  * Helper class for parsing to and from json for API calls
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class JacksonUtil {
 

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest
 /**
  * 统一错误返回格式
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @ApiIgnore
 @Controller

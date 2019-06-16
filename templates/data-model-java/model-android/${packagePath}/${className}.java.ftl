@@ -3,7 +3,7 @@ package ${packageName};
 /**
  * ${table.remark}
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 //@Table("${table.name}")
 public class ${className}{

@@ -9,7 +9,7 @@ import ${packageName}.service.base.BaseService;
  * Controller 层通用处理事务基类
  * @param <T>
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class GeneralController<T> extends BaseController{
 	

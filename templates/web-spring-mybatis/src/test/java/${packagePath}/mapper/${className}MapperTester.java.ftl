@@ -14,7 +14,7 @@ import ${packageName}.util.JacksonUtil;
 /**
  * ${table.remark}的Mapper层测试类
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring-*.xml")

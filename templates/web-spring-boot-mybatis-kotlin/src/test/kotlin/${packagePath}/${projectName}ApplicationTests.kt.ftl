@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext
 /**
  * 单元测试基类
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 @RunWith(SpringRunner::class)
 @SpringBootTest

@@ -3,7 +3,7 @@ package ${packageName}.mapper
 /**
 * 通用泛型 mapper 接口
 * @author ${author}
-* @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+* @date ${.now?string("yyyy-MM-dd zzzz")}
 */
 interface TypedMapper<T> {
 

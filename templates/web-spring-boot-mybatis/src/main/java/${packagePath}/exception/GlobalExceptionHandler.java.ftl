@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 全局错误异常处理
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {

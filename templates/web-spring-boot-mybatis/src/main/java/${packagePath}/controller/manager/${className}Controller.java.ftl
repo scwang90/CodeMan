@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * ${table.remark} 的 Controller 层实现
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @RestController
 @Api(value = "${table.urlPathName}", description = "${table.remark}API")

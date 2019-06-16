@@ -26,11 +26,11 @@ import javax.servlet.http.HttpSession;
 /**
  * 登录验证 API 实现
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 @CommonApi
 @RestController
-@Api(value = "auth", description = "登录验证API")
+@Api(value = "auth", description = "管理员登录验证API")
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 

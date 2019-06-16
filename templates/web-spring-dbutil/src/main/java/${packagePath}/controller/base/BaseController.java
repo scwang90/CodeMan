@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Controller 层基类
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class BaseController {
 

@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * @Description: 字符串常用工具类
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class AfStringUtil {
 

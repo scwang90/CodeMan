@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Api 通用返回格式实体类
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @ApiModel(description = "通用返回格式")
 public class ApiResult<T> extends Model {

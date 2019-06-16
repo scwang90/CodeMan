@@ -21,7 +21,7 @@ import ${packageName}.dao.base.BaseDaoMybatisMYSQLImpl.MybatisMultiDao;
 /**
  * ${table.remark}的mapper接口
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 

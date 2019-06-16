@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @ApiModel(description = "上传文件")
 public class Upload {

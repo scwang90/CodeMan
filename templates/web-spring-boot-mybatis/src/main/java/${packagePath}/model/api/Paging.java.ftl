@@ -3,7 +3,7 @@ package ${packageName}.model.api;
 /**
  * @apiNote 数据分页列表信息
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class Paging {
 

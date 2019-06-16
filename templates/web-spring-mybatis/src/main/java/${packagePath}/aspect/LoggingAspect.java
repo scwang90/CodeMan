@@ -11,7 +11,7 @@ import static java.lang.System.out;
 /**
  * 日志处理切面
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
+ * @date ${.now?string("yyyy-MM-dd zzzz")}
  */
 @Aspect
 public class LoggingAspect {
