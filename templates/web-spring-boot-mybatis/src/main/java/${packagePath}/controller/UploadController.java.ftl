@@ -1,8 +1,10 @@
 package ${packageName}.controller;
 
+import ${packageName}.constant.CommonApi;
 import ${packageName}.constant.UploadType;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
+import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Upload;
 import ${packageName}.util.ID22;
 
@@ -31,6 +33,7 @@ import java.util.Date;
  * @author ${author}
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
+@CommonApi
 @Controller
 @RequestMapping("/api/v1/upload")
 public class UploadController {
@@ -42,34 +45,40 @@ public class UploadController {
 
 	//处理文件上传
 	@ResponseBody
-	@PostMapping(value="upload")
-	public Object upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
-		String fileName = file.getOriginalFilename();
+	@PostMapping(value="")
+	public ApiResult<Upload> upload(@RequestParam("file") MultipartFile multipart, HttpServletRequest request) throws Exception {
+		String fileName = multipart.getOriginalFilename();
 
-		Upload uploadFile = new Upload();
-		uploadFile.type = UploadType.file.ordinal();
-		uploadFile.name = fileName;
-		uploadFile.time = new Date();
-		uploadFile.id = ID22.randomID22();
+		Upload upload = new Upload();
+		upload.type = UploadType.file.ordinal();
+		upload.name = fileName;
+		upload.time = new Date();
+		upload.token = ID22.randomID22();
 
-		String path = String.format("%s/%s/%s", UploadType.file.name(), dateFormat.format(uploadFile.time), uploadFile.id);
-		File upload = new File(String.format("%s/%s", request.getSession().getServletContext().getRealPath("upload"), path));
+		String path = String.format("%s/%s/%s", UploadType.file.name(), dateFormat.format(upload.time), upload.token);
+		File file = new File(String.format("%s/%s", request.getSession().getServletContext().getRealPath("upload"), path));
 
-		File parent = upload.getParentFile();
-		if(!parent.exists() && !parent.mkdirs()){
-			throw new ServiceException("创建上传目录失败:" + parent.getAbsolutePath());
+		File parent = file.getParentFile();
+		if (!parent.exists() && !parent.mkdirs()) {
+			return ApiResult.failure500("创建上传目录失败:" + parent.getAbsolutePath());
 		}
 
-		try (FileOutputStream out = new FileOutputStream(upload)) {
-			out.write(file.getBytes());
+		try (FileOutputStream out = new FileOutputStream(file)) {
+			out.write(multipart.getBytes());
 		}
 
-		uploadFile.path = path;
-		mapper.insert(uploadFile);
-		return String.format("%s://%s:%s/api/v1/file/download/%s", request.getScheme(), request.getServerName(), request.getServerPort(), uploadFile.id);
-	}
+		upload.path = path;
+		try {
+			mapper.insert(upload);
+			upload.path = String.format("%s/%s", request.getRequestURL(), upload.token);
+		} catch (Exception e) {
+			e.printStackTrace();
+			upload.path = String.format("%s://%s:%d/upload/%s", request.getScheme(), request.getServerName(), request.getServerPort(), upload.path);
+		}
+			return ApiResult.success(upload);
+		}
 
-	@RequestMapping("download/{token}")
+	@GetMapping("{token}")
 	public ResponseEntity<byte[]> download(@PathVariable String token, HttpServletRequest request) throws IOException {
 
 		Upload upload = mapper.findByToken(token);

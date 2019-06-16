@@ -15,7 +15,7 @@ public class Upload {
     @ApiModelProperty("文件类型")
     public int type = 0;
     @ApiModelProperty("文件 Id-Token")
-    public String id = null;
+    public String token = null;
     @ApiModelProperty("文件名称")
     public String name = null;
     @ApiModelProperty("存储路径")

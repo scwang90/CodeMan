@@ -34,11 +34,11 @@ public class ApiResult<T> extends Model {
         return new ApiResult<>(result, 200);
     }
 
-    public static ApiResult<String> failure400(String reason) {
+    public static <TT> ApiResult<TT> failure400(String reason) {
         return new ApiResult<>(null, 400, reason);
     }
 
-    public static ApiResult<String> failure500(String reason) {
+    public static <TT> ApiResult<TT> failure500(String reason) {
         return new ApiResult<>(null, 500, reason);
     }
 }

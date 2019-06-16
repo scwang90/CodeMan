@@ -21,4 +21,14 @@
 		<property name="maxPoolSize">100</property>
 		<property name="minPoolSize">10</property>
 	</named-config>
+	<named-config name="CreditChinaServer">
+		<property name="user">root</property>
+		<property name="password">ddy332211</property>
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+		<property name="jdbcUrl">jdbc:mysql://119.29.116.154:3306/credit_china</property>
+		<property name="initialPoolSize">10</property>
+		<property name="maxIdleTime">30</property>
+		<property name="maxPoolSize">100</property>
+		<property name="minPoolSize">10</property>
+	</named-config>
 </c3p0-config>

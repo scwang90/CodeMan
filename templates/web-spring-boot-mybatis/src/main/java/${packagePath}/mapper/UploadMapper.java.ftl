@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UploadMapper {
 
-    @Insert("INSERT INTO upload (token, name, type, path, time) VALUES (${r"#{token}"}, ${r"#{name}"}, ${r"#{type}"}, ${r"#{path}"}, ${r"#{time}"})")
+    @Insert("INSERT INTO upload_file (token, name, type, path, create_time) VALUES (${r"#{token}"}, ${r"#{name}"}, ${r"#{type}"}, ${r"#{path}"}, ${r"#{time}"})")
     int insert(Upload file);
 
-    @Select("SELECT id , token, name, type, path, time FROM upload WHERE token=${r"#{token}"} LIMIT 1")
+    @Select("SELECT id , token, name, type, path, create_time AS time FROM upload_file WHERE token=${r"#{token}"} LIMIT 1")
     Upload findByToken(@Param("token") String token);
 
 }

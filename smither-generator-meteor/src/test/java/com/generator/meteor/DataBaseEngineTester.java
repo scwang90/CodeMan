@@ -19,4 +19,15 @@ public class DataBaseEngineTester {
         }
     }
 
+    @Test
+    public void DataBaseCreditChina() {
+        try {
+            DataBaseConfig config = ConfigFactory.loadConfig("credit-china.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

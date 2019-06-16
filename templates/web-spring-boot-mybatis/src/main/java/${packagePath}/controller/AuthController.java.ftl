@@ -1,5 +1,6 @@
 package ${packageName}.controller;
 
+import ${packageName}.constant.CommonApi;
 import ${packageName}.constant.ResultCode;
 import ${packageName}.constant.UserType;
 import ${packageName}.exception.ServiceException;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpSession;
  * @author ${author}
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss zzzz")}
  */
+@CommonApi
 @RestController
 @Api(value = "auth", description = "登录验证API")
 @RequestMapping("/api/v1/auth")
