@@ -11,7 +11,7 @@ import ${packageName}.model.${className};
 /**
  * ${table.remark}的Dao实现
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @Repository
 public class ${className}DaoImpl extends BaseDaoImpl<${className}> implements ${className}Dao{

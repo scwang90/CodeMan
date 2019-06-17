@@ -14,7 +14,7 @@ import ${packageName}.util.ServiceException;
 /**
  * Controller 数据异常处理切面
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @Aspect
 @Component

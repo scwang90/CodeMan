@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Sql方法申明，在DaoImpl使用
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

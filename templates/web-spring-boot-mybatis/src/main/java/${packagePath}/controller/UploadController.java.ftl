@@ -31,7 +31,7 @@ import java.util.Date;
 /**
  * 文件上传接口
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @CommonApi
 @Controller

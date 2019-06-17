@@ -14,7 +14,7 @@ import ${packageName}.service.${className}Service;
 /**
  * ${table.remark} 的Controller层实现
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @RestController
 @Intent("${table.remark}")

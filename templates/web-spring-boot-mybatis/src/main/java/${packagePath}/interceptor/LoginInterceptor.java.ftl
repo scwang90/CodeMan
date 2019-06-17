@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 /**
  * 登录拦截器
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class LoginInterceptor implements HandlerInterceptor {
 

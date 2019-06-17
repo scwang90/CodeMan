@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * model 基类
  * @author 树朾
- * @date 2015-09-30 18:37:15 中国标准时间
+ * @since 2015-09-30 18:37:15 中国标准时间
  */
 public class ModelBase {
     /**

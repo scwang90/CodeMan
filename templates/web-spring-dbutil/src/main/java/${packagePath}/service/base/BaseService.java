@@ -7,7 +7,7 @@ import ${packageName}.util.Page;
  * 通用Service层接口
  * @param <T>
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 public interface BaseService<T> extends BaseDao<T>{
 	int delete(String id) throws Exception;

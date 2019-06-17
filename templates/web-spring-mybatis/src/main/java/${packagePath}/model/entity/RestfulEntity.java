@@ -3,7 +3,7 @@ package ${packageName}.model.entity;
 /**
  * Restful返回实体类
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class RestfulEntity{
 

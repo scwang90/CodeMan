@@ -15,7 +15,7 @@ import ${packageName}.model.base.ModelBase;
 /**
  * ${table.remark}
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @Table("${table.nameSQL}")
 public class ${className} extends ModelBase{

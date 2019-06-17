@@ -3,7 +3,7 @@ package ${packageName}.util;
 /**
  * Service层公用的Exception.
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class ServiceException extends RuntimeException {
 

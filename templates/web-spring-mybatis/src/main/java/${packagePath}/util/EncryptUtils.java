@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * MD5-SHA 编码器
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 public class EncryptUtils {  
     /** 

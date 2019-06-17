@@ -10,7 +10,7 @@ import ${packageName}.util.AfReflecter;
  * Mybatis - MYSQL 对 MultiDao 接口的实现
  * @param <T>
  * @author 树朾
- * @date 2015-06-29 18:20:50 中国标准时间 
+ * @since 2015-06-29 18:20:50 中国标准时间
  */
 public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	

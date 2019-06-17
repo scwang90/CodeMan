@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 /**
  * 登录验证 API 实现
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @CommonApi
 @RestController

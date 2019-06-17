@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 /**
  * ${table.remark}的mapper接口
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 @Mapper
 @Component

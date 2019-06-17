@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse
 /**
  * 登录拦截器
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 class LoginInterceptor : HandlerInterceptor {
 

@@ -3,7 +3,7 @@ package ${packageName}.constant
 /**
  * 统一返回错误代码
  * @author ${author}
- * @date ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
 enum class ResultCode(val code: Int, val remark: String) {
     C200(200, "请求成功"),
