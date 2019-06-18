@@ -58,8 +58,8 @@ public class ErrorController extends BasicErrorController {
                     }
                     Object field = ((FieldError) error).getField();
                     Object defaultMessage = ((FieldError) error).getDefaultMessage();
-                    message = field + ":" + defaultMessage;
-                    messages.add(message);
+                    message = defaultMessage;
+                    messages.add(field + ":" + message);
                     error = null;
                 } while (iterator.hasNext());
                 errors = messages;

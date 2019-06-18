@@ -7,7 +7,6 @@ import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
 import ${packageName}.util.ID22;
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -25,8 +24,11 @@ public class ${className}Controller {
 
 //    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private ${className}Mapper mapper;
+	private final ${className}Mapper mapper;
+
+	public ${className}Controller(${className}Mapper mapper) {
+		this.mapper = mapper;
+	}
 
 	@GetMapping
 	@ApiOperation(value = "${table.remark}列表")

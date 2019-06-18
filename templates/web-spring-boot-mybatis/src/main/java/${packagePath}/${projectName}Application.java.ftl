@@ -14,6 +14,7 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -138,6 +139,17 @@ public class ${projectName}Application implements WebMvcConfigurer {
         //设置总上传数据总大小
         factory.setMaxRequestSize("102400KB");
         return factory.createMultipartConfig();
+    }
+
+
+    /**
+     * 基础类型验证
+     * hibernate-validator不支持基础类型的验证，springboot对其进行了扩展，添加了MethodValidationPostProcessor拦截器，可以实现对方法参数的校验。
+     * 对基础类型的验证，必须要在Controller类上加 @Validated，同时配置 MethodValidationPostProcessor 才生效
+     */
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
     }
 
     public static void main(String[] args) {
