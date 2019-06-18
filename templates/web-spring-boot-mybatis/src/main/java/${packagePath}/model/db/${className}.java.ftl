@@ -17,7 +17,7 @@ public class ${className} extends Entity {
      * 数据库名称 ${column.nameSQL}
 		</#if>
 	 */
-    @ApiModelProperty(value="${column.remark}"<#if column.nullable!=true>, required = true</#if>)
+    @ApiModelProperty(value = "${column.remark}"<#if column.nullable!=true>, required = true</#if>)
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 

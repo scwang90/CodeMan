@@ -121,9 +121,9 @@ public class ${projectName}Application implements WebMvcConfigurer {
     public FilterRegistrationBean druidWebStatFilter() {
         FilterRegistrationBean bean = new FilterRegistrationBean<>(new WebStatFilter());
         Map<String, String> params = new HashMap<>();
-        params.put("exclusions", "*.js,*.css,/druid/*");
+        params.put("exclusions", "*.js,*.css,/druid/**");
         bean.setInitParameters(params);
-        bean.setUrlPatterns(Collections.singletonList("/*"));
+        bean.setUrlPatterns(Collections.singletonList("/**"));
         return bean;
     }
 
