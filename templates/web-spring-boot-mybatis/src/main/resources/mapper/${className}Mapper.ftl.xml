@@ -4,9 +4,9 @@
   <resultMap id="${table.name}" type="${packageName}.model.db.${className}">
     <!--<#list table.columns as column>-->
     <!--${column.remark}<#if table.idColumn.nameSQL == column.nameSQL>-->
-      <id column="${column.nameSQL}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
+    <id column="${column.nameSQL}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
     <!--<#else >-->
-      <result column="${column.nameSQL}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
+    <result column="${column.nameSQL}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
     <!--</#if>-->
     <!--</#list>-->
   </resultMap>

@@ -38,10 +38,13 @@ import java.util.Date;
 @RequestMapping("/api/v1/upload")
 public class UploadController {
 
-	@Autowired
-	UploadMapper mapper;
+	private DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-	DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+	private final UploadMapper mapper;
+
+	public UploadController(UploadMapper mapper) {
+		this.mapper = mapper;
+	}
 
 	//处理文件上传
 	@ResponseBody
@@ -75,8 +78,8 @@ public class UploadController {
 			e.printStackTrace();
 			upload.path = String.format("%s://%s:%d/upload/%s", request.getScheme(), request.getServerName(), request.getServerPort(), upload.path);
 		}
-			return ApiResult.success(upload);
-		}
+		return ApiResult.success(upload);
+	}
 
 	@GetMapping("{token}")
 	public ResponseEntity<byte[]> download(@PathVariable String token, HttpServletRequest request) throws IOException {

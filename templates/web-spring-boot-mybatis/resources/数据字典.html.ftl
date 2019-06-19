@@ -31,8 +31,8 @@
             <td>${column.length}</td>
             <td>${column.defValue}</td>
             <td><#if column.nullable></#if><#if !column.nullable>是</#if></td>
-        <td><#if column.autoIncrement>自增</#if></td>
-        <td>${column.remark}</td>
+            <td><#if column.autoIncrement>自增</#if></td>
+            <td>${column.remark}</td>
         </tr>
         </#list>
         </tbody>
