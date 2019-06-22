@@ -19,7 +19,7 @@
 		<property name="user">root</property>
 		<property name="password">scwang</property>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
-		<property name="jdbcUrl">jdbc:mysql://192.168.226.125:3306/exhibition</property>
+		<property name="jdbcUrl">jdbc:mysql://192.168.241.100:3306/exhibition</property>
 	</named-config>
 	<named-config name="SimpleCrm">
 		<property name="user">root</property>

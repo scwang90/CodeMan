@@ -27,46 +27,6 @@
 
 	<dependencies>
 
-		<#if dbType=="mysql">
-		<!-- MySql -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		</#if>
-		<#if dbType=="oracle">
-		<!-- Oracle -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.4.0</version>
-		</dependency>
-		</#if>
-		<#if dbType=="sqlserver">
-		<!-- sqlserver -->
-		<dependency>
-			<groupId>com.hynnet</groupId>
-			<artifactId>sqljdbc4-chs</artifactId>
-			<version>4.0.2206.100</version>
-		</dependency>
-		</#if>
-		<#if dbType=="sqlite">
-		<!-- sqlite-jdbc -->
-		<dependency>
-			<groupId>org.xerial</groupId>
-			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.20.1</version>
-		</dependency>
-		</#if>
-
-		<!--data source-->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.1.8</version>
-		</dependency>
-
 		<!--spring starter-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -80,11 +40,55 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!--third party starter-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.10</version>
+        </dependency>
+
+		<#if dbType=="mysql">
+		<!-- MySql -->
 		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+		</#if>
+		<#if dbType=="oracle">
+		<!-- Oracle -->
+		<dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10.2.0.4.0</version>
+        </dependency>
+		</#if>
+		<#if dbType=="sqlserver">
+		<!-- sqlserver -->
+		<dependency>
+            <groupId>com.hynnet</groupId>
+            <artifactId>sqljdbc4-chs</artifactId>
+            <version>4.0.2206.100</version>
+        </dependency>
+		</#if>
+		<#if dbType=="sqlite">
+		<!-- sqlite-jdbc -->
+		<dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.20.1</version>
+        </dependency>
+		</#if>
 
 		<!--jackson JSON -->
 		<dependency>

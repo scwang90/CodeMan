@@ -29,6 +29,15 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @return 改变的行数
 	 */
 	@Override
+	<#if table.idColumn.autoIncrement>
+	<@single_line>@Options(useGeneratedKeys = false
+		<#if table.idColumn.fieldName != "id">
+		, keyProperty = "${table.idColumn.fieldName}"
+		</#if>
+	)
+	</@single_line>
+	</#if>
+	@Options(useGeneratedKeys = false, keyProperty = "id")
 	<@single_line>@Insert("INSERT INTO ${table.nameSQL} (
 			<#list table.columns as column>
 				${column.nameSQL}
@@ -85,7 +94,31 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
     ${className} findById(@Param("id") Object id);
 
 	/**
+	 * 获取一条数据
+	 * @param where SQL条件语句
+	 * @param order SQL排序语句
+	 * @return null 或者 匹配条件的数据
+	 */
+	@Override
+	@ResultMap("${table.name}")
+	@Select("SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"} LIMIT 1")
+	${className} findOne(@Param("order") String order, @Param("where") String where);
+
+	/**
+	 * 根据属性查询
+	 * @param order SQL排序语句
+	 * @param property 数据库列名
+	 * @param value 值
+	 * @return null 或者 匹配条件的数据
+	 */
+	@Override
+	@ResultMap("${table.name}")
+	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"} LIMIT 1")
+	${className} findOneByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
+
+	/**
 	 * 获取全部数据
+	 * @param order SQL排序语句
 	 * @return 全部数据列表
 	 */
 	@Override
@@ -95,6 +128,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 
 	/**
 	 * 分页查询数据
+	 * @param order SQL排序语句
 	 * @param limit 最大返回
 	 * @param start 起始返回
 	 * @return 分页列表数据
@@ -114,13 +148,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
     int deleteWhere(@Param("where") String where);
 	/**
 	 * 根据属性值删除
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 改变的行数
 	 */
 	@Override
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${propertyName}"}=${r"#{value}"}")
-    int deleteByPropertyName(@Param("propertyName") String propertyName, @Param("value") Object value);
+	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
+    int deleteByPropertyName(@Param("property") String property, @Param("value") Object value);
 	/**
 	 * 选择性统计
 	 * @param where SQL条件语句
@@ -131,15 +165,16 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
     int countWhere(@Param("where") String where);
 	/**
 	 * 根据属性统计
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 统计数
 	 */
 	@Override
-	@Select("SELECT COUNT(*) FROM WHERE ${r"${propertyName}"}=${r"#{value}"}")
-    int countByPropertyName(@Param("propertyName") String propertyName, @Param("value") Object value);
+	@Select("SELECT COUNT(*) FROM WHERE ${r"${property}"}=${r"#{value}"}")
+    int countByPropertyName(@Param("property") String property, @Param("value") Object value);
 	/**
 	 * 选择性查询
+	 * @param order SQL排序语句
 	 * @param where SQL条件语句
 	 * @return 符合条件的列表数据
 	 */
@@ -150,6 +185,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 
 	/**
 	 * 选择性分页查询
+	 * @param order SQL排序语句
 	 * @param where SQL条件语句
 	 * @param limit 最大返回
 	 * @param start 起始返回
@@ -162,12 +198,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 
 	/**
 	 * 根据属性查询
-	 * @param propertyName 数据库列名
+	 * @param order SQL排序语句
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 返回符合条件的数据列表
 	 */
 	@Override
 	@ResultMap("${table.name}")
-	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"${propertyName}"}=${r"#{value}"} ${r"${order}"}")
-    List<${className}> findByPropertyName(@Param("order") String order, @Param("propertyName") String propertyName, @Param("value") Object value);
+	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"}")
+    List<${className}> findByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
 }

@@ -64,11 +64,11 @@ interface TypedMapper<T> {
 
     /**
      * 根据属性值删除
-     * @param propertyName 数据库列名
+     * @param property 数据库列名
      * @param value 值
      * @return 改变的行数
      */
-    fun deleteByPropertyName(propertyName: String, value: Any): Int
+    fun deleteByPropertyName(property: String, value: Any): Int
 
     /**
      * 选择性统计
@@ -79,11 +79,11 @@ interface TypedMapper<T> {
 
     /**
      * 根据属性统计
-     * @param propertyName 数据库列名
+     * @param property 数据库列名
      * @param value 值
      * @return 统计数
      */
-    fun countByPropertyName(propertyName: String, value: Any): Int
+    fun countByPropertyName(property: String, value: Any): Int
 
     /**
      * 选择性查询
@@ -103,9 +103,9 @@ interface TypedMapper<T> {
 
     /**
      * 根据属性查询
-     * @param propertyName 数据库列名
+     * @param property 数据库列名
      * @param value 值
      * @return 返回符合条件的数据列表
      */
-    fun findByPropertyName(order: String, propertyName: String, value: Any): List<T>
+    fun findByPropertyName(order: String, property: String, value: Any): List<T>
 }

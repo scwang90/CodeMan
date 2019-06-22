@@ -44,13 +44,32 @@ public interface TypedMapper<T> {
     T findById(Object id);
 
     /**
+     * 获取一条数据
+     * @param order SQL排序语句
+     * @param where SQL条件语句
+     * @return null 或者 匹配条件的数据
+     */
+    T findOne(@Param("order") String order, @Param("where") String where);
+
+    /**
+     * 根据属性查询
+     * @param order SQL排序语句
+     * @param property 数据库列名
+     * @param value 值
+     * @return 返回符合条件的数据列表
+     */
+    T findOneByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
+
+    /**
      * 获取全部数据
+     * @param order SQL排序语句
      * @return 全部数据列表
      */
     List<T> findAll(String order);
 
     /**
      * 分页查询数据
+     * @param order SQL排序语句
      * @param limit 最大返回
      * @param start 起始返回
      * @return 分页列表数据
@@ -66,11 +85,11 @@ public interface TypedMapper<T> {
 
     /**
      * 根据属性值删除
-     * @param propertyName 数据库列名
+     * @param property 数据库列名
      * @param value 值
      * @return 改变的行数
      */
-    int deleteByPropertyName(String propertyName, Object value);
+    int deleteByPropertyName(String property, Object value);
 
     /**
      * 选择性统计
@@ -81,14 +100,15 @@ public interface TypedMapper<T> {
 
     /**
      * 根据属性统计
-     * @param propertyName 数据库列名
+     * @param property 数据库列名
      * @param value 值
      * @return 统计数
      */
-    int countByPropertyName(String propertyName, Object value);
+    int countByPropertyName(String property, Object value);
 
     /**
      * 选择性查询
+     * @param order SQL排序语句
      * @param where SQL条件语句
      * @return 符合条件的列表数据
      */
@@ -96,6 +116,7 @@ public interface TypedMapper<T> {
 
     /**
      * 选择性分页查询
+     * @param order SQL排序语句
      * @param where SQL条件语句
      * @param limit 最大返回
      * @param start 起始返回
@@ -105,9 +126,10 @@ public interface TypedMapper<T> {
 
     /**
      * 根据属性查询
-     * @param propertyName 数据库列名
+     * @param order SQL排序语句
+     * @param property 数据库列名
      * @param value 值
      * @return 返回符合条件的数据列表
      */
-    List<T> findByPropertyName(String order, String propertyName, Object value);
+    List<T> findByPropertyName(String order, String property, Object value);
 }

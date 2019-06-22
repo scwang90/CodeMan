@@ -23,10 +23,8 @@ public class C3P0Factory implements DbFactory {
     protected C3P0Factory(String name) {
         if (name == null || name.trim().length() == 0 || "null".equals(name) || "[null]".equals(name)) {
             dataSource = null;
-        } else if (name.trim().length() > 0) {
-            dataSource = new ComboPooledDataSource(name);
         } else {
-            dataSource = new ComboPooledDataSource();
+            dataSource = new ComboPooledDataSource(name);
         }
     }
 

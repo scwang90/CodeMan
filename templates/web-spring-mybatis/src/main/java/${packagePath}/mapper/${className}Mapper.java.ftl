@@ -133,12 +133,12 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	int deleteWhere(@Param("where") String where);
 	/**
 	 * 根据属性值删除
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 改变的行数
 	 */
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${propertyName}"}=${r"#{value}"}")
-	int deleteByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value);
+	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
+	int deleteByPropertyName(@Param("property") String property,@Param("value") Object value);
 	/**
 	 * 选择性统计
 	 * @param where SQL条件语句
@@ -148,12 +148,12 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	int countWhere(@Param("where") String where);
 	/**
 	 * 根据属性统计
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM WHERE ${r"${propertyName}"}=${r"#{value}"}")
-	int countByPropertyName(@Param("propertyName") String propertyName,@Param("value") Object value);
+	@Select("SELECT COUNT(*) FROM WHERE ${r"${property}"}=${r"#{value}"}")
+	int countByPropertyName(@Param("property") String property,@Param("value") Object value);
 	/**
 	 * 选择性查询
 	 * @param where SQL条件语句
@@ -194,7 +194,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	List<${className}> findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start);
 	/**
 	 * 根据属性查询
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 返回符合条件的数据列表
 	 */
@@ -208,7 +208,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} WHERE ${r"${propertyName}"}=${r"#{value}"} ${r"${order}"}")
+		FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"}")
 	</@single_line>
-	List<${className}> findByPropertyName(@Param("order") String order,@Param("propertyName") String propertyName,@Param("value") Object value);
+	List<${className}> findByPropertyName(@Param("order") String order,@Param("property") String property,@Param("value") Object value);
 }

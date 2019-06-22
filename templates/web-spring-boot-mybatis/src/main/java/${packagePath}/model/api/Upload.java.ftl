@@ -1,9 +1,10 @@
 package ${packageName}.model.api;
 
-import java.util.Date;
-
+import ${packageName}.util.ID22;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Date;
 
 /**
  * @author ${author}
@@ -23,4 +24,12 @@ public class Upload {
     @ApiModelProperty("上传日期时间")
     public Date time = null;
 
+    public Upload() {
+    }
+
+    public Upload(int type) {
+        this.type = type;
+        this.time = new Date();
+        this.token = ID22.randomID22();
+    }
 }

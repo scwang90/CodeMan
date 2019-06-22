@@ -104,12 +104,12 @@ interface ${className}Mapper : TypedMapper<${className}>{
 
 	/**
 	 * 根据属性值删除
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 改变的行数
 	 */
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"\${propertyName}"}=${r"#{value}"}")
-	override fun deleteByPropertyName(@Param("propertyName") propertyName: String, @Param("value") value: Any): Int
+	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"\${property}"}=${r"#{value}"}")
+	override fun deleteByPropertyName(@Param("property") property: String, @Param("value") value: Any): Int
 
 	/**
 	 * 选择性统计
@@ -121,12 +121,12 @@ interface ${className}Mapper : TypedMapper<${className}>{
 
 	/**
 	 * 根据属性统计
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM WHERE ${r"\${propertyName}"}=${r"#{value}"}")
-	override fun countByPropertyName(@Param("propertyName") propertyName: String, @Param("value") value: Any): Int
+	@Select("SELECT COUNT(*) FROM WHERE ${r"\${property}"}=${r"#{value}"}")
+	override fun countByPropertyName(@Param("property") property: String, @Param("value") value: Any): Int
 
 	/**
 	 * 选择性查询
@@ -148,10 +148,10 @@ interface ${className}Mapper : TypedMapper<${className}>{
 
 	/**
 	 * 根据属性查询
-	 * @param propertyName 数据库列名
+	 * @param property 数据库列名
 	 * @param value 值
 	 * @return 返回符合条件的数据列表
 	 */
-	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"\${propertyName}"}=${r"#{value}"} ${r"\${order}"}")
-	override fun findByPropertyName(@Param("order") order: String, @Param("propertyName") propertyName: String, @Param("value") value: Any): List<${className}>
+	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"\${property}"}=${r"#{value}"} ${r"\${order}"}")
+	override fun findByPropertyName(@Param("order") order: String, @Param("property") property: String, @Param("value") value: Any): List<${className}>
 }

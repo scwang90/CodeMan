@@ -27,7 +27,7 @@ public class IndexController {
 	}
 
 	@RequestMapping("document")
-    public void document(HttpServletRequest request , HttpServletResponse response ) throws ServletException, IOException {
+    public void document(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/swagger-ui.html").forward(request, response);
 	}
 
@@ -37,18 +37,18 @@ public class IndexController {
 	}
 
 	@RequestMapping("admin/index")
-    public String index(Model model, HttpServletRequest request ) {
+    public String index(Model model) {
 		return "index";
 	}
 
 	@RequestMapping("admin/login")
-    public String login(Model model, HttpServletRequest request ) {
+    public String login(Model model) {
 		return "login";
 	}
 
     <#list tables as table>
 	@RequestMapping("admin/manager/${table.urlPathName}")
-    public String ${table.classNameCamel}(Model model, HttpServletRequest request ) {
+    public String ${table.classNameCamel}() {
 		return "manager/${table.urlPathName}";
 	}
     </#list>
