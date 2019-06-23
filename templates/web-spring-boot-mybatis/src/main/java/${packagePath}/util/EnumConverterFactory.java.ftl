@@ -1,5 +1,7 @@
 package ${packageName}.util;
 
+import ${packageName}.exception.ClientException;
+
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
@@ -36,7 +38,7 @@ public class EnumConverterFactory implements ConverterFactory<String, Enum> {
         public T convert(String source) {
             T result = enumMap.get(source);
             if(result == null) {
-                throw new IllegalArgumentException("无效枚举值：" + source);
+                throw new ClientException("无效枚举值：" + source);
             }
             return result;
         }
