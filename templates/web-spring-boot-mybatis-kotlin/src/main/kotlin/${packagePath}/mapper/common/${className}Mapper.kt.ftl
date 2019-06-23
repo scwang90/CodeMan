@@ -125,7 +125,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @param value 值
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM WHERE ${r"\${property}"}=${r"#{value}"}")
+	@Select("SELECT COUNT(*) FROM ${table.nameSQL} WHERE ${r"\${property}"}=${r"#{value}"}")
 	override fun countByPropertyName(@Param("property") property: String, @Param("value") value: Any): Int
 
 	/**

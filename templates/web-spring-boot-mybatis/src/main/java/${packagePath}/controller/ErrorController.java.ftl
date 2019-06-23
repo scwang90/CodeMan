@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.LinkedList;
@@ -24,6 +27,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import springfox.documentation.annotations.ApiIgnore;
+
 
 
 /**
@@ -61,6 +65,15 @@ public class ErrorController extends BasicErrorController {
             for (ConstraintViolation constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
                 message = constraint.getMessageTemplate();
                 messages.add(constraint.getPropertyPath() + ":" + message);
+            }
+            errors = messages;
+            status = HttpStatus.BAD_REQUEST;
+        } else if (error instanceof BindException) {
+            List<String> messages = new LinkedList<>();
+            BindingResult result = ((BindException) error).getBindingResult();
+            for (FieldError fieldError : result.getFieldErrors()) {
+                message = fieldError.getDefaultMessage();
+                messages.add(fieldError.getField() + ":" + message);
             }
             errors = messages;
             status = HttpStatus.BAD_REQUEST;

@@ -1,32 +1,37 @@
 package ${packageName}.controller;
 
-import ${packageName}.constant.CommonApi;
+import ${packageName}.annotation.CommonApi;
 import ${packageName}.constant.UploadType;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Upload;
-import ${packageName}.util.ID22;
+import ${packageName}.service.UploadService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 文件上传接口
@@ -35,75 +40,72 @@ import java.util.Date;
  */
 @CommonApi
 @Controller
-@RequestMapping("/api/v1/upload")
+@Api(value = "user", description = "用户API")
+@RequestMapping("/api/vi/file")
 public class UploadController {
 
-	private DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
 	private final UploadMapper mapper;
+	private final UploadService service;
 
-	public UploadController(UploadMapper mapper) {
+	public UploadController(UploadMapper mapper, UploadService service) {
 		this.mapper = mapper;
+		this.service = service;
 	}
 
 	//处理文件上传
 	@ResponseBody
-	@PostMapping(value="")
-	public ApiResult<Upload> upload(@RequestParam("file") MultipartFile multipart, HttpServletRequest request) throws Exception {
-		String fileName = multipart.getOriginalFilename();
-
-		Upload upload = new Upload();
-		upload.type = UploadType.file.ordinal();
-		upload.name = fileName;
-		upload.time = new Date();
-		upload.token = ID22.randomID22();
-
-		String path = String.format("%s/%s/%s", UploadType.file.name(), dateFormat.format(upload.time), upload.token);
-		File file = new File(String.format("%s/%s", request.getSession().getServletContext().getRealPath("upload"), path));
-
-		File parent = file.getParentFile();
-		if (!parent.exists() && !parent.mkdirs()) {
-			return ApiResult.failure500("创建上传目录失败:" + parent.getAbsolutePath());
-		}
-
-		try (FileOutputStream out = new FileOutputStream(file)) {
-			out.write(multipart.getBytes());
-		}
-
-		upload.path = path;
+	@ApiOperation(value = "文件上传")
+	@PostMapping(value = "upload")
+	public ApiResult<Upload> upload(@RequestParam("file") @ApiParam("上传文件") MultipartFile multipart, HttpServletRequest request) {
+		Upload upload = new Upload(multipart);
+		upload.path = service.pathWith(null, UploadType.from(multipart));
 		try {
-			mapper.insert(upload);
-			upload.path = String.format("%s/%s", request.getRequestURL(), upload.token);
-		} catch (Exception e) {
+			service.saveFile(multipart, upload);
+			upload.path = request.getRequestURL().toString().replace("upload", "download") + "/" + upload.token;
+		} catch (ServiceException e) {
+			return ApiResult.failure500("上传失败");
+		} catch (Throwable e) {
 			e.printStackTrace();
 			upload.path = String.format("%s://%s:%d/upload/%s", request.getScheme(), request.getServerName(), request.getServerPort(), upload.path);
 		}
 		return ApiResult.success(upload);
 	}
 
-	@GetMapping("{token}")
-	public ResponseEntity<byte[]> download(@PathVariable String token, HttpServletRequest request) throws IOException {
+	@ApiOperation(value = "文件下载")
+	@GetMapping("download/{token}")
+	public ResponseEntity<FileSystemResource> download(@PathVariable String token, @RequestHeader("User-Agent") @ApiIgnore String userAgent)  {
 
 		Upload upload = mapper.findByToken(token);
 		if (upload == null) {
-			throw new ServiceException("找不到对应文件");
+			throw new ServiceException("找不到对应文件信息");
 		}
 
-		File file = new File(String.format("%s/%s", request.getSession().getServletContext().getRealPath("upload"), upload.path));
+		File file = service.getFileByUpload(upload);
 		if (!file.exists()) {
 			throw new ServiceException("找不到对应文件");
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDispositionFormData("attachment", upload.name);
-		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-
-		try (InputStream input = new FileInputStream(file)) {
-			byte[] bytes = new byte[input.available()];
-			input.read(bytes);
-			return new ResponseEntity<>(bytes, headers, HttpStatus.CREATED);
+		if (userAgent != null && userAgent.contains("Mozilla/")) {
+			headers.setContentType(MediaType.parseMediaType(upload.mimeType));
+		} else {
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			headers.setContentDispositionFormData("attachment", upload.name);
 		}
+		return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.CREATED);
 
 	}
 
+	/**
+	 * 根据图片 token 获取下载链接
+	 * @param request 请求对象
+	 * @param token 图片 token
+	 * @return url
+	 */
+	public static String urlWithToken(HttpServletRequest request, @Nullable String token) {
+		if (token == null || token.startsWith("http")) {
+			return token;
+		}
+		return String.format("%s://%s:%d/api/app/file/download/%s", request.getScheme(), request.getServerName(), request.getServerPort(), token);
+	}
 }

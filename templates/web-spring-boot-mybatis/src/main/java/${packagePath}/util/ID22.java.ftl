@@ -6,14 +6,11 @@ import java.util.UUID;
 
 public class ID22 {
 
-    private String id22 = compressedUUID(UUID.randomUUID());
-
     private ID22() {
-
     }
 
     public static String randomID22() {
-        return new ID22().id22;
+        return compressedUUID(UUID.randomUUID());
     }
 
     private static String compressedUUID(UUID uuid) {
@@ -30,4 +27,5 @@ public class ID22 {
             bytes[offset++] = (byte) ((value >> 8 * i) & 0xFF);
         }
     }
+    
 }

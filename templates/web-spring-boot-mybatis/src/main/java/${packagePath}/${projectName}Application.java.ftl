@@ -2,7 +2,7 @@ package ${packageName};
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import ${packageName}.constant.CommonApi;
+import ${packageName}.annotation.CommonApi;
 import ${packageName}.interceptor.LoginInterceptor;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -99,34 +99,6 @@ public class ${projectName}Application implements WebMvcConfigurer {
                 .paths(PathSelectors.any())
                 .build();
     }
-
-    /**
-     * 数据库连接池-数据监控
-     */
-    @Bean
-    public ServletRegistrationBean druidStatViewServlet() {
-        ServletRegistrationBean bean = new ServletRegistrationBean<>(new StatViewServlet(),"/druid/*");
-        Map<String, String> params = new HashMap<>();
-        //　可配的属性都在 StatViewServlet 和其父类下
-        params.put("loginUsername", "admin");
-        params.put("loginPassword", "admin");
-        bean.setInitParameters(params);
-        return bean;
-    }
-
-    /**
-     * 数据库连接池-数据监控
-     */
-    @Bean
-    public FilterRegistrationBean druidWebStatFilter() {
-        FilterRegistrationBean bean = new FilterRegistrationBean<>(new WebStatFilter());
-        Map<String, String> params = new HashMap<>();
-        params.put("exclusions", "*.js,*.css,/druid/**");
-        bean.setInitParameters(params);
-        bean.setUrlPatterns(Collections.singletonList("/**"));
-        return bean;
-    }
-
 
     /**
      * 文件上传配置

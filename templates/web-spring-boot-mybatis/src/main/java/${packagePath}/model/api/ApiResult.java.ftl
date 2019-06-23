@@ -1,6 +1,7 @@
 package ${packageName}.model.api;
 
 import ${packageName}.model.Model;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -18,6 +19,8 @@ public class ApiResult<T> extends Model {
     public int code;
     @ApiModelProperty("失败原因")
     public String reason = "调用成功";
+    @ApiModelProperty("错误详细")
+    public Object errors = "";
 
     public ApiResult(T result, int code) {
         this.result = result;
@@ -30,8 +33,21 @@ public class ApiResult<T> extends Model {
         this.reason = reason;
     }
 
+    public ApiResult(T result, int code, String reason, Object errors) {
+        this(result, code, reason);
+        this.errors = errors;
+    }
+
+    public static <TT> ApiResult<TT> msg(String msg) {
+        return new ApiResult<>(null, 200, msg);
+    }
+
     public static <TT> ApiResult<TT> success(TT result) {
         return new ApiResult<>(result, 200);
+    }
+
+    public static <TT> ApiResult<TT> success(TT result, String msg) {
+        return new ApiResult<>(result, 200, msg);
     }
 
     public static <TT> ApiResult<TT> failure400(String reason) {

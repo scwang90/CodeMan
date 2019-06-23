@@ -1,6 +1,6 @@
 package ${packageName}.controller;
 
-import ${packageName}.constant.CommonApi;
+import ${packageName}.annotation.CommonApi;
 import ${packageName}.constant.ResultCode;
 import ${packageName}.constant.UserType;
 import ${packageName}.exception.ServiceException;

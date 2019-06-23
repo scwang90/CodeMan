@@ -152,7 +152,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @param value 值
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM WHERE ${r"${property}"}=${r"#{value}"}")
+	@Select("SELECT COUNT(*) FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
 	int countByPropertyName(@Param("property") String property,@Param("value") Object value);
 	/**
 	 * 选择性查询

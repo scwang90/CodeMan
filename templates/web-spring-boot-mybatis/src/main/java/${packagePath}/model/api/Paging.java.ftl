@@ -15,4 +15,15 @@ public class Paging {
     public int start() { return (page > 0) ? size * page : skip; }
     public int index() { return (page > 0) ? page : skip / size; }
 
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public void setSkip(int skip) {
+        this.skip = skip;
+    }
 }

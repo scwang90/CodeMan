@@ -1,6 +1,7 @@
 package ${packageName}.model.db;
 
 import ${packageName}.model.Entity;
+
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -14,10 +15,10 @@ public class ${className} extends Entity {
 	/**
 	 * ${column.remark}
 		<#if column.nameSQL!=column.fieldName>
-     * 数据库名称 ${column.nameSQL}
+	 * 数据库名称 ${column.nameSQL}
 		</#if>
 	 */
-    @ApiModelProperty(value = "${column.remark}"<#if column.nullable!=true>, required = true</#if>)
+	@ApiModelProperty(value = "${column.remark}"<#if column.nullable!=true>, required = true</#if>)
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 

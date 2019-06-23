@@ -5,6 +5,6 @@ package ${packageName}.constant;
  * @author ${author}
  * @since ${.now?string("yyyy-MM-dd zzzz")}
  */
-public enum UserType {
+public enum UserType implements ShortEnum {
     User, Admin
 }

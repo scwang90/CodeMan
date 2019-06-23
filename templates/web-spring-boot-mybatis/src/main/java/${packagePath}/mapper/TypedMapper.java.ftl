@@ -49,7 +49,7 @@ public interface TypedMapper<T> {
      * @param where SQL条件语句
      * @return null 或者 匹配条件的数据
      */
-    T findOne(@Param("order") String order, @Param("where") String where);
+    T findOne(String order, String where);
 
     /**
      * 根据属性查询
@@ -58,7 +58,7 @@ public interface TypedMapper<T> {
      * @param value 值
      * @return 返回符合条件的数据列表
      */
-    T findOneByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
+    T findOneByPropertyName(String order, String property, Object value);
 
     /**
      * 获取全部数据

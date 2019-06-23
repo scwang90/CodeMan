@@ -1,10 +1,15 @@
 package ${packageName}.model.api;
 
+import ${packageName}.constant.UploadType;
 import ${packageName}.util.ID22;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Date;
 
 /**
  * @author ${author}
@@ -21,6 +26,8 @@ public class Upload {
     public String name = null;
     @ApiModelProperty("存储路径")
     public String path = null;
+    @ApiModelProperty("媒体类型")
+    public String mimeType = null;
     @ApiModelProperty("上传日期时间")
     public Date time = null;
 
@@ -32,4 +39,13 @@ public class Upload {
         this.time = new Date();
         this.token = ID22.randomID22();
     }
+
+    public Upload(MultipartFile file) {
+        this.time = new Date();
+        this.token = ID22.randomID22();
+        this.mimeType = file.getContentType();
+        this.name = file.getOriginalFilename();
+        this.type = UploadType.from(file).ordinal();
+    }
+
 }
