@@ -28,8 +28,6 @@ import javax.validation.ConstraintViolationException;
 
 import springfox.documentation.annotations.ApiIgnore;
 
-
-
 /**
  * 统一错误返回格式
  * @author ${author}

@@ -5,10 +5,7 @@ import ${packageName}.constant.ResultCode;
 import ${packageName}.constant.UserType;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.model.api.ApiResult;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
@@ -20,8 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
-import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpSession;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 登录验证 API 实现

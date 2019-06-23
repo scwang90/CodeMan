@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 
-import springfox.documentation.annotations.ApiIgnore;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
 * url 映射
