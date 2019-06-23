@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UploadMapper {
                                                                             
-    @Insert("INSERT INTO upload_file (id, name, type, path, media_type, create_time, update_time) VALUES (${r"#{token}"}, ${r"#{name}"}, ${r"#{type}"}, ${r"#{mimeType}"}, ${r"#{path}"}, ${r"#{time}"}, ${r"#{time}"})")
+    @Insert("INSERT INTO upload_file (id, name, type, path, media_type, create_time, update_time) VALUES (${r"#{token}"}, ${r"#{name}"}, ${r"#{type}"}, ${r"#{path}"}, ${r"#{mimeType}"}, ${r"#{time}"}, ${r"#{time}"})")
     int insert(Upload file);
 
     @Select("SELECT id AS token, name, type, path, media_type AS mimeType, create_time AS time FROM upload_file WHERE id=${r"#{token}"} LIMIT 1")
