@@ -20,6 +20,8 @@ public class ConfigFactory {
 
 		XmlApiDocConfig config = new XmlApiDocConfig();
 
+		config.setNow(properties.getProperty("code.smither.now",config.getNow()));
+
 		config.setTemplateFtlOnly("true".equals(properties.getProperty("code.smither.template.ftl-only")));
 		config.setTemplatePath(properties.getProperty("code.smither.template.path",config.getTemplatePath()));
 		config.setTemplateCharset(properties.getProperty("code.smither.template.charset",config.getTemplateCharset()));

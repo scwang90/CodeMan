@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * Swagger文档配置
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Configuration
 @EnableSwagger2

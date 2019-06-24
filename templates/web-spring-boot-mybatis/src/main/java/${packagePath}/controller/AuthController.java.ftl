@@ -28,7 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * 登录验证 API 实现
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @CommonApi
 @RestController

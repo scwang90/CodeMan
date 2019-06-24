@@ -9,7 +9,7 @@ import javax.servlet.MultipartConfigElement;
 /**
  * 文件上传配置
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Configuration
 public class UploadConfigurer {

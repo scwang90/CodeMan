@@ -72,7 +72,7 @@
 <section class="pro-btm">
     <div class="content clearfix">
 
-        <#assign last = .now?string('SSS')?number lastrand = 0/>
+        <#assign last = now?string('SSS')?number lastrand = 0/>
         <#function random min max>
             <#list 1..1000 as i>
                 <#assign last = (last * 127 + 253) % 32767/>

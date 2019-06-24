@@ -11,7 +11,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  * @ClassName: C3P0Factory
  * @Description: 数据库连接工厂类
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class C3P0Factory {
 

@@ -3,7 +3,7 @@ package ${packageName}.exception;
 /**
  * 服务器自定义异常
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @SuppressWarnings("unused")
 public class ServiceException extends RuntimeException {

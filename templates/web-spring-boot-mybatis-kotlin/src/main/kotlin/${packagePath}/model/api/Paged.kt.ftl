@@ -5,7 +5,7 @@ import java.util.*
 /**
  * @apiNote 数据分页列表信息
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 class Paged<T> {
 

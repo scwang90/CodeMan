@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 通用API标记注解
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

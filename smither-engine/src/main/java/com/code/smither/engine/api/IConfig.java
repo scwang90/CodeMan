@@ -2,6 +2,7 @@ package com.code.smither.engine.api;
 
 public interface IConfig extends IFilterConfig {
 
+    String getNow();
     String getTargetPath();
     String getTemplatePath();
     String getTemplateCharset();

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * ${table.remark}的Service接实现
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Service
 public class ${className}ServiceImpl extends BaseServiceImpl<${className}> implements ${className}Service{

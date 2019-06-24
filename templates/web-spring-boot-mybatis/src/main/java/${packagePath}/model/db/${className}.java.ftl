@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * ${table.remark}
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class ${className} extends Entity {
 

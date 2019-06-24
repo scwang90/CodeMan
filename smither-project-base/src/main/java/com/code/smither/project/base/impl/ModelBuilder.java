@@ -29,6 +29,7 @@ public class ModelBuilder implements IModelBuilder {
 	}
 
 	public static Model build(Model model, ProjectConfig config, DbFactory factory, List<Table> tables) {
+		model.setUpNow(config.getNow());
 		model.setAuthor(config.getTargetProjectAuthor());
 		model.setCharset(config.getTargetCharset());
 		model.setPackageName(config.getTargetProjectPackage());

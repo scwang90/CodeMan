@@ -3,7 +3,7 @@ package ${packageName}.util;
 /**
  * 获取Session工具类
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class SessionUtil {
 

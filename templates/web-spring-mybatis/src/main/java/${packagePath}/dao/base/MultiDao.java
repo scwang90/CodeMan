@@ -6,7 +6,7 @@ import java.util.List;
  * 多功能Dao层接口
  * @param <T>
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public interface MultiDao<T> extends BaseDao<T>{
 	/**

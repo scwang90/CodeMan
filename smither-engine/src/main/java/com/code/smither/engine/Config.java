@@ -15,6 +15,8 @@ import com.code.smither.engine.impl.DefaultTaskLoader;
 @SuppressWarnings("unused")
 public class Config implements IConfig {
 
+    private String now;
+
     private String targetPath;
     private String templatePath;
     private String templateCharset;
@@ -38,6 +40,15 @@ public class Config implements IConfig {
 
     public void setTemplateFtlOnly(boolean templateFtlOnly) {
         this.templateFtlOnly = templateFtlOnly;
+    }
+
+    @Override
+    public String getNow() {
+        return now;
+    }
+
+    public void setNow(String now) {
+        this.now = now;
     }
 
     @Override

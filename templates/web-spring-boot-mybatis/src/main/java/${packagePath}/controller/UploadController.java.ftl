@@ -36,7 +36,7 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * 文件上传接口
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @CommonApi
 @Controller

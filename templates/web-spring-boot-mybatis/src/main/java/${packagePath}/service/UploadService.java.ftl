@@ -22,7 +22,7 @@ import java.util.Date;
 /**
  * 文件上传服务
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Service
 public class UploadService {

@@ -20,6 +20,7 @@ public class ConfigFactory {
 
 		DataBaseConfig config = new DataBaseConfig();
 
+		config.setNow(property.getProperty("code.smither.now",config.getNow()));
 		config.setDbConfigName(property.getProperty("code.smither.database.config.name",config.getDbConfigName()));
 
 		config.setTemplateFtlOnly("true".equalsIgnoreCase(property.getProperty("code.smither.template.ftl-only")));

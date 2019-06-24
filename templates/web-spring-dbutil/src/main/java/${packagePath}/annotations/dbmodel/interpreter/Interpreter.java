@@ -15,7 +15,7 @@ import ${packageName}.util.AfStringUtil;
 /**
  * db.annotation 解释器
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class Interpreter {
 	

@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * 数据库连接池配置
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Configuration
 public class DruidConfigurer {

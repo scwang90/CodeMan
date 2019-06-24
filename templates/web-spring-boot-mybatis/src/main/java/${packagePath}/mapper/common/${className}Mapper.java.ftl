@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * ${table.remark}的mapper接口
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Mapper
 @Component
@@ -59,6 +59,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@Override
 	@Delete("DELETE FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
 	int delete(@Param("id") Object id);
+
 	/**
 	 * 更新一条数据
 	 * @param model 更新的数据
@@ -82,6 +83,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@Override
 	@Select("SELECT COUNT(*) FROM ${table.nameSQL}")
 	int countAll();
+
 	/**
 	 * 根据ID获取
 	 * @param id 主键ID
@@ -145,6 +147,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@Override
 	@Delete("DELETE FROM ${table.nameSQL} ${r"${where}"}")
 	int deleteWhere(@Param("where") String where);
+
 	/**
 	 * 根据属性值删除
 	 * @param property 数据库列名
@@ -154,6 +157,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@Override
 	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
     int deleteByPropertyName(@Param("property") String property, @Param("value") Object value);
+
 	/**
 	 * 选择性统计
 	 * @param where SQL条件语句
@@ -162,6 +166,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@Override
 	@Select("SELECT COUNT(*) FROM ${table.nameSQL} ${r"${where}"}")
 	int countWhere(@Param("where") String where);
+
 	/**
 	 * 根据属性统计
 	 * @param property 数据库列名
@@ -171,6 +176,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@Override
 	@Select("SELECT COUNT(*) FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
     int countByPropertyName(@Param("property") String property, @Param("value") Object value);
+
 	/**
 	 * 选择性查询
 	 * @param order SQL排序语句

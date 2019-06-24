@@ -20,6 +20,8 @@ public class ConfigFactory {
 
 		HtmlTableConfig config = new HtmlTableConfig();
 
+		config.setNow(properties.getProperty("code.smither.now",config.getNow()));
+
 		config.setTemplateFtlOnly("true".equalsIgnoreCase(properties.getProperty("code.smither.template.ftl-only")));
 		config.setTemplateLang(properties.getProperty("code.smither.template.lang",config.getTemplateLang()));
 		config.setTemplatePath(properties.getProperty("code.smither.template.path",config.getTemplatePath()));

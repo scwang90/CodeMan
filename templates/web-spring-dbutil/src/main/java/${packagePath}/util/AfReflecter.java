@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * java 反射工具类
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class AfReflecter {
 

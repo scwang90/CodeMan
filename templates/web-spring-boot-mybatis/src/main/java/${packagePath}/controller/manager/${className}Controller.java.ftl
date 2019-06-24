@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * ${table.remark} 的 Controller 层实现
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @RestController
 @Api(value = "${table.urlPathName}", description = "${table.remark}API")
@@ -75,7 +75,6 @@ public class ${className}Controller {
 	</#if>
 	}
 
-
 	@PutMapping
 	@ApiOperation(value = "更新${table.remark}")
 	@ApiImplicitParams({
@@ -91,7 +90,6 @@ public class ${className}Controller {
 		</#list>
 		return ApiResult.success(mapper.update(model));
 	}
-
 
 	@ApiOperation(value = "获取${table.remark}")
 	@GetMapping("/{id}")

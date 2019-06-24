@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Controller 层基类
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class BaseController {
 

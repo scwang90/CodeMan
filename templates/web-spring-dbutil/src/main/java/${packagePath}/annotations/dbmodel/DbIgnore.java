@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 数据库忽略字段
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

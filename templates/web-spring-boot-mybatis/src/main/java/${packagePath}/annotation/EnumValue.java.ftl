@@ -14,7 +14,7 @@ import javax.validation.Payload;
 /**
  * 自定义枚举识别注解
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Documented
 @Constraint(validatedBy = {

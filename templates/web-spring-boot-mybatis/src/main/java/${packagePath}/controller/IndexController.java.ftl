@@ -15,7 +15,7 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
 * url 映射
 * @author ${author}
-* @since ${.now?string("yyyy-MM-dd zzzz")}
+* @since ${now?string("yyyy-MM-dd zzzz")}
 */
 @ApiIgnore
 @Controller

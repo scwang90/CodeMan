@@ -26,7 +26,7 @@ import ${packageName}.util.AfStackTrace;
  * DbUtil - MYSQL 对 MultiDao 接口的实现
  * @param <T>
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 

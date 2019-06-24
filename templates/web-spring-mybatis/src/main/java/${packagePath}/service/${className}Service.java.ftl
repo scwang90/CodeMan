@@ -8,7 +8,7 @@ import ${packageName}.service.base.BaseService;
 /**
  * ${table.remark}的Service接口层
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public interface ${className}Service extends BaseService<${className}> {
 

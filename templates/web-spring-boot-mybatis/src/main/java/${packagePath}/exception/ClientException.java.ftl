@@ -3,7 +3,7 @@ package ${packageName}.exception;
 /**
  * 客户端自定义异常
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @SuppressWarnings("unused")
 public class ClientException extends RuntimeException {

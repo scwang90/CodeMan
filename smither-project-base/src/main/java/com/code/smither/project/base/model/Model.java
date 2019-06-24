@@ -8,6 +8,10 @@ import com.code.smither.project.base.api.IProgramLang;
 import com.code.smither.project.base.util.StringUtil;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +31,7 @@ public class Model implements ILangRootModel {
     private String packagePath;
     private String projectName;
     private String charset;
+    private Date now = new Date();
 
     public Model() {
     }
@@ -40,6 +45,33 @@ public class Model implements ILangRootModel {
     public Model(Table table) {
         this.table = table;
         this.className = table.getClassName();
+    }
+
+    public void setUpNow(String now) {
+        if (now != null && now.length() > 0) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                this.now = dateFormat.parse(now);
+            } catch (ParseException e) {
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    this.now = dateFormat.parse(now);
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                    this.now = new Date();
+                }
+            }
+        } else {
+            this.now = new Date();
+        }
+    }
+
+    public Date getNow() {
+        return now;
+    }
+
+    public void setNow(Date now) {
+        this.now = now;
     }
 
     public List<Table> getTables() {
@@ -158,5 +190,6 @@ public class Model implements ILangRootModel {
             }
         }
     }
+
     //</editor-fold>
 }

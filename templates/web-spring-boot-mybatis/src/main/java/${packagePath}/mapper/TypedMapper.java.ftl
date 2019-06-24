@@ -5,7 +5,7 @@ import java.util.List;
 /**
 * 通用泛型 mapper 接口
 * @author ${author}
-* @since ${.now?string("yyyy-MM-dd zzzz")}
+* @since ${now?string("yyyy-MM-dd zzzz")}
 */
 public interface TypedMapper<T> {
 

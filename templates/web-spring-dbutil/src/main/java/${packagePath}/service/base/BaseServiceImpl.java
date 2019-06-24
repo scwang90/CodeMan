@@ -16,7 +16,7 @@ import java.util.List;
  * 通用Service层实现基类
  * @param <T>
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class BaseServiceImpl<T> implements BaseService<T>{
 

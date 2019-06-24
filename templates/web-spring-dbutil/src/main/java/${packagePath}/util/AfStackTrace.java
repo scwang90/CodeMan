@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
  * 1.可以查看当前函数名称 
  * 2.可以判断当前函数是否已经递归调用
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public class AfStackTrace {
 

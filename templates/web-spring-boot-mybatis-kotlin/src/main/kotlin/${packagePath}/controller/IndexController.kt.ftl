@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse
 /**
 * url 映射
 * @author ${author}
-* @since ${.now?string("yyyy-MM-dd zzzz")}
+* @since ${now?string("yyyy-MM-dd zzzz")}
 */
 @ApiIgnore
 @Controller

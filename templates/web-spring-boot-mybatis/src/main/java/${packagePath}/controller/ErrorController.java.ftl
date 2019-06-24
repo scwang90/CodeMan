@@ -31,7 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * 统一错误返回格式
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @ApiIgnore
 @Controller

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * 全局配置对象
  * @author ${author}
- * @since ${.now?string("yyyy-MM-dd zzzz")}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Component
 @ConfigurationProperties("app.config")

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 /**
 * 文件上传 mapper 接口
 * @author ${author}
-* @since ${.now?string("yyyy-MM-dd zzzz")}
+* @since ${now?string("yyyy-MM-dd zzzz")}
 */
 @Mapper
 @Component
