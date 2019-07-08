@@ -32,9 +32,9 @@ class ${className}Controller {
 	@GetMapping
 	@ApiOperation(value = "${table.remark}列表", notes = "")
 	@ApiImplicitParams(
-		ApiImplicitParam(paramType = "query", name = "size", value = "分页大小", required = true, defaultValue = "20"),
-		ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始）", defaultValue = "0"),
-		ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始）", defaultValue = "0")
+		ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
+		ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
+		ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
 	)
 	fun list(@ApiIgnore paging: Paging): ApiResult<Paged<${className}>> {
 		val count = mapper.countAll()

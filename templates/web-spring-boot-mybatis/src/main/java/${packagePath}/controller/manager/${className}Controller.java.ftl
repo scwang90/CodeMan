@@ -47,9 +47,9 @@ public class ${className}Controller {
 	@GetMapping
 	@ApiOperation(value = "${table.remark}列表")
 	@ApiImplicitParams({
-		@ApiImplicitParam(paramType = "query", name = "size", value = "分页大小", required = true, defaultValue = "20"),
-		@ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始）", defaultValue = "0"),
-		@ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始）", defaultValue = "0")
+		@ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
+		@ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
+		@ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
 	})
     public ApiResult<Paged<${className}>> list(@ApiIgnore Paging paging) {
 		int count = mapper.countAll();
