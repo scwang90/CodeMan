@@ -30,4 +30,15 @@ public class DataBaseEngineTester {
         }
     }
 
+    @Test
+    public void DataBaseMedicalWxHis() {
+        try {
+            DataBaseConfig config = ConfigFactory.loadConfig("medical-wxhis.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
