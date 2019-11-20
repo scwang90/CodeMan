@@ -33,7 +33,7 @@ public class DefaultFileFilter implements IFileFilter {
         for (int i = 0; i < filters.length; i++) {
             String regex = filters[i];
             if (regex.isEmpty()) {
-                regex = ".*";
+                regex = "";//".*";
             } else if (regex.startsWith("regex:")) {
                 regex = regex.substring(6);// regex -= "regex:";
             } else {

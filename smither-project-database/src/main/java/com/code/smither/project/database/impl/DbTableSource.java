@@ -12,6 +12,7 @@ import com.code.smither.project.base.util.StringUtil;
 import javax.annotation.Nonnull;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -19,14 +20,15 @@ import java.util.List;
  * 模板Model-Table构建器
  * Created by SCWANG on 2015-07-04.
  */
+@SuppressWarnings("WeakerAccess")
 public class DbTableSource implements TableSource {
 
-	protected boolean autoClose = false;
-	protected ProjectConfig config = null;
-	protected DbFactory dbFactory = null;
+	protected boolean autoClose;
+	protected ProjectConfig config;
+	protected DbFactory dbFactory;
 	protected Connection connection = null;
-	protected ITableFilter tableFilter = null;
-	protected ClassConverter classConverter = null;
+	protected ITableFilter tableFilter;
+	protected ClassConverter classConverter;
 	protected DatabaseMetaData databaseMetaData = null;
 	protected Remarker remarker = new DbRemarker();
 	protected JdbcLang jdbcLang = new JdbcLang();
@@ -57,16 +59,30 @@ public class DbTableSource implements TableSource {
 		return new DefaultDatabase(new String[0]);
 	}
 
+	protected ResultSet queryTables() throws SQLException {
+		return databaseMetaData.getTables(connection.getCatalog(), "%", "%", new String[] { "TABLE" });
+	}
+
+	protected ResultSet queryPrimaryKeys(String tableName) throws SQLException {
+		return databaseMetaData.getPrimaryKeys(connection.getCatalog(), null, tableName);
+	}
+
+	protected ResultSet queryColumns(String tableName) throws SQLException {
+		return databaseMetaData.getColumns(connection.getCatalog(), "%", tableName, "%");
+	}
+
+	protected String queryTableRemarks(String table) throws SQLException {
+		return null;
+	}
+
 	@Nonnull
 	public List<Table> build() throws SQLException {
 		if (this.connection == null) {
 			this.connection = dbFactory.getConnection();
 		}
 		if (this.connection != null) {
-			databaseMetaData = this.connection.getMetaData();
-			ResultSet tableResult = databaseMetaData.getTables(connection.getCatalog(), "%", "%",
-					new String[] { "TABLE" });
-			return buildTables(tableResult);
+			this.databaseMetaData = this.connection.getMetaData();
+			return buildTables(queryTables());
 		}
 		return new ArrayList<>();
 	}
@@ -74,101 +90,135 @@ public class DbTableSource implements TableSource {
 	protected List<Table> buildTables(ResultSet tableResult) throws SQLException {
 		List<Table> tables = new ArrayList<>();
 		while (tableResult.next()) {
-			String tableName = tableResult.getString("TABLE_NAME");
-			if (tableFilter != null && tableFilter.isNeedFilterTable(tableName)) {
-				continue;
-			}
-
-			Table table = new Table();
-			table.setName(tableName, getDatabase());
-			table.setRemark(tableResult.getString("REMARKS"));
-			table.setClassName(this.classConverter.converterClassName(table.getName()));
-			table.setClassNameUpper(table.getClassName().toUpperCase());
-			table.setClassNameLower(table.getClassName().toLowerCase());
-			table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
-
-			String division = this.config.getTableDivision();
-			if (division == null || division.length() == 0) {
-				division = "_";
-			}
-			table.setUrlPathName(table.getName().toLowerCase().replace(division,"-"));
-
-			if (table.getRemark() == null || table.getRemark().trim().length()==0) {
-				table.setRemark(getTableRemarks(table.getName()));
-			}
-			if (table.getRemark() == null || table.getRemark().trim().length()==0) {
-				table.setRemark(remarker.getTableRemark(table.getName()));
-			}
-			table.setColumns(buildColumns(table.getName()));
-			table.setIdColumn(buildIdColumn(table.getName()));
-			for (TableColumn column : table.getColumns()) {
-				if (column.getName().equals(table.getIdColumn().getName())) {
-					table.setIdColumn(column);
-					break;
-				}
-			}
-			tables.add(table);
+			System.out.println();
+			Table table = tableFromResultSet(tableResult);
+            if (table == null) {
+                continue;
+            }
+//			table.setName("特殊预交金表");
+//            if (tables.size() > 0) {
+//                return tables;
+//            }
+			System.out.println("构建表【"+table.getName()+"】模型开始（" + tables.size() + "）");
+			tables.add(tableCompute(table));
+			System.out.println("构建表【"+table.getName()+"】模型完成（" + tables.size() + "）");
 		}
+		tableResult.close();
 		return tables;
 	}
 
-	protected TableColumn buildIdColumn(String tableName) throws SQLException{
-		TableColumn column = new TableColumn();
-		ResultSet keySet = databaseMetaData.getPrimaryKeys(connection.getCatalog(), null, tableName);
-		if (keySet.next()) {
-			column.setName(keySet.getString("COLUMN_NAME"), getDatabase());
-		} else {
-			column.setName("hasNoPrimaryKey");
-			column.setType("VARCHAR");
-			column.setLength(256);
-			column.setDefValue("");
-			column.setNullable(true);
-			column.setAutoIncrement(false);
-			column.setRemark("没有主键");
-			column.setTypeInt(java.sql.Types.VARCHAR);
+	protected Table tableFromResultSet(ResultSet tableResult) throws SQLException {
+		String tableName = tableResult.getString("TABLE_NAME");
+		if (tableFilter != null && tableFilter.isNeedFilterTable(tableName)) {
+			System.out.println("跳过表【"+tableName+"】");
+			return null;
+		}
 
-			column.setFieldName(this.classConverter.converterFieldName(column.getName()));
-			column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
-			column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
-			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
+		Table table = new Table();
+		table.setName(tableName, getDatabase());
+		table.setRemark(tableResult.getString("REMARKS"));
+		return table;
+	}
+
+	protected Table tableCompute(Table table) throws SQLException {
+		table.setClassName(this.classConverter.converterClassName(table.getName()));
+		table.setClassNameUpper(table.getClassName().toUpperCase());
+		table.setClassNameLower(table.getClassName().toLowerCase());
+		table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
+
+		String division = this.config.getTableDivision();
+		if (division == null || division.length() == 0) {
+			division = "_";
+		}
+		table.setUrlPathName(table.getName().toLowerCase().replace(division,"-"));
+
+		if (table.getRemark() == null || table.getRemark().trim().length()==0) {
+			table.setRemark(queryTableRemarks(table.getName()));
+		}
+		if (table.getRemark() == null || table.getRemark().trim().length()==0) {
+			table.setRemark(remarker.getTableRemark(table.getName()));
+		}
+
+		return tableComputeColumn(table);
+	}
+
+    protected Table tableComputeColumn(Table table) throws SQLException {
+	    List<String> keys = new LinkedList<>();
+        ResultSet resultKey = queryPrimaryKeys(table.getName());
+        while (resultKey.next()) {
+            keys.add(resultKey.getString("COLUMN_NAME"));
+        }
+        resultKey.close();
+
+        List<TableColumn> columns = new LinkedList<>();
+        ResultSet resultColumn = queryColumns(table.getName());
+        while (resultColumn.next()) {
+            TableColumn column = columnFromResultSet(resultColumn);
+            if (keys.contains(column.getName()) || (keys.isEmpty() && column.getName().toLowerCase().endsWith("id"))) {
+                if (table.getIdColumn() == null) {
+                    table.setIdColumn(column);
+                }
+                if (column.getTypeInt() == Types.DECIMAL || column.getTypeInt() == Types.NUMERIC) {
+                    column.setTypeInt(Types.BIGINT);
+                }
+            }
+            columns.add(columnCompute(column));
+            System.out.println("构建列【" + table.getName() + "】【" + column.getName() + "】模型完成（" + columns.size() + "）");
+        }
+        if (table.getIdColumn() == null) {
+            table.setIdColumn(columnKeyDefault(columns));
+        }
+        resultColumn.close();
+        table.setColumns(columns);
+        return table;
+    }
+
+    protected TableColumn columnKeyDefault(List<TableColumn> columns) {
+        if (columns.size() > 0) {
+            return columns.get(0);
+        }
+        TableColumn column = new TableColumn();
+        column.setName("hasNoPrimaryKey");
+        column.setType("VARCHAR");
+        column.setLength(256);
+        column.setDefValue("");
+        column.setNullable(true);
+        column.setAutoIncrement(false);
+        column.setRemark("没有主键");
+        column.setTypeInt(java.sql.Types.VARCHAR);
+
+        column.setFieldName(this.classConverter.converterFieldName(column.getName()));
+        column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
+        column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
+        column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
+        return column;
+    }
+
+	protected TableColumn columnFromResultSet(ResultSet resultSet) throws SQLException {
+		TableColumn column = new TableColumn();
+		column.setName(resultSet.getString("COLUMN_NAME"), getDatabase());
+		column.setType(resultSet.getString("TYPE_NAME"));
+		column.setTypeInt(resultSet.getInt("DATA_TYPE"));
+		column.setLength(resultSet.getInt("COLUMN_SIZE"));
+		column.setDefValue(resultSet.getString("COLUMN_DEF"));
+		column.setNullable(resultSet.getBoolean("NULLABLE"));
+		column.setRemark(resultSet.getString("REMARKS"));
+		return column;
+	}
+
+	protected TableColumn columnCompute(TableColumn column) {
+		column.setTypeJdbc(jdbcLang.getType(column.getTypeInt()));
+		column.setFieldName(this.classConverter.converterFieldName(column.getName()));
+		column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
+		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
+		column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
+
+		if (column.getRemark() == null || column.getRemark().trim().length()==0) {
+			column.setRemark(remarker.getColumnRemark(column.getName()));
 		}
 		return column;
 	}
 
-	protected List<TableColumn> buildColumns(String tableName) throws SQLException {
-		ResultSet resultSet = databaseMetaData.getColumns(connection.getCatalog(), "%", tableName, "%");
-		List<TableColumn> columns = new ArrayList<>();
-		while (resultSet.next()) {
-			TableColumn column = new TableColumn();
-			column.setName(resultSet.getString("COLUMN_NAME"), getDatabase());
-			column.setType(resultSet.getString("TYPE_NAME"));
-			column.setTypeInt(resultSet.getInt("DATA_TYPE"));
-			column.setLength(resultSet.getInt("COLUMN_SIZE"));
-			column.setDefValue(resultSet.getString("COLUMN_DEF"));
-			column.setNullable(resultSet.getBoolean("NULLABLE"));
-			column.setRemark(resultSet.getString("REMARKS"));
-			column.setTypeJdbc(jdbcLang.getType(column.getTypeInt()));
-
-			Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
-			column.setAutoIncrement(Boolean.valueOf(true).equals(is_autoincrement) || "YES".equalsIgnoreCase(is_autoincrement + "") || Integer.valueOf("1").equals(is_autoincrement));
-
-			column.setFieldName(this.classConverter.converterFieldName(column.getName()));
-			column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
-			column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
-			column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
-
-			if (column.getRemark() == null || column.getRemark().trim().length()==0) {
-				column.setRemark(remarker.getColumnRemark(column.getName()));
-			}
-			columns.add(column);
-		}
-		return columns;
-	}
-
-	protected String getTableRemarks(String table) throws SQLException {
-		return null;
-	}
-	
 	@SuppressWarnings("unused")
 	public void printResultSet(ResultSet resultSet) throws SQLException {
 		ResultSetMetaData metaData = resultSet.getMetaData(); 

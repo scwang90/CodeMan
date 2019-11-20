@@ -63,7 +63,8 @@ public class JavaLang extends ProgramLang {
             case Types.DOUBLE:
                 return Double.class.getSimpleName();
             case Types.DECIMAL:
-                return BigDecimal.class.getName();
+                return Double.class.getSimpleName();
+//                return BigDecimal.class.getName();
             case Types.INTEGER:
                 return Integer.class.getSimpleName();
             case Types.JAVA_OBJECT:
@@ -143,6 +144,9 @@ public class JavaLang extends ProgramLang {
 
     @Override
     public String converterFieldName(String columnName) {
+        if (columnName.matches("^[A-Z]+$")) {
+            return columnName.toLowerCase();
+        }
         return StringUtil.lowerFirst(columnName);
     }
 }

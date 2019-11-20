@@ -33,7 +33,6 @@ public class ConfigFactory {
 		config.setTargetProjectAuthor(properties.getProperty("code.smither.target.project.author",config.getTargetProjectAuthor()));
 		config.setTargetProjectPackage(properties.getProperty("code.smither.target.project.package",config.getTargetProjectPackage()));
 
-
 		config.setHtmlTablePath(properties.getProperty("code.smither.htmltable.path",config.getHtmlTablePath()));
 		config.setHtmlTableCharset(properties.getProperty("code.smither.htmltable.charset",config.getHtmlTableCharset()));
 

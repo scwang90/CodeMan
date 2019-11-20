@@ -29,7 +29,7 @@ public class SqLiteTableSource extends DbTableSource {
     }
 
     @Override
-    protected String getTableRemarks(String table) throws SQLException {
+    protected String queryTableRemarks(String table) throws SQLException {
         return null;
     }
 
