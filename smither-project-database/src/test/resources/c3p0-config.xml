@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
-	<!--如果需要切换其它类型的数据库（mysql/sqlserver/oracle），可以在main/test/resources/c3p0-config.xml查看配置参考-->
-	<named-config name="Trailer">
-		<property name="user">root</property>
-		<property name="password">123456</property>
-		<property name="driverClass">com.mysql.jdbc.Driver </property>
-		<property name="jdbcUrl">jdbc:mysql://192.168.1.205:3316/trailer</property>
-		<property name="initialPoolSize">10</property>
-		<property name="maxIdleTime">30</property>
-		<property name="maxPoolSize">100</property>
-		<property name="minPoolSize">10</property>
+	<!-- 如果需要切换其它类型的数据库（mysql/sqlserver/oracle/sqlite）-->
+	<!-- 可以在 smither-project-database/src/main/resources/c3p0-config.xml 查看配置参考 -->
+	<named-config name="DemoSqLite">
+		<property name="driverClass">org.sqlite.JDBC</property>
+		<property name="jdbcUrl">jdbc:sqlite:sqlite.db</property>
+		<!--<property name="jdbcUrl">jdbc:sqlite:[文件路劲]/property>-->
 	</named-config>
-	<named-config name="SqlServer">
-		<property name="user">sa</property>
-		<property name="password">000000</property>
+	<named-config name="DemoMysql">
+		<property name="user">builder</property>
+		<property name="password">builder</property>
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+		<property name="jdbcUrl">jdbc:mysql://108.108.108.8:3306/webanalytics</property>
+		<!--<property name="jdbcUrl">jdbc:mysql://[IP地址|域名]:[端口]/[数据库名称]</property>-->
+	</named-config>
+	<named-config name="DemoSqlServer">
+		<property name="user">builder</property>
+		<property name="password">builder</property>
 		<property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="jdbcUrl">jdbc:sqlserver://192.168.1.110;databaseName=YX-TestCloud</property>
+		<property name="jdbcUrl">jdbc:sqlserver://108.108.108.8\\JONSE;databaseName=database</property>
 		<!--<property name="jdbcUrl">jdbc:sqlserver://[IP地址|域名][\\数据库实例];databaseName=[数据库名称]</property>-->
 	</named-config>
-	<named-config name="SqlServer-Worker">
-		<property name="user">sa</property>
-		<property name="password">000000</property>
-		<property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="jdbcUrl">jdbc:sqlserver://192.168.1.110;databaseName=YX-Worker</property>
+	<named-config name="DemoOracle">
+		<property name="user">builder</property>
+		<property name="password">builder</property>
+		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
+		<property name="jdbcUrl">jdbc:oracle:thin@108.108.108.8:1521:database</property>
+		<!--		格式一：jdbc:oracle:thin:@//<host>:<port>/<service_name>-->
+		<!--		格式二：jdbc:oracle:thin:@<host>:<port>:<SID>-->
+		<!--		格式三：jdbc:oracle:thin:@<TNSName>-->
 	</named-config>
 </c3p0-config>

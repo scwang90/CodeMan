@@ -1,10 +1,7 @@
 package com.code.smither.project.database.impl;
 
 import com.code.smither.project.base.ProjectConfig;
-import com.code.smither.project.base.api.ClassConverter;
-import com.code.smither.project.base.api.DbFactory;
-import com.code.smither.project.base.api.Remarker;
-import com.code.smither.project.base.api.TableSource;
+import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.constant.JdbcLang;
 import com.code.smither.project.base.impl.DbRemarker;
@@ -12,6 +9,7 @@ import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 
+import javax.annotation.Nonnull;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +24,9 @@ public class DbTableSource implements TableSource {
 	protected boolean autoClose = false;
 	protected ProjectConfig config = null;
 	protected DbFactory dbFactory = null;
-	protected ClassConverter classConverter = null;
 	protected Connection connection = null;
+	protected ITableFilter tableFilter = null;
+	protected ClassConverter classConverter = null;
 	protected DatabaseMetaData databaseMetaData = null;
 	protected Remarker remarker = new DbRemarker();
 	protected JdbcLang jdbcLang = new JdbcLang();
@@ -41,6 +40,7 @@ public class DbTableSource implements TableSource {
 		this.config = config;
 		this.dbFactory = dbFactory;
 		this.autoClose = autoClose;
+		this.tableFilter = config.getTableFilter();
 		this.classConverter = config.getClassConverter();
 	}
 
@@ -57,25 +57,31 @@ public class DbTableSource implements TableSource {
 		return new DefaultDatabase(new String[0]);
 	}
 
+	@Nonnull
 	public List<Table> build() throws SQLException {
 		if (this.connection == null) {
 			this.connection = dbFactory.getConnection();
 		}
 		if (this.connection != null) {
 			databaseMetaData = this.connection.getMetaData();
-			ResultSet tableSet = databaseMetaData.getTables(connection.getCatalog(), "%", "%",
+			ResultSet tableResult = databaseMetaData.getTables(connection.getCatalog(), "%", "%",
 					new String[] { "TABLE" });
-			return buildTables(tableSet);
+			return buildTables(tableResult);
 		}
 		return new ArrayList<>();
 	}
 
-	protected List<Table> buildTables(ResultSet tableset) throws SQLException {
+	protected List<Table> buildTables(ResultSet tableResult) throws SQLException {
 		List<Table> tables = new ArrayList<>();
-		while (tableset.next()) {
+		while (tableResult.next()) {
+			String tableName = tableResult.getString("TABLE_NAME");
+			if (tableFilter != null && tableFilter.isNeedFilterTable(tableName)) {
+				continue;
+			}
+
 			Table table = new Table();
-			table.setName(tableset.getString("TABLE_NAME"), getDatabase());
-			table.setRemark(tableset.getString("REMARKS"));
+			table.setName(tableName, getDatabase());
+			table.setRemark(tableResult.getString("REMARKS"));
 			table.setClassName(this.classConverter.converterClassName(table.getName()));
 			table.setClassNameUpper(table.getClassName().toUpperCase());
 			table.setClassNameLower(table.getClassName().toLowerCase());

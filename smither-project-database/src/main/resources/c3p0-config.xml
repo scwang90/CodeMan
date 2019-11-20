@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
-	<named-config name="TestSqlite">
+	<named-config name="DemoSqLite">
 		<property name="driverClass">org.sqlite.JDBC</property>
 		<property name="jdbcUrl">jdbc:sqlite:sqlite.db</property>
 		<!--<property name="jdbcUrl">jdbc:sqlite:[文件路劲]/property>-->
 	</named-config>
-	<named-config name="TestMysql">
+	<named-config name="DemoMysql">
 		<property name="user">builder</property>
 		<property name="password">builder</property>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="jdbcUrl">jdbc:mysql://108.108.108.8:3306/webanalytics</property>
 		<!--<property name="jdbcUrl">jdbc:mysql://[IP地址|域名]:[端口]/[数据库名称]</property>-->
 	</named-config>
-	<named-config name="TestSqlServer">
+	<named-config name="DemoSqlServer">
 		<property name="user">builder</property>
 		<property name="password">builder</property>
 		<property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
 		<property name="jdbcUrl">jdbc:sqlserver://108.108.108.8\\JONSE;databaseName=database</property>
 		<!--<property name="jdbcUrl">jdbc:sqlserver://[IP地址|域名][\\数据库实例];databaseName=[数据库名称]</property>-->
 	</named-config>
-	<named-config name="TestOracle">
+	<named-config name="DemoOracle">
 		<property name="user">builder</property>
 		<property name="password">builder</property>
 		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
 		<property name="jdbcUrl">jdbc:oracle:thin@108.108.108.8:1521:database</property>
-		<!--<property name="jdbcUrl">jdbc:oracle:thin@[IP地址|域名]:[端口]:[数据库名称]</property>-->
+<!--		格式一：jdbc:oracle:thin:@//<host>:<port>/<service_name>-->
+<!--		格式二：jdbc:oracle:thin:@<host>:<port>:<SID>-->
+<!--		格式三：jdbc:oracle:thin:@<TNSName>-->
 	</named-config>
 </c3p0-config>

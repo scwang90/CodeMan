@@ -12,7 +12,7 @@ import org.junit.Test;
 public class TemplateTest {
 
     @Test
-    public void DataBaseTemplete() {
+    public void DataBaseTemplate() {
         try {
             DataBaseConfig config = ConfigFactory.loadConfig("config.properties");
             DataBaseEngine engine = new DataBaseEngine(config);

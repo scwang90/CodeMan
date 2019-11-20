@@ -50,19 +50,19 @@ public class DbTableSource implements TableSource {
 	public List<Table> build() throws SQLException {
 		if (this.connection != null) {
 			databaseMetaData = this.connection.getMetaData();
-			ResultSet tableset = databaseMetaData.getTables(null, "%", "%",
+			ResultSet tableResult = databaseMetaData.getTables(null, "%", "%",
 					new String[] { "TABLE" });
-			return buildTables(tableset);
+			return buildTables(tableResult);
 		}
 		return new ArrayList<>();
 	}
 
-	protected List<Table> buildTables(ResultSet tableset) throws SQLException {
+	protected List<Table> buildTables(ResultSet tableResult) throws SQLException {
 		List<Table> tables = new ArrayList<Table>();
-		while (tableset.next()) {
+		while (tableResult.next()) {
 			Table table = new Table();
-			table.setName(tableset.getString("TABLE_NAME"));
-			table.setRemark(tableset.getString("REMARKS"));
+			table.setName(tableResult.getString("TABLE_NAME"));
+			table.setRemark(tableResult.getString("REMARKS"));
 			table.setClassName(this.converter.converterClassName(table.getName()));
 			table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
 			table.setClassNameUpper(table.getClassName().toUpperCase());

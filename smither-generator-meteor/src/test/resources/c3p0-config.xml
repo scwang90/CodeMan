@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
-	<!--如果需要切换其它类型的数据库（mysql/sqlserver/oracle），可以在main/test/resources/c3p0-config.xml查看配置参考-->
+	<!-- 如果需要切换其它类型的数据库（mysql/sqlserver/oracle/sqlite）-->
+	<!-- 可以在 smither-project-database/src/main/resources/c3p0-config.xml 查看配置参考 -->
 	<named-config name="MedicalPlatform">
 		<property name="user">root</property>
 		<property name="password">scwang</property>
@@ -12,11 +13,12 @@
 		<property name="minPoolSize">10</property>
 	</named-config>
 	<named-config name="MedicalWxHis">
-		<property name="user">wxhis</property>
+		<property name="user">WXHIS</property>
 		<property name="password">LINKER</property>
+<!--		<property name="driverClass">oracle.jdbc.OracleDriver</property>-->
 		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
-		<property name="jdbcUrl">jdbc:oracle:thin@139.129.231.125:1521:WXHIS</property>
-		<!--<property name="jdbcUrl">jdbc:oracle:thin@[IP地址|域名]:[端口]:[数据库名称]</property>-->
+<!--		<property name="jdbcUrl">jdbc:oracle:thin@139.129.231.125:1521:WXHIS</property>-->
+		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
 	</named-config>
 	<named-config name="CreditChinaServer">
 		<property name="user"></property>

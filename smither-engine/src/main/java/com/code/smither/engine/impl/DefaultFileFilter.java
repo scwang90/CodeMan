@@ -28,7 +28,7 @@ public class DefaultFileFilter implements IFileFilter {
         }
     }
 
-    private static String[] regexFilter(String filter) {
+    public static String[] regexFilter(String filter) {
         String[] filters = filter.split(";");
         for (int i = 0; i < filters.length; i++) {
             String regex = filters[i];
@@ -97,7 +97,7 @@ public class DefaultFileFilter implements IFileFilter {
      * 文件过滤 - 包含
      * Created by SCWANG on 2015-07-04.
      */
-    public static class FileFilterInclude implements IFileFilter{
+    public static class FileFilterInclude implements IFileFilter {
 
         FileFilterExclude exclude;
 

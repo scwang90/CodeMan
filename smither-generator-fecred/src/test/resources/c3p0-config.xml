@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <c3p0-config>
-	<!--如果需要切换其它类型的数据库（mysql/sqlserver/oracle），可以在main/test/resources/c3p0-config.xml查看配置参考-->
+	<!-- 如果需要切换其它类型的数据库（mysql/sqlserver/oracle/sqlite）-->
+	<!-- 可以在 smither-project-database/src/main/resources/c3p0-config.xml 查看配置参考 -->
 	<named-config name="Trailer">
 		<property name="user">root</property>
 		<property name="password">123456</property>

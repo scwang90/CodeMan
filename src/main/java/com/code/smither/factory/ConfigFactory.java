@@ -35,7 +35,7 @@ public class ConfigFactory {
 		config.setTargetCharset(properties.getProperty("code.smither.target.charset",config.getTargetCharset()));
 		config.setTargetProjectName(properties.getProperty("code.smither.target.project.name",config.getTargetProjectName()));
 		config.setTargetProjectAuthor(properties.getProperty("code.smither.target.project.author",config.getTargetProjectAuthor()));
-		config.setTargetProjectPackage(properties.getProperty("code.smither.target.project.packagename",config.getTargetProjectPackage()));
+		config.setTargetProjectPackage(properties.getProperty("code.smither.target.project.package",config.getTargetProjectPackage()));
 
 
 		config.setDbConfigName(properties.getProperty("code.smither.database.config.name",config.getDbConfigName()));

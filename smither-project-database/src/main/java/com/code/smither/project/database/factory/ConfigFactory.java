@@ -15,6 +15,11 @@ public class ConfigFactory {
 	public static DataBaseConfig loadConfig(String path) throws IOException {
 
 		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
+
+		if (stream == null) {
+			throw new RuntimeException("找不到配置文件：" + path);
+		}
+
 		Properties property = new Properties();
 		property.load(stream);
 
@@ -32,7 +37,10 @@ public class ConfigFactory {
 		config.setTargetCharset(property.getProperty("code.smither.target.charset",config.getTargetCharset()));
 		config.setTargetProjectName(property.getProperty("code.smither.target.project.name",config.getTargetProjectName()));
 		config.setTargetProjectAuthor(property.getProperty("code.smither.target.project.author",config.getTargetProjectAuthor()));
-		config.setTargetProjectPackage(property.getProperty("code.smither.target.project.packagename",config.getTargetProjectPackage()));
+		config.setTargetProjectPackage(property.getProperty("code.smither.target.project.package",config.getTargetProjectPackage()));
+
+		config.setFilterTable(property.getProperty("code.smither.database.table.filter",config.getFilterTable()));
+		config.setIncludeTable(property.getProperty("code.smither.database.table.include",config.getIncludeTable()));
 
 		config.setTablePrefix(property.getProperty("code.smither.database.table.prefix",config.getTablePrefix()));
 		config.setTableSuffix(property.getProperty("code.smither.database.table.suffix",config.getTableSuffix()));

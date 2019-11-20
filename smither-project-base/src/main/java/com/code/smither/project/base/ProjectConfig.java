@@ -3,15 +3,18 @@ package com.code.smither.project.base;
 import com.code.smither.engine.Config;
 import com.code.smither.engine.api.IFilterConfig;
 import com.code.smither.project.base.api.ClassConverter;
+import com.code.smither.project.base.api.ITableFilter;
+import com.code.smither.project.base.api.ITableFilterConfig;
 import com.code.smither.project.base.constant.ProgramLang;
 import com.code.smither.project.base.impl.ConfigClassConverter;
+import com.code.smither.project.base.impl.DefaultTableFilter;
 
 /**
  * 项目配置信息
  * Created by SCWANG on 2016/8/18.
  */
-@SuppressWarnings("unused")
-public class ProjectConfig extends Config implements IFilterConfig {
+@SuppressWarnings({"unused", "WeakerAccess"})
+public class ProjectConfig extends Config implements IFilterConfig, ITableFilterConfig {
 
     protected String tablePrefix = "";
     protected String tableSuffix = "";
@@ -29,13 +32,16 @@ public class ProjectConfig extends Config implements IFilterConfig {
 //    protected String templateIncludePath = "*";
 //    protected String templateFilterFile = "*.classes;*.jar;";
 //    protected String templateFilterPath = "bin;build";
+    protected String filterTable = "";
+    protected String includeTable = "*";
 
     protected String targetPath = "../target/project";
     protected String targetCharset = "UTF-8";
     protected String targetProjectName = "TargetProject";
-    protected String targetProjectAuthor = "scwang";
+    protected String targetProjectAuthor = "unset";
     protected String targetProjectPackage = "com.code.smither.target";
 
+    protected transient ITableFilter tableFilter;
     protected transient ClassConverter classConverter;
 
     @Override
@@ -43,6 +49,9 @@ public class ProjectConfig extends Config implements IFilterConfig {
         super.initEmptyFieldsWithDefaultValues();
         if (classConverter == null) {
             classConverter = new ConfigClassConverter(this);
+        }
+        if (tableFilter == null) {
+            tableFilter = new DefaultTableFilter(this);
         }
         return this;
     }
@@ -55,8 +64,35 @@ public class ProjectConfig extends Config implements IFilterConfig {
         return classConverter;
     }
 
+    public void setTableFilter(ITableFilter tableFilter) {
+        this.tableFilter = tableFilter;
+    }
+
+    public ITableFilter getTableFilter() {
+        return tableFilter;
+    }
+
     //<editor-fold desc="接口实现">
-//    @Override
+
+    @Override
+    public String getFilterTable() {
+        return filterTable;
+    }
+
+    @Override
+    public String getIncludeTable() {
+        return includeTable;
+    }
+
+    public void setIncludeTable(String includeTable) {
+        this.includeTable = includeTable;
+    }
+
+    public void setFilterTable(String filterTable) {
+        this.filterTable = filterTable;
+    }
+
+    //    @Override
 //    public String getFilterPath() {
 //        return templateFilterPath;
 //    }

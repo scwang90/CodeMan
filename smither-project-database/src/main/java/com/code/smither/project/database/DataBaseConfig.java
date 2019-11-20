@@ -3,6 +3,7 @@ package com.code.smither.project.database;
 import com.code.smither.engine.Config;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.DbFactory;
+import com.code.smither.project.base.api.ITableFilter;
 import com.code.smither.project.database.factory.C3P0Factory;
 import com.code.smither.project.database.factory.TableSourceFactory;
 import com.code.smither.project.database.impl.DbTableSource;
@@ -30,6 +31,7 @@ public class DataBaseConfig extends ProjectConfig {
         }
         return this;
     }
+
 
     public String getDbConfigName() {
         return dbConfigName;

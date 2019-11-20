@@ -3,8 +3,8 @@ package com.code.smither.project.base.api;
 
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.model.Table;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.List;
 
@@ -15,6 +15,6 @@ import java.util.List;
 public interface TableSource {
 
     @Nullable Database getDatabase();
-    @NotNull List<Table> build() throws Exception;
+    @Nonnull List<Table> build() throws Exception;
 
 }

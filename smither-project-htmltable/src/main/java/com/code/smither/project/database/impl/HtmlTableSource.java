@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -85,6 +86,7 @@ public class HtmlTableSource implements TableSource {
         return null;
     }
 
+    @Nonnull
     @Override
     public List<Table> build() throws Exception {
         List<Document> documents = new ArrayList<>();
