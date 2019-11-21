@@ -1,5 +1,6 @@
 package com.code.smither.project.base.model;
 
+import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.constant.Database;
 
 /**
@@ -7,7 +8,7 @@ import com.code.smither.project.base.constant.Database;
  * Created by SCWANG on 2015-07-04.
  */
 @SuppressWarnings("unused")
-public class TableColumn {
+public class TableColumn implements MetaDataColumn {
 	
 	private String name;// 原名称
 	private String nameSQL;// SQL语句中使用的名称
@@ -29,6 +30,7 @@ public class TableColumn {
 
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增
+	private boolean primaryKey;//是否是 PrimaryKey
 
 	public String getName() {
 		return name;
@@ -206,5 +208,13 @@ public class TableColumn {
 
 	public void setAutoIncrement(boolean autoIncrement) {
 		this.autoIncrement = autoIncrement;
+	}
+
+	public boolean isPrimaryKey() {
+		return primaryKey;
+	}
+
+	public void setPrimaryKey(boolean primaryKey) {
+		this.primaryKey = primaryKey;
 	}
 }

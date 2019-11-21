@@ -6,3 +6,6 @@
 [#-- @ftlvariable name="author" type="java.lang.String" --]
 [#-- @ftlvariable name="className" type="java.lang.String" --]
 [#-- @ftlvariable name="packageName" type="String" --]
+[#-- @ftlvariable name="dbType" type="String" --]
+[#-- @ftlvariable name="tables" type="java.util.List" --]
+

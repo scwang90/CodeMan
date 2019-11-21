@@ -1,6 +1,6 @@
 package com.code.smither.project.database.factory;
 
-import com.code.smither.project.base.api.DbFactory;
+import com.code.smither.project.database.api.DbFactory;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import javax.sql.DataSource;

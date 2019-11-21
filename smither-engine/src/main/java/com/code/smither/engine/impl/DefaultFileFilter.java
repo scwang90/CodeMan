@@ -1,7 +1,7 @@
 package com.code.smither.engine.impl;
 
-import com.code.smither.engine.api.IFileFilter;
-import com.code.smither.engine.api.IFilterConfig;
+import com.code.smither.engine.api.FileFilter;
+import com.code.smither.engine.api.FilterConfig;
 
 import java.io.File;
 
@@ -9,22 +9,22 @@ import java.io.File;
  * 默认的文件过滤器
  * Created by SCWANG on 2016/8/18.
  */
-public class DefaultFileFilter implements IFileFilter {
+public class DefaultFileFilter implements FileFilter {
 
-    FileFilterExclude exclude;
-    FileFilterInclude include;
+    FileExcludeFilter exclude;
+    FileIncludeFilter include;
 
-    public DefaultFileFilter(IFilterConfig config) {
+    public DefaultFileFilter(FilterConfig config) {
         if (config != null) {
             String[] filterPaths = regexFilter(config.getFilterPath());
             String[] filterFiles = regexFilter(config.getFilterFile());
             String[] includePaths = regexFilter(config.getIncludePath());
             String[] includeFiles = regexFilter(config.getIncludeFile());
-            this.include = new FileFilterInclude(includeFiles, includePaths);
-            this.exclude = new FileFilterExclude(filterFiles, filterPaths);
+            this.include = new FileIncludeFilter(includeFiles, includePaths);
+            this.exclude = new FileExcludeFilter(filterFiles, filterPaths);
         } else {
-            this.include = new FileFilterInclude(new String[]{".*\\..*"}, new String[]{".*"});
-            this.exclude = new FileFilterExclude(new String[0], new String[0]);
+            this.include = new FileIncludeFilter(new String[]{".*\\..*"}, new String[]{".*"});
+            this.exclude = new FileExcludeFilter(new String[0], new String[0]);
         }
     }
 
@@ -65,12 +65,12 @@ public class DefaultFileFilter implements IFileFilter {
      * 文件过滤 - 排除
      * Created by SCWANG on 2015-07-04.
      */
-    public static class FileFilterExclude implements IFileFilter{
+    public static class FileExcludeFilter implements FileFilter {
 
         private String[] fileRegex = {};
         private String[] pathRegex = {};
 
-        public FileFilterExclude(String[] fileRegex, String[] pathRegex){
+        FileExcludeFilter(String[] fileRegex, String[] pathRegex){
             this.fileRegex = fileRegex;
             this.pathRegex = pathRegex;
         }
@@ -97,12 +97,12 @@ public class DefaultFileFilter implements IFileFilter {
      * 文件过滤 - 包含
      * Created by SCWANG on 2015-07-04.
      */
-    public static class FileFilterInclude implements IFileFilter {
+    public static class FileIncludeFilter implements FileFilter {
 
-        FileFilterExclude exclude;
+        FileExcludeFilter exclude;
 
-        public FileFilterInclude(String[] fileRegexs,String[] pathRegexs){
-            exclude = new FileFilterExclude(fileRegexs,pathRegexs);
+        FileIncludeFilter(String[] fileRegexs, String[] pathRegexs){
+            exclude = new FileExcludeFilter(fileRegexs,pathRegexs);
         }
 
         @Override

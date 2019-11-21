@@ -1,6 +1,7 @@
 package com.code.smither.project.base.model;
 
-import com.code.smither.engine.api.IModel;
+import com.code.smither.engine.api.Model;
+import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by SCWANG on 2016/8/18.
  */
 @SuppressWarnings("unused")
-public class Table implements IModel {
+public class Table implements Model, MetaDataTable {
 
     private String name;// 原表名称
     private String nameSQL;// SQL语句中使用的名称

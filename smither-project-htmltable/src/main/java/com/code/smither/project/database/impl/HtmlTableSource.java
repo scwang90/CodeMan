@@ -1,20 +1,17 @@
 package com.code.smither.project.database.impl;
 
-import com.code.smither.project.base.api.ClassConverter;
-import com.code.smither.project.base.api.Remarker;
+import com.code.smither.project.base.api.MetaDataColumn;
+import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.api.TableSource;
 import com.code.smither.project.base.constant.Database;
-import com.code.smither.project.base.impl.DbRemarker;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
-import com.code.smither.project.base.util.StringUtil;
 import com.code.smither.project.htmltable.HtmlTableConfig;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -26,12 +23,16 @@ import java.util.List;
  * HTML Table 表源
  * Created by SCWANG on 2016/8/1.
  */
+@SuppressWarnings("WeakerAccess")
 public class HtmlTableSource implements TableSource {
 
     public interface HtmlTableMetaData {
-        Elements getTable(Document document) ;
-        Elements getTableColumn(Element tableElement);
-        Elements getMetaData(Element columnElement);
+        Elements getTables(Document document) ;
+        Elements getTableColumns(Element tableElement);
+        Elements getColumnMetaData(Element columnElement);
+
+        String getTableName(Element tableElement);
+        String getTableRemark(Element tableElement);
 
         int getColumnTypeInt(Elements columnMetaData);
         int getColumnLength(Elements columnMetaData);
@@ -41,10 +42,12 @@ public class HtmlTableSource implements TableSource {
         String getColumnRemark(Elements columnMetaData);
         boolean getColumnNullable(Elements columnMetaData);
         boolean getColumnAutoIncrement(Elements columnMetaData);
+        boolean getColumnPrimaryKey(Elements columnMetaData);
     }
 
     protected HashMap<String, Integer> DbTypeMap = new HashMap<String, Integer>() {
         {
+            //mysql
             put("bit", Types.BIT);
             put("real", Types.REAL);
             put("datetime", Types.DATE);
@@ -53,31 +56,72 @@ public class HtmlTableSource implements TableSource {
             put("varchar", Types.VARCHAR);
             put("nvarchar", Types.NVARCHAR);
             put("varbinary", Types.VARBINARY);
+            //oracle
+            put("BFILE",Types.BINARY);
+            put("BINARY_DOUBLE",Types.BINARY);
+            put("BINARY_FLOAT",Types.BINARY);
+            put("BLOB",Types.BLOB);
+            put("CHAR",Types.CHAR);
+            put("CHAR VARYING",Types.VARCHAR);
+            put("CHARACTER",Types.CHAR);
+            put("CHARACTER VARYING",Types.VARCHAR);
+            put("CLOB",Types.CLOB);
+            put("DATE",Types.DATE);
+            put("DECIMAL",Types.DECIMAL);
+            put("DOUBLE PRECISION",Types.DOUBLE);
+            put("FLOAT",Types.FLOAT);
+            put("INT",Types.INTEGER);
+            put("INTEGER",Types.INTEGER);
+            put("INTERVAL DAY TO SECOND",Types.BIGINT);
+            put("INTERVAL YEAR TO MONTH",Types.BIGINT);
+            put("LONG",Types.BIGINT);
+            put("LONG RAW",Types.BIGINT);
+            put("LONG VARCHAR",Types.BIGINT);
+            put("NATIONAL CHAR",Types.CHAR);
+            put("NATIONAL CHAR VARYING",Types.CHAR);
+            put("NATIONAL CHARACTER",Types.CHAR);
+            put("NATIONAL CHARACTER VARYING",Types.CHAR);
+            put("NCHAR",Types.NCHAR);
+            put("NCHAR VARYING",Types.NVARCHAR);
+            put("NCLOB",Types.NCLOB);
+            put("NUMBER",Types.DOUBLE);
+            put("NUMERIC",Types.NUMERIC);
+            put("NVARCHAR2",Types.NVARCHAR);
+            put("RAW",Types.BINARY);
+            put("REAL",Types.REAL);
+            put("ROWID",Types.BIGINT);
+            put("SMALLINT",Types.SMALLINT);
+            put("TIMESTAMP",Types.TIMESTAMP);
+            put("TIMESTAMP WITH LOCAL TIME ZONE",Types.TIMESTAMP_WITH_TIMEZONE);
+            put("TIMESTAMP WITH TIME ZONE",Types.TIMESTAMP_WITH_TIMEZONE);
+            put("UROWID",Types.BIGINT);
+            put("VARCHAR",Types.VARCHAR);
+            put("VARCHAR2",Types.VARCHAR);
         }
     };
 
-    protected ClassConverter classConverter;
-    protected String charset = "UTF-8";
-    protected List<File> htmlfiles = new ArrayList<>();
-    protected Remarker remarker = new DbRemarker();
+    protected String charset;
+//    protected ClassConverter classConverter;
+//    protected Remarker remarker = new DbRemarker();
+    protected List<File> htmlFiles;
     protected HtmlTableMetaData metaData = new HtmlTableMetaDataImpl();
 
     public HtmlTableSource(HtmlTableConfig config) {
-        this.classConverter = config.getClassConverter();
+//        this.classConverter = config.getClassConverter();
         this.charset = config.getHtmlTableCharset();
         File file = new File(config.getHtmlTablePath());
         if (file.isDirectory()) {
-            htmlfiles = new ArrayList<>();
+            htmlFiles = new ArrayList<>();
             File[] files = file.listFiles();
             if (files != null) {
                 for (File html : files) {
                     if (!html.isDirectory() && html.getName().toLowerCase().endsWith(".html") && html.length() < 512*1024) {
-                        htmlfiles.add(html);
+                        htmlFiles.add(html);
                     }
                 }
             }
         } else {
-            htmlfiles = Collections.singletonList(file);
+            htmlFiles = Collections.singletonList(file);
         }
     }
 
@@ -86,76 +130,148 @@ public class HtmlTableSource implements TableSource {
         return null;
     }
 
-    @Nonnull
     @Override
-    public List<Table> build() throws Exception {
+    public Table buildTable(MetaDataTable tableMate) {
+        if (tableMate instanceof TableMetaData) {
+            return buildTableMetaData(((TableMetaData) tableMate).element);
+        }
+        return null;
+    }
+
+    @Override
+    public TableColumn buildColumn(MetaDataColumn columnMate) {
+        if (columnMate instanceof ColumnMetaData) {
+            return buildColumnMetaData(((ColumnMetaData) columnMate).columnMetaData);
+        }
+        return null;
+    }
+
+    @Override
+    public List<? extends MetaDataTable> queryTables() throws Exception {
         List<Document> documents = new ArrayList<>();
-        for (File file : htmlfiles) {
+        for (File file : htmlFiles) {
             documents.add(Jsoup.parse(file, charset));
         }
         Elements tableElements = new Elements();
         for (Document document : documents) {
-            tableElements.addAll(metaData.getTable(document));
+            tableElements.addAll(metaData.getTables(document));
         }
-        List<Table> tables = new ArrayList<>();
+        List<TableMetaData> tables = new ArrayList<>();
         for (Element tableElement : tableElements) {
-            tables.add(buildTable(tableElement));
+            tables.add(new TableMetaData(tableElement));
         }
         return tables;
     }
 
-    protected Table buildTable(Element tableElement) {
+    @Override
+    public List<? extends MetaDataColumn> queryColumns(MetaDataTable tableMate) {
+        List<ColumnMetaData> columnList = new ArrayList<>();
+        if (tableMate instanceof TableMetaData) {
+            TableMetaData table = ((TableMetaData) tableMate);
+            Elements columnElements = metaData.getTableColumns(table.element);
+            for (Element columnElement : columnElements) {
+                columnList.add(new ColumnMetaData(columnElement));
+            }
+        }
+        return columnList;
+    }
+
+    @Override
+    public List<String> queryPrimaryKeys(MetaDataTable tableMate) {
+        List<String> keys = new ArrayList<>();
+        if (tableMate instanceof TableMetaData) {
+            TableMetaData table = ((TableMetaData) tableMate);
+            Elements columns = metaData.getTableColumns(table.element);
+            for (Element column : columns) {
+                Elements meta = metaData.getColumnMetaData(column);
+                if (metaData.getColumnPrimaryKey(meta)) {
+                    keys.add(metaData.getColumnName(meta));
+                }
+            }
+        }
+        return keys;
+    }
+
+    @Override
+    public String queryColumnRemark(MetaDataColumn columnMate) {
+        return null;
+    }
+
+    @Override
+    public String queryTableRemark(MetaDataTable tableMate) {
+        return null;
+    }
+
+//    @Nonnull
+//    public List<Table> build() throws Exception {
+//        List<Document> documents = new ArrayList<>();
+//        for (File file : htmlFiles) {
+//            documents.add(Jsoup.parse(file, charset));
+//        }
+//        Elements tableElements = new Elements();
+//        for (Document document : documents) {
+//            tableElements.addAll(metaData.getTables(document));
+//        }
+//        List<Table> tables = new ArrayList<>();
+//        for (Element tableElement : tableElements) {
+//            tables.add(buildTable(tableElement));
+//        }
+//        return tables;
+//    }
+
+//    protected Table buildTable(Element tableElement) {
+//        Table table = buildTableMetaData(tableElement);
+//        table.setClassName(this.classConverter.converterClassName(table.getName()));
+//        table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
+//        table.setClassNameUpper(table.getClassName().toUpperCase());
+//        table.setClassNameLower(table.getClassName().toLowerCase());
+//        if (table.getRemark() == null || table.getRemark().trim().length()==0) {
+//            table.setRemark(remarker.getTableRemark(table.getName()));
+//        }
+//        Elements columnElements = metaData.getTableColumns(tableElement);
+//        List<TableColumn> columnList = new ArrayList<>();
+//        for (Element columnElement : columnElements) {
+//            columnList.add(buildColumn(columnElement));
+//        }
+//        table.setColumns(columnList);
+//        buildTableIdColumn(table);
+//        return table;
+//    }
+
+//    protected TableColumn buildColumn(Element columnElement) {
+//        TableColumn column = new TableColumn();
+//        Elements columnMetaData = metaData.getColumnMetaData(columnElement);
+//        buildColumnMetaData(column, columnMetaData);
+//
+//        column.setFieldName(this.classConverter.converterFieldName(column.getName()));
+//        column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
+//        column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
+//        column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
+//
+//        if (column.getRemark() == null || column.getRemark().trim().length()==0) {
+//            column.setRemark(remarker.getColumnRemark(column.getName()));
+//        }
+//        return column;
+//    }
+
+//    /**
+//     * 默认选择第一行为ID
+//     */
+//    protected void buildTableIdColumn(Table table) {
+//        if (table.getColumns() != null && table.getColumns().size() > 0) {
+//            table.setIdColumn(table.getColumns().get(0));
+//        }
+//    }
+//
+    protected Table buildTableMetaData(Element tableElement) {
         Table table = new Table();
-        buildTableMetaData(tableElement, table);
-        table.setClassName(this.classConverter.converterClassName(table.getName()));
-        table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
-        table.setClassNameUpper(table.getClassName().toUpperCase());
-        table.setClassNameLower(table.getClassName().toLowerCase());
-        if (table.getRemark() == null || table.getRemark().trim().length()==0) {
-            table.setRemark(remarker.getTableRemark(table.getName()));
-        }
-        Elements columnElements = metaData.getTableColumn(tableElement);
-        List<TableColumn> columnList = new ArrayList<>();
-        for (Element columnElement : columnElements) {
-            columnList.add(buildColumn(columnElement));
-        }
-        table.setColumns(columnList);
-        buildTableIdColumn(table);
+        table.setName(metaData.getTableName(tableElement));
+        table.setRemark(metaData.getTableRemark(tableElement));
         return table;
     }
 
-    protected TableColumn buildColumn(Element columnElement) {
+    protected TableColumn buildColumnMetaData(Elements columnMetaData) {
         TableColumn column = new TableColumn();
-        Elements columnMetaData = metaData.getMetaData(columnElement);
-        buildColumnMetaData(column, columnMetaData);
-
-        column.setFieldName(this.classConverter.converterFieldName(column.getName()));
-        column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
-        column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
-        column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
-
-        if (column.getRemark() == null || column.getRemark().trim().length()==0) {
-            column.setRemark(remarker.getColumnRemark(column.getName()));
-        }
-        return column;
-    }
-
-    /**
-     * 默认选择第一行为ID
-     */
-    protected void buildTableIdColumn(Table table) {
-        if (table.getColumns() != null && table.getColumns().size() > 0) {
-            table.setIdColumn(table.getColumns().get(0));
-        }
-    }
-
-    protected void buildTableMetaData(Element tableElement, Table table) {
-        Element element = tableElement.previousElementSibling().clone();
-        table.setRemark(element.text());
-        table.setName(element.select("span").text());
-    }
-
-    protected void buildColumnMetaData(TableColumn column, Elements columnMetaData) {
         column.setName      (metaData.getColumnName    (columnMetaData));
         column.setType      (metaData.getColumnType    (columnMetaData));
         column.setTypeInt   (metaData.getColumnTypeInt (columnMetaData));
@@ -164,21 +280,64 @@ public class HtmlTableSource implements TableSource {
         column.setNullable  (metaData.getColumnNullable(columnMetaData));
         column.setRemark    (metaData.getColumnRemark  (columnMetaData));
         column.setAutoIncrement(metaData.getColumnAutoIncrement(columnMetaData));
+        return column;
+    }
+
+    protected class TableMetaData implements MetaDataTable {
+
+        public final Element element;
+
+        public TableMetaData(Element element) {
+            this.element = element;
+        }
+
+        @Override
+        public String getName() {
+            return metaData.getTableName(element);
+        }
+    }
+
+    protected class ColumnMetaData extends TableMetaData implements MetaDataColumn {
+
+        public final Elements columnMetaData;
+
+        public ColumnMetaData(Element element) {
+            super(element);
+            columnMetaData = metaData.getColumnMetaData(element);
+        }
+
+        @Override
+        public String getName() {
+            return metaData.getColumnName(columnMetaData);
+        }
     }
 
     protected class HtmlTableMetaDataImpl implements HtmlTableMetaData {
-        public Elements getTable(Document document) {
+
+        public Elements getTables(Document document) {
             return document.select("table");
         }
-        public Elements getTableColumn(Element tableElement) {
+
+        public Elements getTableColumns(Element tableElement) {
             Elements tr = tableElement.select("tr");
             if (tr.size() > 0) {
                 tr.remove(0);
             }
             return tr;
         }
-        public Elements getMetaData(Element columnElement) {
+
+        public Elements getColumnMetaData(Element columnElement) {
             return columnElement.select("td");
+        }
+
+        @Override
+        public String getTableName(Element tableElement) {
+            return tableElement.attr("name");
+        }
+
+        @Override
+        public String getTableRemark(Element tableElement) {
+            return tableElement.attr("remark");
         }
 
         @Override
@@ -241,7 +400,15 @@ public class HtmlTableSource implements TableSource {
         @Override
         public boolean getColumnAutoIncrement(Elements columnMetaData) {
             if (columnMetaData.size() > 5) {
-                return "自增".equals(columnMetaData.get(5).text());
+                return columnMetaData.get(5).text().contains("自增");
+            }
+            return false;
+        }
+
+        @Override
+        public boolean getColumnPrimaryKey(Elements columnMetaData) {
+            if (columnMetaData.size() > 5) {
+                return columnMetaData.get(5).text().startsWith("是");
             }
             return false;
         }

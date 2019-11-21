@@ -11,7 +11,7 @@ import java.util.Map;
  * Java语言规则实现
  * Created by root on 16-1-28.
  */
-public class JavaLang extends ProgramLang {
+public class JavaLang extends AbstractProgramLang {
 
     private static final String[] extensions = {
             ".java"

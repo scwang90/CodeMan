@@ -2,8 +2,6 @@ package com.code.smither.project.base.constant;
 
 import com.code.smither.project.base.util.StringUtil;
 
-import java.io.File;
-import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.HashMap;
@@ -13,7 +11,7 @@ import java.util.Map;
  * Kotlin语言规则实现
  * Created by root on 16-1-28.
  */
-public class KotlinLang extends ProgramLang {
+public class KotlinLang extends AbstractProgramLang {
 
     private static final String[] extensions = {
             ".kt"

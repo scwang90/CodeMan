@@ -1,9 +1,9 @@
 package com.code.smither.project.base.api;
 
-
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.model.Table;
-import javax.annotation.Nonnull;
+import com.code.smither.project.base.model.TableColumn;
+
 import javax.annotation.Nullable;
 
 import java.util.List;
@@ -15,6 +15,14 @@ import java.util.List;
 public interface TableSource {
 
     @Nullable Database getDatabase();
-    @Nonnull List<Table> build() throws Exception;
 
+    Table buildTable(MetaDataTable tableMate);
+    TableColumn buildColumn(MetaDataColumn columnMate);
+
+    List<? extends MetaDataTable> queryTables() throws Exception;
+    List<? extends MetaDataColumn> queryColumns(MetaDataTable tableMate) throws Exception;
+
+    String queryColumnRemark(MetaDataColumn columnMate) throws Exception;
+    String queryTableRemark(MetaDataTable tableMate) throws Exception;
+    List<String> queryPrimaryKeys(MetaDataTable tableMate) throws Exception;
 }

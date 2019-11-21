@@ -27,5 +27,4 @@ public interface ClassConverter {
      * @return 编程语言数据类型
      */
     String converterFieldType(int columnType);
-
 }

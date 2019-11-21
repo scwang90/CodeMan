@@ -1,13 +1,13 @@
 package com.generator.poetry.drawable2svg.model;
 
 
-import com.code.smither.engine.api.IModel;
+import com.code.smither.engine.api.Model;
 
 /**
  * 矢量图对象
  * Created by SCWANG on 2017/9/15.
  */
-public class Path implements IModel {
+public class Path implements Model {
 
     private String fillColor;
     private String pathData;

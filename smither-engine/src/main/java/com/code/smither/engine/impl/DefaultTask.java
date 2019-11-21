@@ -1,6 +1,6 @@
 package com.code.smither.engine.impl;
 
-import com.code.smither.engine.api.ITask;
+import com.code.smither.engine.api.Task;
 
 import java.io.File;
 
@@ -8,7 +8,7 @@ import java.io.File;
  * 默认的任务实现
  * Created by SCWANG on 2016/8/18.
  */
-public class DefaultTask implements ITask {
+public class DefaultTask implements Task {
 
     private final File templates;
     private final File target;

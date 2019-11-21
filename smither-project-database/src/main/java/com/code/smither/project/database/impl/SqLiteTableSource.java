@@ -1,10 +1,8 @@
 package com.code.smither.project.database.impl;
 
 import com.code.smither.project.base.ProjectConfig;
-import com.code.smither.project.base.api.DbFactory;
 import com.code.smither.project.base.constant.Database;
-
-import java.sql.SQLException;
+import com.code.smither.project.database.api.DbFactory;
 
 /**
  * Sqlite 数据库 表源
@@ -26,11 +24,6 @@ public class SqLiteTableSource extends DbTableSource {
     @Override
     public Database getDatabase() {
         return database;
-    }
-
-    @Override
-    protected String queryTableRemarks(String table) throws SQLException {
-        return null;
     }
 
     public static class SqLiteDatabase extends DefaultDatabase {

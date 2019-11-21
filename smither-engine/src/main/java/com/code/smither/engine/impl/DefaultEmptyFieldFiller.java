@@ -1,7 +1,7 @@
 package com.code.smither.engine.impl;
 
-import com.code.smither.engine.api.IFieldFiller;
-import com.code.smither.engine.api.IRootModel;
+import com.code.smither.engine.api.FieldFiller;
+import com.code.smither.engine.api.RootModel;
 import com.code.smither.engine.util.Reflecter;
 
 import java.lang.reflect.Field;
@@ -12,10 +12,10 @@ import java.util.*;
  * 默认空字段填充器
  * Created by SCWANG on 2016/8/19.
  */
-public class DefaultEmptyFieldFiller implements IFieldFiller {
+public class DefaultEmptyFieldFiller implements FieldFiller {
 
     @Override
-    public IRootModel fill(IRootModel model) {
+    public RootModel fill(RootModel model) {
         fill((Object) model);
         return model;
     }

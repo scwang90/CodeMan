@@ -1,7 +1,6 @@
 package com.code.smither.engine;
 
 import com.code.smither.engine.api.*;
-import com.code.smither.engine.factory.FreemarkerFactory;
 import com.code.smither.engine.util.FileUtil;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -18,15 +17,15 @@ import static com.code.smither.engine.factory.FreemarkerFactory.getTemplate;
  * Created by SCWANG on 2016/8/18.
  */
 @SuppressWarnings("unused")
-public class Engine implements ITaskRunner {
+public class Engine implements TaskRunner {
 
-    private IConfig config;
+    private Config config;
     private File templates;
     private File target;
     private TaskTransfer transfer;
     private PrintStream print = System.out;
 
-    public Engine(IConfig config) {
+    public Engine(Config config) {
         this.config = config.initEmptyFieldsWithDefaultValues();
         this.target = new File(config.getTargetPath());
         this.templates = new File(config.getTemplatePath());
@@ -36,17 +35,22 @@ public class Engine implements ITaskRunner {
         this.print = print;
     }
 
-    public void launch(IModelBuilder modelBuilder) throws Exception {
+    public void launch(ModelBuilder modelBuilder) throws Exception {
         launch(modelBuilder,null);
     }
 
-    public void launch(IModelBuilder modelBuilder, ProgressListener listener) throws Exception {
+    public void launch(ModelBuilder modelBuilder, ProgressListener listener) throws Exception {
         checkWorkspace();
 
-        IRootModel rootModel = config.getFieldFiller().fill(modelBuilder.build());
-        List<ITask> tasks = config.getTaskLoader().loadTask(templates, target, config.getFileFilter());
+        RootModel rootModel = config.getFieldFiller().fill(modelBuilder.build());
 
-        for (ITask task : tasks) {
+        if (rootModel.getModels().size() == 0) {
+            System.err.println("构建模型数据为空");
+        }
+
+        List<Task> tasks = config.getTaskLoader().loadTask(templates, target, config.getFileFilter());
+
+        for (Task task : tasks) {
             run(task, rootModel, config);
         }
 
@@ -67,13 +71,14 @@ public class Engine implements ITaskRunner {
     }
 
     @Override
-    public void run(ITask task, IRootModel root, IConfig config) throws Exception {
+    public void run(Task task, RootModel root, Config config) throws Exception {
 
+        //定义生成目标文件集合（用于防止重复生产相同的文件）
         Set<String> set = new LinkedHashSet<>();
 
         print.println(task.getTemplateFile());
         if (root.getModels() != null && root.getModels().size() > 0) {
-            for (IModel model : root.getModels()) {
+            for (Model model : root.getModels()) {
                 root.bindModel(model);
                 processTemplate(task, root, set);
             }
@@ -85,7 +90,15 @@ public class Engine implements ITaskRunner {
         print.println();
     }
 
-    private void processTemplate(ITask task, IRootModel root, Set<String> set) throws TemplateException, IOException {
+    /**
+     * 通过模板和模型生产目标文件
+     * @param task 任务对象
+     * @param root 模型
+     * @param set 生成目标文件集合（用于防止重复生产相同的文件）
+     * @throws TemplateException 模板过程异常
+     * @throws IOException 文件读写异常
+     */
+    private void processTemplate(Task task, RootModel root, Set<String> set) throws TemplateException, IOException {
 
         Template nameTemplate = getTemplate(task.getTargetFile().getAbsolutePath());
 
@@ -101,6 +114,7 @@ public class Engine implements ITaskRunner {
             path = path.replace(".ftl.", ".");
         }
 
+        //判断已经生成的目标文件集合中是否已经含有即将生成的文件
         if (!set.contains(path)) {
 
             print.println("  =>>" + path);

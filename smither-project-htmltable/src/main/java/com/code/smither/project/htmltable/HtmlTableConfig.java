@@ -1,6 +1,6 @@
 package com.code.smither.project.htmltable;
 
-import com.code.smither.engine.Config;
+import com.code.smither.engine.EngineConfig;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.TableSource;
 import com.code.smither.project.database.impl.HtmlTableSource;
@@ -17,7 +17,7 @@ public class HtmlTableConfig extends ProjectConfig {
     protected transient TableSource tableSource;
 
     @Override
-    public Config initEmptyFieldsWithDefaultValues() {
+    public EngineConfig initEmptyFieldsWithDefaultValues() {
         super.initEmptyFieldsWithDefaultValues();
         if (tableSource == null) {
             tableSource = new HtmlTableSource(this);

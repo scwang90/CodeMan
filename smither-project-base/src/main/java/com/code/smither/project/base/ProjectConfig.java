@@ -1,20 +1,18 @@
 package com.code.smither.project.base;
 
-import com.code.smither.engine.Config;
-import com.code.smither.engine.api.IFilterConfig;
-import com.code.smither.project.base.api.ClassConverter;
-import com.code.smither.project.base.api.ITableFilter;
-import com.code.smither.project.base.api.ITableFilterConfig;
-import com.code.smither.project.base.constant.ProgramLang;
+import com.code.smither.engine.EngineConfig;
+import com.code.smither.engine.api.FilterConfig;
+import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.impl.ConfigClassConverter;
 import com.code.smither.project.base.impl.DefaultTableFilter;
+import com.code.smither.project.base.impl.DefaultWordBreaker;
 
 /**
  * 项目配置信息
  * Created by SCWANG on 2016/8/18.
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class ProjectConfig extends Config implements IFilterConfig, ITableFilterConfig {
+public class ProjectConfig extends EngineConfig implements FilterConfig, TableFilterConfig {
 
     protected String tablePrefix = "";
     protected String tableSuffix = "";
@@ -28,10 +26,6 @@ public class ProjectConfig extends Config implements IFilterConfig, ITableFilter
     protected String templatePath = "../templates/web-spring-boot-mybatis";
     protected String templateCharset = "UTF-8";
 
-//    protected String templateIncludeFile = "*.*";
-//    protected String templateIncludePath = "*";
-//    protected String templateFilterFile = "*.classes;*.jar;";
-//    protected String templateFilterPath = "bin;build";
     protected String filterTable = "";
     protected String includeTable = "*";
 
@@ -41,17 +35,23 @@ public class ProjectConfig extends Config implements IFilterConfig, ITableFilter
     protected String targetProjectAuthor = "unset";
     protected String targetProjectPackage = "com.code.smither.target";
 
-    protected transient ITableFilter tableFilter;
+    protected String wordBreakDictPath = "";
+
+    protected transient TableFilter tableFilter;
+    protected transient WordBreaker wordBreaker;
     protected transient ClassConverter classConverter;
 
     @Override
-    public Config initEmptyFieldsWithDefaultValues() {
+    public EngineConfig initEmptyFieldsWithDefaultValues() {
         super.initEmptyFieldsWithDefaultValues();
-        if (classConverter == null) {
-            classConverter = new ConfigClassConverter(this);
-        }
         if (tableFilter == null) {
             tableFilter = new DefaultTableFilter(this);
+        }
+        if (wordBreaker == null) {
+            wordBreaker = new DefaultWordBreaker(wordBreakDictPath);
+        }
+        if (classConverter == null) {
+            classConverter = new ConfigClassConverter(this);
         }
         return this;
     }
@@ -64,12 +64,20 @@ public class ProjectConfig extends Config implements IFilterConfig, ITableFilter
         return classConverter;
     }
 
-    public void setTableFilter(ITableFilter tableFilter) {
+    public void setTableFilter(TableFilter tableFilter) {
         this.tableFilter = tableFilter;
     }
 
-    public ITableFilter getTableFilter() {
+    public TableFilter getTableFilter() {
         return tableFilter;
+    }
+
+    public void setWordBreaker(WordBreaker wordBreaker) {
+        this.wordBreaker = wordBreaker;
+    }
+
+    public WordBreaker getWordBreaker() {
+        return wordBreaker;
     }
 
     //<editor-fold desc="接口实现">
@@ -92,25 +100,6 @@ public class ProjectConfig extends Config implements IFilterConfig, ITableFilter
         this.filterTable = filterTable;
     }
 
-    //    @Override
-//    public String getFilterPath() {
-//        return templateFilterPath;
-//    }
-//
-//    @Override
-//    public String getFilterFile() {
-//        return templateFilterFile;
-//    }
-//
-//    @Override
-//    public String getIncludePath() {
-//        return templateIncludePath;
-//    }
-//
-//    @Override
-//    public String getIncludeFile() {
-//        return templateIncludeFile;
-//    }
     //</editor-fold>
 
     public String getTablePrefix() {
@@ -189,38 +178,6 @@ public class ProjectConfig extends Config implements IFilterConfig, ITableFilter
         this.templateCharset = templateCharset;
     }
 
-//    public String getTemplateIncludeFile() {
-//        return templateIncludeFile;
-//    }
-//
-//    public void setTemplateIncludeFile(String templateIncludeFile) {
-//        this.templateIncludeFile = templateIncludeFile;
-//    }
-//
-//    public String getTemplateIncludePath() {
-//        return templateIncludePath;
-//    }
-//
-//    public void setTemplateIncludePath(String templateIncludePath) {
-//        this.templateIncludePath = templateIncludePath;
-//    }
-//
-//    public String getTemplateFilterFile() {
-//        return templateFilterFile;
-//    }
-//
-//    public void setTemplateFilterFile(String templateFilterFile) {
-//        this.templateFilterFile = templateFilterFile;
-//    }
-//
-//    public String getTemplateFilterPath() {
-//        return templateFilterPath;
-//    }
-//
-//    public void setTemplateFilterPath(String templateFilterPath) {
-//        this.templateFilterPath = templateFilterPath;
-//    }
-
     @Override
     public String getTargetPath() {
         return targetPath;
@@ -263,5 +220,13 @@ public class ProjectConfig extends Config implements IFilterConfig, ITableFilter
 
     public void setTargetProjectPackage(String targetProjectPackage) {
         this.targetProjectPackage = targetProjectPackage;
+    }
+
+    public String getWordBreakDictPath() {
+        return wordBreakDictPath;
+    }
+
+    public void setWordBreakDictPath(String wordBreakDictPath) {
+        this.wordBreakDictPath = wordBreakDictPath;
     }
 }

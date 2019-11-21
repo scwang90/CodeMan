@@ -3,8 +3,8 @@ package com.code.smither.apidoc.impl;
 import com.code.smither.apidoc.XmlApiDocConfig;
 import com.code.smither.apidoc.model.*;
 import com.code.smither.apidoc.util.FormatUtil;
-import com.code.smither.engine.api.IModelBuilder;
-import com.code.smither.engine.api.IRootModel;
+import com.code.smither.engine.api.ModelBuilder;
+import com.code.smither.engine.api.RootModel;
 import com.code.smither.engine.util.Reflecter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * Created by SCWANG on 2016/8/19.
  */
-public class XmlApidocModelBuilder implements IModelBuilder {
+public class XmlApidocModelBuilder implements ModelBuilder {
 
     private static final String TAG_BODY = "body";
     private static final String TAG_FORM = "form";
@@ -38,7 +38,7 @@ public class XmlApidocModelBuilder implements IModelBuilder {
     }
 
     @Override
-    public IRootModel build() throws Exception {
+    public RootModel build() throws Exception {
         ApiService apiService = new ApiService();
 
         checkJsonpTag("body");

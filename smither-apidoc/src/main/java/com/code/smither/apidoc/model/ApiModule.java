@@ -1,6 +1,6 @@
 package com.code.smither.apidoc.model;
 
-import com.code.smither.engine.api.IModel;
+import com.code.smither.engine.api.Model;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by SCWANG on 2016/8/19.
  */
 @SuppressWarnings("unused")
-public class ApiModule extends HtmlModel implements IModel {
+public class ApiModule extends HtmlModel implements Model {
 
     private String name;
     private String displayName;

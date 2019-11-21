@@ -4,7 +4,6 @@ import com.code.smither.project.base.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 
@@ -12,7 +11,7 @@ import java.util.*;
  * Mybatis 语言规则实现
  * Created by root on 16-1-28.
  */
-public class JdbcLang extends ProgramLang {
+public class JdbcLang extends AbstractProgramLang {
 
     private static final String[] extensions = {
             ".xml"

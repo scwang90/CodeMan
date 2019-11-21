@@ -1,9 +1,8 @@
 package com.code.smither.project.base;
 
 import com.code.smither.engine.Engine;
-import com.code.smither.project.base.api.DbFactory;
 import com.code.smither.project.base.api.TableSource;
-import com.code.smither.project.base.impl.ModelBuilder;
+import com.code.smither.project.base.impl.RootModelBuilder;
 
 /**
  * 项目代码生成引擎
@@ -18,7 +17,7 @@ public class ProjectEngine extends Engine {
         this.config = config;
     }
 
-    public void launch(DbFactory factory, TableSource tableSource) throws Exception {
-        launch(new ModelBuilder(config,factory,tableSource));
+    public void launch(TableSource tableSource) throws Exception {
+        launch(new RootModelBuilder(config,tableSource));
     }
 }

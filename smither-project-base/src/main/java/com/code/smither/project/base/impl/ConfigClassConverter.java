@@ -2,8 +2,7 @@ package com.code.smither.project.base.impl;
 
 
 import com.code.smither.project.base.ProjectConfig;
-import com.code.smither.project.base.api.IProgramLang;
-import com.code.smither.project.base.constant.ProgramLang;
+import com.code.smither.project.base.constant.AbstractProgramLang;
 import com.code.smither.project.base.util.StringUtil;
 
 /**
@@ -16,11 +15,11 @@ public class ConfigClassConverter extends LangClassConverter {
     private final ProjectConfig config;
 
     public ConfigClassConverter(ProjectConfig config) {
-        super(ProgramLang.getLang(config.getTemplateLang()));
+        super(AbstractProgramLang.getLang(config.getTemplateLang()));
         this.config = config;
     }
 
-    public ConfigClassConverter(ProjectConfig config, ProgramLang lang) {
+    public ConfigClassConverter(ProjectConfig config, AbstractProgramLang lang) {
         super(lang);
         this.config = config;
     }

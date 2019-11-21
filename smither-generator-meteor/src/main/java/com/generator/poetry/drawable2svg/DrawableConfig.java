@@ -1,12 +1,12 @@
 package com.generator.poetry.drawable2svg;
 
-import com.code.smither.engine.Config;
+import com.code.smither.engine.EngineConfig;
 
 /**
  *
  * Created by SCWANG on 2017/9/15.
  */
-public class DrawableConfig extends Config {
+public class DrawableConfig extends EngineConfig {
 
     protected String drawablePath;
 

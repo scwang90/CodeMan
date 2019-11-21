@@ -1,7 +1,7 @@
 package com.code.smither.project.base.impl;
 
-import com.code.smither.project.base.api.ITableFilter;
-import com.code.smither.project.base.api.ITableFilterConfig;
+import com.code.smither.project.base.api.TableFilter;
+import com.code.smither.project.base.api.TableFilterConfig;
 
 
 import static com.code.smither.engine.impl.DefaultFileFilter.regexFilter;
@@ -10,18 +10,18 @@ import static com.code.smither.engine.impl.DefaultFileFilter.regexFilter;
  * 默认的表名过滤器
  * Created by SCWANG on 2016/8/18.
  */
-public class DefaultTableFilter implements ITableFilter {
+public class DefaultTableFilter implements TableFilter {
 
-    TableFilterExclude exclude;
-    TableFilterInclude include;
+    private TableExcludeFilter exclude;
+    private TableIncludeFilter include;
 
-    public DefaultTableFilter(ITableFilterConfig config) {
+    public DefaultTableFilter(TableFilterConfig config) {
         if (config != null) {
-            this.include = new TableFilterInclude(regexFilter(config.getIncludeTable()));
-            this.exclude = new TableFilterExclude(regexFilter(config.getFilterTable()));
+            this.include = new TableIncludeFilter(regexFilter(config.getIncludeTable()));
+            this.exclude = new TableExcludeFilter(regexFilter(config.getFilterTable()));
         } else {
-            this.include = new TableFilterInclude(new String[]{".*"});
-            this.exclude = new TableFilterExclude(new String[0]);
+            this.include = new TableIncludeFilter(new String[]{".*"});
+            this.exclude = new TableExcludeFilter(new String[0]);
         }
     }
 
@@ -34,11 +34,11 @@ public class DefaultTableFilter implements ITableFilter {
      * 表名过滤 - 排除
      * Created by SCWANG on 2015-07-04.
      */
-    public static class TableFilterExclude implements ITableFilter {
+    public static class TableExcludeFilter implements TableFilter {
 
         private String[] regex;
 
-        public TableFilterExclude(String[] regex){
+        TableExcludeFilter(String[] regex){
             this.regex = regex;
         }
 
@@ -56,12 +56,12 @@ public class DefaultTableFilter implements ITableFilter {
      * 表名过滤 - 包含
      * Created by SCWANG on 2015-07-04.
      */
-    public static class TableFilterInclude implements ITableFilter {
+    public static class TableIncludeFilter implements TableFilter {
 
-        TableFilterExclude exclude;
+        TableExcludeFilter exclude;
 
-        public TableFilterInclude(String[] regex){
-            exclude = new TableFilterExclude(regex);
+        TableIncludeFilter(String[] regex){
+            exclude = new TableExcludeFilter(regex);
         }
 
         @Override

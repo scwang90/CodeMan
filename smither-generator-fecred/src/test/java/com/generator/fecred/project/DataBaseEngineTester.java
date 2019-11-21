@@ -2,7 +2,7 @@ package com.generator.fecred.project;
 
 import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.DataBaseEngine;
-import com.code.smither.project.database.factory.ConfigFactory;
+import com.code.smither.project.database.factory.DbConfigFactory;
 import org.junit.Test;
 
 public class DataBaseEngineTester {
@@ -10,7 +10,7 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseTemplate() {
         try {
-            DataBaseConfig config = ConfigFactory.loadConfig("trailer-project.properties");
+            DataBaseConfig config = DbConfigFactory.loadConfig("trailer-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {
@@ -21,7 +21,7 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseCredit() {
         try {
-            DataBaseConfig config = ConfigFactory.loadConfig("credit-project.properties");
+            DataBaseConfig config = DbConfigFactory.loadConfig("credit-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseQh() {
         try {
-            DataBaseConfig config = ConfigFactory.loadConfig("qh-project.properties");
+            DataBaseConfig config = DbConfigFactory.loadConfig("qh-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseExhibition() {
         try {
-            DataBaseConfig config = ConfigFactory.loadConfig("exhibition-project.properties");
+            DataBaseConfig config = DbConfigFactory.loadConfig("exhibition-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseSimpleCrm() {
         try {
-            DataBaseConfig config = ConfigFactory.loadConfig("simple-crm-project.properties");
+            DataBaseConfig config = DbConfigFactory.loadConfig("simple-crm-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseIntegrity() {
         try {
-            DataBaseConfig config = ConfigFactory.loadConfig("qing-zhen-Integrity-manager.properties");
+            DataBaseConfig config = DbConfigFactory.loadConfig("qing-zhen-Integrity-manager.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {

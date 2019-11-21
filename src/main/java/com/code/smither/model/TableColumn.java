@@ -29,6 +29,7 @@ public class TableColumn {
 
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增
+	private boolean primaryKey;//是否是 PrimaryKey
 
 	public String getName() {
 		return name;
@@ -204,5 +205,13 @@ public class TableColumn {
 
 	public void setAutoIncrement(boolean autoIncrement) {
 		this.autoIncrement = autoIncrement;
+	}
+
+	public boolean isPrimaryKey() {
+		return primaryKey;
+	}
+
+	public void setPrimaryKey(boolean primaryKey) {
+		this.primaryKey = primaryKey;
 	}
 }

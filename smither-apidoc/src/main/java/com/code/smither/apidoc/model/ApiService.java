@@ -1,7 +1,7 @@
 package com.code.smither.apidoc.model;
 
-import com.code.smither.engine.api.IModel;
-import com.code.smither.engine.api.IRootModel;
+import com.code.smither.engine.api.Model;
+import com.code.smither.engine.api.RootModel;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by SCWANG on 2016/8/19.
  */
 @SuppressWarnings("unused")
-public class ApiService extends HtmlModel implements IRootModel {
+public class ApiService extends HtmlModel implements RootModel {
 
     private String name;
     private String displayName;
@@ -88,12 +88,12 @@ public class ApiService extends HtmlModel implements IRootModel {
 
     //<editor-fold desc="接口实现">
     @Override
-    public List<? extends IModel> getModels() {
+    public List<? extends Model> getModels() {
         return modules;
     }
 
     @Override
-    public void bindModel(IModel model) {
+    public void bindModel(Model model) {
         if (model instanceof ApiModule) {
             module = (ApiModule) model;
             moduleName = ((ApiModule) model).getName();

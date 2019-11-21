@@ -1,6 +1,6 @@
 package com.generator.poetry.drawable2svg;
 
-import com.code.smither.engine.Config;
+import com.code.smither.engine.EngineConfig;
 import com.code.smither.engine.api.*;
 import com.generator.poetry.drawable2svg.model.Drawable;
 import com.generator.poetry.drawable2svg.model.Path;
@@ -20,7 +20,7 @@ import java.util.List;
  *
  * Created by SCWANG on 2017/9/15.
  */
-public class DrawableBuilder implements IModelBuilder {
+public class DrawableBuilder implements ModelBuilder {
 
     private DrawableConfig config;
 
@@ -29,12 +29,12 @@ public class DrawableBuilder implements IModelBuilder {
     }
 
     @Override
-    public IRootModel build() throws Exception {
-        Config con = new Config();
+    public RootModel build() throws Exception {
+        EngineConfig con = new EngineConfig();
         con.setTemplatePath(config.getDrawablePath());
         con.initEmptyFieldsWithDefaultValues();
-        ITaskLoader taskLoader = con.getTaskLoader();
-        List<ITask> tasks = taskLoader.loadTask(new File(config.getDrawablePath()), new File(config.getDrawablePath()), new IFileFilter() {
+        TaskLoader taskLoader = con.getTaskLoader();
+        List<Task> tasks = taskLoader.loadTask(new File(config.getDrawablePath()), new File(config.getDrawablePath()), new FileFilter() {
             @Override
             public boolean isNeedFilterFile(File file) {
                 return !file.getName().endsWith(".xml");
@@ -45,7 +45,7 @@ public class DrawableBuilder implements IModelBuilder {
             }
         });
         Root root = new Root();
-        for (ITask task : tasks) {
+        for (Task task : tasks) {
             try (InputStream input = new FileInputStream(task.getTemplateFile())) {
                 Elements vectors = Jsoup.parse(input, "UTF-8", "", new Parser(new XmlTreeBuilder())).select("vector");
                 if (vectors.size() > 0) {

@@ -1,6 +1,6 @@
 package com.code.smither.project;
 
-import com.code.smither.project.base.api.DbFactory;
+import com.code.smither.project.database.api.DbFactory;
 import com.code.smither.project.database.factory.C3P0Factory;
 import org.junit.Test;
 

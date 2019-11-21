@@ -1,13 +1,13 @@
 package com.code.smither.apidoc;
 
-import com.code.smither.engine.Config;
+import com.code.smither.engine.EngineConfig;
 
 /**
  * APi文档配置信息
  * Created by SCWANG on 2016/8/19.
  */
 @SuppressWarnings("unused")
-public class XmlApiDocConfig extends Config {
+public class XmlApiDocConfig extends EngineConfig {
 
     protected String xmlSourcePath = "";
     protected String xmlSourceCharset = "UTF-8";

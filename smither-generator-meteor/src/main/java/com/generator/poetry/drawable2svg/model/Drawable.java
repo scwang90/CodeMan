@@ -1,6 +1,6 @@
 package com.generator.poetry.drawable2svg.model;
 
-import com.code.smither.engine.api.IModel;
+import com.code.smither.engine.api.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * 矢量图对象
  * Created by SCWANG on 2017/9/15.
  */
-public class Drawable implements IModel {
+public class Drawable implements Model {
 
     private String name;
     private String viewportWidth;

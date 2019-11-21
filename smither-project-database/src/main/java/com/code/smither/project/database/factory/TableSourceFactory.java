@@ -1,7 +1,7 @@
 package com.code.smither.project.database.factory;
 
 import com.code.smither.project.base.ProjectConfig;
-import com.code.smither.project.base.api.DbFactory;
+import com.code.smither.project.database.api.DbFactory;
 import com.code.smither.project.database.impl.*;
 
 /**

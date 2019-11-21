@@ -2,7 +2,7 @@ package com.code.smither.project;
 
 import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.DataBaseEngine;
-import com.code.smither.project.database.factory.ConfigFactory;
+import com.code.smither.project.database.factory.DbConfigFactory;
 import org.junit.Test;
 
 /**
@@ -14,7 +14,7 @@ public class TemplateTest {
     @Test
     public void DataBaseTemplate() {
         try {
-            DataBaseConfig config = ConfigFactory.loadConfig("config.properties");
+            DataBaseConfig config = DbConfigFactory.loadConfig("config.properties");
             DataBaseEngine engine = new DataBaseEngine(config);
             engine.launch();
         } catch (Exception e) {

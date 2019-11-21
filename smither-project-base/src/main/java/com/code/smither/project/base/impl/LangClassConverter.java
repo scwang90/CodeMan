@@ -1,7 +1,7 @@
 package com.code.smither.project.base.impl;
 
 import com.code.smither.project.base.api.ClassConverter;
-import com.code.smither.project.base.constant.ProgramLang;
+import com.code.smither.project.base.constant.AbstractProgramLang;
 
 /**
  * 类转换器
@@ -10,9 +10,9 @@ import com.code.smither.project.base.constant.ProgramLang;
  */
 public abstract class LangClassConverter implements ClassConverter {
 
-	protected ProgramLang lang;
+	protected AbstractProgramLang lang;
 
-	public LangClassConverter(ProgramLang lang) {
+	public LangClassConverter(AbstractProgramLang lang) {
 		this.lang = lang;
 	}
 

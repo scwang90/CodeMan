@@ -1,23 +1,31 @@
 package com.code.smither.project.database.model;
 
-import com.code.smither.engine.api.IRootModel;
+import com.code.smither.engine.api.RootModel;
 import com.code.smither.project.base.ProjectConfig;
-import com.code.smither.project.base.api.DbFactory;
 import com.code.smither.project.base.constant.Database;
-import com.code.smither.project.base.impl.ModelBuilder;
+import com.code.smither.project.base.impl.RootModelBuilder;
+import com.code.smither.project.base.model.SourceModel;
+import com.code.smither.project.database.api.DbFactory;
 import com.code.smither.project.database.impl.DbTableSource;
 
-public class DbModelBuilder extends ModelBuilder {
+public class DbModelBuilder extends RootModelBuilder {
 
-    private final Database database;
+    protected final DbFactory factory;
+    protected final Database database;
 
     public DbModelBuilder(ProjectConfig config, DbFactory factory, DbTableSource tableSource) {
-        super(config, factory, tableSource);
-        database = tableSource.getDatabase();
+        super(config, tableSource);
+        this.factory = factory;
+        this.database = tableSource.getDatabase();
     }
 
     @Override
-    public IRootModel build() throws Exception {
-        return build(new DbModel(database.name()), config, factory, tableSource.build());
+    public RootModel build() throws Exception {
+        SourceModel model = build(new DbSourceModel(database.name()), config, buildTables());
+        model.getJdbc().setUrl(factory.getJdbcUrl());
+        model.getJdbc().setDriver(factory.getDriverClass());
+        model.getJdbc().setUsername(factory.getUser());
+        model.getJdbc().setPassword(factory.getPassword());
+        return model;
     }
 }

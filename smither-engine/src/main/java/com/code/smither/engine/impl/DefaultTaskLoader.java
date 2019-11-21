@@ -1,8 +1,8 @@
 package com.code.smither.engine.impl;
 
-import com.code.smither.engine.api.IFileFilter;
-import com.code.smither.engine.api.ITask;
-import com.code.smither.engine.api.ITaskLoader;
+import com.code.smither.engine.api.FileFilter;
+import com.code.smither.engine.api.Task;
+import com.code.smither.engine.api.TaskLoader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.List;
  * 默认的任务加载实现
  * Created by SCWANG on 2016/8/18.
  */
-public class DefaultTaskLoader implements ITaskLoader {
+public class DefaultTaskLoader implements TaskLoader {
 
     @Override
-    public List<ITask> loadTask(File templates, File target, IFileFilter filter) {
-        List<ITask> tasks = new ArrayList<>();
+    public List<Task> loadTask(File templates, File target, FileFilter filter) {
+        List<Task> tasks = new ArrayList<>();
         File src = templates;
         if (src.isFile()) {
             if (filter == null || !filter.isNeedFilterFile(src)) {
@@ -28,7 +28,7 @@ public class DefaultTaskLoader implements ITaskLoader {
     }
 
 
-    protected List<ITask> loadTask(File templates, File target, IFileFilter filter,File path, List<ITask> tasks) {
+    protected List<Task> loadTask(File templates, File target, FileFilter filter, File path, List<Task> tasks) {
         File[] files = path.listFiles();
         if (files != null && files.length > 0) {
             for (File file : files) {

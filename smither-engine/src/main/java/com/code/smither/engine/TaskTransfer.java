@@ -1,6 +1,7 @@
 package com.code.smither.engine;
 
 import com.code.smither.engine.api.*;
+import com.code.smither.engine.api.FileFilter;
 import com.code.smither.engine.factory.FreemarkerFactory;
 import com.code.smither.engine.util.FileUtil;
 import com.code.smither.engine.util.Reflecter;
@@ -19,20 +20,20 @@ import java.util.regex.Pattern;
 public class TaskTransfer {
 
     private int taskNo = 0;
-    private IConfig config;
+    private Config config;
     private final File templates;
     private final File target;
-    private IRootModel rootModel;
-    private List<ITask> tasks;
+    private RootModel rootModel;
+    private List<Task> tasks;
 
-    public TaskTransfer(IConfig config, IRootModel rootModel, File templates, File target) {
+    public TaskTransfer(Config config, RootModel rootModel, File templates, File target) {
         this.config = config;
         this.target = target;
         this.templates = templates;
         this.rootModel = rootModel;
     }
 
-    private IFileFilter buildFilter(IConfig config) {
+    private FileFilter buildFilter(Config config) {
         return config.getFileFilter();
     }
 
@@ -46,7 +47,7 @@ public class TaskTransfer {
     /**
      * 填充空字段 防止发送异常
      */
-    private IRootModel fillEmptyFields(IRootModel model) {
+    private RootModel fillEmptyFields(RootModel model) {
         return config.getFieldFiller().fill(model);
     }
 
@@ -63,7 +64,7 @@ public class TaskTransfer {
 
     public String doTask() throws IOException, TemplateException {
         checkPrepareTask("doTask");
-        ITask task = tasks.get(taskNo++);
+        Task task = tasks.get(taskNo++);
         File outfile = task.getTargetFile();
 
         StringBuilder log = new StringBuilder(outfile.getAbsolutePath()+"\r\n");
@@ -81,7 +82,7 @@ public class TaskTransfer {
             Set<String> set = new LinkedHashSet<>();
             Template template = getTemplate(task.getTemplateFile());
             Template nameTemplate = FreemarkerFactory.getTemplate(outfile.getAbsolutePath());
-            for (IModel model : rootModel.getModels()) {
+            for (Model model : rootModel.getModels()) {
                 rootModel.bindModel(model);
                 StringWriter writer = new StringWriter();
                 nameTemplate.process(rootModel, writer);

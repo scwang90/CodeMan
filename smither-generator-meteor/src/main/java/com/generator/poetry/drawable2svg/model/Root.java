@@ -1,7 +1,7 @@
 package com.generator.poetry.drawable2svg.model;
 
-import com.code.smither.engine.api.IModel;
-import com.code.smither.engine.api.IRootModel;
+import com.code.smither.engine.api.Model;
+import com.code.smither.engine.api.RootModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  *
  * Created by SCWANG on 2017/9/15.
  */
-public class Root implements IRootModel {
+public class Root implements RootModel {
 
     private List<Drawable> drawables = new ArrayList<>();
 
@@ -42,12 +42,12 @@ public class Root implements IRootModel {
     }
 
     @Override
-    public List<? extends IModel> getModels() {
+    public List<? extends Model> getModels() {
         return drawables;
     }
 
     @Override
-    public void bindModel(IModel model) {
+    public void bindModel(Model model) {
         if (model instanceof Drawable) {
             drawable = (Drawable) model;
             drawableName = ((Drawable) model).getName();

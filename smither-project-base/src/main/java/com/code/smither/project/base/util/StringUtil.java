@@ -30,15 +30,16 @@ public class StringUtil {
 	}
 
 
-	public static String camel(String orgin, String division) {
+	public static String camel(String origin, String division) {
 		if (division != null && division.length() > 0) {
-			String[] divs = orgin.split(division);
-			orgin = "";
+			String[] divs = origin.split(division);
+			StringBuilder originBuilder = new StringBuilder();
 			for (String div : divs) {
-				orgin += upperFirst(div);
+				originBuilder.append(upperFirst(div.toLowerCase()));
 			}
+			origin = originBuilder.toString();
 		}
-		return orgin;
+		return origin;
 	}
 
 }

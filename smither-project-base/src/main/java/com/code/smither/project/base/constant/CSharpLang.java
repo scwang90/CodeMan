@@ -11,7 +11,7 @@ import java.util.Map;
  * C#语言规则实现
  * Created by root on 16-1-28.
  */
-public class CSharpLang extends ProgramLang {
+public class CSharpLang extends AbstractProgramLang {
 
     private static final String[] extensions = {
             ".cs"

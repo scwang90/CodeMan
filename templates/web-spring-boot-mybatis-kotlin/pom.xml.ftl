@@ -29,7 +29,7 @@
 
 	<dependencies>
 
-		<#if dbType=="mysql">
+		<#if (dbType!"")=="mysql">
 		<!-- MySql -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -37,28 +37,37 @@
 			<scope>runtime</scope>
 		</dependency>
 		</#if>
-		<#if dbType=="oracle">
+		<#if (dbType!"")=="oracle">
 		<!-- Oracle -->
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.4.0</version>
+			<groupId>com.oracle.ojdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<version>19.3.0.0</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.ojdbc</groupId>
+			<artifactId>orai18n</artifactId>
+			<version>19.3.0.0</version>
+			<scope>runtime</scope>
 		</dependency>
 		</#if>
-		<#if dbType=="sqlserver">
+		<#if (dbType!"")=="sqlserver">
 		<!-- sqlserver -->
 		<dependency>
 			<groupId>com.hynnet</groupId>
 			<artifactId>sqljdbc4-chs</artifactId>
 			<version>4.0.2206.100</version>
+			<scope>runtime</scope>
 		</dependency>
 		</#if>
-		<#if dbType=="sqlite">
+		<#if (dbType!"")=="sqlite">
 		<!-- sqlite-jdbc -->
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.20.1</version>
+			<scope>runtime</scope>
 		</dependency>
 		</#if>
 
