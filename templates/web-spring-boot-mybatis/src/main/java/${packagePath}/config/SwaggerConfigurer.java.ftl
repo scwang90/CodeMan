@@ -1,6 +1,6 @@
 package ${packageName}.config;
 
-import com.fecred.medical.platform.annotation.CommonApi;
+import ${packageName}.annotation.CommonApi;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 

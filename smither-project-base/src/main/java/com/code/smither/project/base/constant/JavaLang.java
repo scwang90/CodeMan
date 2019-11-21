@@ -48,9 +48,11 @@ public class JavaLang extends AbstractProgramLang {
             case Types.ARRAY:
                 return Array.class.getSimpleName();
             case Types.BLOB:
-                return Blob.class.getName();
+                return String.class.getSimpleName();
+//                return Blob.class.getName();
             case Types.CLOB:
-                return Clob.class.getName();
+                return String.class.getSimpleName();
+//                return Clob.class.getName();
             case Types.TINYINT:
 //                return Byte.class.getSimpleName();
             case Types.SMALLINT:
@@ -84,7 +86,8 @@ public class JavaLang extends AbstractProgramLang {
             case Types.LONGNVARCHAR:
                 return String.class.getSimpleName();
             case Types.NCLOB:
-                return NClob.class.getName();
+                return String.class.getSimpleName();
+//                return NClob.class.getName();
             case Types.NUMERIC:
                 return BigDecimal.class.getName();
             case Types.OTHER:

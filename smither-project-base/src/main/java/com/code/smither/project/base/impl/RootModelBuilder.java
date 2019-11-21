@@ -15,6 +15,7 @@ import com.code.smither.project.base.util.StringUtil;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
 public class RootModelBuilder implements ModelBuilder {
@@ -73,11 +74,7 @@ public class RootModelBuilder implements ModelBuilder {
 		table.setClassNameLower(table.getClassName().toLowerCase());
 		table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
 
-		String division = this.config.getTableDivision();
-		if (division == null || division.length() == 0) {
-			division = "_";
-		}
-		table.setUrlPathName(table.getName().toLowerCase().replace(division,"-"));
+		table.setUrlPathName(buildUrlPath(table));
 
 		if (table.getRemark() == null || table.getRemark().trim().length()==0) {
 			table.setRemark(tableSource.queryTableRemark(tableMate));
@@ -89,18 +86,40 @@ public class RootModelBuilder implements ModelBuilder {
 		return tableComputeColumn(table, tableMate);
 	}
 
-	protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
+    protected String buildUrlPath(Table table) {
+        String division = this.config.getTableDivision();
+        if (division == null || division.length() == 0) {
+            division = "_";
+        }
+        if (table.getName().contains(division)) {
+            return table.getName().toLowerCase().replace(division, "-");
+        }
+        StringBuilder builder = new StringBuilder();
+        String className = table.getClassName();
+        for (int i = 0, lc = 0; i < className.length(); i++) {
+            char c = className.charAt(i);
+            int cc = c & 0b00100000;
+            if (cc == 0 && lc != cc) {
+                builder.append('-');
+            }
+            builder.append((char)(c | 0b00100000));
+            lc = cc;
+        }
+        return builder.toString();
+    }
+
+    protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
 		List<String> keys = tableSource.queryPrimaryKeys(tableMate);
 
 		List<? extends MetaDataColumn> listMetaData = tableSource.queryColumns(tableMate);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
 		for (MetaDataColumn columnMate : listMetaData) {
 			TableColumn column = tableSource.buildColumn(columnMate);
-			if (keys.contains(column.getName()) || (keys.isEmpty() && column.getName().toLowerCase().endsWith("id"))) {
+			if (keys.contains(column.getName())) {
 				if (table.getIdColumn() == null) {
 					table.setIdColumn(column);
 				}
-				if (column.getTypeInt() == Types.DECIMAL || column.getTypeInt() == Types.NUMERIC) {
+				if (column.getTypeInt() == Types.DECIMAL || column.getTypeInt() == Types.NUMERIC || column.getTypeInt() == Types.DOUBLE) {
 					column.setTypeInt(Types.BIGINT);
 				}
 			}
@@ -108,9 +127,28 @@ public class RootModelBuilder implements ModelBuilder {
 			columns.add(columnCompute(column, columnMate));
 			System.out.println("构建列【" + table.getName() + "】【" + column.getName() + "】模型完成（" + columns.size() + "）");
 		}
-		if (table.getIdColumn() == null) {
-			table.setIdColumn(columnKeyDefault(columns));
-		}
+        if (table.getIdColumn() == null) {
+            columns.stream().filter(c->!c.isNullable()&&c.getName().toLowerCase().endsWith("id")).findFirst().ifPresent(table::setIdColumn);
+        }
+        if (table.getIdColumn() == null) {
+            columns.stream().filter(c->!c.isNullable()).findFirst().ifPresent(table::setIdColumn);
+        }
+        if (table.getIdColumn() == null) {
+            columns.stream().filter(c->c.getName().toLowerCase().endsWith("id")).findFirst().ifPresent(table::setIdColumn);
+        }
+        if (table.getIdColumn() == null) {
+            if (columns.size() > 0) {
+                table.setIdColumn(columns.get(0));
+            } else {
+                table.setIdColumn(columnKeyDefault(columns));
+            }
+        }
+        TableColumn id = table.getIdColumn();
+        if (id != null) {
+            if (id.getTypeInt() == Types.DECIMAL || id.getTypeInt() == Types.NUMERIC || id.getTypeInt() == Types.DOUBLE) {
+                id.setTypeInt(Types.BIGINT);
+            }
+        }
 		table.setColumns(columns);
 		return table;
 	}

@@ -4,7 +4,6 @@ import ${packageName}.constant.UploadType;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
 import ${packageName}.model.api.Upload;
-import ${packageName}.model.db.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,13 +85,13 @@ public class UploadService {
     /**
      * 根据类型和用户生成上传文件的保存路径
      *
-     * @param me   自己
-     * @param type 类型
+     * @param account   账户
+     * @param type      类型
      * @return path
      */
-    public String pathWith(@Nullable User me, UploadType type) {
-        if (type.ordinal() > UploadType.image.ordinal() && me != null) {
-            return String.format("%s/%s/%s", type.name(), me.getAccount(), dateFormat.format(new Date()));
+    public String pathWith(@Nullable String account, UploadType type) {
+        if (type.ordinal() > UploadType.image.ordinal() && account != null) {
+            return String.format("%s/%s/%s", type.name(), account, dateFormat.format(new Date()));
         }
         return String.format("%s/%s", type.name(), dateFormat.format(new Date()));
     }

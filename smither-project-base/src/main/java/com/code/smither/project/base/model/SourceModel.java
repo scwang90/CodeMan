@@ -29,6 +29,7 @@ public class SourceModel implements LangRootModel {
     private String packagePath;
     private String projectName;
     private String charset;
+    private String dbType;
     private Date now = new Date();
 
     public SourceModel() {
@@ -144,6 +145,14 @@ public class SourceModel implements LangRootModel {
 
     public void setCharset(String charset) {
         this.charset = charset;
+    }
+
+    public String getDbType() {
+        return dbType;
+    }
+
+    public void setDbType(String dbType) {
+        this.dbType = dbType;
     }
 
     public DatabaseJdbc getJdbc() {

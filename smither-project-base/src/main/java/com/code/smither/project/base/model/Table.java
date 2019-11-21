@@ -34,6 +34,7 @@ public class Table implements Model, MetaDataTable {
 
     public void setName(String name) {
         this.name = name;
+        this.nameSQL = name;
     }
 
     public void setName(String name, Database database) {

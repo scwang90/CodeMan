@@ -4,17 +4,8 @@ import com.code.smither.project.base.model.SourceModel;
 
 public class DbSourceModel extends SourceModel {
 
-    private String dbType;
-
-    public DbSourceModel(String name) {
-        dbType = name;
+    public DbSourceModel(String type) {
+        setDbType(type);
     }
 
-    public String getDbType() {
-        return dbType;
-    }
-
-    public void setDbType(String dbType) {
-        this.dbType = dbType;
-    }
 }

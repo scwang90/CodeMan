@@ -26,7 +26,7 @@ public class SqlServerTableSource extends DbTableSource implements Database {
 
     @Override
     public String name() {
-        return "sqlite";
+        return "sqlserver";
     }
 
     @Override

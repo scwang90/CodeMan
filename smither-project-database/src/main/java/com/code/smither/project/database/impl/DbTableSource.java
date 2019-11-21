@@ -24,8 +24,6 @@ public class DbTableSource implements TableSource {
 	protected ProjectConfig config;
 	protected DbFactory dbFactory;
 	protected Connection connection = null;
-	protected TableFilter tableFilter;
-	protected ClassConverter classConverter;
 	protected DatabaseMetaData databaseMetaData = null;
 
 	public DbTableSource(ProjectConfig config, DbFactory dbFactory) {
@@ -37,8 +35,6 @@ public class DbTableSource implements TableSource {
 		this.config = config;
 		this.dbFactory = dbFactory;
 		this.autoClose = autoClose;
-		this.tableFilter = config.getTableFilter();
-		this.classConverter = config.getClassConverter();
 	}
 
 	@Override

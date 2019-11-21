@@ -202,67 +202,6 @@ public class HtmlTableSource implements TableSource {
         return null;
     }
 
-//    @Nonnull
-//    public List<Table> build() throws Exception {
-//        List<Document> documents = new ArrayList<>();
-//        for (File file : htmlFiles) {
-//            documents.add(Jsoup.parse(file, charset));
-//        }
-//        Elements tableElements = new Elements();
-//        for (Document document : documents) {
-//            tableElements.addAll(metaData.getTables(document));
-//        }
-//        List<Table> tables = new ArrayList<>();
-//        for (Element tableElement : tableElements) {
-//            tables.add(buildTable(tableElement));
-//        }
-//        return tables;
-//    }
-
-//    protected Table buildTable(Element tableElement) {
-//        Table table = buildTableMetaData(tableElement);
-//        table.setClassName(this.classConverter.converterClassName(table.getName()));
-//        table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
-//        table.setClassNameUpper(table.getClassName().toUpperCase());
-//        table.setClassNameLower(table.getClassName().toLowerCase());
-//        if (table.getRemark() == null || table.getRemark().trim().length()==0) {
-//            table.setRemark(remarker.getTableRemark(table.getName()));
-//        }
-//        Elements columnElements = metaData.getTableColumns(tableElement);
-//        List<TableColumn> columnList = new ArrayList<>();
-//        for (Element columnElement : columnElements) {
-//            columnList.add(buildColumn(columnElement));
-//        }
-//        table.setColumns(columnList);
-//        buildTableIdColumn(table);
-//        return table;
-//    }
-
-//    protected TableColumn buildColumn(Element columnElement) {
-//        TableColumn column = new TableColumn();
-//        Elements columnMetaData = metaData.getColumnMetaData(columnElement);
-//        buildColumnMetaData(column, columnMetaData);
-//
-//        column.setFieldName(this.classConverter.converterFieldName(column.getName()));
-//        column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
-//        column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
-//        column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
-//
-//        if (column.getRemark() == null || column.getRemark().trim().length()==0) {
-//            column.setRemark(remarker.getColumnRemark(column.getName()));
-//        }
-//        return column;
-//    }
-
-//    /**
-//     * 默认选择第一行为ID
-//     */
-//    protected void buildTableIdColumn(Table table) {
-//        if (table.getColumns() != null && table.getColumns().size() > 0) {
-//            table.setIdColumn(table.getColumns().get(0));
-//        }
-//    }
-//
     protected Table buildTableMetaData(Element tableElement) {
         Table table = new Table();
         table.setName(metaData.getTableName(tableElement));
@@ -392,7 +331,7 @@ public class HtmlTableSource implements TableSource {
         @Override
         public boolean getColumnNullable(Elements columnMetaData) {
             if (columnMetaData.size() > 4) {
-                return "允许".equals(columnMetaData.get(4).text());
+                return !"是".equals(columnMetaData.get(4).text());
             }
             return false;
         }

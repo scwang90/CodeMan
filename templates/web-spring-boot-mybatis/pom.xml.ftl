@@ -8,7 +8,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-
 	<name>${projectName}</name>
 	<description>${projectName}自动生成项目</description>
 

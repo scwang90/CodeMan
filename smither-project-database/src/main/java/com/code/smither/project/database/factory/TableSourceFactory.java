@@ -11,9 +11,10 @@ import com.code.smither.project.database.impl.*;
 public class TableSourceFactory {
 
     private static final String PATTERN_MYSQL = "jdbc:mysql:.*";
-    private static final String PATTERN_SQLERVER = "jdbc:sqlserver:.*";
     private static final String PATTERN_ORACLE = "jdbc:oracle:.*";
-    private static final String PATTERN_SQLITE = "jdbc:sqlite:.*";
+    private static final String PATTERN_SQL_LITE = "jdbc:sqlite:.*";
+    private static final String PATTERN_SQL_SERVER = "jdbc:sqlserver:.*";
+
 
     public static DbTableSource getInstance(ProjectConfig config, DbFactory factory) {
         String jdbcUrl = factory.getJdbcUrl();
@@ -21,9 +22,9 @@ public class TableSourceFactory {
             return new MySqlTableSource(config, factory);
         } else if (jdbcUrl.matches(PATTERN_ORACLE)) {
             return new OracleTableSource(config, factory);
-        } else if (jdbcUrl.matches(PATTERN_SQLERVER)) {
+        } else if (jdbcUrl.matches(PATTERN_SQL_SERVER)) {
             return new SqlServerTableSource(config, factory);
-        } else if (jdbcUrl.matches(PATTERN_SQLITE)) {
+        } else if (jdbcUrl.matches(PATTERN_SQL_LITE)) {
             return new SqLiteTableSource(config, factory);
         }
         return new DbTableSource(config, factory);

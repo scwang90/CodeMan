@@ -9,10 +9,16 @@ import com.code.smither.project.database.impl.HtmlTableSource;
  * 带Html的配置
  * Created by SCWANG on 2016/8/18.
  */
+@SuppressWarnings("WeakerAccess")
 public class HtmlTableConfig extends ProjectConfig {
 
     protected String htmlTablePath = "";
     protected String htmlTableCharset = "UTF-8";
+
+    protected String jdbcUrl;
+    protected String jdbcDriver;
+    protected String jdbcUsername;
+    protected String jdbcPassword;
 
     protected transient TableSource tableSource;
 
@@ -47,6 +53,38 @@ public class HtmlTableConfig extends ProjectConfig {
 
     public void setHtmlTableCharset(String htmlTableCharset) {
         this.htmlTableCharset = htmlTableCharset;
+    }
+
+    public String getJdbcUrl() {
+        return jdbcUrl;
+    }
+
+    public void setJdbcUrl(String jdbcUrl) {
+        this.jdbcUrl = jdbcUrl;
+    }
+
+    public String getJdbcDriver() {
+        return jdbcDriver;
+    }
+
+    public void setJdbcDriver(String jdbcDriver) {
+        this.jdbcDriver = jdbcDriver;
+    }
+
+    public String getJdbcUsername() {
+        return jdbcUsername;
+    }
+
+    public void setJdbcUsername(String jdbcUsername) {
+        this.jdbcUsername = jdbcUsername;
+    }
+
+    public String getJdbcPassword() {
+        return jdbcPassword;
+    }
+
+    public void setJdbcPassword(String jdbcPassword) {
+        this.jdbcPassword = jdbcPassword;
     }
 
 }
