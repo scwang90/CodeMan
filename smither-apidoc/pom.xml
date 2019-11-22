@@ -3,36 +3,32 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>code-smither</artifactId>
-        <groupId>com.codesmither</groupId>
+        <groupId>com.code.smither</groupId>
+        <artifactId>code-smither-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.code.smither.apidoc</groupId>
     <artifactId>smither-apidoc</artifactId>
 
     <dependencies>
 
         <!--生成器引擎-->
         <dependency>
-            <groupId>com.code.smither.engine</groupId>
+            <groupId>com.code.smither</groupId>
             <artifactId>smither-engine</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.4.1</version>
         </dependency>
 
         <!--HTML解析-->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.9.2</version>
         </dependency>
 
     </dependencies>

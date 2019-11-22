@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
-public class RootModelBuilder implements ModelBuilder {
+public class DefaultModelBuilder implements ModelBuilder {
 
 	protected final ProjectConfig config;
 	protected final TableSource tableSource;
@@ -27,7 +27,7 @@ public class RootModelBuilder implements ModelBuilder {
 	protected final ClassConverter classConverter;
 	protected final JdbcLang jdbcLang = new JdbcLang();
 
-	public RootModelBuilder(ProjectConfig config, TableSource tableSource) {
+	public DefaultModelBuilder(ProjectConfig config, TableSource tableSource) {
 		this.config = config;
 		this.tableSource = tableSource;
 		this.tableFilter = config.getTableFilter();

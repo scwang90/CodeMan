@@ -2,7 +2,7 @@ package com.code.smither.project.base;
 
 import com.code.smither.engine.Engine;
 import com.code.smither.project.base.api.TableSource;
-import com.code.smither.project.base.impl.RootModelBuilder;
+import com.code.smither.project.base.impl.DefaultModelBuilder;
 
 /**
  * 项目代码生成引擎
@@ -18,6 +18,6 @@ public class ProjectEngine extends Engine {
     }
 
     public void launch(TableSource tableSource) throws Exception {
-        launch(new RootModelBuilder(config,tableSource));
+        launch(new DefaultModelBuilder(config,tableSource));
     }
 }

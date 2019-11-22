@@ -3,12 +3,12 @@ package com.code.smither.project.database.model;
 import com.code.smither.engine.api.RootModel;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.Database;
-import com.code.smither.project.base.impl.RootModelBuilder;
+import com.code.smither.project.base.impl.DefaultModelBuilder;
 import com.code.smither.project.base.model.SourceModel;
 import com.code.smither.project.database.api.DbFactory;
 import com.code.smither.project.database.impl.DbTableSource;
 
-public class DbModelBuilder extends RootModelBuilder {
+public class DbModelBuilder extends DefaultModelBuilder {
 
     protected final DbFactory factory;
     protected final Database database;

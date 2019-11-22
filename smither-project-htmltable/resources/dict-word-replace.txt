@@ -1,0 +1,8 @@
+用户-User
+医生-Doctor
+密码-Password
+权限-Permission
+消息-Message
+版本说明-Version
+登录日志-LoginLog
+系统参数-SystemParameter

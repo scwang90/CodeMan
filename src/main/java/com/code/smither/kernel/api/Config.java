@@ -30,7 +30,7 @@ public class Config {
     protected String targetCharset = "UTF-8";
     protected String targetProjectName = "TargetProject";
     protected String targetProjectAuthor = "scwang";
-    protected String targetProjectPackage = "com.codesmither";
+    protected String targetProjectPackage = "com.code.smither";
 
     public String getDbConfigName() {
         return dbConfigName;
