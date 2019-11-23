@@ -15,6 +15,7 @@ import com.code.smither.project.base.util.StringUtil;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
@@ -24,6 +25,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final TableSource tableSource;
 	protected final TableFilter tableFilter;
 	protected final WordBreaker wordBreaker;
+	protected final WordReplacer wordReplacer;
 	protected final ClassConverter classConverter;
 	protected final JdbcLang jdbcLang = new JdbcLang();
 
@@ -33,6 +35,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		this.tableFilter = config.getTableFilter();
 		this.classConverter = config.getClassConverter();
 		this.wordBreaker = config.getWordBreaker();
+		this.wordReplacer = config.getWordReplacer();
 	}
 
 	@Override
@@ -109,7 +112,7 @@ public class DefaultModelBuilder implements ModelBuilder {
     }
 
     protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
-		List<String> keys = tableSource.queryPrimaryKeys(tableMate);
+		Set<String> keys = tableSource.queryPrimaryKeys(tableMate);
 
 		List<? extends MetaDataColumn> listMetaData = tableSource.queryColumns(tableMate);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
@@ -147,6 +150,7 @@ public class DefaultModelBuilder implements ModelBuilder {
         if (id != null) {
             if (id.getTypeInt() == Types.DECIMAL || id.getTypeInt() == Types.NUMERIC || id.getTypeInt() == Types.DOUBLE) {
                 id.setTypeInt(Types.BIGINT);
+				id.setFieldType(this.classConverter.converterFieldType(id.getTypeInt()));
             }
         }
 		table.setColumns(columns);
@@ -170,13 +174,28 @@ public class DefaultModelBuilder implements ModelBuilder {
 		return column;
 	}
 
+//	ASPID-ASP_ID
+//	SEQID-SEQ_ID
+//	DBID-DB_ID
+//	ORDID-ORD_ID
+//	YPTID-YPT_ID
+//	KFID-KF_ID
+//	DICGRPID-DICT_GRP_ID
 	protected String convertIfNeed(String name) {
+		name = ifNeedReplace(name);
 		name = ifNeedChineseSpell(name);
 		name = ifNeedWordBreak(name);
 		return name;
 	}
 
-	private String ifNeedChineseSpell(String name) {
+	protected String ifNeedReplace(String name) {
+		if (wordReplacer != null) {
+			return wordReplacer.replace(name, config.getTableDivision());
+		}
+		return name;
+	}
+
+	protected String ifNeedChineseSpell(String name) {
 		return PinYinUtil.getInstance().getSelling(name, config.getTableDivision());
 	}
 

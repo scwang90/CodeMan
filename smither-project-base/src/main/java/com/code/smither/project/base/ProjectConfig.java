@@ -6,6 +6,7 @@ import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.impl.ConfigClassConverter;
 import com.code.smither.project.base.impl.DefaultTableFilter;
 import com.code.smither.project.base.impl.DefaultWordBreaker;
+import com.code.smither.project.base.impl.DefaultWordReplacer;
 
 /**
  * 项目配置信息
@@ -36,9 +37,11 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String targetProjectPackage = "com.code.smither.target";
 
     protected String wordBreakDictPath = "";
+    protected String wordReplaceDictPath = "";
 
     protected transient TableFilter tableFilter;
     protected transient WordBreaker wordBreaker;
+    protected transient WordReplacer wordReplacer;
     protected transient ClassConverter classConverter;
 
     @Override
@@ -49,6 +52,9 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
         }
         if (wordBreaker == null) {
             wordBreaker = new DefaultWordBreaker(wordBreakDictPath);
+        }
+        if (wordReplacer == null) {
+            wordReplacer = new DefaultWordReplacer(wordReplaceDictPath);
         }
         if (classConverter == null) {
             classConverter = new ConfigClassConverter(this);
@@ -78,6 +84,14 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 
     public WordBreaker getWordBreaker() {
         return wordBreaker;
+    }
+
+    public void setWordReplacer(WordReplacer wordReplacer) {
+        this.wordReplacer = wordReplacer;
+    }
+
+    public WordReplacer getWordReplacer() {
+        return wordReplacer;
     }
 
     //<editor-fold desc="接口实现">
@@ -227,6 +241,14 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     }
 
     public void setWordBreakDictPath(String wordBreakDictPath) {
-        this.wordBreakDictPath = wordBreakDictPath;
+        this.wordBreakDictPath = wordBreakDictPath.replaceAll(";?&#x","\\u");
+    }
+
+    public String getWordReplaceDictPath() {
+        return wordReplaceDictPath;
+    }
+
+    public void setWordReplaceDictPath(String wordReplaceDictPath) {
+        this.wordReplaceDictPath = wordReplaceDictPath;
     }
 }

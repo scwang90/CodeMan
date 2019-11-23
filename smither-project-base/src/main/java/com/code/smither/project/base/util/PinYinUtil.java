@@ -110,18 +110,17 @@ public class PinYinUtil {
 		for (int i = 0; i < chs.length(); i++) {
 			key = chs.substring(i, i + 1);
 			if (key.getBytes().length >= 2) {
-				value = (String) convert(key);
+				value = convert(key);
 				if (value == null) {
 					value = "unknown";
 				}
-				buffer.append(value);
 				if (divisions.length > 0) {
 					buffer.append(divisions[0]);
 				}
 			} else {
 				value = key;
-				buffer.append(value);
 			}
+			buffer.append(value);
 		}
 		return buffer.toString();
 	}

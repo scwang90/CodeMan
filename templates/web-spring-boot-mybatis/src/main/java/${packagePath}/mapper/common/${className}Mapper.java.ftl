@@ -145,7 +145,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@ResultMap("${table.name}")
 	<#if (dbType!"")=="oracle">
 	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM (SELECT * FROM ${table.nameSQL} ${r"${order}"}) t_ WHERE ROWNUM<=${r"${limit}"}) tt_ WHERE tt_.rn_>=${r"${start}"}")
-	List<${className}> findByPage(@Param("order") String order, @Param("start") int start, @Param("limit") int limit);
+	List<${className}> findByPage(@Param("order") String order, @Param("limit") int limit, @Param("start") int start);
 	<#else >
 	@Select("SELECT * FROM ${table.nameSQL} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	List<${className}> findByPage(@Param("order") String order, @Param("limit") int limit, @Param("start") int start);
@@ -211,7 +211,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@ResultMap("${table.name}")
 	<#if (dbType!"")=="oracle">
 	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM (SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"}) t_ WHERE ROWNUM<=${r"${limit}"}) tt_ WHERE tt_.rn_>=${r"${start}"}")
-	List<${className}> findWhereByPage(@Param("order") String order, @Param("where") String where, @Param("start") int start, @Param("limit") int limit);
+	List<${className}> findWhereByPage(@Param("order") String order, @Param("where") String where, @Param("limit") int limit, @Param("start") int start);
 	<#else >
 	@Select("SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	List<${className}> findWhereByPage(@Param("order") String order, @Param("where") String where, @Param("limit") int limit, @Param("start") int start);

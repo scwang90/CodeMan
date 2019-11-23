@@ -2,29 +2,68 @@ package com.code.smither.project.base.impl;
 
 import com.code.smither.project.base.api.WordReplacer;
 
-import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DefaultWordReplacer implements WordReplacer {
 
     private String dictPath;
-    private Map<String,String> dictonary;
+    private Map<String,String> dictionary;
 
     public DefaultWordReplacer(String dictPath) {
         this.dictPath = dictPath;
     }
 
     @Override
-    public String replace(String str) {
-        if (dictonary == null && dictPath != null && dictPath.trim().length() > 0) {
-            File file = new File(dictPath);
-            if (!file.exists()) {
-                throw new RuntimeException("找不到文件：" + dictPath);
-            }
-            this.dictonary = new LinkedHashMap<>();
-
+    public String replace(String str, String...divisions) {
+        if (dictionary == null && dictPath != null && dictPath.trim().length() > 0) {
+            loadDictionary(divisions);
         }
-        return null;
+        if (dictionary != null && !dictionary.isEmpty()) {
+            int i = 0;
+            for (String key : dictionary.keySet()) {
+                if (key.startsWith("regex:")) {
+                    str = str.replaceAll(key.substring(6), "#{" + (++i) + "}");
+                } else {
+                    str = str.replaceAll(key, "#{" + (++i) + "}");
+                }
+            }
+            i = 0;
+            for (String key : dictionary.keySet()) {
+                str = str.replace("#{" + (++i) + "}", dictionary.get(key));
+            }
+        }
+        return str;
+    }
+
+    protected void loadDictionary(String[] divisions) {
+        File file = new File(dictPath);
+        if (!file.exists()) {
+            throw new RuntimeException("找不到文件：" + dictPath);
+        }
+        Set<String> keySet = new LinkedHashSet<>();
+        Map<String,String> dict = new LinkedHashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] split = line.split("-");
+                if (split.length == 2) {
+                    keySet.add(split[0]);
+                    if (divisions.length > 0) {
+                        dict.put(split[0], divisions[0] + split[1]);
+                    } else {
+                        dict.put(split[0], split[1]);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<String> keys = keySet.stream().sorted((l, r) -> Integer.compare(r.length(), l.length())).collect(Collectors.toList());
+        this.dictionary = new LinkedHashMap<>();
+        for (String key : keys) {
+            this.dictionary.put(key, dict.get(key));
+        }
     }
 }

@@ -30,6 +30,7 @@ public class ProjectConfigFactory {
         config.setColumnDivision(properties.getProperty("code.smither.database.column.division",config.getColumnDivision()));
 
         config.setWordBreakDictPath(properties.getProperty("code.smither.word.break.dict.path", config.getWordBreakDictPath()));
+        config.setWordReplaceDictPath(properties.getProperty("code.smither.word.replace.dict.path", config.getWordReplaceDictPath()));
         return config;
     }
 }

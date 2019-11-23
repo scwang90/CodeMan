@@ -7,6 +7,7 @@ import com.code.smither.project.base.model.TableColumn;
 import javax.annotation.Nullable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 表源
@@ -24,5 +25,5 @@ public interface TableSource {
 
     String queryColumnRemark(MetaDataColumn columnMate) throws Exception;
     String queryTableRemark(MetaDataTable tableMate) throws Exception;
-    List<String> queryPrimaryKeys(MetaDataTable tableMate) throws Exception;
+    Set<String> queryPrimaryKeys(MetaDataTable tableMate) throws Exception;
 }

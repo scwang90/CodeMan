@@ -22,8 +22,8 @@ public class HtConfigFactory {
 		config.setHtmlTablePath(properties.getProperty("code.smither.html.table.path",config.getHtmlTablePath()));
 		config.setHtmlTableCharset(properties.getProperty("code.smither.html.table.charset",config.getHtmlTableCharset()));
 
-		config.setJdbcDriver(properties.getProperty("code.smither.jdbc.driver",config.getJdbcDriver()));
 		config.setJdbcUrl(properties.getProperty("code.smither.jdbc.url",config.getJdbcUrl()));
+		config.setJdbcDriver(properties.getProperty("code.smither.jdbc.driver",config.getJdbcDriver()));
 		config.setJdbcUsername(properties.getProperty("code.smither.jdbc.username",config.getJdbcUsername()));
 		config.setJdbcPassword(properties.getProperty("code.smither.jdbc.password",config.getJdbcPassword()));
 

@@ -35,7 +35,8 @@ public class StringUtil {
 			String[] divs = origin.split(division);
 			StringBuilder originBuilder = new StringBuilder();
 			for (String div : divs) {
-				originBuilder.append(upperFirst(div.toLowerCase()));
+				String lower = div.matches("^[A-Z]+$") ? div.toLowerCase() : div;
+				originBuilder.append(upperFirst(lower));
 			}
 			origin = originBuilder.toString();
 		}

@@ -8,9 +8,7 @@ import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.database.api.DbFactory;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -85,8 +83,8 @@ public class DbTableSource implements TableSource {
 	}
 
 	@Override
-	public List<String> queryPrimaryKeys(MetaDataTable table) throws SQLException {
-		List<String> keys = new LinkedList<>();
+	public Set<String> queryPrimaryKeys(MetaDataTable table) throws SQLException {
+		Set<String> keys = new LinkedHashSet<>();
 		ResultSet resultKey = queryPrimaryKeys(databaseMetaData, table.getName());
 		while (resultKey.next()) {
 			keys.add(resultKey.getString("COLUMN_NAME"));

@@ -14,10 +14,7 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * HTML Table 表源
@@ -177,8 +174,8 @@ public class HtmlTableSource implements TableSource {
     }
 
     @Override
-    public List<String> queryPrimaryKeys(MetaDataTable tableMate) {
-        List<String> keys = new ArrayList<>();
+    public Set<String> queryPrimaryKeys(MetaDataTable tableMate) {
+        Set<String> keys = new LinkedHashSet<>();
         if (tableMate instanceof TableMetaData) {
             TableMetaData table = ((TableMetaData) tableMate);
             Elements columns = metaData.getTableColumns(table.element);

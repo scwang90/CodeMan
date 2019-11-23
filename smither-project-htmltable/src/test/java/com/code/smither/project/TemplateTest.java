@@ -1,6 +1,7 @@
 package com.code.smither.project;
 
 import com.code.smither.project.base.ProjectEngine;
+import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.htmltable.HtmlTableConfig;
@@ -13,19 +14,39 @@ import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import java.sql.Types;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
  * Created by SCWANG on 2016/8/18.
  */
 public class TemplateTest {
-
     @Test
     public void HtmlTableTemplate() {
         try {
             HtmlTableConfig config = HtConfigFactory.loadConfig("config.properties");
             HtmlTableEngine engine = new HtmlTableEngine(config);
-            engine.launch();
+            engine.launch(new HtmlTableModelBuilder(config, new HtmlTableSource(config){
+                @Override
+                public Set<String> queryPrimaryKeys(MetaDataTable tableMate) {
+                    Set<String> keys = super.queryPrimaryKeys(tableMate);
+                    if (tableMate instanceof TableMetaData) {
+                        TableMetaData table = ((TableMetaData) tableMate);
+                        Elements columns = metaData.getTableColumns(table.element);
+                        for (Element column : columns) {
+                            Elements meta = metaData.getColumnMetaData(column);
+                            String name = metaData.getColumnName(meta);
+                            if (!keys.contains(name) && name.toLowerCase().endsWith("id")) {
+                                keys.add(name);
+                                System.err.println("发现可以ID数据");
+                            }
+                        }
+                    }
+                    return keys;
+                }
+            }));
         } catch (Exception e) {
             e.printStackTrace();
         }

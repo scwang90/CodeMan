@@ -32,7 +32,7 @@ public class ConfigClassConverter extends LangClassConverter {
         }
         if (config.getTableSuffix() != null) {
             if (tableName.endsWith(config.getTableSuffix())) {
-                tableName = tableName.substring(0, tableName.length() - config.getTableSuffix().length() - 1);
+                tableName = tableName.substring(0, tableName.length() - config.getTableSuffix().length());
             }
         }
         if (config.getTableDivision() != null) {
@@ -49,7 +49,7 @@ public class ConfigClassConverter extends LangClassConverter {
         }
         if (config.getColumnSuffix() != null) {
             if (columnName.endsWith(config.getColumnSuffix())) {
-                columnName = columnName.substring(0, columnName.length() - config.getColumnSuffix().length() - 1);
+                columnName = columnName.substring(0, columnName.length() - config.getColumnSuffix().length());
             }
         }
         if (config.getColumnDivision() != null) {
