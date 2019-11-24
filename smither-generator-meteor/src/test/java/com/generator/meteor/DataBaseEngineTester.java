@@ -40,5 +40,25 @@ public class DataBaseEngineTester {
             e.printStackTrace();
         }
     }
+    @Test
+    public void DataBaseMedicalWxMz() {
+        try {
+            DataBaseConfig config = DbConfigFactory.loadConfig("medical-wxmz.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void DataBaseMedicalWxEmr() {
+        try {
+            DataBaseConfig config = DbConfigFactory.loadConfig("medical-wxemr.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

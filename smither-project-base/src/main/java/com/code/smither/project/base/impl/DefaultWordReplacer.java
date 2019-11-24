@@ -23,15 +23,17 @@ public class DefaultWordReplacer implements WordReplacer {
         if (dictionary != null && !dictionary.isEmpty()) {
             int i = 0;
             for (String key : dictionary.keySet()) {
+                i++;
                 if (key.startsWith("regex:")) {
-                    str = str.replaceAll(key.substring(6), "#{" + (++i) + "}");
+                    str = str.replaceAll(key.substring(6), dictionary.get(key));
                 } else {
-                    str = str.replaceAll(key, "#{" + (++i) + "}");
+                    str = str.replaceAll(key, "#{" + i + "}");
                 }
             }
             i = 0;
             for (String key : dictionary.keySet()) {
-                str = str.replace("#{" + (++i) + "}", dictionary.get(key));
+                i++;
+                str = str.replace("#{" + i + "}", dictionary.get(key));
             }
         }
         return str;
@@ -60,10 +62,20 @@ public class DefaultWordReplacer implements WordReplacer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<String> keys = keySet.stream().sorted((l, r) -> Integer.compare(r.length(), l.length())).collect(Collectors.toList());
+        List<String> keys = keySet.stream().sorted((l, r) -> {
+
+            return Integer.compare(length(r), length(l));
+        }).collect(Collectors.toList());
         this.dictionary = new LinkedHashMap<>();
         for (String key : keys) {
             this.dictionary.put(key, dict.get(key));
         }
+    }
+
+    private int length(String key) {
+        if (key.startsWith("regex:")) {
+            return key.replaceAll("(?<!\\\\)\\\\","").length() - 6;
+        }
+        return key.length();
     }
 }

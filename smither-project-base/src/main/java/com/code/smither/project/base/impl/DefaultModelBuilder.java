@@ -182,10 +182,11 @@ public class DefaultModelBuilder implements ModelBuilder {
 //	KFID-KF_ID
 //	DICGRPID-DICT_GRP_ID
 	protected String convertIfNeed(String name) {
+		String origin = name;
 		name = ifNeedReplace(name);
 		name = ifNeedChineseSpell(name);
-		name = ifNeedWordBreak(name);
-		return name;
+		name = ifNeedWordBreak(name, origin);
+		return name;//regex:(\d+)\B-$1_
 	}
 
 	protected String ifNeedReplace(String name) {
@@ -199,8 +200,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 		return PinYinUtil.getInstance().getSelling(name, config.getTableDivision());
 	}
 
-	protected String ifNeedWordBreak(String name) {
-		if (wordBreaker != null && name.matches("^[A-Z]{5,}$")) {
+	protected String ifNeedWordBreak(String name, String origin) {
+		if (wordBreaker != null && origin.matches("^[A-Z0-9]{5,}$")) {
 			return wordBreaker.breaks(name, config.getTableDivision());
 		}
 		return name;

@@ -48,10 +48,11 @@ public class JavaLang extends AbstractProgramLang {
             case Types.ARRAY:
                 return Array.class.getSimpleName();
             case Types.BLOB:
-                return String.class.getSimpleName();
+                return byte[].class.getSimpleName();
 //                return Blob.class.getName();
             case Types.CLOB:
-                return String.class.getSimpleName();
+//                return String.class.getSimpleName();
+                return byte[].class.getSimpleName();
 //                return Clob.class.getName();
             case Types.TINYINT:
 //                return Byte.class.getSimpleName();

@@ -40,7 +40,7 @@ public class TemplateTest {
                             String name = metaData.getColumnName(meta);
                             if (!keys.contains(name) && name.toLowerCase().endsWith("id")) {
                                 keys.add(name);
-                                System.err.println("发现可以ID数据");
+                                System.err.println("发现可疑ID数据：" + name);
                             }
                         }
                     }
