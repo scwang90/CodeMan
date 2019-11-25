@@ -98,8 +98,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 */
 	@Override
 	@ResultMap("${table.name}")
+<#if (dbType!"")=="oracle">
+	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM ${table.nameSQL} t_ WHERE ${table.idColumn.name}=${r"#"}{id}) WHERE t_.rn_ <= 1")
+	${className} findById(@Param("id") Object id);
+<#else >
 	@Select("SELECT * FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
 	${className} findById(@Param("id") Object id);
+</#if>
 
 	/**
 	 * 获取一条数据
@@ -109,8 +114,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 */
 	@Override
 	@ResultMap("${table.name}")
+<#if (dbType!"")=="oracle">
+	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM ${table.nameSQL} t_ ${r"${where}"} ${r"${order}"}) WHERE t_.rn_ <= 1")
+	${className} findOne(@Param("order") String order, @Param("where") String where);
+<#else >
 	@Select("SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"} LIMIT 1")
 	${className} findOne(@Param("order") String order, @Param("where") String where);
+</#if>
 
 	/**
 	 * 根据属性查询
@@ -121,8 +131,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 */
 	@Override
 	@ResultMap("${table.name}")
+<#if (dbType!"")=="oracle">
+	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM ${table.nameSQL} t_ WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"}) WHERE t_.rn_ <= 1")
+	${className} findOneByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
+<#else >
 	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"} LIMIT 1")
 	${className} findOneByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
+</#if>
 
 	/**
 	 * 获取全部数据
@@ -143,13 +158,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 */
 	@Override
 	@ResultMap("${table.name}")
-	<#if (dbType!"")=="oracle">
+<#if (dbType!"")=="oracle">
 	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM (SELECT * FROM ${table.nameSQL} ${r"${order}"}) t_ WHERE ROWNUM<=${r"${limit}"}) tt_ WHERE tt_.rn_>=${r"${start}"}")
 	List<${className}> findByPage(@Param("order") String order, @Param("limit") int limit, @Param("start") int start);
-	<#else >
+<#else >
 	@Select("SELECT * FROM ${table.nameSQL} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	List<${className}> findByPage(@Param("order") String order, @Param("limit") int limit, @Param("start") int start);
-	</#if>
+</#if>
 	/**
 	 * 选择性删除
 	 * @param where SQL条件语句
@@ -209,13 +224,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 */
 	@Override
 	@ResultMap("${table.name}")
-	<#if (dbType!"")=="oracle">
+<#if (dbType!"")=="oracle">
 	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM (SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"}) t_ WHERE ROWNUM<=${r"${limit}"}) tt_ WHERE tt_.rn_>=${r"${start}"}")
 	List<${className}> findWhereByPage(@Param("order") String order, @Param("where") String where, @Param("limit") int limit, @Param("start") int start);
-	<#else >
+<#else >
 	@Select("SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	List<${className}> findWhereByPage(@Param("order") String order, @Param("where") String where, @Param("limit") int limit, @Param("start") int start);
-	</#if>
+</#if>
 
 
 	/**

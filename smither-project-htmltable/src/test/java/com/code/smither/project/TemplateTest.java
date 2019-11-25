@@ -23,30 +23,58 @@ import java.util.Set;
  * Created by SCWANG on 2016/8/18.
  */
 public class TemplateTest {
-    @Test
-    public void HtmlTableTemplate() {
-        try {
-            HtmlTableConfig config = HtConfigFactory.loadConfig("config.properties");
-            HtmlTableEngine engine = new HtmlTableEngine(config);
-            engine.launch(new HtmlTableModelBuilder(config, new HtmlTableSource(config){
-                @Override
-                public Set<String> queryPrimaryKeys(MetaDataTable tableMate) {
-                    Set<String> keys = super.queryPrimaryKeys(tableMate);
-                    if (tableMate instanceof TableMetaData) {
-                        TableMetaData table = ((TableMetaData) tableMate);
-                        Elements columns = metaData.getTableColumns(table.element);
-                        for (Element column : columns) {
-                            Elements meta = metaData.getColumnMetaData(column);
-                            String name = metaData.getColumnName(meta);
-                            if (!keys.contains(name) && name.toLowerCase().endsWith("id")) {
-                                keys.add(name);
-                                System.err.println("发现可疑ID数据：" + name);
-                            }
-                        }
+
+    public class PrimaryKeySource extends HtmlTableSource {
+        public PrimaryKeySource(HtmlTableConfig config) {
+            super(config);
+        }
+        @Override
+        public Set<String> queryPrimaryKeys(MetaDataTable tableMate) {
+            Set<String> keys = super.queryPrimaryKeys(tableMate);
+            if (tableMate instanceof HtmlTableSource.TableMetaData) {
+                HtmlTableSource.TableMetaData table = ((HtmlTableSource.TableMetaData) tableMate);
+                Elements columns = metaData.getTableColumns(table.element);
+                for (Element column : columns) {
+                    Elements meta = metaData.getColumnMetaData(column);
+                    String name = metaData.getColumnName(meta);
+                    if (!keys.contains(name) && name.toLowerCase().endsWith("id")) {
+                        keys.add(name);
+                        System.err.println("发现可疑ID数据：" + name);
                     }
-                    return keys;
                 }
-            }));
+            }
+            return keys;
+        }
+    }
+
+    @Test
+    public void HtmlTableTemplateHis() {
+        try {
+            HtmlTableConfig config = HtConfigFactory.loadConfig("config-his.properties");
+            HtmlTableEngine engine = new HtmlTableEngine(config);
+            engine.launch(new HtmlTableModelBuilder(config, new PrimaryKeySource(config)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void HtmlTableTemplateEmr() {
+        try {
+            HtmlTableConfig config = HtConfigFactory.loadConfig("config-emr.properties");
+            HtmlTableEngine engine = new HtmlTableEngine(config);
+            engine.launch(new HtmlTableModelBuilder(config, new PrimaryKeySource(config)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void HtmlTableTemplateMz() {
+        try {
+            HtmlTableConfig config = HtConfigFactory.loadConfig("config-mz.properties");
+            HtmlTableEngine engine = new HtmlTableEngine(config);
+            engine.launch(new HtmlTableModelBuilder(config, new PrimaryKeySource(config)));
         } catch (Exception e) {
             e.printStackTrace();
         }

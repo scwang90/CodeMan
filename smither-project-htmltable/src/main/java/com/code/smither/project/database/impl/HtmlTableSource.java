@@ -279,6 +279,9 @@ public class HtmlTableSource implements TableSource {
         @Override
         public int getColumnTypeInt(Elements columnMetaData) {
             String type = getColumnType(columnMetaData);
+            if (type != null) {
+                type = type.replaceAll("\\(.*?\\)", "");
+            }
             if (type != null && DbTypeMap.containsKey(type)) {
                 return DbTypeMap.get(type);
             }

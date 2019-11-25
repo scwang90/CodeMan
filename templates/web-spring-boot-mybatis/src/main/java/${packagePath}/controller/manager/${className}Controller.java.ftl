@@ -5,7 +5,9 @@ import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
+<#if !table.idColumn.autoIncrement && table.idColumn.typeJdbc?contains('CHAR')>
 import ${packageName}.util.ID22;
+</#if>
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 import io.swagger.annotations.Api;
