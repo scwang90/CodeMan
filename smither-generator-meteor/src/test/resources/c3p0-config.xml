@@ -30,6 +30,12 @@
 		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
 		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
 	</named-config>
+	<named-config name="WuDiHISServer-WxLIS">
+		<property name="user">LIS</property>
+		<property name="password">wdlis</property>
+		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
+		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
+	</named-config>
 	<named-config name="CreditChinaServer">
 		<property name="user"></property>
 		<property name="password"></property>
