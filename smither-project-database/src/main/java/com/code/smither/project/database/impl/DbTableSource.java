@@ -145,6 +145,10 @@ public class DbTableSource implements TableSource {
 		column.setDefValue(resultSet.getString("COLUMN_DEF"));
 		column.setNullable(resultSet.getBoolean("NULLABLE"));
 		column.setRemark(resultSet.getString("REMARKS"));
+
+		if (column.getDefValue() != null) {
+			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));
+		}
 		return column;
 	}
 
