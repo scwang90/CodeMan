@@ -3,6 +3,7 @@ package com.code.smither.project.base.impl;
 
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.AbstractProgramLang;
+import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 
 /**
@@ -59,7 +60,7 @@ public class ConfigClassConverter extends LangClassConverter {
     }
 
     @Override
-    public String converterFieldType(int columnType) {
-        return lang.getBasicType(columnType);
+    public String converterFieldType(TableColumn column) {
+        return lang.getBasicType(column);
     }
 }

@@ -1,5 +1,6 @@
 package com.code.smither.project.base.constant;
 
+import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 
 import java.lang.reflect.Field;
@@ -31,10 +32,10 @@ public class JdbcLang extends AbstractProgramLang {
     }
 
     @Override
-    public String getType(int columnType) {
+    public String getType(TableColumn column) {
         try {
             for (Field field: getFields(Types.class)) {
-                if (Objects.equals(field.get(Types.class), columnType)) {
+                if (Objects.equals(field.get(Types.class), column.getTypeInt())) {
                     return field.getName();
                 }
             }
@@ -58,8 +59,8 @@ public class JdbcLang extends AbstractProgramLang {
     }
 
     @Override
-    public String getBasicType(int columnType) {
-        return getType(columnType);
+    public String getBasicType(TableColumn column) {
+        return getType(column);
     }
 
     @Override

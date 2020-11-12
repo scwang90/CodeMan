@@ -4,6 +4,7 @@ import com.code.smither.project.base.constant.AbstractProgramLang;
 import com.code.smither.project.base.constant.CSharpLang;
 import com.code.smither.project.base.constant.JavaLang;
 import com.code.smither.project.base.constant.KotlinLang;
+import com.code.smither.project.base.model.TableColumn;
 
 /**
  * 程序设计语言 接口
@@ -36,18 +37,18 @@ public interface ProgramLang {
 
     /**
      * 把 JDBC 数据库类型转成当前语言的数据类型
-     * @param columnType 数据库类型
+     * @param column 数据库列
      * @return 类型全类名
      */
-    String getType(int columnType);
+    String getType(TableColumn column);
 
     /**
      * 把 JDBC 数据库类型转成当前语言的数据类型
      * 尽量转成基本类型 如转成 int 而不是 Integer
-     * @param columnType 数据库类型
+     * @param column 数据库列
      * @return 基本类型 或者 类型全类名
      */
-    String getBasicType(int columnType);
+    String getBasicType(TableColumn column);
 
     /**
      * 把数据库表名转成类名

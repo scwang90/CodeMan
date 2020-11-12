@@ -150,7 +150,7 @@ public class DefaultModelBuilder implements ModelBuilder {
         if (id != null) {
             if (id.getTypeInt() == Types.DECIMAL || id.getTypeInt() == Types.NUMERIC || id.getTypeInt() == Types.DOUBLE) {
                 id.setTypeInt(Types.BIGINT);
-				id.setFieldType(this.classConverter.converterFieldType(id.getTypeInt()));
+				id.setFieldType(this.classConverter.converterFieldType(id));
             }
         }
 		table.setColumns(columns);
@@ -159,9 +159,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 	protected TableColumn columnCompute(TableColumn column, MetaDataColumn columnMate) throws Exception {
 		String name = this.convertIfNeed(column.getName());
-		column.setTypeJdbc(jdbcLang.getType(column.getTypeInt()));
+		column.setTypeJdbc(jdbcLang.getType(column));
 		column.setFieldName(this.classConverter.converterFieldName(name));
-		column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
+		column.setFieldType(this.classConverter.converterFieldType(column));
 		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 		column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 
@@ -222,7 +222,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setTypeInt(java.sql.Types.VARCHAR);
 
 		column.setFieldName(this.classConverter.converterFieldName(column.getName()));
-		column.setFieldType(this.classConverter.converterFieldType(column.getTypeInt()));
+		column.setFieldType(this.classConverter.converterFieldType(column));
 		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 		column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 		return column;

@@ -19,6 +19,7 @@ public class TableColumn implements MetaDataColumn {
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
+	private int decimalDigits;//小数位数
 
 	private String fieldName;// 字段
 	private String fieldNameUpper;// 首字母大写
@@ -216,5 +217,13 @@ public class TableColumn implements MetaDataColumn {
 
 	public void setPrimaryKey(boolean primaryKey) {
 		this.primaryKey = primaryKey;
+	}
+
+	public int getDecimalDigits() {
+		return decimalDigits;
+	}
+
+	public void setDecimalDigits(int decimalDigits) {
+		this.decimalDigits = decimalDigits;
 	}
 }

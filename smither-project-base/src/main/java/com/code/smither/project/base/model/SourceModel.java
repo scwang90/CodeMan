@@ -189,7 +189,7 @@ public class SourceModel implements LangRootModel {
                 if (table.getColumns() != null) {
                     for (TableColumn column : table.getColumns()) {
                         column.setFieldName(converter.converterFieldName(column.getName()));
-                        column.setFieldType(converter.converterFieldType(column.getTypeInt()));
+                        column.setFieldType(converter.converterFieldType(column));
                         column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
                         column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
                     }

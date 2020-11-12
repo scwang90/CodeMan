@@ -2,6 +2,7 @@ package com.code.smither.project.base.impl;
 
 import com.code.smither.project.base.api.ClassConverter;
 import com.code.smither.project.base.constant.AbstractProgramLang;
+import com.code.smither.project.base.model.TableColumn;
 
 /**
  * 类转换器
@@ -32,8 +33,8 @@ public abstract class LangClassConverter implements ClassConverter {
 		return fieldName;
 	}
 
-	public String converterFieldType(int columnType) {
-		return lang.getType(columnType);
+	@Override
+	public String converterFieldType(TableColumn column) {
+		return lang.getType(column);
 	}
-
 }

@@ -1,8 +1,10 @@
 package com.code.smither.project.base.constant;
 
+import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,76 +44,6 @@ public class JavaLang extends AbstractProgramLang {
         return extensions;
     }
 
-    @Override
-    public String getType(int columnType) {
-        switch (columnType) {
-            case Types.ARRAY:
-                return Array.class.getSimpleName();
-            case Types.BLOB:
-                return byte[].class.getSimpleName();
-//                return Blob.class.getName();
-            case Types.CLOB:
-//                return String.class.getSimpleName();
-                return byte[].class.getSimpleName();
-//                return Clob.class.getName();
-            case Types.TINYINT:
-//                return Byte.class.getSimpleName();
-            case Types.SMALLINT:
-                return Short.class.getSimpleName();
-            case Types.BIGINT:
-                return Long.class.getSimpleName();
-            case Types.FLOAT:
-            case Types.REAL:
-                return Float.class.getSimpleName();
-            case Types.DOUBLE:
-                return Double.class.getSimpleName();
-            case Types.DECIMAL:
-                return Double.class.getSimpleName();
-//                return BigDecimal.class.getName();
-            case Types.INTEGER:
-                return Integer.class.getSimpleName();
-            case Types.JAVA_OBJECT:
-                return Object.class.getSimpleName();
-            case Types.BIT:
-            case Types.BOOLEAN:
-                return Boolean.class.getSimpleName();
-            case Types.BINARY:
-            case Types.VARBINARY:
-            case Types.LONGVARBINARY:
-                return "byte[]";
-            case Types.CHAR:
-            case Types.NCHAR:
-            case Types.VARCHAR:
-            case Types.NVARCHAR:
-            case Types.LONGVARCHAR:
-            case Types.LONGNVARCHAR:
-                return String.class.getSimpleName();
-            case Types.NCLOB:
-                return String.class.getSimpleName();
-//                return NClob.class.getName();
-            case Types.NUMERIC:
-                return BigDecimal.class.getName();
-            case Types.OTHER:
-                return Object.class.getSimpleName();
-            case Types.ROWID:
-                return RowId.class.getName();
-            case Types.SQLXML:
-                return SQLXML.class.getName();
-            case Types.TIME:
-                return Time.class.getName();
-            case Types.DATE:
-            case Types.TIMESTAMP:
-                return java.util.Date.class.getName();
-            case Types.STRUCT:
-            case Types.REF:
-            case Types.DISTINCT:
-            case Types.NULL:
-            default:
-                break;
-        }
-        return "";
-    }
-
     protected static Map<String,String> baseTypeMap = new HashMap<String,String>() {
         {
             put("Boolean","boolean");
@@ -132,8 +64,29 @@ public class JavaLang extends AbstractProgramLang {
     } ;
 
     @Override
-    public String getBasicType(int columnType) {
-        String type = getType(columnType);
+    public String getType(TableColumn column) {
+        Class<?> clazz = super.getJavaType(column);
+        if (java.sql.Timestamp.class.equals(clazz)) {
+            clazz = java.util.Date.class;
+        } if (java.sql.Time.class.equals(clazz)) {
+            clazz = java.util.Date.class;
+        } if (java.sql.Clob.class.equals(clazz)) {
+            clazz = java.lang.String.class;
+        } if (java.sql.RowId.class.equals(clazz)) {
+            clazz = java.lang.String.class;
+        } if (java.sql.SQLXML.class.equals(clazz)) {
+            clazz = java.lang.String.class;
+//        } if (BigInteger.class.equals(clazz)) {
+//            clazz = java.lang.Long.class;
+//        } if (BigDecimal.class.equals(clazz)) {
+//            clazz = java.lang.Double.class;
+        }
+        return clazz.getName().replaceAll("java.lang.","");
+    }
+
+    @Override
+    public String getBasicType(TableColumn column) {
+        String type = getType(column);
         String base = baseTypeMap.get(type);
         if (base != null) {
             return base;

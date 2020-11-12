@@ -1,5 +1,6 @@
 package com.code.smither.project.base.constant;
 
+import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 
 import java.math.BigDecimal;
@@ -113,8 +114,8 @@ public class CSharpLang extends AbstractProgramLang {
     }
 
     @Override
-    public String getType(int columnType) {
-        switch (columnType) {
+    public String getType(TableColumn column) {
+        switch (column.getTypeInt()) {
             case Types.DISTINCT:
             case Types.REF:
             case Types.NULL:
@@ -200,8 +201,8 @@ public class CSharpLang extends AbstractProgramLang {
     } ;
 
     @Override
-    public String getBasicType(int columnType) {
-        String type = getType(columnType);
+    public String getBasicType(TableColumn column) {
+        String type = getType(column);
         String base = baseTypeMap.get(type);
         if (base != null) {
             return base;

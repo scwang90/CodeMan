@@ -1,5 +1,7 @@
 package com.code.smither.project.base.api;
 
+import com.code.smither.project.base.model.TableColumn;
+
 /**
  * 类转换器
  * 根据表名和列名转成类名和字段名
@@ -23,8 +25,8 @@ public interface ClassConverter {
 
     /**
      * 数据类型转成编程语言数据类型
-     * @param columnType 数据库数据类型
+     * @param column 数据库列
      * @return 编程语言数据类型
      */
-    String converterFieldType(int columnType);
+    String converterFieldType(TableColumn column);
 }
