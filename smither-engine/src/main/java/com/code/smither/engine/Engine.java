@@ -22,7 +22,6 @@ public class Engine implements TaskRunner {
     private Config config;
     private File templates;
     private File target;
-    private TaskTransfer transfer;
     private PrintStream print = System.out;
 
     public Engine(Config config) {

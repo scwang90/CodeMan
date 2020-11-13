@@ -12,7 +12,12 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
 /**
- * 自定义枚举识别注解
+ * 枚举识别注解
+ * 用于API的参数验证，如后台枚举 enum Sex{ man, woman },API 传递参数为 int {0,1}
+ * 一般后台需要验证 客户端传入的是否是 0、1，当然不写也可以，但是为了增强服务器API的健壮性都会写参数验证
+ * 自己写验证代码太麻烦，如果一个枚举之在很多API都要传送，每个API都要手动检查很麻烦，现在直接给参数加上注解
+ * ApiResult createUser(String name, @EnumValue(Sex.class) int Sex)
+ * Spring 将会自动根据 Sex 枚举值来判断 客户端传送参数是否有效，无效自动返回 400 错误
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

@@ -70,8 +70,8 @@ public class JavaLang extends AbstractProgramLang {
             clazz = java.util.Date.class;
         } if (java.sql.Time.class.equals(clazz)) {
             clazz = java.util.Date.class;
-        } if (java.sql.Clob.class.equals(clazz)) {
-            clazz = java.lang.String.class;
+        //} if (java.sql.Clob.class.equals(clazz)) {
+        //    clazz = java.lang.String.class;
         } if (java.sql.RowId.class.equals(clazz)) {
             clazz = java.lang.String.class;
         } if (java.sql.SQLXML.class.equals(clazz)) {

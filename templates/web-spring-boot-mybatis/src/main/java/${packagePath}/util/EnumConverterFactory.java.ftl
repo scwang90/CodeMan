@@ -9,6 +9,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+/**
+ * 枚举转换工厂
+ * 用于API的枚举参数转换，如后台枚举 enum Sex{ man, woman }, 客户端需要传入枚举值，
+ * 为了减少参数检查和类型转换我们可以直接把参数类型按如下写法
+ * ApiResult createUser(String name, Sex sex)
+ * 这个时候客户端可以直接传递 int {0,1} 或者 string {man, woman}
+ * Spring 将会自动转换为 Sex 类型的参数，我们直接赋值给 model 即可
+ * 如果客户端的类型无效，spring将自动返回 400 错误
+ * 要让工厂生效，需要添加配置代码如下：
+ * @Configuration
+ * public class ProjectApplication implements WebMvcConfigurer {
+ *     @Override
+ *     public void addFormatters(FormatterRegistry registry) {
+ *         registry.addConverterFactory(new EnumConverterFactory());
+ *     }
+ * }
+ * @author ${author}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
+ */
 public class EnumConverterFactory implements ConverterFactory<String, Enum> {
  
     private static final Map<Class, Converter> converterMap = new WeakHashMap<>();
