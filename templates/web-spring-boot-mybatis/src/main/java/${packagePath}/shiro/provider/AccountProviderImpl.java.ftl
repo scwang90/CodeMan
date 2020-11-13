@@ -1,8 +1,8 @@
 package ${packageName}.shiro.provider;
 
-import ${packageName}.mapper.common.AuthUserMapper;
-import ${packageName}.model.api.common.Account;
-import ${packageName}.his.model.db.User;
+//import ${packageName}.mapper.common.AuthUserMapper;
+//import ${packageName}.his.model.db.User;
+import ${packageName}.shiro.Account;
 import ${packageName}.shiro.provider.AccountProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
