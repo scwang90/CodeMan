@@ -13,8 +13,8 @@
 		<property name="minPoolSize">10</property>
 	</named-config>
 	<named-config name="WuDiHISServer-WXHIS">
-		<property name="user">WXHIS</property>
-		<property name="password">LINKER</property>
+		<property name="user">HIS</property>
+		<property name="password">wdlis</property>
 		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
 		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
 	</named-config>
