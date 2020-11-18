@@ -174,13 +174,6 @@ public class DefaultModelBuilder implements ModelBuilder {
 		return column;
 	}
 
-//	ASPID-ASP_ID
-//	SEQID-SEQ_ID
-//	DBID-DB_ID
-//	ORDID-ORD_ID
-//	YPTID-YPT_ID
-//	KFID-KF_ID
-//	DICGRPID-DICT_GRP_ID
 	protected String convertIfNeed(String name) {
 		String origin = name;
 		name = ifNeedReplace(name);

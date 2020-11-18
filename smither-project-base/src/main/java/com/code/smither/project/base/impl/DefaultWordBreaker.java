@@ -25,22 +25,6 @@ public class DefaultWordBreaker implements WordBreaker {
         if (dictionary == null && dictPath != null && dictPath.trim().length() > 0) {
             loadDictionary();
         }
-//        if (wordFilter == null && dictPath != null && dictPath.trim().length() > 0) {
-//            File file = new File(dictPath);
-//            if (!file.exists()) {
-//                throw new RuntimeException("找不到文件：" + dictPath);
-//            }
-//            wordFilter = new WordFilter(new File(dictPath));
-//        }
-//        if (wordFilter != null) {
-//            Set<String> keys = wordFilter.judge(str);
-//            if (!keys.isEmpty()) {
-//                for (String key : keys) {
-//                    str = str.replace(key, division + key + division);
-//                }
-//                str = str.replace(division + division, division);
-//            }
-//        }
         if (dictionary != null && !dictionary.isEmpty()) {
             int i = 0;
             for (String key : dictionary.keySet()) {

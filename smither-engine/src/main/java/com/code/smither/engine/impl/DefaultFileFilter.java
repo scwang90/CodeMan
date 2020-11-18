@@ -112,7 +112,6 @@ public class DefaultFileFilter implements FileFilter {
 
         @Override
         public boolean isNeedFilterPath(File path) {
-            System.out.println("include:"+path.getName());
             return !exclude.isNeedFilterPath(path);
         }
     }
