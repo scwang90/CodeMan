@@ -2,6 +2,7 @@ package com.code.smither.engine.impl;
 
 import com.code.smither.engine.api.FileFilter;
 import com.code.smither.engine.api.Task;
+import com.code.smither.engine.api.TaskBuilder;
 import com.code.smither.engine.api.TaskLoader;
 
 import java.io.File;
@@ -15,30 +16,36 @@ import java.util.List;
 public class DefaultTaskLoader implements TaskLoader {
 
     @Override
-    public List<Task> loadTask(File templates, File target, FileFilter filter) {
+    public List<Task> loadTask(File templates, File target, FileFilter filter, TaskBuilder builder) {
         List<Task> tasks = new ArrayList<>();
-        File src = templates;
-        if (src.isFile()) {
-            if (filter == null || !filter.isNeedFilterFile(src)) {
-                tasks.add(new DefaultTask(src, templates, target));
-            }
-            return tasks;
+        if (templates.isFile()) {
+            throw new RuntimeException("模板必须是目录！" + templates.getAbsolutePath());
+//            if (filter == null || !filter.isNeedFilterFile(templates)) {
+//                Task task = builder.build(templates, templates, target);
+//                if (task != null) {
+//                    tasks.add(task);
+//                }
+//            }
+//            return tasks;
         }
-        return loadTask(templates, target, filter, src, tasks);
+        return loadTask(templates, target, filter, templates, tasks, builder);
     }
 
 
-    protected List<Task> loadTask(File templates, File target, FileFilter filter, File path, List<Task> tasks) {
+    protected List<Task> loadTask(File templates, File target, FileFilter filter, File path, List<Task> tasks, TaskBuilder builder) {
         File[] files = path.listFiles();
         if (files != null && files.length > 0) {
             for (File file : files) {
                 if (file.isFile()) {
                     if (filter == null || !filter.isNeedFilterFile(file)) {
-                        tasks.add(new DefaultTask(file, templates, target));
+                        Task task = builder.build(file, templates, target);
+                        if (task != null) {
+                            tasks.add(task);
+                        }
                     }
                 } else if (file.isDirectory()) {
                     if (filter == null || !filter.isNeedFilterPath(file)) {
-                        loadTask(templates, target, filter, file, tasks);
+                        loadTask(templates, target, filter, file, tasks, builder);
                     }
                 }
             }

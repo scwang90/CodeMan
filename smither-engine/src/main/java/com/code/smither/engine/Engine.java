@@ -1,14 +1,16 @@
 package com.code.smither.engine;
 
 import com.code.smither.engine.api.*;
+import com.code.smither.engine.api.FileFilter;
+import com.code.smither.engine.impl.DefaultTask;
 import com.code.smither.engine.util.FileUtil;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.*;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.code.smither.engine.factory.FreemarkerFactory.getTemplate;
 
@@ -17,12 +19,16 @@ import static com.code.smither.engine.factory.FreemarkerFactory.getTemplate;
  * Created by SCWANG on 2016/8/18.
  */
 @SuppressWarnings("unused")
-public class Engine implements TaskRunner {
+public class Engine implements TaskRunner, TaskBuilder {
 
     private Config config;
     private File templates;
     private File target;
+    private RootModel rootModel;
     private PrintStream print = System.out;
+    private Map<String, ConditionTask> conditionTaskMap;
+
+    private static final Pattern condition = Pattern.compile("\\$if\\{([^=]+)=([^=]+)\\}");
 
     public Engine(Config config) {
         this.config = config.initEmptyFieldsWithDefaultValues();
@@ -41,13 +47,27 @@ public class Engine implements TaskRunner {
     public void launch(ModelBuilder modelBuilder, ProgressListener listener) throws Exception {
         checkWorkspace();
 
-        RootModel rootModel = config.getFieldFiller().fill(modelBuilder.build());
+        rootModel = config.getFieldFiller().fill(modelBuilder.build());
 
         if (rootModel.getModels().size() == 0) {
             System.err.println("构建模型数据为空");
         }
 
-        List<Task> tasks = config.getTaskLoader().loadTask(templates, target, config.getFileFilter());
+        conditionTaskMap = new LinkedHashMap<>();
+
+        FileFilter fileFilter = config.getFileFilter();
+        TaskLoader taskLoader = config.getTaskLoader();
+        List<Task> tasks = taskLoader.loadTask(templates, target, fileFilter, this);
+
+        if (!conditionTaskMap.isEmpty()) {
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.get(i);
+                if (!(task instanceof ConditionTask) && conditionTaskMap.containsKey(task.getTargetFile().getAbsolutePath())) {
+                    tasks.remove(i--);
+                    print.println("排除默认条件模板：" + task.getTemplateFile().getAbsolutePath());
+                }
+            }
+        }
 
         for (Task task : tasks) {
             run(task, rootModel, config);
@@ -147,4 +167,74 @@ public class Engine implements TaskRunner {
         }
         return file;
     }
+
+    /**
+     * 模版文件条件选择
+     * @param file 模版文件或者文件夹
+     * @return true 文件达到条件 false 文件不符合条件
+     */
+    private boolean conditionForTemplateFile(File file) {
+        Matcher matcher = condition.matcher(file.getName());
+        if (matcher.find()) {
+            String key = matcher.group(1);
+            String value = matcher.group(2);
+            try {
+                Template nameTemplate = getTemplate("${"+key+"}");
+                StringWriter writer = new StringWriter();
+                nameTemplate.process(rootModel, writer);
+                String modelValue = writer.getBuffer().toString();
+
+                return modelValue.equals(value);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Task build(File file, File templates, File target) {
+        Matcher matcher = condition.matcher(file.getName());
+        if (matcher.find()) {
+            String key = matcher.group(1);
+            String value = matcher.group(2);
+            try {
+                Template nameTemplate = getTemplate("${"+key+"}");
+                StringWriter writer = new StringWriter();
+                nameTemplate.process(rootModel, writer);
+                String modelValue = writer.getBuffer().toString();
+
+                if (modelValue.equals(value)) {
+                    File source = new File(file.getParent(), matcher.replaceAll(""));
+                    File targets = new File(source.getAbsolutePath().replace(templates.getAbsolutePath(), target.getAbsolutePath()));
+                    ConditionTask task = new ConditionTask(file, targets, key, value);
+
+                    String templateKey = task.getTargetFile().getAbsolutePath();
+                    if (!conditionTaskMap.containsKey(templateKey)) {
+                        conditionTaskMap.put(templateKey, task);
+                    } else {
+                        throw new Exception("模板条件碰撞：" + file.getAbsolutePath());
+                    }
+                    return task;
+                }
+                return null;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return new DefaultTask(file, templates, target);
+    }
+
+    private class ConditionTask extends DefaultTask {
+
+        public final String key;
+        public final String value;
+
+        public ConditionTask(File templates, File target, String key, String value) {
+            super(templates, target);
+            this.key = key;
+            this.value = value;
+        }
+    }
+
 }

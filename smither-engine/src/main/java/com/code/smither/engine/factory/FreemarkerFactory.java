@@ -42,7 +42,7 @@ public class FreemarkerFactory {
 	}
 
 	public static Template getTemplate(String template) throws IOException {
-		Configuration cfg = new Configuration();
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_25);
 		StringTemplateLoader stringLoader = new StringTemplateLoader();
 		stringLoader.putTemplate("template",template);
 		cfg.setTemplateLoader(stringLoader);

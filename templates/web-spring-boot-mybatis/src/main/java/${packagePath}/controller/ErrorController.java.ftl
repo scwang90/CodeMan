@@ -60,7 +60,7 @@ public class ErrorController extends BasicErrorController {
             status = HttpStatus.BAD_REQUEST;
         } else if (error instanceof ConstraintViolationException) {
             List<String> messages = new LinkedList<>();
-            for (ConstraintViolation constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
+            for (ConstraintViolation<?> constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
                 message = constraint.getMessageTemplate();
                 messages.add(constraint.getPropertyPath() + ":" + message);
             }
@@ -77,7 +77,7 @@ public class ErrorController extends BasicErrorController {
             status = HttpStatus.BAD_REQUEST;
         }
         try {
-            ApiResult result = new ApiResult<>(null, status.value(), message, errors);
+            ApiResult<?> result = new ApiResult<>(null, status.value(), message, errors);
             //noinspection unchecked
             Map<String, Object> map = mapper.readValue(mapper.writeValueAsString(result), Map.class);
             return new ResponseEntity<>(map, HttpStatus.OK);

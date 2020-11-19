@@ -2,6 +2,7 @@ package com.generator.poetry.drawable2svg;
 
 import com.code.smither.engine.EngineConfig;
 import com.code.smither.engine.api.*;
+import com.code.smither.engine.impl.DefaultTask;
 import com.generator.poetry.drawable2svg.model.Drawable;
 import com.generator.poetry.drawable2svg.model.Path;
 import com.generator.poetry.drawable2svg.model.Root;
@@ -39,11 +40,12 @@ public class DrawableBuilder implements ModelBuilder {
             public boolean isNeedFilterFile(File file) {
                 return !file.getName().endsWith(".xml");
             }
+
             @Override
             public boolean isNeedFilterPath(File path) {
                 return false;
             }
-        });
+        }, DefaultTask::new);
         Root root = new Root();
         for (Task task : tasks) {
             try (InputStream input = new FileInputStream(task.getTemplateFile())) {

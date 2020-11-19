@@ -14,5 +14,5 @@ public interface TaskLoader {
      * @param target 目标目录
      * @param filter 文件过滤器
      */
-    List<Task> loadTask(File templates, File target, FileFilter filter);
+    List<Task> loadTask(File templates, File target, FileFilter filter, TaskBuilder builder);
 }

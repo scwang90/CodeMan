@@ -8,11 +8,12 @@ public class FileUtil {
 	private static String[] FILE_EXTENSIONS_TEXT = new String[]{
 			".ftl", ".txt",
 			".ini", ".iml", ".properties", ".gradle", ".cfg", ".gitignore",
-			".html", ".jsp", ".asp", ".js", ".css",
+			".html", ".jsp", ".asp", ".js", ".css", ".scss", ".sass",
 			".xaml",
 			".bat", ".sh",
 			".xml", ".json",
-			".java", ".cs", ".groovy", ".kt", ".kts", ".c", ".cpp", ".h",
+			".java", ".cs", ".groovy", ".kt", ".kts", ".c", ".cpp", ".h", ".m",
+			".vue", ".ts", ".jsx"
 	};
 
 	private static String[] FILE_EXTENSIONS_BIN = new String[]{

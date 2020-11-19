@@ -13,6 +13,11 @@ public class DefaultTask implements Task {
     private final File templates;
     private final File target;
 
+    public DefaultTask(File templates, File target) {
+        this.templates = checkPath(templates);
+        this.target = checkPath(target);
+    }
+
     public DefaultTask(File file, File templates, File target) {
         this.templates = checkPath(file);
         this.target = checkPath(new File(file.getAbsolutePath().replace(templates.getAbsolutePath(), target.getAbsolutePath())));
@@ -22,6 +27,9 @@ public class DefaultTask implements Task {
         String path = file.getAbsolutePath();
         while (path.contains("\\..\\")) {
             path = path.replaceAll("[^\\\\|^.]+\\\\\\.\\.\\\\", "");
+        }
+        while (path.contains("/../")) {
+            path = path.replaceAll("[^/|^.]+/\\.\\./", "");
         }
         return new File(path);
     }
