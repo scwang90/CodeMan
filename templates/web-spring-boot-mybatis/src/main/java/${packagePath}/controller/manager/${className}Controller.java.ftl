@@ -33,7 +33,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @RestController
-@Api(value = "${table.urlPathName}", description = "${table.remark}API")
+@Api(targs = "${table.remark}")
 @RequestMapping("/api/v1/${table.urlPathName}")
 public class ${className}Controller {
 

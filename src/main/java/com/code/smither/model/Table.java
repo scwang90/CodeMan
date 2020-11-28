@@ -15,6 +15,7 @@ public class Table implements IModel {
     private String name;// 原表名称
     private String nameSQL;// SQL语句中使用的名称
     private String remark;// 字段注释
+    private String description;//详细描述 (分析得到)
 
     private String urlPathName;// 对应的 url 路劲名称
 
@@ -57,6 +58,14 @@ public class Table implements IModel {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getClassName() {

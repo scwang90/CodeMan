@@ -13,9 +13,10 @@ public class TableColumn implements MetaDataColumn {
 	private String name;// 原名称
 	private String nameSQL;// SQL语句中使用的名称
 	private String type;// 字段类型名称（数据库返回的值）
-	private String typeJdbc;// 字段类型名称（JDBC 枚举，所有数据库一致性）
+	private String typeJdbc;// 字段类型名称（JDBC 枚举，所有数据库一致性，java.sql.Types 枚举所有的类型）
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
+	private String description;//详细描述 (分析得到)
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
@@ -32,6 +33,7 @@ public class TableColumn implements MetaDataColumn {
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增
 	private boolean primaryKey;//是否是 PrimaryKey
+	private boolean stringType;//是否是 string类型
 
 	public String getName() {
 		return name;
@@ -91,6 +93,10 @@ public class TableColumn implements MetaDataColumn {
 		return defValue;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
@@ -103,6 +109,10 @@ public class TableColumn implements MetaDataColumn {
 			defValue = "";
 		}
 		this.defValue = defValue;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int getLength() {
@@ -225,5 +235,13 @@ public class TableColumn implements MetaDataColumn {
 
 	public void setDecimalDigits(int decimalDigits) {
 		this.decimalDigits = decimalDigits;
+	}
+
+	public boolean isStringType() {
+		return stringType;
+	}
+
+	public void setStringType(boolean stringType) {
+		this.stringType = stringType;
 	}
 }

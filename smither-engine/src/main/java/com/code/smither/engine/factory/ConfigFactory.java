@@ -5,19 +5,25 @@ import com.code.smither.engine.EngineConfig;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConfigFactory {
 
+    private static final Logger logger = Logger.getLogger(ConfigFactory.class.getName());
 
-    public static Properties loadProperties(String path) throws IOException {
-        InputStream stream = ClassLoader.getSystemResourceAsStream(path);
-        if (stream == null) {
-            throw new RuntimeException("找不到配置文件：" + path);
+    public static Properties loadProperties(String path) {
+        try (InputStream stream = ClassLoader.getSystemResourceAsStream(path)) {
+            if (stream == null) {
+                throw new RuntimeException("找不到配置文件：" + path);
+            }
+            Properties property = new Properties();
+            property.load(stream);
+            logger.log(Level.CONFIG, "加载配置文件：{0}", path);
+            return property;
+        } catch (IOException e) {
+            throw new RuntimeException("读取配置文件失败");
         }
-        Properties property = new Properties();
-        property.load(stream);
-        stream.close();
-        return property;
     }
 
     public static <T extends EngineConfig> T loadConfig(Properties properties, T config) {

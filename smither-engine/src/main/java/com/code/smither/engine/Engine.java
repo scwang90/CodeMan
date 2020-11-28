@@ -1,11 +1,14 @@
 package com.code.smither.engine;
 
-import com.code.smither.engine.api.*;
 import com.code.smither.engine.api.FileFilter;
+import com.code.smither.engine.api.*;
 import com.code.smither.engine.impl.DefaultTask;
 import com.code.smither.engine.util.FileUtil;
+import com.code.smither.engine.util.LoggerUtil;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
@@ -19,25 +22,27 @@ import static com.code.smither.engine.factory.FreemarkerFactory.getTemplate;
  * Created by SCWANG on 2016/8/18.
  */
 @SuppressWarnings("unused")
-public class Engine implements TaskRunner, TaskBuilder {
+public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
 
-    private Config config;
-    private File templates;
-    private File target;
-    private RootModel rootModel;
-    private PrintStream print = System.out;
-    private Map<String, ConditionTask> conditionTaskMap;
+    protected T config;
+    protected File target;
+    protected File templates;
+    protected RootModel rootModel;
+    protected Map<String, ConditionTask> conditionTaskMap;
 
-    private static final Pattern condition = Pattern.compile("\\$if\\{([^=]+)=([^=]+)\\}");
+    private static final Pattern condition = Pattern.compile("\\$if\\{([^=]+)=([^=]+)}");
 
-    public Engine(Config config) {
-        this.config = config.initEmptyFieldsWithDefaultValues();
-        this.target = new File(config.getTargetPath());
-        this.templates = new File(config.getTemplatePath());
+    private static final Logger logger = LoggerFactory.getLogger(Engine.class);
+
+    static {
+        LoggerUtil.loadLoggingConfig();
     }
 
-    public void setPrint(PrintStream print) {
-        this.print = print;
+    public Engine(T config) {
+        config.initEmptyFieldsWithDefaultValues();
+        this.config = config;
+        this.target = new File(config.getTargetPath());
+        this.templates = new File(config.getTemplatePath());
     }
 
     public void launch(ModelBuilder modelBuilder) throws Exception {
@@ -50,7 +55,7 @@ public class Engine implements TaskRunner, TaskBuilder {
         rootModel = config.getFieldFiller().fill(modelBuilder.build());
 
         if (rootModel.getModels().size() == 0) {
-            System.err.println("构建模型数据为空");
+            logger.warn("构建模型数据为空");
         }
 
         conditionTaskMap = new LinkedHashMap<>();
@@ -64,7 +69,7 @@ public class Engine implements TaskRunner, TaskBuilder {
                 Task task = tasks.get(i);
                 if (!(task instanceof ConditionTask) && conditionTaskMap.containsKey(task.getTargetFile().getAbsolutePath())) {
                     tasks.remove(i--);
-                    print.println("排除默认条件模板：" + task.getTemplateFile().getAbsolutePath());
+                    logger.info("排除默认条件模板：" + task.getTemplateFile().getAbsolutePath());
                 }
             }
         }
@@ -95,7 +100,7 @@ public class Engine implements TaskRunner, TaskBuilder {
         //定义生成目标文件集合（用于防止重复生产相同的文件）
         Set<String> set = new LinkedHashSet<>();
 
-        print.println(task.getTemplateFile());
+        logger.info(task.getTemplateFile().getAbsolutePath());
         if (root.getModels() != null && root.getModels().size() > 0) {
             for (Model model : root.getModels()) {
                 root.bindModel(model);
@@ -106,7 +111,7 @@ public class Engine implements TaskRunner, TaskBuilder {
                 processTemplate(task, root, set);
             }
         }
-        print.println();
+        logger.info("");
     }
 
     /**
@@ -135,9 +140,7 @@ public class Engine implements TaskRunner, TaskBuilder {
 
         //判断已经生成的目标文件集合中是否已经含有即将生成的文件
         if (!set.contains(path)) {
-
-            print.println("  =>>" + path);
-
+            logger.info("  =>> : " + path);
             File file = new File(path);
             if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || !config.isTemplateFtlOnly())) {
                 Template template = getTemplate(task.getTemplateFile());
@@ -225,7 +228,7 @@ public class Engine implements TaskRunner, TaskBuilder {
         return new DefaultTask(file, templates, target);
     }
 
-    private class ConditionTask extends DefaultTask {
+    private static class ConditionTask extends DefaultTask {
 
         public final String key;
         public final String value;

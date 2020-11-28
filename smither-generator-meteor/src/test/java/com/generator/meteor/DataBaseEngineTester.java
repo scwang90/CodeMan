@@ -63,8 +63,7 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseMedicalWxLis() {
         try {
-            DataBaseConfig config = DbConfigFactory.loadConfig("medical-wxlis.properties");
-            DataBaseEngine engine = new DataBaseEngine(config);
+            DataBaseEngine engine = new DataBaseEngine("medical-wxlis.properties");
             engine.launch();
         } catch (Exception e) {
             e.printStackTrace();

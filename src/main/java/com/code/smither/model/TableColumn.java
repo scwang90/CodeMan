@@ -15,9 +15,11 @@ public class TableColumn {
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
 	private String typeJdbc;// MyBatis XML 字段类型名称
+	private String description;//详细描述 (分析得到)
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
+	private int decimalDigits;//小数位数
 
 	private String fieldName;// 字段
 	private String fieldNameUpper;// 首字母大写
@@ -30,6 +32,7 @@ public class TableColumn {
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增
 	private boolean primaryKey;//是否是 PrimaryKey
+	private boolean stringType;//是否是string类型
 
 	public String getName() {
 		return name;
@@ -78,6 +81,10 @@ public class TableColumn {
 		return defValue;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
@@ -90,6 +97,10 @@ public class TableColumn {
 			defValue = "";
 		}
 		this.defValue = defValue;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int getLength() {
@@ -213,5 +224,21 @@ public class TableColumn {
 
 	public void setPrimaryKey(boolean primaryKey) {
 		this.primaryKey = primaryKey;
+	}
+
+	public boolean isStringType() {
+		return stringType;
+	}
+
+	public void setStringType(boolean stringType) {
+		this.stringType = stringType;
+	}
+
+	public int getDecimalDigits() {
+		return decimalDigits;
+	}
+
+	public void setDecimalDigits(int decimalDigits) {
+		this.decimalDigits = decimalDigits;
 	}
 }

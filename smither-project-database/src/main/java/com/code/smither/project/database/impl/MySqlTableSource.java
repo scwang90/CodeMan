@@ -55,18 +55,18 @@ public class MySqlTableSource extends DbTableSource implements Database {
     @Override
     public String queryTableRemark(MetaDataTable table) throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
-            ResultSet rs = statement.executeQuery("SHOW CREATE TABLE `" + table.getName() + "`");
-            if (rs.next()) {
-                String createDDL = rs.getString(2);
-                String comment = null;
-                int index = createDDL.indexOf("COMMENT='");
-                if (index > 0) {
-                    comment = createDDL.substring(index + 9);
-                    comment = comment.substring(0, comment.length() - 1);
+            try (ResultSet rs = statement.executeQuery("SHOW CREATE TABLE `" + table.getName() + "`")) {
+                if (rs.next()) {
+                    String createDDL = rs.getString(2);
+                    String comment = null;
+                    int index = createDDL.indexOf("COMMENT='");
+                    if (index > 0) {
+                        comment = createDDL.substring(index + 9);
+                        comment = comment.substring(0, comment.length() - 1);
+                    }
+                    return comment;
                 }
-                return comment;
             }
-            rs.close();
         }
         return null;
     }

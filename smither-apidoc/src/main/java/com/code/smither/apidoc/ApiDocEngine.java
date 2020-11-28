@@ -7,13 +7,10 @@ import com.code.smither.engine.Engine;
  * APi文档生成引擎
  * Created by SCWANG on 2016/8/19.
  */
-public class ApiDocEngine extends Engine {
-
-    private final XmlApiDocConfig config;
+public class ApiDocEngine extends Engine<XmlApiDocConfig> {
 
     public ApiDocEngine(XmlApiDocConfig config) {
         super(config);
-        this.config = config;
     }
 
     public void launch() throws Exception {

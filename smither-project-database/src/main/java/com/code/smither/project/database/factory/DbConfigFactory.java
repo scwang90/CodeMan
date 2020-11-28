@@ -14,14 +14,16 @@ import java.util.Properties;
  */
 public class DbConfigFactory {
 
-	public static DataBaseConfig loadConfig(String path) throws IOException {
+	public static DataBaseConfig loadConfig(String path) {
 		DataBaseConfig config = new DataBaseConfig();
 		Properties properties = ConfigFactory.loadProperties(path);
-		ProjectConfigFactory.loadConfig(properties, config);
-
-		config.setDbConfigName(properties.getProperty("code.smither.database.config.name",config.getDbConfigName()));
-
+		loadConfig(properties, config);
 		return config;
+	}
+
+	public static void loadConfig(Properties properties, DataBaseConfig config) {
+		ProjectConfigFactory.loadConfig(properties, config);
+		config.setDbConfigName(properties.getProperty("code.smither.database.config.name", config.getDbConfigName()));
 	}
 
 }

@@ -16,35 +16,30 @@
 		<module>smither-generator-meteor</module>
 	</modules>
 
+	<properties>
+		<poi.version>3.9</poi.version>
+		<junit.version>4.11</junit.version>
+		<mysql.version>6.0.6</mysql.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
+		<jsoup.version>1.9.2</jsoup.version>
+		<slf4j.version>1.7.29</slf4j.version>
+		<sqlite.version>3.20.1</sqlite.version>
+		<jackson.version>2.4.1</jackson.version>
+		<oracle.version>19.3.0.0</oracle.version>
+		<findbugs.version>3.0.2</findbugs.version>
+		<sqlserver.version>4.0.2206.100</sqlserver.version>
+		<freemarker.version>2.3.25-incubating</freemarker.version>
+	</properties>
+
 	<dependencies>
-
-		<!--<dependency>-->
-			<!--<groupId>com.code.smither</groupId>-->
-			<!--<artifactId>smither-project-database</artifactId>-->
-			<!--<version>0.0.1-SNAPSHOT</version>-->
-		<!--</dependency>-->
-
-		<!-- 测试 -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- jackson -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-
-		<!-- freemarker -->
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.7.25</version>
 		</dependency>
 	</dependencies>
 
@@ -85,115 +80,92 @@
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>6.0.6</version>
+				<version>${mysql.version}</version>
 			</dependency>
-
-			<!-- Oracle -->
-			<!-- <dependency>-->
-			<!--     <groupId>oracle</groupId>-->
-			<!--     <artifactId>ojdbc6</artifactId>-->
-			<!--     <version>11.2.0.3</version>-->
-			<!--     <scope>system</scope>-->
-			<!--     <systemPath>${basedir}/libs/ojdbc6-11.2.0.3.jar</systemPath>-->
-			<!-- </dependency>-->
 
 			<dependency>
 				<groupId>com.oracle.ojdbc</groupId>
 				<artifactId>ojdbc8</artifactId>
-				<version>19.3.0.0</version>
+				<version>${oracle.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.oracle.ojdbc</groupId>
 				<artifactId>orai18n</artifactId>
-				<version>19.3.0.0</version>
+				<version>${oracle.version}</version>
 				<scope>runtime</scope>
 			</dependency>
-
 
 			<!-- sqlserver -->
 			<dependency>
 				<groupId>com.hynnet</groupId>
 				<artifactId>sqljdbc4-chs</artifactId>
-				<version>4.0.2206.100</version>
+				<version>${sqlserver.version}</version>
 			</dependency>
 
 			<!-- sqlite-jdbc -->
 			<dependency>
 				<groupId>org.xerial</groupId>
 				<artifactId>sqlite-jdbc</artifactId>
-				<version>3.20.1</version>
+				<version>${sqlite.version}</version>
 			</dependency>
-			<!--
-            <dependency>
-               <groupId>com.microsoft.sqlserver</groupId>
-               <artifactId>sqljdbc4</artifactId>
-               <version>4.0</version>
-           </dependency>
-           -->
-
-			<!-- sqlserver JDBC3.0 开源库 -->
-			<!--
-            <dependency>
-                <groupId>net.sourceforge.jtds</groupId>
-                <artifactId>jtds</artifactId>
-                <version>1.2.4</version>
-            </dependency>
-            -->
 
 			<!-- c3p0连接池 -->
 			<dependency>
 				<groupId>c3p0</groupId>
 				<artifactId>c3p0</artifactId>
-				<version>0.9.1.2</version>
+				<version>${c3p0.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
-				<version>2.3.25-incubating</version>
+				<version>${freemarker.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.4.1</version>
+				<version>${jackson.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.json</groupId>
-				<artifactId>json</artifactId>
-				<version>20090211</version>
-			</dependency>
-
+			<!-- JSOUP-->
 			<dependency>
 				<groupId>org.jsoup</groupId>
 				<artifactId>jsoup</artifactId>
-				<version>1.9.2</version>
+				<version>${jsoup.version}</version>
 			</dependency>
 
 			<!--Excel-->
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
-				<version>3.9</version>
+				<version>${poi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>
-				<version>3.9</version>
+				<version>${poi.version}</version>
 			</dependency>
 
+			<!-- FindBug (@Nullable,@NoNull) -->
 			<dependency>
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>jsr305</artifactId>
-				<version>3.0.2</version>
+				<version>${findbugs.version}</version>
 			</dependency>
 
 			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+
+			<!-- Junit -->
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.11</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>

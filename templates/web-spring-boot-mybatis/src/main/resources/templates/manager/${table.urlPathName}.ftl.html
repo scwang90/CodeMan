@@ -329,10 +329,10 @@
         mounted: function() {
             public_vars.$body = $(this.$el);
             if(localStorage) {
-                var storage = localStorage['table-${table.urlPathName}'];
+                let storage = localStorage['table-${table.urlPathName}'];
                 if (storage) {
                     storage = JSON.parse(storage);
-                    for (var i = 0; i < this.columns.length; i++) {
+                    for (let i = 0; i < this.columns.length; i++) {
                         this.columns[i].show = storage[this.columns[i].field];
                     }
                     this.column['_all_'] = storage['_all_'];
@@ -406,17 +406,17 @@
                 if (this.errors.items.length > 0) {
                     return false;
                 }
-                var vue = this;
+                const vue = this;
                 show_loading_bar(70); // Fill progress bar to 70% (just a given value)
-                var ajax = new XMLHttpRequest();
+                const ajax = new XMLHttpRequest();
                 if(item['${table.idColumn.fieldName}']) {
                     ajax.open("PUT","/api/v1/${table.urlPathName}/" + item['${table.idColumn.fieldName}']);
                 } else {
                     ajax.open("POST","/api/v1/${table.urlPathName}");
                 }
                 // ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                var form_data = new FormData();
-                for(var key in item) {
+                const form_data = new FormData();
+                for(const key in item) {
                     form_data.append(key,item[key]);
                 }
                 JSON.stringify(item);

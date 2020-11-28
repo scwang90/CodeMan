@@ -13,6 +13,7 @@ public interface Database {
         public static final String PATTERN_SQL_LITE = "jdbc:sqlite:.*";
         public static final String PATTERN_SQL_SERVER = "jdbc:sqlserver:.*";
         public final String remark;
+
         Type(String remark) {
             this.remark = remark;
         }

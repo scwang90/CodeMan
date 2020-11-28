@@ -11,12 +11,15 @@ import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.PinYinUtil;
 import com.code.smither.project.base.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
 public class DefaultModelBuilder implements ModelBuilder {
@@ -28,6 +31,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final WordReplacer wordReplacer;
 	protected final ClassConverter classConverter;
 	protected final JdbcLang jdbcLang = new JdbcLang();
+
+	private static final Logger logger = LoggerFactory.getLogger(DefaultModelBuilder.class);
+	private static final Pattern regex = Pattern.compile("^(.+?)(?::\\n|：\\n|:|：|\\n|\\(|（)((?:.|\\n)+?)[)）]?$");
 
 	public DefaultModelBuilder(ProjectConfig config, TableSource tableSource) {
 		this.config = config;
@@ -58,18 +64,26 @@ public class DefaultModelBuilder implements ModelBuilder {
 		List<? extends MetaDataTable> listMetaData = tableSource.queryTables();
 		List<Table> tables = new ArrayList<>(listMetaData.size());
 		for (MetaDataTable metaData : listMetaData) {
-			System.out.println();
+			logger.info("");
 			if (tableFilter != null && tableFilter.isNeedFilterTable(metaData.getName())) {
-				System.out.println("跳过表【" + metaData.getName() + "】");
+				logger.info("跳过表【" + metaData.getName() + "】");
 				continue;
 			}
-			System.out.println("构建表【"+metaData.getName()+"】模型开始（" + tables.size() + "）");
+			logger.trace("构建表【"+metaData.getName()+"】模型开始（" + tables.size() + "）");
 			tables.add(tableCompute(tableSource.buildTable(metaData), metaData));
-			System.out.println("构建表【"+metaData.getName()+"】模型完成（" + tables.size() + "）");
+			logger.trace("构建表【"+metaData.getName()+"】模型完成（" + tables.size() + "）");
 		}
 		return tables;
 	}
 
+	/**
+	 * 完善 table 模型
+	 * 根据配置文件完善：类名、小写、大写、骆驼峰、列模型 等信息
+	 * @param table 根据数据库表信息初步构建的 table 模型
+	 * @param tableMate JDBC 查询出的 表元数据
+	 * @return 返回完整信息的 table 模型
+	 * @throws Exception 数据库读取异常
+	 */
 	protected Table tableCompute(Table table, MetaDataTable tableMate) throws Exception {
 		String name = this.convertIfNeed(table.getName());
 		table.setClassName(this.classConverter.converterClassName(name));
@@ -79,16 +93,29 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 		table.setUrlPathName(buildUrlPath(table));
 
-		if (table.getRemark() == null || table.getRemark().trim().length()==0) {
+		if (StringUtil.isNollOrBlank(table.getRemark())) {
 			table.setRemark(tableSource.queryTableRemark(tableMate));
 		}
-		if (table.getRemark() == null || table.getRemark().trim().length()==0) {
-			table.setRemark(tableMate.getName());
-		}
 
+		String remark = table.getRemark();
+		if (StringUtil.isNollOrBlank(remark)) {
+			table.setRemark(tableMate.getName());
+		} else {
+			Matcher matcher = regex.matcher(remark);
+			if (matcher.find()) {
+				table.setRemark(matcher.group(1));
+				table.setDescription(matcher.group(2));
+			}
+		}
+		//继续完善 数据表列名数据
 		return tableComputeColumn(table, tableMate);
 	}
 
+	/**
+	 * 根据表名和配置信息构建 API url 路径
+	 * @param table 表模型
+	 * @return url 路径
+	 */
     protected String buildUrlPath(Table table) {
         String division = this.config.getTableDivision();
         if (division == null || division.length() == 0) {
@@ -101,16 +128,24 @@ public class DefaultModelBuilder implements ModelBuilder {
         String className = table.getClassName();
         for (int i = 0, lc = 0; i < className.length(); i++) {
             char c = className.charAt(i);
-            int cc = c & 0b00100000;
+            int cc = c & 0b00100000;//计算是否小写
             if (cc == 0 && lc != cc) {
                 builder.append('-');
             }
-            builder.append((char)(c | 0b00100000));
+            builder.append((char)(c | 0b00100000));//转换成小写
             lc = cc;
         }
         return builder.toString();
     }
 
+	/**
+	 * 完善表模型的列列表
+	 * 根据 表模型 元数据 构建 列模型列表 并完善列模型
+	 * @param table 表模型
+	 * @param tableMate 表元数据
+	 * @return 表模型
+	 * @throws Exception 数据库读取异常
+	 */
     protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
 		Set<String> keys = tableSource.queryPrimaryKeys(tableMate);
 
@@ -128,7 +163,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 			}
 			column.setPrimaryKey(keys.contains(columnMate.getName()));
 			columns.add(columnCompute(column, columnMate));
-			System.out.println("构建列【" + table.getName() + "】【" + column.getName() + "】模型完成（" + columns.size() + "）");
+			logger.info("构建列【" + table.getName() + "】【" + column.getName() + "】模型完成（" + columns.size() + "）");
 		}
         if (table.getIdColumn() == null) {
             columns.stream().filter(c->!c.isNullable()&&c.getName().toLowerCase().endsWith("id")).findFirst().ifPresent(table::setIdColumn);
@@ -157,6 +192,14 @@ public class DefaultModelBuilder implements ModelBuilder {
 		return table;
 	}
 
+	/**
+	 * 完善列模型
+	 * 根据 初始列模型 和 列元数据 完善列模型
+	 * @param column 初始列模型
+	 * @param columnMate 列元数据
+	 * @return 返回 完整列模型
+	 * @throws Exception 数据库读取异常
+	 */
 	protected TableColumn columnCompute(TableColumn column, MetaDataColumn columnMate) throws Exception {
 		String name = this.convertIfNeed(column.getName());
 		column.setTypeJdbc(jdbcLang.getType(column));
@@ -165,15 +208,35 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 		column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
 
-		if (column.getRemark() == null || column.getRemark().trim().length() == 0) {
+		column.setStringType(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
+
+		if (column.getDefValue() != null) {
+			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));
+		}
+
+		if (StringUtil.isNollOrBlank(column.getRemark())) {
 			column.setRemark(tableSource.queryColumnRemark(columnMate));
 		}
-		if (column.getRemark() == null || column.getRemark().trim().length() == 0) {
+
+		String remark = column.getRemark();
+		if (StringUtil.isNollOrBlank(remark)) {
 			column.setRemark(columnMate.getName());
+		} else {
+			Matcher matcher = regex.matcher(remark);
+			if (matcher.find()) {
+				column.setRemark(matcher.group(1));
+				column.setDescription(matcher.group(2));
+			}
 		}
 		return column;
 	}
 
+	/**
+	 * 转换如果必要
+	 * 根据配置的信息 进行拼音转换、单词打散、词语替换
+	 * @param name 数据库名称
+	 * @return 替换后的名称
+	 */
 	protected String convertIfNeed(String name) {
 		String origin = name;
 		name = ifNeedReplace(name);
@@ -200,6 +263,11 @@ public class DefaultModelBuilder implements ModelBuilder {
 		return name;
 	}
 
+	/**
+	 * 构建默认的 主键列
+	 * @param columns 表模型列列表
+	 * @return 主键列
+	 */
 	protected TableColumn columnKeyDefault(List<TableColumn> columns) {
 		if (columns.size() > 0) {
 			return columns.get(0);

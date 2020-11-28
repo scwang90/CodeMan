@@ -43,4 +43,13 @@ public class StringUtil {
 		return origin;
 	}
 
+	public static boolean isNollOrBlank(String remark) {
+		if (remark == null) {
+			return true;
+		}
+		if (remark.length() == 0) {
+			return true;
+		}
+		return remark.trim().length() == 0;
+	}
 }

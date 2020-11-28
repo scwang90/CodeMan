@@ -133,9 +133,6 @@ public class DbTableSource implements TableSource {
 		Table table = new Table();
 		table.setName(tableResult.getString("TABLE_NAME"), getDatabase());
 		table.setRemark(tableResult.getString("REMARKS"));
-		if (table.getRemark() != null) {
-			table.setRemark(table.getRemark().replaceAll("\n","\\\\n"));
-		}
 		return table;
 	}
 
@@ -149,13 +146,6 @@ public class DbTableSource implements TableSource {
 		column.setNullable(resultSet.getBoolean("NULLABLE"));
 		column.setRemark(resultSet.getString("REMARKS"));
 		column.setDecimalDigits(resultSet.getInt("DECIMAL_DIGITS"));
-
-		if (column.getDefValue() != null) {
-			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));
-		}
-		if (column.getRemark() != null) {
-			column.setRemark(column.getRemark().replaceAll("\n","\\\\n"));
-		}
 		return column;
 	}
 
