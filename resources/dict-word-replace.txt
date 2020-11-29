@@ -333,6 +333,7 @@
 供货单位-Supplier
 客商类型-MerchantType
 医疗机构-Organ
+就诊状态-REGSTATUS
 家庭账户-FamilyAccount
 下家庭账户-FamilyAccount
 可-Can
@@ -361,7 +362,6 @@
 所属-
 对应-
 开户-
-就诊-
 情况-
 
 COMBINATE-COMBINE
@@ -521,6 +521,7 @@ DICTMZVIS-DICT_OUTPATIENT_VISIT
 CRBREPORTCARD-INFECTIOUS_DISEASE_REPORT
 ZHENLIAO-THERAPY
 TRADELOG-TRADE_LOG
+ZYCODE-ZYCODE
 
 regex:\bNUM\B-NUM_
 regex:\BNUM\b-NUM

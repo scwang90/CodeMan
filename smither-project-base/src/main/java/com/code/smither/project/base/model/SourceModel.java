@@ -20,6 +20,7 @@ import java.util.List;
 public class SourceModel implements LangRootModel {
 
     private Table table;
+    private Table loginTable;            //用户登录表
     private List<Table> tables;
     private DatabaseJdbc jdbc;
     private String className;
@@ -30,7 +31,9 @@ public class SourceModel implements LangRootModel {
     private String projectName;
     private String charset;
     private String dbType;
+    private String lang;                //程序设计语言
     private Date now = new Date();
+    private boolean hasLogin;           //是否有登录功能
 
     public SourceModel() {
     }
@@ -97,6 +100,14 @@ public class SourceModel implements LangRootModel {
         this.table = table;
     }
 
+    public Table getLoginTable() {
+        return loginTable;
+    }
+
+    public void setLoginTable(Table loginTable) {
+        this.loginTable = loginTable;
+    }
+
     public String getClassName() {
         return className;
     }
@@ -161,6 +172,22 @@ public class SourceModel implements LangRootModel {
 
     public void setJdbc(DatabaseJdbc jdbc) {
         this.jdbc = jdbc;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public boolean isHasLogin() {
+        return loginTable != null;
+    }
+
+    public void setHasLogin(boolean hasLogin) {
+        this.hasLogin = hasLogin;
     }
 
     //<editor-fold desc="接口实现">

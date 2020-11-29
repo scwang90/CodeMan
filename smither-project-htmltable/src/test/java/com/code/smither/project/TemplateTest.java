@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public class TemplateTest {
 
-    public class PrimaryKeySource extends HtmlTableSource {
+    public static class PrimaryKeySource extends HtmlTableSource {
         public PrimaryKeySource(HtmlTableConfig config) {
             super(config);
         }
@@ -89,7 +89,7 @@ public class TemplateTest {
             config.setTemplateLang("C#");
             config.setTargetProjectPackage("YX.TestCloud.Data");
             config.setTargetPath("../testcloud-model");
-            ProjectEngine engine = new ProjectEngine(config);
+            ProjectEngine<HtmlTableConfig> engine = new ProjectEngine<>(config);
 
             HtmlTableSource source = new HtmlTableSource(config) {
                 {

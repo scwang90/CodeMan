@@ -24,6 +24,7 @@ public class ProjectConfigFactory {
         config.setTablePrefix(properties.getProperty("code.smither.database.table.prefix",config.getTablePrefix()));
         config.setTableSuffix(properties.getProperty("code.smither.database.table.suffix",config.getTableSuffix()));
         config.setTableDivision(properties.getProperty("code.smither.database.table.division",config.getTableDivision()));
+        config.setTableLogin(properties.getProperty("code.smither.database.table.login",config.getTableLogin()));
 
         config.setColumnPrefix(properties.getProperty("code.smither.database.column.prefix",config.getColumnPrefix()));
         config.setColumnSuffix(properties.getProperty("code.smither.database.column.suffix",config.getColumnSuffix()));

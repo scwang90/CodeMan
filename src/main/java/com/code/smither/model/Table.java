@@ -19,8 +19,8 @@ public class Table implements IModel {
 
     private String urlPathName;// 对应的 url 路劲名称
 
-    private String className;// 原类名称
-    private String classNameCamel;// 骆驼峰类名
+    private String className;// 原类名称 (首字母大写)
+    private String classNameCamel;// 骆驼峰类名 （首字母小写）
     private String classNameUpper;// 类名全大写
     private String classNameLower;// 类名全小写
 

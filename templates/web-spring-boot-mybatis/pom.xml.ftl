@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.5.RELEASE</version>
+		<version>2.2.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -55,6 +55,11 @@
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.10</version>
         </dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.3.0</version>
+		</dependency>
 
 		<#if (dbType!"")=="mysql">
 		<!-- MySql -->
@@ -142,14 +147,64 @@
 			<version>1.3.2</version>
 		</dependency>
 
+		<!-- JWT -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+		<!--对象拷贝框架-->
+		<dependency>
+			<groupId>com.github.houbb</groupId>
+			<artifactId>bean-mapping-core</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
+		<#if lang=="kotlin">
+		<!--kotlin 语言-->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib-jdk8</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-reflect</artifactId>
+		</dependency>
+		</#if>
 	</dependencies>
 
 	<build>
+		<#if lang=="kotlin">
+		<sourceDirectory>${r'${project.basedir}'}/src/main/kotlin</sourceDirectory>
+		<testSourceDirectory>${r'${project.basedir}'}/src/test/kotlin</testSourceDirectory>
+		</#if>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<#if lang=="kotlin">
+			<plugin>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<configuration>
+					<args>
+						<arg>-Xjsr305=strict</arg>
+					</args>
+					<compilerPlugins>
+						<plugin>spring</plugin>
+					</compilerPlugins>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-allopen</artifactId>
+						<version>${r'${kotlin.version}'}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			</#if>
 		</plugins>
 	</build>
 

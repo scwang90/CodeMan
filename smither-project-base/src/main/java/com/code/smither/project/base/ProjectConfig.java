@@ -18,6 +18,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String tablePrefix = "";
     protected String tableSuffix = "";
     protected String tableDivision = "";
+    protected String tableLogin = "";           //登陆表
 
     protected String columnPrefix = "";
     protected String columnSuffix = "";
@@ -138,6 +139,14 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 
     public void setTableDivision(String tableDivision) {
         this.tableDivision = tableDivision;
+    }
+
+    public String getTableLogin() {
+        return tableLogin;
+    }
+
+    public void setTableLogin(String tableLogin) {
+        this.tableLogin = tableLogin;
     }
 
     public String getColumnPrefix() {

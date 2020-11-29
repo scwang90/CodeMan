@@ -33,7 +33,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final JdbcLang jdbcLang = new JdbcLang();
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultModelBuilder.class);
-	private static final Pattern regex = Pattern.compile("^(.+?)(?::\\n|：\\n|:|：|\\n|\\(|（)((?:.|\\n)+?)[)）]?$");
+	private static final Pattern regex = Pattern.compile("^(\\S{2,}?)(?::\\n|：\\n|:|：|,|，|\\n|\\(|（)((?:.|\\n)+?)[)）]?$");
 
 	public DefaultModelBuilder(ProjectConfig config, TableSource tableSource) {
 		this.config = config;
@@ -56,8 +56,74 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setPackageName(config.getTargetProjectPackage());
 		model.setProjectName(config.getTargetProjectName());
 		model.setJdbc(new DatabaseJdbc());
+		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
+		model.setLoginTable(findLoginTable(tables, config.getTableLogin()));
 		return model;
+	}
+
+	private static Table findLoginTable(List<Table> tables, String tableLogin) {
+		Table tableEqualsName = null;
+		Table tableEqualsClassName = null;
+		Table tableEqualsUser = null;
+		Table tableEqualsAdmin = null;
+		Table tableEqualsLogin = null;
+		Table tableEqualsAccount = null;
+		Table tableContainsUser = null;
+		Table tableContainsAdmin = null;
+		Table tableContainsLogin = null;
+		Table tableContainsAccount = null;
+
+		for (Table table : tables) {
+			if (tableEqualsName == null && StringUtil.equals(table.getName(), tableLogin)) {
+				tableEqualsName = table;
+			}
+			if (tableEqualsClassName == null && StringUtil.equals(table.getClassName(), tableLogin)) {
+				tableEqualsClassName = table;
+			}
+			if (tableEqualsUser == null && table.getClassNameUpper().equals("USER")) {
+				tableEqualsUser = table;
+			}
+			if (tableEqualsAdmin == null && table.getClassNameUpper().equals("ADMIN")) {
+				tableEqualsAdmin = table;
+			}
+			if (tableEqualsLogin == null && table.getClassNameUpper().equals("LOGIN")) {
+				tableEqualsLogin = table;
+			}
+			if (tableEqualsAccount == null && table.getClassNameUpper().equals("ACCOUNT")) {
+				tableEqualsAccount = table;
+			}
+			if (tableContainsUser == null && table.getClassNameUpper().contains("USER")) {
+				tableContainsUser = table;
+			}
+			if (tableContainsAdmin == null && table.getClassNameUpper().contains("ADMIN")) {
+				tableContainsAdmin = table;
+			}
+			if (tableContainsLogin == null && table.getClassNameUpper().contains("LOGIN")) {
+				tableContainsLogin = table;
+			}
+			if (tableContainsAccount == null && table.getClassNameUpper().contains("ACCOUNT")) {
+				tableContainsAccount = table;
+			}
+		}
+		Table[] loginTables = new Table[]{
+		    tableEqualsName,
+		    tableEqualsClassName,
+		    tableEqualsUser,
+		    tableEqualsAdmin,
+		    tableEqualsLogin,
+		    tableEqualsAccount,
+		    tableContainsUser,
+		    tableContainsAdmin,
+		    tableContainsLogin,
+		    tableContainsAccount,
+		};
+		for (Table table : loginTables) {
+			if (table != null) {
+				return table;
+			}
+		}
+		return null;
 	}
 
 	protected List<Table> buildTables() throws Exception {
@@ -105,6 +171,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 			if (matcher.find()) {
 				table.setRemark(matcher.group(1));
 				table.setDescription(matcher.group(2));
+			} else if (table.getName().matches("[^\\x00-\\xff]+")) {
+				table.setDescription(table.getRemark());
+				table.setRemark(table.getName());
 			}
 		}
 		//继续完善 数据表列名数据
@@ -226,6 +295,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 			if (matcher.find()) {
 				column.setRemark(matcher.group(1));
 				column.setDescription(matcher.group(2));
+			} else if (column.getName().matches("[^\\x00-\\xff]+")) {
+				column.setDescription(column.getRemark());
+				column.setRemark(column.getName());
 			}
 		}
 		return column;

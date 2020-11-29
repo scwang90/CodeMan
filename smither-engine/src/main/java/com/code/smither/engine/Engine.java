@@ -29,8 +29,9 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
     protected File templates;
     protected RootModel rootModel;
     protected Map<String, ConditionTask> conditionTaskMap;
+    protected Set<ConditionTask> overwriteConditionTask;
 
-    private static final Pattern condition = Pattern.compile("\\$if\\{([^=]+)=([^=]+)}");
+    private static final Pattern condition = Pattern.compile("\\$if\\{([^=]+)=([^}]+)}");
 
     private static final Logger logger = LoggerFactory.getLogger(Engine.class);
 
@@ -59,10 +60,21 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         }
 
         conditionTaskMap = new LinkedHashMap<>();
+        overwriteConditionTask = new LinkedHashSet<>();
 
         FileFilter fileFilter = config.getFileFilter();
         TaskLoader taskLoader = config.getTaskLoader();
         List<Task> tasks = taskLoader.loadTask(templates, target, fileFilter, this);
+
+        if (!overwriteConditionTask.isEmpty()) {
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.get(i);
+                if ((task instanceof ConditionTask) && overwriteConditionTask.contains(task)) {
+                    tasks.remove(i--);
+                    logger.info("排除默认条件模板：" + task.getTemplateFile().getAbsolutePath());
+                }
+            }
+        }
 
         if (!conditionTaskMap.isEmpty()) {
             for (int i = 0; i < tasks.size(); i++) {
@@ -197,47 +209,77 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
 
     @Override
     public Task build(File file, File templates, File target) {
-        Matcher matcher = condition.matcher(file.getName());
-        if (matcher.find()) {
+        Matcher matcher = condition.matcher(file.getPath());
+        Map<String, String> condition = new LinkedHashMap<>();
+        while (matcher.find()) {
             String key = matcher.group(1);
             String value = matcher.group(2);
             try {
-                Template nameTemplate = getTemplate("${"+key+"}");
+                Template nameTemplate = getTemplate("${"+key+(("true".equals(value) || "false".equals(value))?"?c}":"}"));
                 StringWriter writer = new StringWriter();
                 nameTemplate.process(rootModel, writer);
                 String modelValue = writer.getBuffer().toString();
-
                 if (modelValue.equals(value)) {
-                    File source = new File(file.getParent(), matcher.replaceAll(""));
-                    File targets = new File(source.getAbsolutePath().replace(templates.getAbsolutePath(), target.getAbsolutePath()));
-                    ConditionTask task = new ConditionTask(file, targets, key, value);
-
-                    String templateKey = task.getTargetFile().getAbsolutePath();
-                    if (!conditionTaskMap.containsKey(templateKey)) {
-                        conditionTaskMap.put(templateKey, task);
-                    } else {
-                        throw new Exception("模板条件碰撞：" + file.getAbsolutePath());
-                    }
-                    return task;
+                    condition.put(key, value);
+                } else {
+                    return null;
                 }
-                return null;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (!condition.isEmpty()) {
+            ConditionTask task = new ConditionTask(file, templates, target, condition);
+            String templateKey = task.getTargetFile().getAbsolutePath();
+            if (!conditionTaskMap.containsKey(templateKey)) {
+                conditionTaskMap.put(templateKey, task);
+            } else {
+                ConditionTask conditionTask = conditionTaskMap.get(templateKey);
+                if (conditionTask.condition.size() > condition.size()) {
+                    logger.info("排除默认条件模板：" + task.getTemplateFile().getAbsolutePath());
+                    return null;
+                } else if (conditionTask.condition.size() < condition.size()) {
+                    overwriteConditionTask.add(conditionTaskMap.put(templateKey, task));
+                } else {
+                    throw new RuntimeException("模板条件碰撞：" + file.getAbsolutePath());
+                }
+            }
+            return task;
         }
         return new DefaultTask(file, templates, target);
     }
 
     private static class ConditionTask extends DefaultTask {
 
-        public final String key;
-        public final String value;
+//        public final String key;
+//        public final String value;
+        public final File targetFile;
+        public final Map<String, String> condition;
 
-        public ConditionTask(File templates, File target, String key, String value) {
-            super(templates, target);
-            this.key = key;
-            this.value = value;
+        public ConditionTask(File file, File templates, File target, Map<String, String> condition) {
+            super(file, templates, target);
+            this.condition = condition;
+            this.targetFile = buildTargetFile();
         }
+
+        private File buildTargetFile() {
+            String path = super.getTargetFile().getAbsolutePath();
+            for (Map.Entry<String, String> entity : this.condition.entrySet()) {
+                path = path.replace("$if{" + entity.getKey() + "=" + entity.getValue() + "}", "");
+            }
+            return new File(path);
+        }
+
+        @Override
+        public File getTargetFile() {
+            return this.targetFile;
+        }
+
+//        public ConditionTask(File templates, File target, String key, String value) {
+//            super(templates, target);
+//            this.key = key;
+//            this.value = value;
+//        }
     }
 
 }
