@@ -139,14 +139,14 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @return null 或者 匹配条件的数据
 	 */
 	@Override
-	List<${className}> findWhere(@Param("where") String where, @Param("order") String order);
+	List<${className}> findListWhere(@Param("where") String where, @Param("order") String order);
 
 	/**
 	 * 批量查询（灵活构建意图）
 	 * @param intent 意图
 	 */
 	@Override
-	List<${className}> findIntent(SqlIntent intent);
+	List<${className}> findListIntent(SqlIntent intent);
 
 	/**
 	 * 批量查询（Where 拼接 Order 拼接，分页）
@@ -155,13 +155,13 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @return null 或者 匹配条件的数据
 	 */
 	@Override
-	List<${className}> findWhere(@Param("where") String where, @Param("order") String order, RowBounds rows);
+	List<${className}> findListWhere(@Param("where") String where, @Param("order") String order, RowBounds rows);
 
 	/**
 	 * 批量查询（灵活构建意图，分页）
 	 * @param intent 意图
 	 */
 	@Override
-	List<${className}> findIntent(SqlIntent intent, RowBounds rows);
+	List<${className}> findListIntent(SqlIntent intent, RowBounds rows);
 
 }

@@ -59,7 +59,7 @@ public class AuthController {
 //            admin.password = DigestUtils.md5DigestAsHex("admin".getBytes());
 //            mapper.insert(admin);
 //        }
-//        List<Admin> list = mapper.findWhereByPage("", "WHERE username='$username' AND password='$password'", 1, 0);
+//        List<Admin> list = mapper.findListWhereByPage("", "WHERE username='$username' AND password='$password'", 1, 0);
 
         List<String> list = new ArrayList<>();
         if ("admin".equals(username) && DigestUtils.md5DigestAsHex("admin".getBytes()).equals(password.toString())) {

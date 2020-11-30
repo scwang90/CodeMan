@@ -22,7 +22,7 @@ public class AuthService {
 
     private final Algorithm jwtAlgorithm;
 
-    @Value("${r"${token.time.expiry}"}")
+    @Value("${r"${token.time.expiry:1}"}")
     private double tokenExpiryTime = 1;
 
     public AuthService(Algorithm jwtAlgorithm) {

@@ -5,7 +5,8 @@
     <!--${table.idColumn.remark}-->
     <id column="${table.idColumn.nameSQL}" jdbcType="${table.idColumn.typeJdbc}" property="${table.idColumn.fieldName}" />
     <#list table.columns as column>
-    <#if table.idColumn.name != column.name>${column.remark}
+    <#if table.idColumn.name != column.name>
+    <!--${column.remark}-->
     <result column="${column.nameSQL}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
     </#if>
     </#list>
@@ -14,11 +15,11 @@
   <!-- 重用SQL Where AND OR -->
   <sql id="whereIntent">
     <where>
-      <foreach item="key" collection="andMap.keys" separator=" AND ">
-        ${r"$"}{key} = ${r"#"}{andMap[${r"$"}{key}]}
+      <foreach collection="andMap" index="key" item="value" separator=" AND ">
+        ${r"$"}{key} = ${r"#"}{value}
       </foreach>
-      <foreach item="key" collection="orMap.keys" open=" AND (" separator=" OR " close=")">
-        ${r"$"}{key} = ${r"#"}{orMap[${r"$"}{key}]}
+      <foreach collection="orMap" index="key" item="value" open=" AND (" separator=" OR " close=")">
+        ${r"$"}{key} = ${r"#"}{value}
       </foreach>
     </where>
   </sql>
@@ -39,29 +40,29 @@
 
   <!-- 插入新数据（非空插入，不支持批量插入）-->
   <insert id="insert" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
-    INSERT INTO ${table.name}
-    (<#list table.columns as column>${column.nameSQL}<#if column_has_next>,</#if></#list>)
-    VALUES
-    <foreach item="model" collection="models" separator=",">
-    (<#list table.columns as column>${r"#"}{${column.fieldName}}<#if column_has_next>,</#if></#list>)
-    </foreach>
+    INSERT INTO ${table.name} (
+    <#list table.columns as column>
+      <if test="${column.fieldName} != null">
+        ${column.nameSQL}<#if column_has_next>,</#if>
+      </if>
+    </#list>
+    ) VALUES (
+    <#list table.columns as column>
+      <if test="${column.fieldName} != null">
+        ${r"#"}{${column.fieldName}},
+      </if>
+    </#list>
+    )
   </insert>
 
   <!-- 插入新数据（全插入，支持批量插入）-->
   <insert id="insertFull" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
-    INSERT INTO ${table.name} (
-    <#list table.columns as column>
-    <if test="${column.fieldName} != null">
-      ${column.nameSQL}<#if column_has_next>,</#if>
-    </if>
-    </#list>
-    ) VALUES (
-    <#list table.columns as column>
-    <if test="${column.fieldName} != null">
-      ${r"#"}{${column.fieldName}},
-    </if>
-    </#list>
-    )
+    INSERT INTO ${table.name}
+    (<#list table.columns as column>${column.nameSQL}<#if column_has_next>,</#if></#list>)
+    VALUES
+    <foreach item="model" collection="models" separator=",">
+      (<#list table.columns as column>${r"#"}{${column.fieldName}}<#if column_has_next>,</#if></#list>)
+    </foreach>
   </insert>
 
   <!-- 更新一条数据（非空更新）-->
@@ -69,7 +70,9 @@
     UPDATE ${table.name}
     <set>
       <#list table.columns as column>
-      ${column.nameSQL}=${r"#"}{${column.fieldName}},
+        <if test="${column.fieldName} != null">
+          ${column.nameSQL}=${r"#"}{${column.fieldName}},
+        </if>
       </#list>
     </set>
     WHERE ${table.idColumn.nameSQL}=${r"#"}{${table.idColumn.fieldName}
@@ -80,9 +83,7 @@
     UPDATE ${table.name}
     <set>
       <#list table.columns as column>
-      <if test="${column.fieldName} != null">
         ${column.nameSQL}=${r"#"}{${column.fieldName}},
-      </if>
       </#list>
     </set>
     WHERE ${table.idColumn.nameSQL}=${r"#"}{${table.idColumn.fieldName}
@@ -92,8 +93,8 @@
   <update id="updateIntent">
     UPDATE ${table.name}
     <set>
-      <foreach item="key" collection="setMap.keys" separator=",">
-        ${r"$"}{key} = ${r"#"}{andMap[${r"$"}{key}]}
+      <foreach collection="setMap" index="key" item="value" separator=",">
+        ${r"$"}{key} = ${r"#"}{value}
       </foreach>
     </set>
     WHERE ${table.idColumn.nameSQL}=${r"#"}{id}
@@ -109,7 +110,7 @@
 
   <!-- 根据条件删除 -->
   <delete id="deleteWhere">
-    <if test="where ！= null and !"".equals(where)">
+    <if test="where ！= null and where != ''">
     DELETE FROM ${table.nameSQL} ${r"${where}"}
     </if>
   </delete>
@@ -150,7 +151,7 @@
   </select>
 
   <select id="findOneWhere" resultMap="${table.className}">
-    SELECT * FROM ${table.nameSQL} WHERE ${r"$"}{where} ${r"$"}{order}
+    SELECT * FROM ${table.nameSQL} ${r"$"}{where} ${r"$"}{order}
   </select>
 
   <select id="findOneIntent" resultMap="${table.className}">
@@ -162,11 +163,11 @@
     </include>
   </select>
 
-  <select id="findWhere" resultMap="${table.className}">
-    SELECT * FROM ${table.nameSQL} WHERE ${r"$"}{where} ${r"$"}{order}
+  <select id="findListWhere" resultMap="${table.className}">
+    SELECT * FROM ${table.nameSQL} ${r"$"}{where} ${r"$"}{order}
   </select>
 
-  <select id="findIntent" resultMap="${table.className}">
+  <select id="findListIntent" resultMap="${table.className}">
     SELECT * FROM ${table.nameSQL}
     <include refid="whereIntentOrder">
       <property name="orMap" value="${r"$"}{orMap}"/>

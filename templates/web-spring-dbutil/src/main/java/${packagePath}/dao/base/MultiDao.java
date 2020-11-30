@@ -28,11 +28,11 @@ public interface MultiDao<T> extends BaseDao<T>{
 	/**
 	 * 选择性查询
 	 */
-	public List<T> findWhere( String where) throws Exception;
+	public List<T> findListWhere( String where) throws Exception;
 	/**
 	 * 选择性分页查询
 	 */
-	public List<T> findWhereByPage(String where, int limit,int start) throws Exception;
+	public List<T> findListWhereByPage(String where, int limit,int start) throws Exception;
 	/**
 	 * 根据属性查询
 	 */

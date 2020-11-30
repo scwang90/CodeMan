@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ${projectName}ApplicationTests {
 
     @Autowired
-    private WebApplicationContext context;
+    protected WebApplicationContext context;
 
     protected MockMvc mockMvc;
 

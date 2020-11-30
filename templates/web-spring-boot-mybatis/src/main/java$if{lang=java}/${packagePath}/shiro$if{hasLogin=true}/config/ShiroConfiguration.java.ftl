@@ -35,9 +35,9 @@ public class ShiroConfiguration {
 
     public static final String SECRET_KEY = "?::4343fdf4fdf6cvf):";
 
-    @Value("${r"${token.time.refresh}"}")
+    @Value("${r"${token.time.refresh:5}"}")
     private int tokenRefreshTime = 5;
-    @Value("${r"${token.time.expiry}"}")
+    @Value("${r"${token.time.expiry:1}"}")
     private double tokenExpiryTime = 1;
 
     @Bean

@@ -90,7 +90,7 @@ interface TypedMapper<T> {
      * @param where SQL条件语句
      * @return 符合条件的列表数据
      */
-    fun findWhere(order: String, where: String): List<T>
+    fun findListWhere(order: String, where: String): List<T>
 
     /**
      * 选择性分页查询
@@ -99,7 +99,7 @@ interface TypedMapper<T> {
      * @param start 起始返回
      * @return 符合条件的列表数据
      */
-    fun findWhereByPage(order: String, where: String, limit: Int, start: Int): List<T>
+    fun findListWhereByPage(order: String, where: String, limit: Int, start: Int): List<T>
 
     /**
      * 根据属性查询

@@ -26,8 +26,8 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 		int deleteByPropertyName(String propertyName,Object value);
 		int countWhere(String where);
 		int countByPropertyName(String propertyName, Object value) ;
-		List<T> findWhere(String order, String where) ;
-		List<T> findWhereByPage(String order, String where, int limit,int start);
+		List<T> findListWhere(String order, String where) ;
+		List<T> findListWhereByPage(String order, String where, int limit,int start);
 		List<T> findByPropertyName(String order, String propertyName,Object value);
 	}
 
@@ -99,20 +99,20 @@ public class BaseDaoMybatisMYSQLImpl<T> implements MultiDao<T> {
 	}
 
 	@Override
-	public List<T> findWhere(String where) {
+	public List<T> findListWhere(String where) {
 		if (where.toLowerCase().indexOf("order by ") < 0) {
-			return multiDao.findWhere(order, where);
+			return multiDao.findListWhere(order, where);
 		}else {
-			return multiDao.findWhere("", where);
+			return multiDao.findListWhere("", where);
 		}
 	}
 
 	@Override
-	public List<T> findWhereByPage(String where, int limit, int start) {
+	public List<T> findListWhereByPage(String where, int limit, int start) {
 		if (where.toLowerCase().indexOf("order by ") < 0) {
-			return multiDao.findWhereByPage(order, where, limit, start);
+			return multiDao.findListWhereByPage(order, where, limit, start);
 		}else {
-			return multiDao.findWhereByPage("", where, limit, start);
+			return multiDao.findListWhereByPage("", where, limit, start);
 		}
 	}
 

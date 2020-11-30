@@ -1,5 +1,6 @@
 package ${packageName}.controller.manager;
 
+import com.github.pagehelper.PageRowBounds;
 import ${packageName}.mapper.common.${className}Mapper;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Paged;
@@ -9,6 +10,7 @@ import ${packageName}.model.db.${className};
 import ${packageName}.util.ID22;
 </#if>
 
+import com.wudi.his.util.SqlIntent;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +56,7 @@ public class ${className}Controller {
 	})
     public ApiResult<Paged<${className}>> list(@ApiIgnore Paging paging) {
 		int count = mapper.countAll();
-		List<${className}> list = mapper.findByPage("", paging.count(), paging.start());
+		List<${className}> list = mapper.findListIntent(SqlIntent.New(), new PageRowBounds(paging.start(), paging.count()));
 		return ApiResult.success(new Paged<>(paging, list, count));
     }
 

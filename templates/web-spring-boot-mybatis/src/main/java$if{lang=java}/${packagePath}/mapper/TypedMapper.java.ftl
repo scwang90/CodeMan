@@ -118,13 +118,13 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<T> findWhere(String where, String order);
+	List<T> findListWhere(String where, String order);
 
 	/**
 	 * 批量查询（灵活构建意图）
 	 * @param intent 意图
 	 */
-	List<T> findIntent(SqlIntent intent);
+	List<T> findListIntent(SqlIntent intent);
 
 	/**
 	 * 批量查询（Where 拼接 Order 拼接，分页）
@@ -132,12 +132,12 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<T> findWhere(String where, String order, RowBounds rows);
+	List<T> findListWhere(String where, String order, RowBounds rows);
 
 	/**
 	 * 批量查询（灵活构建意图，分页）
 	 * @param intent 意图
 	 */
-	List<T> findIntent(SqlIntent intent, RowBounds rows);
+	List<T> findListIntent(SqlIntent intent, RowBounds rows);
 
 }

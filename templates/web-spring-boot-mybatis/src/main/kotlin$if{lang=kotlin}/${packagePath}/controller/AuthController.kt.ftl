@@ -52,7 +52,7 @@ class AuthController {
 //                this.password = DigestUtils.md5DigestAsHex("admin".byteInputStream())
 //            })
 //        }
-//        val list = mapper.findWhereByPage("", "WHERE username='$username' AND password='$password'", 1, 0)
+//        val list = mapper.findListWhereByPage("", "WHERE username='$username' AND password='$password'", 1, 0)
         val list = mutableListOf<String>()
         if (username == "admin" && password.toString() == DigestUtils.md5DigestAsHex("admin".byteInputStream())) {
             list.add("超级管理员")

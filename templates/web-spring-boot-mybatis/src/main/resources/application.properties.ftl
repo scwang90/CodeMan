@@ -13,4 +13,4 @@ spring.datasource.type = com.alibaba.druid.pool.DruidDataSource
 spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
 spring.jackson.time-zone=GMT+8
 
-mybatis.mapper-locations=classpath:/mapper/*.xml
+mybatis.mapper-locations=classpath:/mapper/*.xml,classpath:/mapper/**/*.xml

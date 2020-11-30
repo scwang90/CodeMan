@@ -171,7 +171,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"}")
 	</@single_line>
-	List<${className}> findWhere(@Param("order") String order,@Param("where") String where);
+	List<${className}> findListWhere(@Param("order") String order,@Param("where") String where);
 	/**
 	 * 选择性分页查询
 	 * @param where SQL条件语句
@@ -191,7 +191,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 		</#list>
 		FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	</@single_line>
-	List<${className}> findWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start);
+	List<${className}> findListWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start);
 	/**
 	 * 根据属性查询
 	 * @param property 数据库列名

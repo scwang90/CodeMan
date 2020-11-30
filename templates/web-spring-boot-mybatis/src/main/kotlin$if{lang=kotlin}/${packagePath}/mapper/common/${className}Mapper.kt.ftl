@@ -134,7 +134,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @return 符合条件的列表数据
 	 */
 	@Select("SELECT * FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"}")
-	override fun findWhere(@Param("order") order: String, @Param("where") where: String): List<${className}>
+	override fun findListWhere(@Param("order") order: String, @Param("where") where: String): List<${className}>
 
 	/**
 	 * 选择性分页查询
@@ -144,7 +144,7 @@ interface ${className}Mapper : TypedMapper<${className}>{
 	 * @return 符合条件的列表数据
 	 */
 	@Select("SELECT * FROM ${table.nameSQL} ${r"\${where}"} ${r"\${order}"} LIMIT ${r"\${start}"},${r"\${limit}"}")
-	override fun findWhereByPage(@Param("order") order: String, @Param("where") where: String, @Param("limit") limit: Int, @Param("start") start: Int): List<${className}>
+	override fun findListWhereByPage(@Param("order") order: String, @Param("where") where: String, @Param("limit") limit: Int, @Param("start") start: Int): List<${className}>
 
 	/**
 	 * 根据属性查询

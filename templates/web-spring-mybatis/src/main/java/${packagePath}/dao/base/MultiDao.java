@@ -45,7 +45,7 @@ public interface MultiDao<T> extends BaseDao<T>{
 	 * @return
 	 * @throws Exception
 	 */
-	public List<T> findWhere( String where);
+	public List<T> findListWhere( String where);
 	/**
 	 * 选择性分页查询
 	 * @param where
@@ -54,7 +54,7 @@ public interface MultiDao<T> extends BaseDao<T>{
 	 * @return
 	 * @throws Exception
 	 */
-	public List<T> findWhereByPage(String where, int limit,int start);
+	public List<T> findListWhereByPage(String where, int limit,int start);
 	/**
 	 * 根据属性查询
 	 * @param propertyName

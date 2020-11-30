@@ -277,7 +277,7 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	@Override
 	@Sql("select * from @{table} @{where} @{order}")
-	public List<T> findWhere(String where) throws Exception {
+	public List<T> findListWhere(String where) throws Exception {
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
 		sql = sql.replace("@{where}", String.valueOf(where));
@@ -291,7 +291,7 @@ public class BaseDaoDbUtilMYSQLImpl<T> implements MultiDao<T> {
 
 	@Override
 	@Sql("select * from @{table} @{where} @{order} limit @{start},@{limit}")
-	public List<T> findWhereByPage(String where, int limit, int start)
+	public List<T> findListWhereByPage(String where, int limit, int start)
 			throws Exception {
 		Sql sqlann = AfStackTrace.getCurrentMethodAnnotation(Sql.class);
 		String sql = sqlann.value().replace("@{table}", model.table);
