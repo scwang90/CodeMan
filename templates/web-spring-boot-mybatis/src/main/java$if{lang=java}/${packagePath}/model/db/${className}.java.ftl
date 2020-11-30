@@ -5,14 +5,18 @@ import ${packageName}.model.Entity;
 import io.swagger.annotations.ApiModelProperty;
 
 <#assign hasStringType=false>
+<#assign hasStringRequired=false>
 <#list table.columns as column>
-	<#if column.nameSQL!=column.fieldName>
-		<#if hasStringType==false>
+	<#if column.stringType && !column.nullable && hasStringRequired==false>
+import javax.validation.constraints.NotEmpty;
+        <#assign hasStringRequired=true>
+	</#if>
+	<#if column.stringType && hasStringType==false>
 import javax.validation.constraints.Size;
-			<#assign hasStringType=true>
-		</#if>
+        <#assign hasStringType=true>
 	</#if>
 </#list>
+
 /**
  * ${table.remark}
 	<#if ((table.description!"")?trim?length > 0)>
@@ -33,10 +37,11 @@ public class ${className} extends Entity {
 	 * 数据库名称 ${column.nameSQL}
 		</#if>
 	 */
-	<#if column.isStringType()>
+	<#if column.stringType>
+	<#if !column.nullable>@NotEmpty</#if>
 	@Size(max = ${column.length?c}, message = "${column.remark}不能超过${column.length}个字符")
 	</#if>
-	@ApiModelProperty(value = "${column.remark}"<#if column.nullable!=true>, required = true</#if>)
+	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description}"</#if><#if column.nullable!=true>, required = true</#if>)
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 

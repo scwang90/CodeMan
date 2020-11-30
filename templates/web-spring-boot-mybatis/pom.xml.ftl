@@ -140,12 +140,14 @@
             <version>2.7.0</version>
         </dependency>
 
+		<#if hasLogin>
 		<!-- 权限管理相关 spring shiro -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-spring</artifactId>
 			<version>1.3.2</version>
 		</dependency>
+		</#if>
 
 		<!-- JWT -->
 		<dependency>

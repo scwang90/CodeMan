@@ -33,7 +33,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final JdbcLang jdbcLang = new JdbcLang();
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultModelBuilder.class);
-	private static final Pattern regex = Pattern.compile("^(\\S{2,}?)(?::\\n|：\\n|:|：|,|，|\\n|\\(|（)((?:.|\\n)+?)[)）]?$");
+	private static final Pattern regex = Pattern.compile("^(\\S{2,}?)(?::\\n|：\\n|\\s+|:|：|,|，|\\n|\\(|（)((?:.|\\n)+?)[)）]?$");
 
 	public DefaultModelBuilder(ProjectConfig config, TableSource tableSource) {
 		this.config = config;

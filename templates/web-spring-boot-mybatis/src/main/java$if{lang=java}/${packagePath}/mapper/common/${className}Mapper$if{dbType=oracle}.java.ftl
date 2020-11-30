@@ -2,24 +2,14 @@ package ${packageName}.mapper.common;
 
 import ${packageName}.mapper.TypedMapper;
 import ${packageName}.model.db.${className};
+import ${packageName}.util.SqlIntent;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
-
-<#macro single_line>
-<@compress single_line=true>
-	<#nested>
-</@compress>
-
-</#macro>
 
 /**
  * ${table.remark}的mapper接口
@@ -31,65 +21,92 @@ import java.util.List;
 public interface ${className}Mapper extends TypedMapper<${className}>{
 
 	/**
-	 * 插入一条新数据
-	 * @param model 添加的数据
+	 * 插入新数据（非空插入，不支持批量插入）
+	 * @param models 添加的数据集合
 	 * @return 改变的行数
 	 */
 	@Override
-	<#if table.idColumn.autoIncrement == true>
-	<@single_line>@Options(useGeneratedKeys = false
-		<#if table.idColumn.fieldName != "id">
-		, keyProperty = "${table.idColumn.fieldName}"
-		</#if>
-	)
-	</@single_line>
-	</#if>
-	<@single_line>@Insert("INSERT INTO ${table.nameSQL} (
-			<#list table.columns as column>
-				${column.nameSQL}
-				<#if column_has_next>,</#if>
-			</#list>
-		) VALUES (
-			<#list table.columns as column>
-				${r"#"}{${column.fieldName}}
-				<#if column_has_next>,</#if>
-			</#list>
-		)")
-	</@single_line>
-	int insert(${className} model);
+	int insert(@Param("models") ${className}... models);
 
 	/**
-	 * 根据ID删除
-	 * @param id 数据的主键ID
+	 * 插入新数据（全插入，支持批量插入）
+	 * @param models 添加的数据集合
 	 * @return 改变的行数
 	 */
 	@Override
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
-	int delete(@Param("id") Object id);
+	int insertFull(${className} model);
 
 	/**
-	 * 更新一条数据
+	 * 更新一条数据（非空更新）
 	 * @param model 更新的数据
 	 * @return 改变的行数
 	 */
 	@Override
-	<@single_line>@Update("UPDATE ${table.nameSQL} SET
-			<#list table.columns as column>
-				${column.nameSQL}=${r"#"}{${column.fieldName}}
-				<#if column_has_next>,</#if>
-			</#list>
-			WHERE ${table.idColumn.name}=${r"#"}{${table.idColumn.fieldName}}
-	")
-	</@single_line>
 	int update(${className} model);
 
 	/**
-	 * 统计全部出数据
+	 * 更新一条数据（全更新）
+	 * @param model 更新的数据
+	 * @return 改变的行数
+	 */
+	@Override
+	int updateFull(${className} model);
+
+	/**
+	 * 更新一条数据（灵活构建意图）
+	 * @param id 主键Id
+	 * @param intent 意图
+	 * @return 改变的行数
+	 */
+	@Override
+	int updateIntent(@Param("id") Object id, SqlIntent intent);
+
+	/**
+	 * 根据ID删除（支持批量删除）
+	 * @param ids 数据的主键ID
+	 * @return 改变的行数
+	 */
+	@Override
+	int delete(@Param("ids") Object... ids);
+
+	/**
+	 * 根据条件删除（Where 拼接）
+	 * @param where SQL条件语句
+	 * @return 改变的行数
+	 */
+	@Override
+	int deleteWhere(@Param("where") String where);
+
+	/**
+	 * 根据条件删除（灵活构建意图）
+	 * @param intent 意图
+	 * @return 改变的行数
+	 */
+	@Override
+	int deleteIntent(SqlIntent intent);
+
+	/**
+	 * 统计数量（全部）
 	 * @return 统计数
 	 */
 	@Override
-	@Select("SELECT COUNT(*) FROM ${table.nameSQL}")
 	int countAll();
+
+	/**
+	 * 统计数量（Where 拼接）
+	 * @param where SQL条件语句
+	 * @return 改变的行数
+	 */
+	@Override
+	int countWhere(@Param("where") String where);
+
+	/**
+	 * 统计数量（灵活构建意图）
+	 * @param intent 意图
+	 * @return 改变的行数
+	 */
+	@Override
+	int countIntent(SqlIntent intent);
 
 	/**
 	 * 根据ID获取
@@ -97,127 +114,57 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @return null 或者 主键等于id的数据
 	 */
 	@Override
-	@ResultMap("${table.name}")
-	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM ${table.nameSQL} t_ WHERE ${table.idColumn.name}=${r"#"}{id}) tt_ WHERE tt_.rn_ <= 1")
 	${className} findById(@Param("id") Object id);
 
 	/**
-	 * 获取一条数据
+	 * 单条查询（Where 拼接 Order 拼接）
 	 * @param where SQL条件语句
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
 	@Override
-	@ResultMap("${table.name}")
-	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM ${table.nameSQL} t_ ${r"${where}"} ${r"${order}"}) tt_ WHERE tt_.rn_ <= 1")
-	${className} findOne(@Param("order") String order, @Param("where") String where);
+	${className} findOneWhere(@Param("where") String where, @Param("order") String order);
 
 	/**
-	 * 根据属性查询
+	 * 单条查询（灵活构建意图）
+	 * @param intent 意图
+	 */
+	@Override
+	@ResultMap("${table.name}")
+	${className} findOneIntent(SqlIntent intent);
+
+	/**
+	 * 批量查询（Where 拼接 Order 拼接）
+	 * @param where SQL条件语句
 	 * @param order SQL排序语句
-	 * @param property 数据库列名
-	 * @param value 值
 	 * @return null 或者 匹配条件的数据
 	 */
 	@Override
-	@ResultMap("${table.name}")
-	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM ${table.nameSQL} t_ WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"}) tt_ WHERE tt_.rn_ <= 1")
-	${className} findOneByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
+	List<${className}> findWhere(@Param("where") String where, @Param("order") String order);
 
 	/**
-	 * 获取全部数据
-	 * @param order SQL排序语句
-	 * @return 全部数据列表
+	 * 批量查询（灵活构建意图）
+	 * @param intent 意图
 	 */
 	@Override
 	@ResultMap("${table.name}")
-	@Select("SELECT * FROM ${table.nameSQL} ${r"${order}"}")
-	List<${className}> findAll(@Param("order") String order);
+	List<${className}> findIntent(SqlIntent intent);
 
 	/**
-	 * 分页查询数据
-	 * @param order SQL排序语句
-	 * @param limit 最大返回
-	 * @param start 起始返回
-	 * @return 分页列表数据
-	 */
-	@Override
-	@ResultMap("${table.name}")
-	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM (SELECT * FROM ${table.nameSQL} ${r"${order}"}) t_ WHERE ROWNUM<=${r"${limit}"}) tt_ WHERE tt_.rn_>=${r"${start}"}")
-	List<${className}> findByPage(@Param("order") String order, @Param("limit") int limit, @Param("start") int start);
-
-	/**
-	 * 选择性删除
+	 * 批量查询（Where 拼接 Order 拼接，分页）
 	 * @param where SQL条件语句
-	 * @return 改变的行数
-	 */
-	@Override
-	@Delete("DELETE FROM ${table.nameSQL} ${r"${where}"}")
-	int deleteWhere(@Param("where") String where);
-
-	/**
-	 * 根据属性值删除
-	 * @param property 数据库列名
-	 * @param value 值
-	 * @return 改变的行数
-	 */
-	@Override
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
-    int deleteByPropertyName(@Param("property") String property, @Param("value") Object value);
-
-	/**
-	 * 选择性统计
-	 * @param where SQL条件语句
-	 * @return 统计数
-	 */
-	@Override
-	@Select("SELECT COUNT(*) FROM ${table.nameSQL} ${r"${where}"}")
-	int countWhere(@Param("where") String where);
-
-	/**
-	 * 根据属性统计
-	 * @param property 数据库列名
-	 * @param value 值
-	 * @return 统计数
-	 */
-	@Override
-	@Select("SELECT COUNT(*) FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
-    int countByPropertyName(@Param("property") String property, @Param("value") Object value);
-
-	/**
-	 * 选择性查询
 	 * @param order SQL排序语句
-	 * @param where SQL条件语句
-	 * @return 符合条件的列表数据
+	 * @return null 或者 匹配条件的数据
+	 */
+	@Override
+	List<${className}> findWhere(@Param("where") String where, @Param("order") String order, RowBounds rows);
+
+	/**
+	 * 批量查询（灵活构建意图，分页）
+	 * @param intent 意图
 	 */
 	@Override
 	@ResultMap("${table.name}")
-	@Select("SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"}")
-	List<${className}> findWhere(@Param("order") String order, @Param("where") String where);
+	List<${className}> findIntent(SqlIntent intent, RowBounds rows);
 
-	/**
-	 * 选择性分页查询
-	 * @param order SQL排序语句
-	 * @param where SQL条件语句
-	 * @param limit 最大返回
-	 * @param start 起始返回
-	 * @return 符合条件的列表数据
-	 */
-	@Override
-	@ResultMap("${table.name}")
-	@Select("SELECT * FROM (SELECT ROWNUM AS rn_, t_.* FROM (SELECT * FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"}) t_ WHERE ROWNUM<=${r"${limit}"}) tt_ WHERE tt_.rn_>=${r"${start}"}")
-	List<${className}> findWhereByPage(@Param("order") String order, @Param("where") String where, @Param("limit") int limit, @Param("start") int start);
-
-
-	/**
-	 * 根据属性查询
-	 * @param order SQL排序语句
-	 * @param property 数据库列名
-	 * @param value 值
-	 * @return 返回符合条件的数据列表
-	 */
-	@Override
-	@ResultMap("${table.name}")
-	@Select("SELECT * FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"}")
-	List<${className}> findByPropertyName(@Param("order") String order, @Param("property") String property, @Param("value") Object value);
 }
