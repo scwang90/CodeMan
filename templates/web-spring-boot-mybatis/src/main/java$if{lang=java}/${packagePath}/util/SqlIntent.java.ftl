@@ -17,8 +17,8 @@ public class SqlIntent {
     Map<String, Object> andMap;     // 与条件
     Map<String, Object> orMap;      // 或条件
 
-    public static WhereMap New() {
-        WhereMap map = new WhereMap();
+    public static SqlIntent New() {
+        SqlIntent map = new SqlIntent();
         map.orMap = new HashMap<>();
         map.andMap = new HashMap<>();
         map.setMap = new HashMap<>();
@@ -26,28 +26,28 @@ public class SqlIntent {
         return map;
     }
 
-    public WhereMap and(String key, String val){
+    public SqlIntent and(String key, String val){
         this.andMap.put(key,val);
         return this;
     }
 
-    public WhereMap or(String key, String val){
+    public SqlIntent or(String key, String val){
         this.orMap.put(key,val);
         return this;
     }
 
-    public WhereMap set(String key, String val){
+    public SqlIntent set(String key, String val){
         this.setMap.put(key,val);
         return this;
     }
 
-    public WhereMap order(String order){
+    public SqlIntent order(String order){
         this.orderSet.add(order);
         return this;
     }
 
     public Set<String> getOrderSet() {
-        return WhereMap;
+        return SqlIntent;
     }
 
     public Map<String, Object> getSetMap() {
