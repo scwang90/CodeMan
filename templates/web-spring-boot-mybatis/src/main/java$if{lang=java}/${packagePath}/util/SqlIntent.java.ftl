@@ -47,7 +47,7 @@ public class SqlIntent {
     }
 
     public Set<String> getOrderSet() {
-        return SqlIntent;
+        return orderSet;
     }
 
     public Map<String, Object> getSetMap() {
