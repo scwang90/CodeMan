@@ -22,11 +22,11 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 
 	/**
 	 * 插入新数据（非空插入，不支持批量插入）
-	 * @param models 添加的数据集合
+	 * @param model 添加的数据
 	 * @return 改变的行数
 	 */
 	@Override
-	int insert(@Param("models") ${className}... models);
+	int insert(${className} model);
 
 	/**
 	 * 插入新数据（全插入，支持批量插入）
@@ -34,7 +34,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @return 改变的行数
 	 */
 	@Override
-	int insertFull(${className} model);
+	int insertFull(@Param("models") ${className}... models);
 
 	/**
 	 * 更新一条数据（非空更新）
@@ -130,7 +130,6 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @param intent 意图
 	 */
 	@Override
-	@ResultMap("${table.name}")
 	${className} findOneIntent(SqlIntent intent);
 
 	/**
@@ -147,7 +146,6 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @param intent 意图
 	 */
 	@Override
-	@ResultMap("${table.name}")
 	List<${className}> findIntent(SqlIntent intent);
 
 	/**
@@ -164,7 +162,6 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @param intent 意图
 	 */
 	@Override
-	@ResultMap("${table.name}")
 	List<${className}> findIntent(SqlIntent intent, RowBounds rows);
 
 }

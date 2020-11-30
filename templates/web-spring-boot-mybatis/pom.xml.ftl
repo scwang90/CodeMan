@@ -139,8 +139,8 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>2.7.0</version>
         </dependency>
-
 		<#if hasLogin>
+
 		<!-- 权限管理相关 spring shiro -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>

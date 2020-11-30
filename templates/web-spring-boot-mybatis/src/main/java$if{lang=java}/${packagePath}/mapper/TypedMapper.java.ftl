@@ -16,26 +16,23 @@ public interface TypedMapper<T> {
 
 	/**
 	 * 插入新数据（非空插入，不支持批量插入）
-	 * @param models 添加的数据集合
+	 * @param model 添加的数据
 	 * @return 改变的行数
 	 */
-	@Override
-	int insert(@Param("models") T... models);
+	int insert(T model);
 
 	/**
 	 * 插入新数据（全插入，支持批量插入）
 	 * @param models 添加的数据集合
 	 * @return 改变的行数
 	 */
-	@Override
-	int insertFull(T model);
+	int insertFull(@Param("models") T... models);
 
 	/**
 	 * 更新一条数据（非空更新）
 	 * @param model 更新的数据
 	 * @return 改变的行数
 	 */
-	@Override
 	int update(T model);
 
 	/**
@@ -43,7 +40,6 @@ public interface TypedMapper<T> {
 	 * @param model 更新的数据
 	 * @return 改变的行数
 	 */
-	@Override
 	int updateFull(T model);
 
 	/**
@@ -52,7 +48,6 @@ public interface TypedMapper<T> {
 	 * @param intent 意图
 	 * @return 改变的行数
 	 */
-	@Override
 	int updateIntent(@Param("id") Object id, SqlIntent intent);
 
 	/**
@@ -60,7 +55,6 @@ public interface TypedMapper<T> {
 	 * @param ids 数据的主键ID
 	 * @return 改变的行数
 	 */
-	@Override
 	int delete(@Param("ids") Object... ids);
 
 	/**
@@ -68,7 +62,6 @@ public interface TypedMapper<T> {
 	 * @param where SQL条件语句
 	 * @return 改变的行数
 	 */
-	@Override
 	int deleteWhere(@Param("where") String where);
 
 	/**
@@ -76,14 +69,12 @@ public interface TypedMapper<T> {
 	 * @param intent 意图
 	 * @return 改变的行数
 	 */
-	@Override
 	int deleteIntent(SqlIntent intent);
 
 	/**
 	 * 统计数量（全部）
 	 * @return 统计数
 	 */
-	@Override
 	int countAll();
 
 	/**
@@ -91,7 +82,6 @@ public interface TypedMapper<T> {
 	 * @param where SQL条件语句
 	 * @return 改变的行数
 	 */
-	@Override
 	int countWhere(@Param("where") String where);
 
 	/**
@@ -99,7 +89,6 @@ public interface TypedMapper<T> {
 	 * @param intent 意图
 	 * @return 改变的行数
 	 */
-	@Override
 	int countIntent(SqlIntent intent);
 
 	/**
@@ -107,7 +96,6 @@ public interface TypedMapper<T> {
 	 * @param id 主键ID
 	 * @return null 或者 主键等于id的数据
 	 */
-	@Override
 	T findById(@Param("id") Object id);
 
 	/**
@@ -116,15 +104,12 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	@Override
 	T findOneWhere(@Param("where") String where, @Param("order") String order);
 
 	/**
 	 * 单条查询（灵活构建意图）
 	 * @param intent 意图
 	 */
-	@Override
-	@ResultMap("${table.name}")
 	T findOneIntent(SqlIntent intent);
 
 	/**
@@ -133,15 +118,12 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	@Override
 	List<T> findWhere(@Param("where") String where, @Param("order") String order);
 
 	/**
 	 * 批量查询（灵活构建意图）
 	 * @param intent 意图
 	 */
-	@Override
-	@ResultMap("${table.name}")
 	List<T> findIntent(SqlIntent intent);
 
 	/**
@@ -150,15 +132,12 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	@Override
 	List<T> findWhere(@Param("where") String where, @Param("order") String order, RowBounds rows);
 
 	/**
 	 * 批量查询（灵活构建意图，分页）
 	 * @param intent 意图
 	 */
-	@Override
-	@ResultMap("${table.name}")
 	List<T> findIntent(SqlIntent intent, RowBounds rows);
 
 }
