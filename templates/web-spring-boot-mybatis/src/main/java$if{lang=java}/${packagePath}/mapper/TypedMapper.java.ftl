@@ -26,7 +26,7 @@ public interface TypedMapper<T> {
 	 * @param models 添加的数据集合
 	 * @return 改变的行数
 	 */
-	int insertFull(@Param("models") T... models);
+	int insertFull(T... models);
 
 	/**
 	 * 更新一条数据（非空更新）
@@ -48,21 +48,21 @@ public interface TypedMapper<T> {
 	 * @param intent 意图
 	 * @return 改变的行数
 	 */
-	int updateIntent(@Param("id") Object id, SqlIntent intent);
+	int updateIntent(Object id, SqlIntent intent);
 
 	/**
 	 * 根据ID删除（支持批量删除）
 	 * @param ids 数据的主键ID
 	 * @return 改变的行数
 	 */
-	int delete(@Param("ids") Object... ids);
+	int delete(Object... ids);
 
 	/**
 	 * 根据条件删除（Where 拼接）
 	 * @param where SQL条件语句
 	 * @return 改变的行数
 	 */
-	int deleteWhere(@Param("where") String where);
+	int deleteWhere(String where);
 
 	/**
 	 * 根据条件删除（灵活构建意图）
@@ -82,7 +82,7 @@ public interface TypedMapper<T> {
 	 * @param where SQL条件语句
 	 * @return 改变的行数
 	 */
-	int countWhere(@Param("where") String where);
+	int countWhere(String where);
 
 	/**
 	 * 统计数量（灵活构建意图）
@@ -96,7 +96,7 @@ public interface TypedMapper<T> {
 	 * @param id 主键ID
 	 * @return null 或者 主键等于id的数据
 	 */
-	T findById(@Param("id") Object id);
+	T findById(Object id);
 
 	/**
 	 * 单条查询（Where 拼接 Order 拼接）
@@ -104,7 +104,7 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	T findOneWhere(@Param("where") String where, @Param("order") String order);
+	T findOneWhere(String where, String order);
 
 	/**
 	 * 单条查询（灵活构建意图）
@@ -118,7 +118,7 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<T> findWhere(@Param("where") String where, @Param("order") String order);
+	List<T> findWhere(String where, String order);
 
 	/**
 	 * 批量查询（灵活构建意图）
@@ -132,7 +132,7 @@ public interface TypedMapper<T> {
 	 * @param order SQL排序语句
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<T> findWhere(@Param("where") String where, @Param("order") String order, RowBounds rows);
+	List<T> findWhere(String where, String order, RowBounds rows);
 
 	/**
 	 * 批量查询（灵活构建意图，分页）
