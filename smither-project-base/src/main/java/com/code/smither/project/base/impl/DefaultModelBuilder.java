@@ -186,13 +186,13 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * @return url 路径
 	 */
     protected String buildUrlPath(Table table) {
-        String division = this.config.getTableDivision();
-        if (division == null || division.length() == 0) {
-            division = "_";
-        }
-        if (table.getName().contains(division)) {
-            return table.getName().toLowerCase().replace(division, "-");
-        }
+//        String division = this.config.getTableDivision();
+//        if (division == null || division.length() == 0) {
+//            division = "_";
+//        }
+//        if (table.getName().contains(division)) {
+//            return table.getName().toLowerCase().replace(division, "-");
+//        }
         StringBuilder builder = new StringBuilder();
         String className = table.getClassName();
         for (int i = 0, lc = 0; i < className.length(); i++) {

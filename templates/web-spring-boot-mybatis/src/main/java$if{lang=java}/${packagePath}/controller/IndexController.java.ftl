@@ -47,6 +47,7 @@ public class IndexController {
 	}
 
     <#list tables as table>
+    //数据库【${table.name}】表
 	@RequestMapping("admin/manager/${table.urlPathName}")
     public String ${table.classNameCamel}() {
 		return "manager/${table.urlPathName}";

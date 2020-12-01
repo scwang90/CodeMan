@@ -22,13 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ${className}MapperTest extends ${projectName}ApplicationTests {
 
 	@Autowired
-	private UserMapper mapper;
+	private ${className}Mapper mapper;
 	private final ObjectMapper json = new ObjectMapper();
 
 	@Test
 	public void list() throws Exception {
-		List<User> users = mapper.findListWhere("", "", new RowBounds(0, 5));
-		System.out.println(json.writerWithDefaultPrettyPrinter().writeValueAsString(users));
+		List<${className}> models = mapper.findListWhere("", "", new RowBounds(0, 5));
+		System.out.println(json.writerWithDefaultPrettyPrinter().writeValueAsString(models));
 	}
 
 	@Ignore

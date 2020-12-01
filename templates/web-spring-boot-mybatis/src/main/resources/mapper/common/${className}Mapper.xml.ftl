@@ -6,7 +6,7 @@
     <id column="${table.idColumn.nameSQL}" jdbcType="${table.idColumn.typeJdbc}" property="${table.idColumn.fieldName}" />
     <#list table.columns as column>
     <#if table.idColumn.name != column.name>
-    <!--${column.remark}-->
+    <!--${column.remark?replace("-","~")}-->
     <result column="${column.nameSQL}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
     </#if>
     </#list>
