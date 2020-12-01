@@ -1,7 +1,7 @@
 server.port = 8080
 server.address = 0.0.0.0
 
-app.config.debug = true
+swagger.enabled = true
 
 logging.level.root = info
 logging.level.${packageName}.mapper = debug

@@ -1,8 +1,8 @@
 package ${packageName}.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ${packageName}.controller.manager.WdCoreAreaInfoControllerTest;
 import ${packageName}.model.Entity;
+import ${packageName}.${projectName}ApplicationTests;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-public class BaseMapperTests<T extends Entity> extends WdCoreAreaInfoControllerTest {
+public class BaseMapperTests<T extends Entity> extends ${projectName}ApplicationTests {
 
     @Autowired
     protected TypedMapper<T> mapper;

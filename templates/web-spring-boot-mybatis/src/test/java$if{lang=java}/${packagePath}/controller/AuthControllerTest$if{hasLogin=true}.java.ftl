@@ -1,7 +1,5 @@
 package ${packageName}.controller;
 
-import ${packageName}.${projectName}ApplicationTests;
-
 import org.junit.Test;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -11,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AuthControllerTest extends ${projectName}ApplicationTests {
+public class AuthControllerTest extends BaseControllerTests {
 
 	@Test
     public void login() throws Exception {

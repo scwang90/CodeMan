@@ -9,8 +9,8 @@ import ${packageName}.model.db.${className};
 <#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
 import ${packageName}.util.ID22;
 </#if>
+import ${packageName}.util.SqlIntent;
 
-import com.wudi.his.util.SqlIntent;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

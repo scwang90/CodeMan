@@ -13,7 +13,6 @@ import java.util.List;
 */
 public interface TypedMapper<T> {
 
-
 	/**
 	 * 插入新数据（非空插入，不支持批量插入）
 	 * @param model 添加的数据

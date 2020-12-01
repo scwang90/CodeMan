@@ -5,11 +5,11 @@ package ${packageName}.mapper.common;
 <#assign column1='null'>
 <#assign column2='null'>
 <#list table.columns as column>
-    <#if (column.stringType && column.length > 6 && !find2 && find1) >
+    <#if (column.name != table.idColumn.name && column.stringType && column.length > 6 && !find2 && find1) >
         <#assign find2=true>
         <#assign column2=column>
     </#if>
-    <#if (column.stringType && column.length > 6 && !find1) >
+    <#if (column.name != table.idColumn.name && column.stringType && column.length > 6 && !find1) >
         <#assign find1=true>
         <#assign column1=column>
     </#if>
@@ -45,8 +45,10 @@ public class ${className}MapperTest extends BaseMapperTests<${className}> {
 <#list table.columns as column>
     <#if column.stringType && column.name != table.idColumn.name>
         model.set${column.fieldNameUpper}(buildInsertString(index, ${column.length?c}));
-    <#elseif column.nullable!=true && column.name != table.idColumn.name>
-        //生成器无法构建必须字段来测试 ${column.fieldName} ${column.remark!""} ${(column.description!"")?replace("\n","\\n")}
+    <#elseif column.fieldType == "java.util.Date" && column.name != table.idColumn.name>
+        model.set${column.fieldNameUpper}(new java.util.Date());
+    <#elseif column.nullable != true && column.name != table.idColumn.name>
+        //生成器无法构建必须字段来测试 ${column.fieldType} ${column.fieldName} ${column.remark!""} ${(column.description!"")?replace("\n","\\n")}
     </#if>
 </#list>
 		return model;
@@ -86,9 +88,9 @@ public class ${className}MapperTest extends BaseMapperTests<${className}> {
     </#if>
         //列表查询测试开始
         List<${className}> models1 = mapper.findListWhere("${column1.nameSqlInStr}='" + (strInsert + 1) + "'", "");
-        List<${className}> models2 = mapper.findListIntent(SqlIntent.New().where("${column1.nameSqlInStr}",strInsert + 2));
+        List<${className}> models2 = mapper.findListIntent(SqlIntent.New().where("${column1.nameSqlInStr}", strInsert + 2));
         List<${className}> models3 = mapper.findListWhere("${column1.nameSqlInStr}='" + (strInsert + 1) + "'", "", new RowBounds(0,1));
-        List<${className}> models4 = mapper.findListIntent(SqlIntent.New().where("${column1.nameSqlInStr}",strInsert + 2), new RowBounds(0,1));
+        List<${className}> models4 = mapper.findListIntent(SqlIntent.New().where("${column1.nameSqlInStr}", strInsert + 2), new RowBounds(0,1));
 
         System.out.println("列表查询测试1结果：" + json.writerWithDefaultPrettyPrinter().writeValueAsString(models1));
         System.out.println("列表查询测试2结果：" + json.writerWithDefaultPrettyPrinter().writeValueAsString(models2));

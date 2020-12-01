@@ -29,7 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ConditionalOnProperty(name = "enabled", prefix = "swagger", havingValue = "true")
 public class SwaggerConfigurer {
 
-    @Value("${r"${swagger.host}"}")
+    @Value("${r"${swagger.host:''}"}")
     private String swaggerHost = "";
 
     /**

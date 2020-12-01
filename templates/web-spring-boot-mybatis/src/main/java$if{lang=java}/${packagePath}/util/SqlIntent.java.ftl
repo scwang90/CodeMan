@@ -18,12 +18,14 @@ public class SqlIntent {
     Map<String, Object> setMap;     // Update
     Map<String, Object> andMap;     // 与条件
     Map<String, Object> orMap;      // 或条件
+    Map<String, Object> whereMap;   // 条件
 
     public static SqlIntent New() {
         SqlIntent map = new SqlIntent();
         map.orMap = new HashMap<>();
         map.andMap = new HashMap<>();
         map.setMap = new HashMap<>();
+        map.whereMap = new HashMap<>();
         map.orderSet = new HashSet<>();
         return map;
     }
