@@ -48,13 +48,15 @@ public class OracleTableSource extends DbTableSource implements Database {
                 return true;
             }
         }
+        if (value.matches(".*[^\\x00-\\xff].*")) {
+            return true;
+        }
         return false;
     }
 
     @Override
     public String wrapperKeyword(String name) {
-        return name;
-//        return '"' + name.toUpperCase() + '"';
+        return '"' + name.toUpperCase() + '"';
     }
 
 

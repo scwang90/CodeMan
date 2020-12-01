@@ -21,7 +21,7 @@ public class ID22 {
     private ID22() {
     }
 
-    public static String randomID22() {
+    public static String random() {
         return compressedUUID(UUID.randomUUID());
     }
 

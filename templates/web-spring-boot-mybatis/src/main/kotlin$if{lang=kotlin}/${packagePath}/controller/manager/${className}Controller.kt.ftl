@@ -53,7 +53,7 @@ class ${className}Controller {
     )
     fun insert(@Validated @ApiIgnore model: ${className}): ApiResult<Boolean> {
 		<#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
-		model.${table.idColumn.fieldName} = ID22.randomID22()
+		model.${table.idColumn.fieldName} = ID22.random()
 		</#if>
 		<#list table.columns as column>
 			<#if column.name == 'create_time'>

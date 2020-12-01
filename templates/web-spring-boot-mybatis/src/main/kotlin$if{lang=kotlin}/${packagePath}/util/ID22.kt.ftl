@@ -14,7 +14,7 @@ class ID22 private constructor() {
 
     companion object {
 
-        fun randomID22(): String {
+        fun random(): String {
             return ID22().id22
         }
 

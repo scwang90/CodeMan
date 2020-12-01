@@ -29,6 +29,13 @@ public interface TypedMapper<T> {
 	int insertFull(T... models);
 
 	/**
+	 * 插入新数据（全插入，支持批量插入）
+	 * @param models 添加的数据集合
+	 * @return 改变的行数
+	 */
+	int insertFull(List<T> models);
+
+	/**
 	 * 更新一条数据（非空更新）
 	 * @param model 更新的数据
 	 * @return 改变的行数
@@ -43,12 +50,11 @@ public interface TypedMapper<T> {
 	int updateFull(T model);
 
 	/**
-	 * 更新一条数据（灵活构建意图）
-	 * @param id 主键Id
+	 * 更新一条数据（灵活构建意图，修改多条）
 	 * @param intent 意图
 	 * @return 改变的行数
 	 */
-	int updateIntent(Object id, SqlIntent intent);
+	int updateIntent(SqlIntent intent);
 
 	/**
 	 * 根据ID删除（支持批量删除）

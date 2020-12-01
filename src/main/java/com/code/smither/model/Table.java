@@ -14,6 +14,7 @@ public class Table implements IModel {
 
     private String name;// 原表名称
     private String nameSQL;// SQL语句中使用的名称
+    private String nameSQLInStr;// SQL语句中使用的名称(在字符串拼接中使用)
     private String remark;// 字段注释
     private String description;//详细描述 (分析得到)
 
@@ -34,15 +35,18 @@ public class Table implements IModel {
 
     public void setName(String name) {
         this.name = name;
+        this.nameSQL = name;
+        this.nameSQLInStr = name;
     }
 
-    public void setName(String name, TaskLoader.Database database) {
-        this.name = name;
-        this.nameSQL = name;
-        if (database != null && database.isKeyword(name)) {
-            this.nameSQL = database.wrapperKeyword(name);
-        }
-    }
+//    public void setName(String name, Database database) {
+//        this.name = name;
+//        this.nameSQL = name;
+//        if (database != null && database.isKeyword(name)) {
+//            this.nameSQL = database.wrapperKeyword(name);
+//            this.nameSQLInStr = this.nameSQL.replace("\"","\\\"");
+//        }
+//    }
 
     public String getNameSQL() {
         return nameSQL;
@@ -50,6 +54,14 @@ public class Table implements IModel {
 
     public void setNameSQL(String nameSQL) {
         this.nameSQL = nameSQL;
+    }
+
+    public String getNameSQLInStr() {
+        return nameSQLInStr;
+    }
+
+    public void setNameSQLInStr(String nameSQLInStr) {
+        this.nameSQLInStr = nameSQLInStr;
     }
 
     public String getRemark() {

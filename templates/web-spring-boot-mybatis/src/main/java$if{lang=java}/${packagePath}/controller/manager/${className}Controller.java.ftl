@@ -72,7 +72,7 @@ public class ${className}Controller {
 	<#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
 	public ApiResult<String> insert(@Validated @ApiIgnore ${className} model) {
 		if(model.get${table.idColumn.fieldNameUpper}() == null) {
-			model.set${table.idColumn.fieldNameUpper}(ID22.randomID22());
+			model.set${table.idColumn.fieldNameUpper}(ID22.random());
 		}
 	<#else>
 	public ApiResult<Boolean> insert(@Validated @ApiIgnore ${className} model) {

@@ -152,7 +152,6 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
 
         //判断已经生成的目标文件集合中是否已经含有即将生成的文件
         if (!set.contains(path)) {
-            logger.info("  =>> : " + path);
             File file = new File(path);
             if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || !config.isTemplateFtlOnly())) {
                 Template template = getTemplate(task.getTemplateFile());
@@ -163,6 +162,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                 FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
             }
             set.add(path);
+            logger.info("  =>> : " + path);
         }
     }
 

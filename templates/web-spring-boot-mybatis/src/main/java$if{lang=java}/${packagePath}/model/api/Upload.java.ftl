@@ -37,12 +37,12 @@ public class Upload {
     public Upload(int type) {
         this.type = type;
         this.time = new Date();
-        this.token = ID22.randomID22();
+        this.token = ID22.random();
     }
 
     public Upload(MultipartFile file) {
         this.time = new Date();
-        this.token = ID22.randomID22();
+        this.token = ID22.random();
         this.mimeType = file.getContentType();
         this.name = file.getOriginalFilename();
         this.type = UploadType.from(file).ordinal();

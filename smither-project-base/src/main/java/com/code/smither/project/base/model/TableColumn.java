@@ -12,11 +12,12 @@ public class TableColumn implements MetaDataColumn {
 	
 	private String name;// 原名称
 	private String nameSQL;// SQL语句中使用的名称
+	private String nameSqlInStr;// SQL语句中使用的名称（在字符串拼接中使用）
 	private String type;// 字段类型名称（数据库返回的值）
 	private String typeJdbc;// 字段类型名称（JDBC 枚举，所有数据库一致性，java.sql.Types 枚举所有的类型）
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
-	private String description;//详细描述 (分析得到)
+	private String description;//详细描述（分析得到）
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
@@ -45,13 +46,16 @@ public class TableColumn implements MetaDataColumn {
 		}
 		this.name = name;
 		this.nameSQL = nameSQL == null ? name : nameSQL;
+		this.nameSqlInStr = nameSQL;
 	}
 
 	public void setName(String name, Database database) {
 		this.name = name;
 		this.nameSQL = name;
+		this.nameSqlInStr = name;
 		if (database != null && database.isKeyword(name)) {
 			this.nameSQL = database.wrapperKeyword(name);
+			this.nameSqlInStr = this.nameSQL.replace("\"","\\\"");
 		}
 	}
 
@@ -61,6 +65,14 @@ public class TableColumn implements MetaDataColumn {
 
 	public void setNameSQL(String nameSQL) {
 		this.nameSQL = nameSQL;
+	}
+
+	public String getNameSqlInStr() {
+		return nameSqlInStr;
+	}
+
+	public void setNameSqlInStr(String nameSqlInStr) {
+		this.nameSqlInStr = nameSqlInStr;
 	}
 
 	public String getType() {

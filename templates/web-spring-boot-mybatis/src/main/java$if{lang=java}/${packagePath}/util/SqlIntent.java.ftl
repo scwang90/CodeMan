@@ -1,5 +1,7 @@
 package ${packageName}.util;
 
+import ${packageName}.exception.ServiceException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,17 +28,35 @@ public class SqlIntent {
         return map;
     }
 
-    public SqlIntent and(String key, String val){
+    public SqlIntent where(String key, Object val) {
+        if (!this.whereMap.isEmpty()) {
+            throw new ServiceException("where 方法只能最开始调用一次");
+        }
+        this.whereMap.put(key,val);
+        return this;
+    }
+
+    public SqlIntent and(String key, Object val){
+        if (this.whereMap.isEmpty()) {
+            throw new ServiceException("条件查询请先调用 where 方法");
+        } else if (this.andMap.isEmpty() && this.orMap.isEmpty()) {
+            this.andMap.putAll(this.whereMap);
+        }
         this.andMap.put(key,val);
         return this;
     }
 
-    public SqlIntent or(String key, String val){
+    public SqlIntent or(String key, Object val){
+        if (this.whereMap.isEmpty()) {
+            throw new ServiceException("条件查询请先调用 where 方法");
+        } else if (this.orMap.isEmpty() && this.andMap.isEmpty()) {
+            this.orMap.putAll(this.whereMap);
+        }
         this.orMap.put(key,val);
         return this;
     }
 
-    public SqlIntent set(String key, String val){
+    public SqlIntent set(String key, Object val){
         this.setMap.put(key,val);
         return this;
     }
@@ -55,10 +75,16 @@ public class SqlIntent {
     }
 
     public Map<String, Object> getAndMap() {
+        if (!this.whereMap.isEmpty() && this.orMap.isEmpty() && this.andMap.isEmpty()) {
+            this.andMap.putAll(this.whereMap);
+        }
         return andMap;
     }
 
     public Map<String, Object> getOrMap() {
+        if (!this.whereMap.isEmpty() && this.orMap.isEmpty() && this.andMap.isEmpty()) {
+            this.orMap.putAll(this.whereMap);
+        }
         return orMap;
     }
 }

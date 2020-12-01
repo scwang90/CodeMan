@@ -32,7 +32,7 @@ public class ${className} extends Entity {
 
 	<#list table.columns as column>
 	/**
-	 * ${column.remark}
+	 * ${column.remark}<#if column.name==table.idColumn.name>【数据库主键】</#if>
 		<#if ((column.description!"")?trim?length > 0)>
 	 * 详细描述：${column.description?replace("\n","\\n")}
 		</#if>

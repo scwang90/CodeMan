@@ -15,13 +15,14 @@ public class Table implements Model, MetaDataTable {
 
     private String name;// 原表名称
     private String nameSQL;// SQL语句中使用的名称
+    private String nameSqlInStr;// SQL语句中使用的名称（在字符串拼接中使用）
     private String remark;// 字段注释
-    private String description;//详细描述 (分析得到)
+    private String description;//详细描述（分析得到）
 
     private String urlPathName;// 对应的 url 路劲名称
 
-    private String className;// 原类名称
-    private String classNameCamel;// 骆驼峰类名
+    private String className;// 原类名称（首字母大写）
+    private String classNameCamel;// 骆驼峰类名（首字母小写）
     private String classNameUpper;// 类名全大写
     private String classNameLower;// 类名全小写
 
@@ -36,13 +37,16 @@ public class Table implements Model, MetaDataTable {
     public void setName(String name) {
         this.name = name;
         this.nameSQL = name;
+        this.nameSqlInStr = name;
     }
 
     public void setName(String name, Database database) {
         this.name = name;
         this.nameSQL = name;
+        this.nameSqlInStr = name;
         if (database != null && database.isKeyword(name)) {
             this.nameSQL = database.wrapperKeyword(name);
+            this.nameSqlInStr = this.nameSQL.replace("\"","\\\"");
         }
     }
 
@@ -52,6 +56,14 @@ public class Table implements Model, MetaDataTable {
 
     public void setNameSQL(String nameSQL) {
         this.nameSQL = nameSQL;
+    }
+
+    public String getNameSqlInStr() {
+        return nameSqlInStr;
+    }
+
+    public void setNameSqlInStr(String nameSQLInStr) {
+        this.nameSqlInStr = nameSQLInStr;
     }
 
     public String getRemark() {
