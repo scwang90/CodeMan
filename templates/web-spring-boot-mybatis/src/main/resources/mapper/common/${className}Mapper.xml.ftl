@@ -192,10 +192,12 @@
     </include>
   </select>
 
+  <!-- 根据ID获取 -->
   <select id="findById" resultMap="${table.className}">
     SELECT * FROM ${table.nameSQL} WHERE ${table.idColumn.nameSQL}=${r"#"}{id}
   </select>
 
+  <!-- 单条查询（Where 拼接 Order 拼接） -->
   <select id="findOneWhere" resultMap="${table.className}">
     SELECT * FROM ${table.nameSQL}
     <include refid="sqlWhereOrder">
@@ -204,6 +206,7 @@
     </include>
   </select>
 
+  <!-- 单条查询（灵活构建意图） -->
   <select id="findOneIntent" resultMap="${table.className}">
     SELECT * FROM ${table.nameSQL}
     <include refid="intentWhereOrder">
@@ -213,6 +216,7 @@
     </include>
   </select>
 
+  <!-- 批量查询（Where 拼接 Order 拼接） -->
   <select id="findListWhere" resultMap="${table.className}">
     SELECT * FROM ${table.nameSQL}
     <include refid="sqlWhereOrder">
@@ -221,6 +225,7 @@
     </include>
   </select>
 
+  <!-- 批量查询（灵活构建意图） -->
   <select id="findListIntent" resultMap="${table.className}">
     SELECT * FROM ${table.nameSQL}
     <include refid="intentWhereOrder">

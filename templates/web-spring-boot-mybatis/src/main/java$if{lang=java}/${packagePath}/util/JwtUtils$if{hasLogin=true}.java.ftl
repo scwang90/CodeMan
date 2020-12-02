@@ -55,7 +55,7 @@ public class JwtUtils {
         }
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie: cookies) {
-            if ("Bearer".equals(cookie.getName())) {
+            if (cookie != null && "Bearer".equals(cookie.getName())) {
                 return cookie.getValue();
             }
         }
