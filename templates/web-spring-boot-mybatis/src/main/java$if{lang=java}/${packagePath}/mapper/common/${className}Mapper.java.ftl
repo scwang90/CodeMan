@@ -12,7 +12,10 @@ import org.apache.ibatis.session.RowBounds;
 import java.util.List;
 
 /**
- * ${table.remark}的mapper接口
+ * ${table.remark} 的 mapper 接口
+<#list table.descriptions as description>
+ * ${description}
+</#list>
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

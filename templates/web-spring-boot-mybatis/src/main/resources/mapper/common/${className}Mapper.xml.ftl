@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${packageName}.mapper.common.${className}Mapper">
-  <resultMap id="${table.className}" type="${packageName}.model.db.${className}">
+  <!--${table.remark} 的 Mapper 实现 -->
+  <#list table.descriptions as description>
+  <!--${description} -->
+  </#list>
+  <resultMap id="MAP" type="${packageName}.model.db.${className}">
     <!--${table.idColumn.remark}-->
     <id column="${table.idColumn.name}" jdbcType="${table.idColumn.typeJdbc}" property="${table.idColumn.fieldName}" />
     <#list table.columns as column>
@@ -193,12 +197,12 @@
   </select>
 
   <!-- 根据ID获取 -->
-  <select id="findById" resultMap="${table.className}">
+  <select id="findById" resultMap="MAP">
     SELECT * FROM ${table.nameSQL} WHERE ${table.idColumn.nameSQL}=${r"#"}{id}
   </select>
 
   <!-- 单条查询（Where 拼接 Order 拼接） -->
-  <select id="findOneWhere" resultMap="${table.className}">
+  <select id="findOneWhere" resultMap="MAP">
     SELECT * FROM ${table.nameSQL}
     <include refid="sqlWhereOrder">
       <property name="where" value="${r"$"}{where}"/>
@@ -207,7 +211,7 @@
   </select>
 
   <!-- 单条查询（灵活构建意图） -->
-  <select id="findOneIntent" resultMap="${table.className}">
+  <select id="findOneIntent" resultMap="MAP">
     SELECT * FROM ${table.nameSQL}
     <include refid="intentWhereOrder">
       <property name="orMap" value="${r"$"}{orMap}"/>
@@ -217,7 +221,7 @@
   </select>
 
   <!-- 批量查询（Where 拼接 Order 拼接） -->
-  <select id="findListWhere" resultMap="${table.className}">
+  <select id="findListWhere" resultMap="MAP">
     SELECT * FROM ${table.nameSQL}
     <include refid="sqlWhereOrder">
       <property name="where" value="${r"$"}{where}"/>
@@ -226,7 +230,7 @@
   </select>
 
   <!-- 批量查询（灵活构建意图） -->
-  <select id="findListIntent" resultMap="${table.className}">
+  <select id="findListIntent" resultMap="MAP">
     SELECT * FROM ${table.nameSQL}
     <include refid="intentWhereOrder">
       <property name="orMap" value="${r"$"}{orMap}"/>

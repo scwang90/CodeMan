@@ -12,6 +12,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * ${table.remark} 的 Controller 单元测试
+<#list table.descriptions as description>
+ * ${description}
+</#list>
+ * @author ${author}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
+ */
 public class ${className}ControllerTest extends BaseControllerTests {
 
 	@Test

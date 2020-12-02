@@ -19,9 +19,9 @@ import javax.validation.constraints.Size;
 
 /**
  * ${table.remark}
-	<#if ((table.description!"")?trim?length > 0)>
- * 详细描述：${table.description?replace("\n","\\n")}
-	</#if>
+	<#list table.descriptions as description>
+ * ${description}
+	</#list>
     <#if table.name!=table.className>
  * 数据库名称 ${table.name}
     </#if>
@@ -33,15 +33,17 @@ public class ${className} extends Entity {
 	<#list table.columns as column>
 	/**
 	 * ${column.remark}<#if column.name==table.idColumn.name>【数据库主键】</#if>
-		<#if ((column.description!"")?trim?length > 0)>
-	 * 详细描述：${column.description?replace("\n","\\n")}
-		</#if>
+		<#list column.descriptions as description>
+	 * ${description}
+		</#list>
 		<#if column.name!=column.fieldName>
 	 * 数据库名称 ${column.name}
 		</#if>
 	 */
 	<#if column.stringType>
-	<#if !column.nullable>@NotEmpty</#if>
+	<#if !column.nullable>
+	@NotEmpty(message = "${column.remark}不能为空")
+	</#if>
 	@Size(max = ${column.length?c}, message = "${column.remark}不能超过${column.length}个字符")
 	</#if>
 	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, required = true</#if>)

@@ -31,6 +31,9 @@ import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * ${table.remark} 的 Controller 层实现
+<#list table.descriptions as description>
+ * ${description}
+</#list>
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

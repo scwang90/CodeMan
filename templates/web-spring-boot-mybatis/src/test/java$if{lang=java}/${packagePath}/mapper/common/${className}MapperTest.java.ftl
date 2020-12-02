@@ -30,8 +30,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 单元测试基类 - Mapper
- * ${table.remark!""} ${(table.description!"")?replace("\n","\\n")}
+ * ${table.remark} 的 Mapper 单元测试
+<#list table.descriptions as description>
+ * ${description}
+</#list>
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
@@ -49,6 +51,7 @@ public class ${className}MapperTest extends BaseMapperTests<${className}> {
         model.set${column.fieldNameUpper}(new java.util.Date());
     <#elseif column.nullable != true && column.name != table.idColumn.name>
         //生成器无法构建必须字段来测试 ${column.fieldType} ${column.fieldName} ${column.remark!""} ${(column.description!"")?replace("\n","\\n")}
+        //model.set${column.fieldNameUpper}(无法构建);
     </#if>
 </#list>
 		return model;

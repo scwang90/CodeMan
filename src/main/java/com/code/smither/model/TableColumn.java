@@ -2,6 +2,9 @@ package com.code.smither.model;
 
 import com.code.smither.api.TaskLoader;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 模板Model-table-column
  * Created by SCWANG on 2015-07-04.
@@ -35,6 +38,8 @@ public class TableColumn {
 	private boolean autoIncrement;//是否自增
 	private boolean primaryKey;//是否是 PrimaryKey
 	private boolean stringType;//是否是 string类型
+
+	private List<String> descriptions;// 多行详细描述
 
 	public String getName() {
 		return name;
@@ -99,6 +104,10 @@ public class TableColumn {
 		return description;
 	}
 
+	public List<String> getDescriptions() {
+		return descriptions;
+	}
+
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
@@ -115,6 +124,11 @@ public class TableColumn {
 
 	public void setDescription(String description) {
 		this.description = description;
+		this.descriptions = Arrays.asList(description.split("\n"));
+	}
+
+	public void setDescriptions(List<String> descriptions) {
+		this.descriptions = descriptions;
 	}
 
 	public int getLength() {

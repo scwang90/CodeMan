@@ -28,6 +28,7 @@ public class Table implements IModel {
     private TableColumn idColumn; // ID列
 
     private List<TableColumn> columns;// 表字段
+    private List<String> descriptions;// 多行详细描述
 
     public String getName() {
         return name;
@@ -78,6 +79,14 @@ public class Table implements IModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<String> descriptions) {
+        this.descriptions = descriptions;
     }
 
     public String getClassName() {

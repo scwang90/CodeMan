@@ -4,6 +4,7 @@ import com.code.smither.engine.api.Model;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class Table implements Model, MetaDataTable {
     private TableColumn idColumn; // ID列
 
     private List<TableColumn> columns;// 表字段
+    private List<String> descriptions;// 多行详细描述
 
     public String getName() {
         return name;
@@ -41,9 +43,7 @@ public class Table implements Model, MetaDataTable {
     }
 
     public void setName(String name, Database database) {
-        this.name = name;
-        this.nameSQL = name;
-        this.nameSqlInStr = name;
+        this.setName(name);
         if (database != null && database.isKeyword(name)) {
             this.nameSQL = database.wrapperKeyword(name);
             this.nameSqlInStr = this.nameSQL.replace("\"","\\\"");
@@ -80,6 +80,15 @@ public class Table implements Model, MetaDataTable {
 
     public void setDescription(String description) {
         this.description = description;
+        this.descriptions = Arrays.asList(description.split("\n"));
+    }
+
+    public List<String> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<String> descriptions) {
+        this.descriptions = descriptions;
     }
 
     public String getClassName() {

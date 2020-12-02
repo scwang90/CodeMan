@@ -21,7 +21,10 @@ public class DefaultEmptyFieldFiller implements FieldFiller {
     }
 
     private void fill(Object model) {
-        if (model instanceof Map) {
+        if (model == null || model instanceof Map || model instanceof CharSequence) {
+            return;
+        }
+        if (model.getClass().getName().startsWith("java.")) {
             return;
         }
         Field[] fields = Reflecter.getField(model.getClass());
