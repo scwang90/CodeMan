@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.sql.SQLTransientConnectionException;
@@ -45,7 +46,7 @@ public class ErrorController extends BasicErrorController {
     private final ObjectMapper mapper;
     private final ErrorAttributes error;
 
-    @Value("${r"${error.original:false}"}")
+    @Value("${error.original:false}")
     private boolean original;
 
     public ErrorController(ObjectMapper mapper) {
@@ -53,7 +54,6 @@ public class ErrorController extends BasicErrorController {
         this.mapper = mapper;
         this.error = new DefaultErrorAttributes();
     }
-
 
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
@@ -73,7 +73,7 @@ public class ErrorController extends BasicErrorController {
             status = HttpStatus.NOT_ACCEPTABLE;
         } else if (error instanceof ClientException) {
             message = error.getMessage();
-        status = HttpStatus.BAD_REQUEST;
+            status = HttpStatus.BAD_REQUEST;
         } else if (error instanceof ConstraintViolationException) {
             List<String> messages = new LinkedList<>();
             for (ConstraintViolation<?> constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
@@ -82,6 +82,16 @@ public class ErrorController extends BasicErrorController {
             }
             errors = messages;
             status = HttpStatus.BAD_REQUEST;
+        } else if (error instanceof MethodArgumentNotValidException) {
+            List<String> messages = new LinkedList<>();
+            BindingResult result = ((MethodArgumentNotValidException) error).getBindingResult();
+            for (FieldError fieldError : result.getFieldErrors()) {
+                message = fieldError.getDefaultMessage();
+                messages.add(fieldError.getField() + ":" + message);
+            }
+            message = "参数验证错误，详细信息查看 errors";
+            errors = messages;
+            status = HttpStatus.EXPECTATION_FAILED;
         } else if (error instanceof BindException) {
             List<String> messages = new LinkedList<>();
             BindingResult result = ((BindException) error).getBindingResult();
@@ -89,7 +99,7 @@ public class ErrorController extends BasicErrorController {
                 message = fieldError.getDefaultMessage();
                 messages.add(fieldError.getField() + ":" + message);
             }
-            message = "未满足期望值";
+            message = "参数验证错误，详细信息查看 errors";
             errors = messages;
             status = HttpStatus.EXPECTATION_FAILED;
         } else if (!original && error != null) {

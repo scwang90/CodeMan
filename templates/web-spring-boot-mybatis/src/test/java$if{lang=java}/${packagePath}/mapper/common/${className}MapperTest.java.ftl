@@ -22,6 +22,8 @@ import ${packageName}.util.ID22;
 </#if>
 import ${packageName}.util.SqlIntent;
 import org.apache.ibatis.session.RowBounds;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 <#if find1>
@@ -63,6 +65,7 @@ public class ${className}MapperTest extends BaseMapperTests<${className}> {
      * @throws JsonProcessingException JSON 解析异常
      */
 	@Test
+    @Ignore
 	public void testFull() throws JsonProcessingException {
 <#if find1>
         //删除之前的测试数据

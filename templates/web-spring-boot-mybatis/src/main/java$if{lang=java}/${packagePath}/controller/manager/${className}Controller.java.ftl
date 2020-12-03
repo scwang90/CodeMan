@@ -6,7 +6,7 @@ import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
-<#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
+<#if !table.idColumn.autoIncrement && table.idColumn.stringType>
 import ${packageName}.util.ID22;
 </#if>
 import ${packageName}.util.SqlIntent;
@@ -68,7 +68,7 @@ public class ${className}Controller {
     @ApiImplicitParams({
 		<#list table.columns as column>
 		<#if column.name!=table.idColumn.name>
-		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
+		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}<#if column.stringType && !column.name?matches("^\\w+?(ID|CODE)$")>（最多${column.length}字符）</#if>", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
 		</#if>
 		</#list>
     })
@@ -99,7 +99,7 @@ public class ${className}Controller {
 	@ApiOperation(value = "更新${table.remark}")
 	@ApiImplicitParams({
 	<#list table.columns as column>
-		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
+		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}<#if column.stringType && !column.name?matches("^\\w+?(ID|CODE)$")>（最多${column.length}字符）</#if>", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
 	</#list>
 	})
     public ApiResult<Integer> update(@Validated @ApiIgnore ${className} model) {

@@ -110,9 +110,11 @@
     UPDATE ${table.nameSQL}
     <set>
       <#list table.columns as column>
-        <if test="${column.fieldName} != null">
-          ${column.nameSQL}=${r"#"}{${column.fieldName}},
-        </if>
+        <#if column.name != table.idColumn.name>
+      <if test="${column.fieldName} != null">
+        ${column.nameSQL}=${r"#"}{${column.fieldName}},
+      </if>
+        </#if>
       </#list>
     </set>
     WHERE ${table.idColumn.nameSQL}=${r"#"}{${table.idColumn.fieldName}}

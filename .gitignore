@@ -11,3 +11,4 @@
 /src/test/resources/c3p0-config.xml
 /src/test/resources/config.properties
 
+/templates/web-spring-boot-wd/
