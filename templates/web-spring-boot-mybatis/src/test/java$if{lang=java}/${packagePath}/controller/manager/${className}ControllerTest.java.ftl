@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Ignore
 public class ${className}ControllerTest extends BaseControllerTests {
 
 	@Test

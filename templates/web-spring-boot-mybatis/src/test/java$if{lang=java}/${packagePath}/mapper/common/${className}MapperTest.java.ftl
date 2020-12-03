@@ -39,6 +39,7 @@ import java.util.List;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Ignore
 public class ${className}MapperTest extends BaseMapperTests<${className}> {
 
 	private ${className} newModel(int index) {
