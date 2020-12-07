@@ -218,7 +218,7 @@
     <include refid="intentWhereOrder">
       <property name="orMap" value="${r"$"}{orMap}"/>
       <property name="andMap" value="${r"$"}{andMap}"/>
-      <property name="orderMap" value="${r"$"}{orderMap}"/>
+      <property name="orderSet" value="${r"$"}{orderSet}"/>
     </include>
   </select>
 
@@ -237,7 +237,7 @@
     <include refid="intentWhereOrder">
       <property name="orMap" value="${r"$"}{orMap}"/>
       <property name="andMap" value="${r"$"}{andMap}"/>
-      <property name="orderMap" value="${r"$"}{orderMap}"/>
+      <property name="orderSet" value="${r"$"}{orderSet}"/>
     </include>
   </select>
 
