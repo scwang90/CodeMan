@@ -20,7 +20,7 @@ public abstract class LangClassConverter implements ClassConverter {
 	public String converterClassName(String tableName) {
 		String classname = lang.converterClassName(tableName);
 		if (lang.isKeyword(classname)) {
-			classname = classname + "Ex";
+			classname = lang.wrapperKeyword(classname);
 		}
 		return classname;
 	}
@@ -28,7 +28,7 @@ public abstract class LangClassConverter implements ClassConverter {
 	public String converterFieldName(String columnName) {
 		String fieldName = lang.converterFieldName(columnName);
 		if (lang.isKeyword(fieldName)) {
-			fieldName = fieldName + "Ex";
+			fieldName = lang.wrapperKeyword(fieldName);
 		}
 		return fieldName;
 	}

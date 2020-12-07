@@ -46,7 +46,7 @@ public class ErrorController extends BasicErrorController {
     private final ObjectMapper mapper;
     private final ErrorAttributes error;
 
-    @Value("${error.original:false}")
+    @Value("${r"$"}{error.original:false}")
     private boolean original;
 
     public ErrorController(ObjectMapper mapper) {

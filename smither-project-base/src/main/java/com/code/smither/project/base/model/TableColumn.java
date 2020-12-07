@@ -30,6 +30,8 @@ public class TableColumn implements MetaDataColumn {
 	private String fieldNameUpper;// 首字母大写
 	private String fieldNameLower;// 首字母小写
 	private String fieldType;// 字段类型
+	private String fieldTypeObject;// 字段类型-对象类型（如 Integer Short）
+	private String fieldTypePrimitive;// 字段类型-基础类型（如 int short）
 	private String fieldJavaType;//java 字段类型
 	private String fieldCSharpType;//C# 字段类型
 	private String fieldKotlinType;//kotlin 字段类型
@@ -199,6 +201,22 @@ public class TableColumn implements MetaDataColumn {
 			fieldType = "";
 		}
 		this.fieldType = fieldType;
+	}
+
+	public String getFieldTypeObject() {
+		return fieldTypeObject;
+	}
+
+	public void setFieldTypeObject(String fieldTypeObject) {
+		this.fieldTypeObject = fieldTypeObject;
+	}
+
+	public String getFieldTypePrimitive() {
+		return fieldTypePrimitive;
+	}
+
+	public void setFieldTypePrimitive(String fieldTypePrimitive) {
+		this.fieldTypePrimitive = fieldTypePrimitive;
 	}
 
 	public String getFieldJavaType() {

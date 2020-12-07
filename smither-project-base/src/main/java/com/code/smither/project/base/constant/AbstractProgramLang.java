@@ -103,4 +103,8 @@ public abstract class AbstractProgramLang implements ProgramLang {
         }
         return Object.class;
     }
+
+    public String wrapperKeyword(String classname) {
+        return classname + "Ex";
+    }
 }

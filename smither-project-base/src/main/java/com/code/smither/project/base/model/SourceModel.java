@@ -215,8 +215,8 @@ public class SourceModel implements LangRootModel {
                 table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
                 if (table.getColumns() != null) {
                     for (TableColumn column : table.getColumns()) {
-                        column.setFieldName(converter.converterFieldName(column.getName()));
                         column.setFieldType(converter.converterFieldType(column));
+                        column.setFieldName(converter.converterFieldName(column.getName()));
                         column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
                         column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
                     }

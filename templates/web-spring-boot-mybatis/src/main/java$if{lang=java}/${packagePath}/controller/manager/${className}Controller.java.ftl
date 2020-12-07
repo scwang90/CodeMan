@@ -51,7 +51,7 @@ public class ${className}Controller {
 	}
 
 	@GetMapping
-	@ApiOperation(value = "${table.remark}列表")
+	@ApiOperation(value = "${table.remark}列表", notes = "分页参数支持两种形式，page 页数，skip 起始数据，两个传一个即可")
 	@ApiImplicitParams({
 		@ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
 		@ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
@@ -64,11 +64,11 @@ public class ${className}Controller {
     }
 
     @PostMapping
-    @ApiOperation(value = "添加${table.remark}")
+    @ApiOperation(value = "添加${table.remark}", notes = <#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>"返回新数据的Id"<#else>"返回是否成功"</#if>)
     @ApiImplicitParams({
 		<#list table.columns as column>
 		<#if column.name!=table.idColumn.name>
-		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}<#if column.stringType && !column.name?matches("^\\w+?(ID|CODE)$")>（最多${column.length}字符）</#if>", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
+		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}<#if column.stringType && !column.name?matches("^\\w+?(ID|CODE)$")>（最多${column.length}字符）</#if>", dataType = "${column.fieldType?replace("short","int")?replace("java.util.Date","date")?lower_case}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue?trim}"</#if>)<#if column_has_next>,</#if>
 		</#if>
 		</#list>
     })
@@ -81,10 +81,8 @@ public class ${className}Controller {
 	public ApiResult<Boolean> insert(@Validated @ApiIgnore ${className} model) {
 	</#if>
 	<#list table.columns as column>
-		<#if column.name == 'create_time'>
-		model.set${column.fieldNameUpper}(new Date());
-		<#elseif column.name == 'update_time'>
-		model.set${column.fieldNameUpper}(new Date());
+		<#if column.fieldType == 'java.util.Date' && (column.name?lower_case == 'create_time' || column.name?lower_case == 'create_date')>
+		model.set${column.fieldNameUpper}(new java.util.Date());
 		</#if>
 	</#list>
         mapper.insert(model);
@@ -96,16 +94,16 @@ public class ${className}Controller {
 	}
 
 	@PutMapping
-	@ApiOperation(value = "更新${table.remark}")
+	@ApiOperation(value = "更新${table.remark}", notes = "返回数据修改的行数")
 	@ApiImplicitParams({
 	<#list table.columns as column>
-		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}<#if column.stringType && !column.name?matches("^\\w+?(ID|CODE)$")>（最多${column.length}字符）</#if>", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
+		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}<#if column.stringType && !column.name?matches("^\\w+?(ID|CODE)$")>（最多${column.length}字符）</#if>", dataType = "${column.fieldType?replace("short","int")?replace("java.util.Date","date")?lower_case}" <#if column.nullable!=true>, required = true</#if><#if column.defValue?length != 0>, defaultValue = "${column.defValue?trim}"</#if>)<#if column_has_next>,</#if>
 	</#list>
 	})
     public ApiResult<Integer> update(@Validated @ApiIgnore ${className} model) {
 		<#list table.columns as column>
-			<#if column.name == 'update_time'>
-		model.set${column.fieldNameUpper}(new Date());
+			<#if column.fieldType == 'java.util.Date' && (column.name?lower_case == 'update_time' || column.name?lower_case == 'update_date')>
+		model.set${column.fieldNameUpper}(new java.util.Date());
 			</#if>
 		</#list>
 		return ApiResult.success(mapper.update(model));
