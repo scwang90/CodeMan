@@ -24,7 +24,7 @@ public class ${className} extends ModelBase{
 	/**
 	 * ${column.remark}
 	 */
-	<#if column.name==table.idColumn.name>
+	<#if column == table.idColumn>
 	@Id
 	</#if>
 	<#if column.nameSQL!=column.fieldName>

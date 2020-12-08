@@ -9,7 +9,7 @@
     <!--${table.idColumn.remark}-->
     <id column="${table.idColumn.name}" jdbcType="${table.idColumn.typeJdbc}" property="${table.idColumn.fieldName}" />
     <#list table.columns as column>
-    <#if table.idColumn.name != column.name>
+    <#if column != table.idColumn>
     <!--${column.remark?replace("-","~")}-->
     <result column="${column.name}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
     </#if>
@@ -110,7 +110,7 @@
     UPDATE ${table.nameSQL}
     <set>
       <#list table.columns as column>
-        <#if column.name != table.idColumn.name>
+        <#if column != table.idColumn>
       <if test="${column.fieldName} != null">
         ${column.nameSQL}=${r"#"}{${column.fieldName}},
       </if>

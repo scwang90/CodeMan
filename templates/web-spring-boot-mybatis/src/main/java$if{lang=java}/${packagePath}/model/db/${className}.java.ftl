@@ -32,7 +32,7 @@ public class ${className} extends Entity {
 
 	<#list table.columns as column>
 	/**
-	 * ${column.remark}<#if column.name==table.idColumn.name>【数据库主键】</#if>
+	 * ${column.remark}<#if column == table.idColumn>【数据库主键】</#if>
 		<#list column.descriptions as description>
 	 * ${description}
 		</#list>
@@ -41,9 +41,6 @@ public class ${className} extends Entity {
 		</#if>
 	 */
 	<#if column.stringType>
-	<#if !column.nullable>
-	@NotEmpty(message = "${column.remark}不能为空")
-	</#if>
 	@Size(max = ${column.length?c}, message = "${column.remark}不能超过${column.length}个字符")
 	</#if>
 	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, required = true</#if>)

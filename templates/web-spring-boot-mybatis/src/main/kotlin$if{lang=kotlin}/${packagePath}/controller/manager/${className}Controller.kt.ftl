@@ -46,7 +46,7 @@ class ${className}Controller {
     @ApiOperation(value = "添加${table.remark}", notes = "")
     @ApiImplicitParams(
 		<#list table.columns as column>
-		<#if column.name!=table.idColumn.name>
+		<#if column != table.idColumn>
 		ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}", dataType = "${column.fieldType}" <#if column.nullable!=true>, required = true</#if><#if column.defValue??>, defaultValue = "${column.defValue}"</#if>)<#if column_has_next>,</#if>
 		</#if>
 		</#list>

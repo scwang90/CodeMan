@@ -193,7 +193,7 @@
 
                         <div class="row">
 
-                            <!--列<#list table.columns as column><#if column.name != table.idColumn.name>${column.remark}列-->
+                            <!--列<#list table.columns as column><#if column != table.idColumn>${column.remark}列-->
                             <div class="col-md-4">
                                 <div class="form-group" :class="{'validate-has-error': errors.has('edit-${column.fieldName}') }">
                                     <label class="control-label">${column.remark}</label>

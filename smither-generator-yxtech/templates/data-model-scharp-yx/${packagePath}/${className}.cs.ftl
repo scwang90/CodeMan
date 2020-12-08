@@ -12,7 +12,7 @@ namespace ${packageName}
 	public class ${className} : CustomerServiceModelBase
 	{
 	<#list table.columns as column>
-	<#if column.name!=table.idColumn.name>
+	<#if column != table.idColumn>
     	/// <summary>
         ///${column.remark}
         /// </summary>

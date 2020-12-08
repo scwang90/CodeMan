@@ -5,11 +5,11 @@ package ${packageName}.mapper.common;
 <#assign column1='null'>
 <#assign column2='null'>
 <#list table.columns as column>
-    <#if (column.name != table.idColumn.name && column.stringType && column.length > 6 && !find2 && find1) >
+    <#if (column != table.idColumn && column.stringType && column.length > 6 && !find2 && find1) >
         <#assign find2=true>
         <#assign column2=column>
     </#if>
-    <#if (column.name != table.idColumn.name && column.stringType && column.length > 6 && !find1) >
+    <#if (column != table.idColumn && column.stringType && column.length > 6 && !find1) >
         <#assign find1=true>
         <#assign column1=column>
     </#if>
@@ -48,11 +48,11 @@ public class ${className}MapperTest extends BaseMapperTests<${className}> {
         model.set${table.idColumn.fieldNameUpper}(ID22.random()<#if table.idColumn.length < 22>.substring(0, ${table.idColumn.length})</#if>);
 </#if>
 <#list table.columns as column>
-    <#if column.stringType && column.name != table.idColumn.name>
+    <#if column.stringType && column != table.idColumn>
         model.set${column.fieldNameUpper}(buildInsertString(index, ${column.length?c}));
-    <#elseif column.fieldType == "java.util.Date" && column.name != table.idColumn.name>
+    <#elseif column.fieldType == "java.util.Date" && column != table.idColumn>
         model.set${column.fieldNameUpper}(new java.util.Date());
-    <#elseif column.nullable != true && column.name != table.idColumn.name>
+    <#elseif column.nullable != true && column != table.idColumn>
         //生成器无法构建必须字段来测试 ${column.fieldType} ${column.fieldName} ${column.remark!""} ${(column.description!"")?replace("\n","\\n")}
         //model.set${column.fieldNameUpper}(无法构建);
     </#if>
