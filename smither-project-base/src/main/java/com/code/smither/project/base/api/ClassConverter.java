@@ -9,6 +9,10 @@ import com.code.smither.project.base.model.TableColumn;
  */
 public interface ClassConverter {
 
+    enum DataType {
+        none, primitive, object
+    }
+
     /**
      * 根据表名转换成类名
      * @param tableName 表名
@@ -28,5 +32,5 @@ public interface ClassConverter {
      * @param column 数据库列
      * @return 编程语言数据类型
      */
-    String converterFieldType(TableColumn column);
+    String converterFieldType(TableColumn column, DataType... type);
 }

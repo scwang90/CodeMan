@@ -34,7 +34,10 @@ public abstract class LangClassConverter implements ClassConverter {
 	}
 
 	@Override
-	public String converterFieldType(TableColumn column) {
+	public String converterFieldType(TableColumn column, DataType... type) {
+		if (type.length > 0 && type[0] == DataType.primitive) {
+			return lang.getBasicType(column);
+		}
 		return lang.getType(column);
 	}
 }

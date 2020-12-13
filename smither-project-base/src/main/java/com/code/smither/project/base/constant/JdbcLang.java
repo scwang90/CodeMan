@@ -34,7 +34,7 @@ public class JdbcLang extends AbstractProgramLang {
     @Override
     public String getType(TableColumn column) {
         try {
-            for (Field field: getFields(Types.class)) {
+            for (Field field: getFields()) {
                 if (Objects.equals(field.get(Types.class), column.getTypeInt())) {
                     return field.getName();
                 }
@@ -45,10 +45,10 @@ public class JdbcLang extends AbstractProgramLang {
         return "";
     }
 
-    private Field[] getFields(Class<Types> clazz) {
+    private Field[] getFields() {
         if (mFields == null) {
             List<Field> fields = new ArrayList<>();
-            for (Field field: clazz.getFields()) {
+            for (Field field: Types.class.getFields()) {
                 if (Modifier.isStatic(field.getModifiers()) && field.getType().equals(int.class)) {
                     fields.add(field);
                 }

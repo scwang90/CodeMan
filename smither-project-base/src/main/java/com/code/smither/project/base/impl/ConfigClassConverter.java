@@ -59,8 +59,4 @@ public class ConfigClassConverter extends LangClassConverter {
         return super.converterFieldName(columnName);
     }
 
-    @Override
-    public String converterFieldType(TableColumn column) {
-        return lang.getBasicType(column);
-    }
 }

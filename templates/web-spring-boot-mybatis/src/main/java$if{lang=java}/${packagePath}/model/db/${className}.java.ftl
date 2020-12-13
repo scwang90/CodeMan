@@ -51,7 +51,7 @@ public class ${className} extends Entity {
 	}
 	<#list table.columns as column>
 
-	public ${column.fieldType} get${column.fieldNameUpper}(){
+	public ${column.fieldType} get${column.fieldNameUpper}() {
 		return this.${column.fieldName};
 	}
 

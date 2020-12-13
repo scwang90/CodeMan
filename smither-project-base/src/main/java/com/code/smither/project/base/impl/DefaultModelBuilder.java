@@ -273,9 +273,16 @@ public class DefaultModelBuilder implements ModelBuilder {
 		String name = this.convertIfNeed(column.getName());
 		column.setTypeJdbc(jdbcLang.getType(column));
 		column.setFieldName(this.classConverter.converterFieldName(name));
-		column.setFieldType(this.classConverter.converterFieldType(column));
 		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 		column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
+		column.setFieldType(this.classConverter.converterFieldType(column));
+		column.setFieldTypeObject(this.classConverter.converterFieldType(column, ClassConverter.DataType.object));
+		column.setFieldTypePrimitive(this.classConverter.converterFieldType(column, ClassConverter.DataType.primitive));
+		if (column.isNullable()) {
+			column.setFieldType(column.getFieldTypeObject());
+		} else {
+			column.setFieldType(column.getFieldTypePrimitive());
+		}
 
 		column.setStringType(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
 
