@@ -33,7 +33,7 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.NCLOB:
                 return NClob.class;
             case Types.TINYINT:
-                return Byte.class;
+//                return Byte.class;
             case Types.SMALLINT:
                 return Short.class;
             case Types.BIGINT:
