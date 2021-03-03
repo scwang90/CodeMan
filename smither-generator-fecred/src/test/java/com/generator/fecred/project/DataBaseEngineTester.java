@@ -30,7 +30,7 @@ public class DataBaseEngineTester {
     }
 
     @Test
-    public void DataBaseQh() {
+    public void DataBaseEnterPack() {
         try {
             DataBaseConfig config = DbConfigFactory.loadConfig("qh-project.properties");
             DataBaseEngine engine = new DataBaseEngine(config);

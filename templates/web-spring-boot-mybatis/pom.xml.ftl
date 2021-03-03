@@ -151,6 +151,13 @@
 			<version>3.2.0</version>
 		</dependency>
 
+		<!--对象拷贝框架-->
+		<dependency>
+			<groupId>com.github.houbb</groupId>
+			<artifactId>bean-mapping-core</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
 		<#if lang=="kotlin">
 		<!--kotlin 语言-->
 		<dependency>

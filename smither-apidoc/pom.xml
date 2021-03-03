@@ -6,6 +6,7 @@
         <groupId>com.code.smither</groupId>
         <artifactId>smither-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../smither-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

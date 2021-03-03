@@ -6,6 +6,7 @@
         <groupId>com.code.smither</groupId>
         <artifactId>smither-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../smither-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -33,5 +34,10 @@
             <artifactId>poi-ooxml</artifactId>
         </dependency>
 
+        <!-- c3p0连接池 -->
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+        </dependency>
     </dependencies>
 </project>

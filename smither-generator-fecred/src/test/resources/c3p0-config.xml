@@ -28,10 +28,10 @@
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="jdbcUrl">jdbc:mysql://192.168.1.19:19336/vegetable_base</property>
 	</named-config>
-	<named-config name="qh">
+	<named-config name="pack">
 		<property name="user">root</property>
-		<property name="password">scwang</property>
+		<property name="password">123456</property>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
-		<property name="jdbcUrl">jdbc:mysql://192.168.226.125:3306/qh</property>
+		<property name="jdbcUrl">jdbc:mysql://192.168.0.60:3306/enter_pack</property>
 	</named-config>
 </c3p0-config>
