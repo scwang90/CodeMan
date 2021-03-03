@@ -12,3 +12,4 @@
 /src/test/resources/config.properties
 
 /templates/web-spring-boot-wd/
+/smither-parent/smither-parent.iml
