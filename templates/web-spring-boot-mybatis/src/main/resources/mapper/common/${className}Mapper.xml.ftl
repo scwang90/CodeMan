@@ -66,17 +66,29 @@
     INSERT INTO ${table.nameSQL} (
     <trim suffixOverrides=",">
     <#list table.columns as column>
-      <if test="${column.fieldName} != null">
-        ${column.nameSQL},
-      </if>
+      <#if column.autoIncrement>
+        <if test="${column.fieldName} != 0">
+          ${column.nameSQL},
+        </if>
+      <#else >
+        <if test="${column.fieldName} != null">
+          ${column.nameSQL},
+        </if>
+      </#if>
     </#list>
     </trim>
     ) VALUES (
     <trim suffixOverrides=",">
     <#list table.columns as column>
-      <if test="${column.fieldName} != null">
-        ${r"#"}{${column.fieldName}},
-      </if>
+      <#if column.autoIncrement>
+        <if test="${column.fieldName} != 0">
+          ${r"#"}{${column.fieldName}},
+        </if>
+      <#else >
+        <if test="${column.fieldName} != null">
+          ${r"#"}{${column.fieldName}},
+        </if>
+      </#if>
     </#list>
     </trim>
     )
