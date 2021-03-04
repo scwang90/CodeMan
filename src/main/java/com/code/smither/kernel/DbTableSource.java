@@ -1,20 +1,15 @@
 package com.code.smither.kernel;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.code.smither.factory.api.DbFactory;
 import com.code.smither.kernel.api.Converter;
 import com.code.smither.kernel.api.Remarker;
 import com.code.smither.kernel.api.TableSource;
 import com.code.smither.model.Table;
 import com.code.smither.model.TableColumn;
 import com.code.smither.util.StringUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 模板Model-Table构建器

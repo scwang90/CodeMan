@@ -1,12 +1,11 @@
 package com.code.smither.factory;
 
+import com.code.smither.factory.api.DbFactory;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
-
-import javax.sql.DataSource;
-
-import com.code.smither.factory.api.DbFactory;
 
 /**
  * C3p0数据库链接池

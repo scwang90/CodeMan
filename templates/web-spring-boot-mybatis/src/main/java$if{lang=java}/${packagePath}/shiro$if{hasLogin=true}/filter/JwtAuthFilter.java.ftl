@@ -83,7 +83,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
             JwtBearer jwtBearer = subject.getPrincipals().oneByType(JwtBearer.class);
             DecodedJWT jwt = subject.getPrincipals().oneByType(DecodedJWT.class);
             Date issuedAt = jwt.getIssuedAt();
-            if (System.currentTimeMillis() - issuedAt.getTime() > tokenRefreshTime * 1000) {
+            if (System.currentTimeMillis() - issuedAt.getTime() > tokenRefreshTime * 1000 && tokenRefreshTime > 0) {
                 String jwtToken = JwtUtils.createToken(jwtBearer, jwtAlgorithm, (int) (tokenExpiryTime * 60 * 1000));
                 JwtUtils.writeToHeader(jwtToken, (HttpServletRequest) request, (HttpServletResponse) response);
             }

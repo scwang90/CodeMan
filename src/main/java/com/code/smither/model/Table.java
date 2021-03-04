@@ -1,7 +1,6 @@
 package com.code.smither.model;
 
 import com.code.smither.api.IModel;
-import com.code.smither.api.TaskLoader;
 
 import java.util.List;
 

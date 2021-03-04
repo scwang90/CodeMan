@@ -90,4 +90,10 @@ public class AuthController {
         return new ApiResult<>(null, ResultCode.C401.code, ResultCode.C401.remark);
     }
 
+    @ApiIgnore
+    @ApiOperation(value = "凭证过期", hidden = true)
+    @RequestMapping("expired")
+    public ApiResult<Object> expired() {
+        return new ApiResult<>(null, ResultCode.C403.code, ResultCode.C403.remark);
+    }
 }
