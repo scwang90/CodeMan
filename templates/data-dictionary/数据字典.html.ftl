@@ -34,7 +34,12 @@
                     <td><#if column.nullable></#if><#if !column.nullable>是</#if></td>
                     <td><#if column.primaryKey>是</#if><#if !column.primaryKey></#if></td>
                     <td><#if column.autoIncrement>自增</#if></td>
-                    <td>${column.remark}</td>
+                    <td>
+                        ${column.remark}
+                        <#list column.descriptions as description>
+                            <br/> ${description}
+                        </#list>
+                    </td>
                 </tr>
             </#list>
             </tbody>
