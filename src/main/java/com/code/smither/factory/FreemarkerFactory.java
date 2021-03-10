@@ -1,11 +1,11 @@
 package com.code.smither.factory;
 
-import java.io.File;
-import java.io.IOException;
-
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 模板引擎工厂

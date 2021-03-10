@@ -2,7 +2,6 @@ package com.code.smither.kernel.api;
 
 import com.code.smither.model.Table;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

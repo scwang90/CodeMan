@@ -302,6 +302,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 			if (matcher.find()) {
 				column.setRemark(matcher.group(1));
 				column.setDescription(matcher.group(2));
+				if (column.getDescription().length() < column.getRemark().length()) {
+					column.setDescription(remark);
+					column.setDescriptions(null);
+				}
 			} else if (column.getName().matches("[^\\x00-\\xff]+")) {
 				column.setDescription(column.getRemark());
 				column.setRemark(column.getName());
