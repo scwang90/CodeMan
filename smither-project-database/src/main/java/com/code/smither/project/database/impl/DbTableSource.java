@@ -145,6 +145,7 @@ public class DbTableSource implements TableSource {
 		column.setDefValue(resultSet.getString("COLUMN_DEF"));
 		column.setNullable(resultSet.getBoolean("NULLABLE"));
 		column.setRemark(resultSet.getString("REMARKS"));
+		column.setComment(resultSet.getString("REMARKS"));
 		column.setDecimalDigits(resultSet.getInt("DECIMAL_DIGITS"));
 		return column;
 	}

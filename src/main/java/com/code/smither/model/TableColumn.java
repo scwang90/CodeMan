@@ -21,6 +21,7 @@ public class TableColumn {
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
 	private String description;//详细描述（分析得到）
+	private String comment;//原始备注（remark+description）
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
@@ -94,6 +95,10 @@ public class TableColumn {
 		this.typeJdbc = typeJdbc;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
 	public String getRemark() {
 		return remark;
 	}
@@ -115,6 +120,13 @@ public class TableColumn {
 			remark = "";
 		}
 		this.remark = remark;
+	}
+
+	public void setComment(String comment) {
+		if (comment == null) {
+			comment = "";
+		}
+		this.comment = comment;
 	}
 
 	public void setDefValue(String defValue) {

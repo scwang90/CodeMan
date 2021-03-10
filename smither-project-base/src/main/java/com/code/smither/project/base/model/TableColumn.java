@@ -21,6 +21,7 @@ public class TableColumn implements MetaDataColumn {
 	private String remark;// 字段注释
 	private String defValue;// 字段注释
 	private String description;//详细描述（分析得到）
+	private String comment;//原始备注（remark+description）
 
 	private int length;//列长度
 	private int typeInt;//数据库列类型
@@ -108,6 +109,10 @@ public class TableColumn implements MetaDataColumn {
 		return remark;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
 	public String getDefValue() {
 		return defValue;
 	}
@@ -125,6 +130,13 @@ public class TableColumn implements MetaDataColumn {
 			remark = "";
 		}
 		this.remark = remark;
+	}
+
+	public void setComment(String comment) {
+		if (comment == null) {
+			comment = "";
+		}
+		this.comment = comment;
 	}
 
 	public void setDefValue(String defValue) {

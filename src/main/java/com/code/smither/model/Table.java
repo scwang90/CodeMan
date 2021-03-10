@@ -17,6 +17,7 @@ public class Table implements IModel {
     private String nameSQLInStr;// SQL语句中使用的名称(在字符串拼接中使用)
     private String remark;// 字段注释
     private String description;//详细描述 (分析得到)
+    private String comment;//原始备注（remark+description）
 
     private String urlPathName;// 对应的 url 路劲名称
 
@@ -87,6 +88,14 @@ public class Table implements IModel {
 
     public void setDescriptions(List<String> descriptions) {
         this.descriptions = descriptions;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getClassName() {

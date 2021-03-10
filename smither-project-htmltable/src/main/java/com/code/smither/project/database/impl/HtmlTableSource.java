@@ -215,6 +215,7 @@ public class HtmlTableSource implements TableSource {
         column.setDefValue  (metaData.getColumnDefValue(columnMetaData));
         column.setNullable  (metaData.getColumnNullable(columnMetaData));
         column.setRemark    (metaData.getColumnRemark  (columnMetaData));
+        column.setComment   (metaData.getColumnRemark  (columnMetaData));
         column.setAutoIncrement(metaData.getColumnAutoIncrement(columnMetaData));
         return column;
     }
