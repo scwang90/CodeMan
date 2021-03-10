@@ -2,7 +2,6 @@ package ${packageName}.service.manager;
 
 import com.github.pagehelper.PageRowBounds;
 import ${packageName}.mapper.common.${className}Mapper;
-import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
@@ -40,7 +39,6 @@ public class ${className}Service {
 	 * @param paging 分页对象
 	 */
     public Paged<${className}> list(Paging paging) {
-		int count = mapper.countAll();
 		List<${className}> list = mapper.findListIntent(SqlIntent.New(), new PageRowBounds(paging.start(), paging.count()));
 		return new Paged<>(paging, list);
     }

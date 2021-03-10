@@ -35,7 +35,9 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.TINYINT:
 //                return Byte.class;
             case Types.SMALLINT:
-                return Short.class;
+//                return Short.class;
+            case Types.INTEGER:
+                return Integer.class;
             case Types.BIGINT:
                 return Long.class;
             case Types.FLOAT:
@@ -45,8 +47,6 @@ public abstract class AbstractProgramLang implements ProgramLang {
                 return Double.class;
             case Types.DECIMAL:
                 return BigDecimal.class;
-            case Types.INTEGER:
-                return Integer.class;
             case Types.BIT:
             case Types.BOOLEAN:
                 return Boolean.class;

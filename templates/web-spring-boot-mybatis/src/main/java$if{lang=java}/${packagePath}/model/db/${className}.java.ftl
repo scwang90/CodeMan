@@ -7,10 +7,10 @@ import io.swagger.annotations.ApiModelProperty;
 <#assign hasStringType=false>
 <#assign hasStringRequired=false>
 <#list table.columns as column>
-	<#if column.stringType && !column.nullable && hasStringRequired==false>
-import javax.validation.constraints.NotEmpty;
-        <#assign hasStringRequired=true>
-	</#if>
+<#--	<#if column.stringType && !column.nullable && hasStringRequired==false>-->
+<#--import javax.validation.constraints.NotEmpty;-->
+<#--        <#assign hasStringRequired=true>-->
+<#--	</#if>-->
 	<#if column.stringType && hasStringType==false>
 import javax.validation.constraints.Size;
         <#assign hasStringType=true>

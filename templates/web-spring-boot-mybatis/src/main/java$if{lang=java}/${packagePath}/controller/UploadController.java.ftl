@@ -40,8 +40,8 @@ import springfox.documentation.annotations.ApiIgnore;
  */
 @Validated
 @Controller
-@Api(value = "user", description = "用户API")
-@RequestMapping("/api/vi/file")
+@Api(value = "user", description = "文件上传API")
+@RequestMapping("/api/v1/file")
 public class UploadController {
 
 	private final UploadMapper mapper;
