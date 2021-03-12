@@ -23,6 +23,8 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnPrefix = "";
     protected String columnSuffix = "";
     protected String columnDivision = "";
+    protected String columnCreate = "create_time,create_date";
+    protected String columnUpdate = "update_time,update_date";
 
     protected String templateLang = ProgramLang.Lang.Java.value;
     protected String templatePath = "../templates/web-spring-boot-mybatis";
@@ -173,6 +175,22 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
         this.columnDivision = columnDivision;
     }
 
+    public String getColumnCreate() {
+        return columnCreate;
+    }
+
+    public void setColumnCreate(String columnCreate) {
+        this.columnCreate = columnCreate;
+    }
+
+    public String getColumnUpdate() {
+        return columnUpdate;
+    }
+
+    public void setColumnUpdate(String columnUpdate) {
+        this.columnUpdate = columnUpdate;
+    }
+
     public String getTemplateLang() {
         return templateLang;
     }
@@ -260,4 +278,5 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     public void setWordReplaceDictPath(String wordReplaceDictPath) {
         this.wordReplaceDictPath = wordReplaceDictPath;
     }
+
 }

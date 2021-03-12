@@ -20,17 +20,17 @@ public class ConfigFactory {
 
 		XmlApiDocConfig config = new XmlApiDocConfig();
 
-		config.setNow(properties.getProperty("code.smither.now",config.getNow()));
+		config.setNow(properties.getProperty("code.man.now",config.getNow()));
 
-		config.setTemplateFtlOnly("true".equals(properties.getProperty("code.smither.template.ftl-only")));
-		config.setTemplatePath(properties.getProperty("code.smither.template.path",config.getTemplatePath()));
-		config.setTemplateCharset(properties.getProperty("code.smither.template.charset",config.getTemplateCharset()));
+		config.setTemplateFtlOnly("true".equals(properties.getProperty("code.man.template.ftl-only")));
+		config.setTemplatePath(properties.getProperty("code.man.template.path",config.getTemplatePath()));
+		config.setTemplateCharset(properties.getProperty("code.man.template.charset",config.getTemplateCharset()));
 
-		config.setTargetPath(properties.getProperty("code.smither.target.path",config.getTargetPath()));
-		config.setTargetCharset(properties.getProperty("code.smither.target.charset",config.getTargetCharset()));
+		config.setTargetPath(properties.getProperty("code.man.target.path",config.getTargetPath()));
+		config.setTargetCharset(properties.getProperty("code.man.target.charset",config.getTargetCharset()));
 
-		config.setXmlSourcePath(properties.getProperty("code.smither.xmlsource.path",config.getXmlSourcePath()));
-		config.setXmlSourceCharset(properties.getProperty("code.smither.xmlsource.charset",config.getXmlSourceCharset()));
+		config.setXmlSourcePath(properties.getProperty("code.man.xmlsource.path",config.getXmlSourcePath()));
+		config.setXmlSourceCharset(properties.getProperty("code.man.xmlsource.charset",config.getXmlSourceCharset()));
 
 
 		return config;

@@ -43,7 +43,7 @@ public class StringUtil {
 		return origin;
 	}
 
-	public static boolean isNollOrBlank(String remark) {
+	public static boolean isNullOrBlank(String remark) {
 		if (remark == null) {
 			return true;
 		}

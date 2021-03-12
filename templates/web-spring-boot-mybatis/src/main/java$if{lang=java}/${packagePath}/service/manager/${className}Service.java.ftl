@@ -35,7 +35,7 @@ public class ${className}Service {
 	}
 
 	/**
-	 * ${table.remark}列表
+	 * ${table.remarkName}列表
 	 * @param paging 分页对象
 	 */
     public Paged<${className}> list(Paging paging) {
@@ -44,7 +44,7 @@ public class ${className}Service {
     }
 
 	/**
-	 * 添加${table.remark}
+	 * 添加${table.remarkName}
 	 * @param model 实体对象
 	<#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
 	 × @return 返回新数据的Id
@@ -59,8 +59,12 @@ public class ${className}Service {
 	public boolean insert(${className} model) {
 	</#if>
 	<#list table.columns as column>
-		<#if column.fieldType == 'java.util.Date' && (column.name?lower_case == 'create_time' || column.name?lower_case == 'create_date')>
+		<#if column == table.updateColumn || column == table.createColumn>
+			<#if column.fieldType == 'long'>
+		model.set${column.fieldNameUpper}(System.currentTimeMillis());
+			<#elseif column.fieldType == 'java.util.Date'>
 		model.set${column.fieldNameUpper}(new java.util.Date());
+			</#if>
 		</#if>
 	</#list>
         mapper.insert(model);
@@ -72,21 +76,25 @@ public class ${className}Service {
 	}
 
 	/**
-	 * 更新${table.remark}
+	 * 更新${table.remarkName}
 	 * @param model 实体对象
 	 × @return 返回数据修改的行数
 	 */
     public int update(${className} model) {
 		<#list table.columns as column>
-			<#if column.fieldType == 'java.util.Date' && (column.name?lower_case == 'update_time' || column.name?lower_case == 'update_date')>
+			<#if column == table.updateColumn>
+				<#if column.fieldType == 'long'>
+		model.set${column.fieldNameUpper}(System.currentTimeMillis());
+				<#elseif column.fieldType == 'java.util.Date'>
 		model.set${column.fieldNameUpper}(new java.util.Date());
+				</#if>
 			</#if>
 		</#list>
 		return mapper.update(model);
 	}
 
 	///**
-	// * 获取${table.remark}
+	// * 获取${table.remarkName}
 	// * @param id 数据主键
 	// × @return 数据实体对象
 	// */
@@ -95,7 +103,7 @@ public class ${className}Service {
 	//}
 
 	///**
-	// * 获取${table.remark}
+	// * 获取${table.remarkName}
 	// * @param id 数据主键
 	// × @return 返回数据修改的行数
 	// */

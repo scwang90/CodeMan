@@ -39,10 +39,24 @@
   <sql id="intentWhere">
     <where>
       <foreach collection="andMap" index="key" item="value" separator=" AND ">
-        ${r"$"}{key} = ${r"#"}{value}
+        <choose>
+          <when test="value != null">
+            ${r"$"}{key} = ${r"#"}{value}
+          </when>
+          <otherwise>
+            ${r"$"}{key} IS NULL
+          </otherwise>
+        </choose>
       </foreach>
       <foreach collection="orMap" index="key" item="value" open=" AND (" separator=" OR " close=")">
-        ${r"$"}{key} = ${r"#"}{value}
+        <choose>
+          <when test="value != null">
+            ${r"$"}{key} = ${r"#"}{value}
+          </when>
+          <otherwise>
+            ${r"$"}{key} IS NULL
+          </otherwise>
+        </choose>
       </foreach>
     </where>
   </sql>

@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Model 非空验证器
@@ -17,6 +19,7 @@ import java.lang.reflect.Field;
  */
 public class ModelRequest {
 
+    private static final List<String> ignores = Arrays.asList("id,createTime,updateTime,createDate,updateDate".split(","));
     /**
     * 验证客户端发送的参数中是否有不能为空，但是却没有传的参数
     * @param model 客户端发送参数
@@ -30,7 +33,7 @@ public class ModelRequest {
             for (Field field : fields) {
                 if (field.isAnnotationPresent(ApiModelProperty.class)) {
                     ApiModelProperty annotation = field.getAnnotation(ApiModelProperty.class);
-                    if (annotation.required() && !"id".equals(field.getName())) {
+                    if (annotation.required() && !ignores.contains(field.getName())) {
                         field.setAccessible(true);
                         Object o = field.get(model);
                         if (o == null || (o instanceof String && StringUtils.isEmpty(o))) {

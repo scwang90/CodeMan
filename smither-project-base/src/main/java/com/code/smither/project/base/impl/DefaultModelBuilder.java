@@ -159,12 +159,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 		table.setUrlPathName(buildUrlPath(table));
 
-		if (StringUtil.isNollOrBlank(table.getRemark())) {
+		if (StringUtil.isNullOrBlank(table.getRemark())) {
 			table.setRemark(tableSource.queryTableRemark(tableMate));
 		}
 
 		String remark = table.getRemark();
-		if (StringUtil.isNollOrBlank(remark)) {
+		if (StringUtil.isNullOrBlank(remark)) {
 			table.setRemark(tableMate.getName());
 		} else {
 			Matcher matcher = regex.matcher(remark);
@@ -257,6 +257,32 @@ public class DefaultModelBuilder implements ModelBuilder {
 				id.setFieldType(this.classConverter.converterFieldType(id));
             }
         }
+		String columnCreate = config.getColumnCreate();
+		if (!StringUtil.isNullOrBlank(columnCreate)) {
+			String[] columnNames = columnCreate.split(",");
+			for (String columnName : columnNames) {
+				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setCreateColumn);
+				if (table.getCreateColumn() != null) {
+					break;
+				}
+			}
+		}
+		String columnUpdate = config.getColumnUpdate();
+		if (!StringUtil.isNullOrBlank(columnUpdate)) {
+			String[] columnNames = columnUpdate.split(",");
+			for (String columnName : columnNames) {
+				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setUpdateColumn);
+				if (table.getUpdateColumn() != null) {
+					break;
+				}
+			}
+		}
+		if (table.getCreateColumn() == null) {
+			table.setCreateColumn(new TableColumn());
+		}
+		if (table.getUpdateColumn() == null) {
+			table.setUpdateColumn(new TableColumn());
+		}
 		table.setColumns(columns);
 		return table;
 	}
@@ -290,12 +316,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));
 		}
 
-		if (StringUtil.isNollOrBlank(column.getRemark())) {
+		if (StringUtil.isNullOrBlank(column.getRemark())) {
 			column.setRemark(tableSource.queryColumnRemark(columnMate));
 		}
 
 		String remark = column.getRemark();
-		if (StringUtil.isNollOrBlank(remark)) {
+		if (StringUtil.isNullOrBlank(remark)) {
 			column.setRemark(columnMate.getName());
 		} else {
 			Matcher matcher = regex.matcher(remark);

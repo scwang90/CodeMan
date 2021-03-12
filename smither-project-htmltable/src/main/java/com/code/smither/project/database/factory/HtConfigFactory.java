@@ -19,13 +19,13 @@ public class HtConfigFactory {
 		Properties properties = ConfigFactory.loadProperties(path);
 		ProjectConfigFactory.loadConfig(properties, config);
 
-		config.setHtmlTablePath(properties.getProperty("code.smither.html.table.path",config.getHtmlTablePath()));
-		config.setHtmlTableCharset(properties.getProperty("code.smither.html.table.charset",config.getHtmlTableCharset()));
+		config.setHtmlTablePath(properties.getProperty("code.man.html.table.path",config.getHtmlTablePath()));
+		config.setHtmlTableCharset(properties.getProperty("code.man.html.table.charset",config.getHtmlTableCharset()));
 
-		config.setJdbcUrl(properties.getProperty("code.smither.jdbc.url",config.getJdbcUrl()));
-		config.setJdbcDriver(properties.getProperty("code.smither.jdbc.driver",config.getJdbcDriver()));
-		config.setJdbcUsername(properties.getProperty("code.smither.jdbc.username",config.getJdbcUsername()));
-		config.setJdbcPassword(properties.getProperty("code.smither.jdbc.password",config.getJdbcPassword()));
+		config.setJdbcUrl(properties.getProperty("code.man.jdbc.url",config.getJdbcUrl()));
+		config.setJdbcDriver(properties.getProperty("code.man.jdbc.driver",config.getJdbcDriver()));
+		config.setJdbcUsername(properties.getProperty("code.man.jdbc.username",config.getJdbcUsername()));
+		config.setJdbcPassword(properties.getProperty("code.man.jdbc.password",config.getJdbcPassword()));
 
 		return config;
 	}

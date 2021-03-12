@@ -23,7 +23,7 @@ public class DbConfigFactory {
 
 	public static void loadConfig(Properties properties, DataBaseConfig config) {
 		ProjectConfigFactory.loadConfig(properties, config);
-		config.setDbConfigName(properties.getProperty("code.smither.database.config.name", config.getDbConfigName()));
+		config.setDbConfigName(properties.getProperty("code.man.database.config.name", config.getDbConfigName()));
 	}
 
 }

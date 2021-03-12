@@ -43,7 +43,12 @@ public class ${className} extends Entity {
 	<#if column.stringType>
 	@Size(max = ${column.length?c}, message = "${column.remark}不能超过${column.length}个字符")
 	</#if>
+	<#if column == table.createColumn || column == table.updateColumn>
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, hidden = true</#if>)
+	<#else>
 	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, required = true</#if>)
+	</#if>
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 

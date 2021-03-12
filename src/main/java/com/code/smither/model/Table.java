@@ -17,6 +17,7 @@ public class Table implements IModel {
     private String remark;// 字段注释
     private String description;//详细描述 (分析得到)
     private String comment;//原始备注（remark+description）
+    private String remarkName;//备注名称（与remark的区别时不已'表'结尾）
 
     private String urlPathName;// 对应的 url 路劲名称
 
@@ -26,6 +27,8 @@ public class Table implements IModel {
     private String classNameLower;// 类名全小写
 
     private TableColumn idColumn; // ID列
+    private TableColumn createColumn;//创建日志列
+    private TableColumn updateColumn;//更新日志列
 
     private List<TableColumn> columns;// 表字段
     private List<String> descriptions;// 多行详细描述
@@ -97,6 +100,14 @@ public class Table implements IModel {
         this.comment = comment;
     }
 
+    public String getRemarkName() {
+        return remarkName;
+    }
+
+    public void setRemarkName(String remarkName) {
+        this.remarkName = remarkName;
+    }
+
     public String getClassName() {
         return className;
     }
@@ -135,6 +146,22 @@ public class Table implements IModel {
 
     public void setIdColumn(TableColumn idColumn) {
         this.idColumn = idColumn;
+    }
+
+    public TableColumn getUpdateColumn() {
+        return updateColumn;
+    }
+
+    public void setUpdateColumn(TableColumn updateColumn) {
+        this.updateColumn = updateColumn;
+    }
+
+    public TableColumn getCreateColumn() {
+        return createColumn;
+    }
+
+    public void setCreateColumn(TableColumn createColumn) {
+        this.createColumn = createColumn;
     }
 
     public List<TableColumn> getColumns() {

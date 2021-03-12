@@ -28,19 +28,19 @@ public class ConfigFactory {
 
     public static <T extends EngineConfig> T loadConfig(Properties properties, T config) {
 
-        config.setNow(properties.getProperty("code.smither.now",config.getNow()));
+        config.setNow(properties.getProperty("code.man.now",config.getNow()));
 
-        config.setTemplateFtlOnly("true".equalsIgnoreCase(properties.getProperty("code.smither.template.ftl-only")));
-        config.setTemplatePath(properties.getProperty("code.smither.template.path",config.getTemplatePath()));
-        config.setTemplateCharset(properties.getProperty("code.smither.template.charset",config.getTemplateCharset()));
+        config.setTemplateFtlOnly("true".equalsIgnoreCase(properties.getProperty("code.man.template.ftl-only")));
+        config.setTemplatePath(properties.getProperty("code.man.template.path",config.getTemplatePath()));
+        config.setTemplateCharset(properties.getProperty("code.man.template.charset",config.getTemplateCharset()));
 
-        config.setTargetPath(properties.getProperty("code.smither.target.path",config.getTargetPath()));
-        config.setTargetCharset(properties.getProperty("code.smither.target.charset",config.getTargetCharset()));
+        config.setTargetPath(properties.getProperty("code.man.target.path",config.getTargetPath()));
+        config.setTargetCharset(properties.getProperty("code.man.target.charset",config.getTargetCharset()));
 
-        config.setIncludeFile(properties.getProperty("code.smither.template.include.file",config.getIncludeFile()));
-        config.setIncludePath(properties.getProperty("code.smither.template.include.path",config.getIncludePath()));
-        config.setFilterFile(properties.getProperty("code.smither.template.filter.file",config.getFilterFile()));
-        config.setFilterPath(properties.getProperty("code.smither.template.filter.path",config.getFilterPath()));
+        config.setIncludeFile(properties.getProperty("code.man.template.include.file",config.getIncludeFile()));
+        config.setIncludePath(properties.getProperty("code.man.template.include.path",config.getIncludePath()));
+        config.setFilterFile(properties.getProperty("code.man.template.filter.file",config.getFilterFile()));
+        config.setFilterPath(properties.getProperty("code.man.template.filter.path",config.getFilterPath()));
         return config;
     }
 
