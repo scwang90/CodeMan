@@ -14,7 +14,7 @@ import java.util.List;
 public class TableColumn implements MetaDataColumn {
 	
 	private String name;// 原名称
-	private String nameSQL;// SQL语句中使用的名称
+	private String nameSql;// SQL语句中使用的名称
 	private String nameSqlInStr;// SQL语句中使用的名称（在字符串拼接中使用）
 	private String type;// 字段类型名称（数据库返回的值）
 	private String typeJdbc;// 字段类型名称（JDBC 枚举，所有数据库一致性，java.sql.Types 枚举所有的类型）
@@ -53,26 +53,26 @@ public class TableColumn implements MetaDataColumn {
 			name = "";
 		}
 		this.name = name;
-		this.nameSQL = nameSQL == null ? name : nameSQL;
-		this.nameSqlInStr = nameSQL;
+		this.nameSql = nameSql == null ? name : nameSql;
+		this.nameSqlInStr = nameSql;
 	}
 
 	public void setName(String name, Database database) {
 		this.name = name;
-		this.nameSQL = name;
+		this.nameSql = name;
 		this.nameSqlInStr = name;
 		if (database != null && database.isKeyword(name)) {
-			this.nameSQL = database.wrapperKeyword(name);
-			this.nameSqlInStr = this.nameSQL.replace("\"","\\\"");
+			this.nameSql = database.wrapperKeyword(name);
+			this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
 		}
 	}
 
-	public String getNameSQL() {
-		return nameSQL;
+	public String getNameSql() {
+		return nameSql;
 	}
 
-	public void setNameSQL(String nameSQL) {
-		this.nameSQL = nameSQL;
+	public void setNameSql(String nameSql) {
+		this.nameSql = nameSql;
 	}
 
 	public String getNameSqlInStr() {

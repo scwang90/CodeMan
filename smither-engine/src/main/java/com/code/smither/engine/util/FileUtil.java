@@ -1,6 +1,8 @@
 package com.code.smither.engine.util;
 
 import java.io.*;
+import java.net.URI;
+import java.nio.file.*;
 import java.util.Locale;
 
 public class FileUtil {
@@ -38,14 +40,16 @@ public class FileUtil {
 	}
 
 	public static void copyFile(File from, File file) throws IOException {
-		FileInputStream inputStream = new FileInputStream(from);
-		FileOutputStream outputStream = new FileOutputStream(file);
-		byte[] bytes = new byte[inputStream.available()];
-		if (inputStream.read(bytes) > 0) {
-			outputStream.write(bytes);
-		}
-		outputStream.close();
-		inputStream.close();
-		System.gc();
+		Files.copy(Paths.get(from.getAbsolutePath()), Paths.get(file.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+
+//		FileInputStream inputStream = new FileInputStream(from);
+//		FileOutputStream outputStream = new FileOutputStream(file);
+//		byte[] bytes = new byte[inputStream.available()];
+//		if (inputStream.read(bytes) > 0) {
+//			outputStream.write(bytes);
+//		}
+//		outputStream.close();
+//		inputStream.close();
+//		System.gc();
 	}
 }

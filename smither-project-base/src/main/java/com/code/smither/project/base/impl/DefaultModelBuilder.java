@@ -277,11 +277,24 @@ public class DefaultModelBuilder implements ModelBuilder {
 				}
 			}
 		}
+		String columnPassword = config.getColumnPassword();
+		if (!StringUtil.isNullOrBlank(columnPassword)) {
+			String[] columnNames = columnPassword.split(",");
+			for (String columnName : columnNames) {
+				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setPasswordColumn);
+				if (table.getPasswordColumn() != null) {
+					break;
+				}
+			}
+		}
 		if (table.getCreateColumn() == null) {
 			table.setCreateColumn(new TableColumn());
 		}
 		if (table.getUpdateColumn() == null) {
 			table.setUpdateColumn(new TableColumn());
+		}
+		if (table.getPasswordColumn() == null) {
+			table.setPasswordColumn(new TableColumn());
 		}
 		table.setColumns(columns);
 		return table;

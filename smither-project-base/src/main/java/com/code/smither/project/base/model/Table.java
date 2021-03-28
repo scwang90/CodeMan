@@ -15,7 +15,7 @@ import java.util.List;
 public class Table implements Model, MetaDataTable {
 
     private String name;// 原表名称
-    private String nameSQL;// SQL语句中使用的名称
+    private String nameSql;// SQL语句中使用的名称
     private String nameSqlInStr;// SQL语句中使用的名称（在字符串拼接中使用）
     private String remark;// 字段注释
     private String description;//详细描述（分析得到）
@@ -32,6 +32,7 @@ public class Table implements Model, MetaDataTable {
     private TableColumn idColumn; // ID列
     private TableColumn createColumn;//创建日志列
     private TableColumn updateColumn;//更新日志列
+    private TableColumn passwordColumn;//更新日志列
 
     private List<TableColumn> columns;// 表字段
     private List<String> descriptions;// 多行详细描述
@@ -42,32 +43,32 @@ public class Table implements Model, MetaDataTable {
 
     public void setName(String name) {
         this.name = name;
-        this.nameSQL = name;
+        this.nameSql = name;
         this.nameSqlInStr = name;
     }
 
     public void setName(String name, Database database) {
         this.setName(name);
         if (database != null && database.isKeyword(name)) {
-            this.nameSQL = database.wrapperKeyword(name);
-            this.nameSqlInStr = this.nameSQL.replace("\"","\\\"");
+            this.nameSql = database.wrapperKeyword(name);
+            this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
         }
     }
 
-    public String getNameSQL() {
-        return nameSQL;
+    public String getNameSql() {
+        return nameSql;
     }
 
-    public void setNameSQL(String nameSQL) {
-        this.nameSQL = nameSQL;
+    public void setNameSql(String nameSql) {
+        this.nameSql = nameSql;
     }
 
     public String getNameSqlInStr() {
         return nameSqlInStr;
     }
 
-    public void setNameSqlInStr(String nameSQLInStr) {
-        this.nameSqlInStr = nameSQLInStr;
+    public void setNameSqlInStr(String nameSqlInStr) {
+        this.nameSqlInStr = nameSqlInStr;
     }
 
     public String getRemark() {
@@ -169,6 +170,14 @@ public class Table implements Model, MetaDataTable {
 
     public void setUpdateColumn(TableColumn updateColumn) {
         this.updateColumn = updateColumn;
+    }
+
+    public TableColumn getPasswordColumn() {
+        return passwordColumn;
+    }
+
+    public void setPasswordColumn(TableColumn passwordColumn) {
+        this.passwordColumn = passwordColumn;
     }
 
     public List<TableColumn> getColumns() {

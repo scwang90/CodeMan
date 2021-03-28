@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class DefaultWordReplacer implements WordReplacer {
 
-    private class Replace {
+    private static class Replace {
         public final String key;
         public final String value;
         public final boolean isRegex;

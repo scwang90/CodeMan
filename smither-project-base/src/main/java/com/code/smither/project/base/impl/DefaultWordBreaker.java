@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class DefaultWordBreaker implements WordBreaker {
 
-    private String dictPath;
+    private final String dictPath;
 //    private WordFilter wordFilter;
     private Map<String,String> dictionary;
 

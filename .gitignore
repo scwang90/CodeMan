@@ -1,9 +1,9 @@
-/bin/
-/target/
+bin/
+target/
 /apidoc/
-/*.iml
-/*.ipr
-/.idea
+*.iml
+*.ipr
+.idea/
 .classpath
 .project
 /src/main/resources/c3p0.properties

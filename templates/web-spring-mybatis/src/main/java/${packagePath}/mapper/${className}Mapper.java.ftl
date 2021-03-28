@@ -30,9 +30,9 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @param model 添加的数据
 	 * @return 改变的行数
 	 */
-	<@single_line>@Insert("INSERT INTO ${table.nameSQL} (
+	<@single_line>@Insert("INSERT INTO ${table.nameSql} (
 			<#list table.columns as column>
-				${column.nameSQL}
+				${column.nameSql}
 				<#if column_has_next>,</#if>
 			</#list>
 		) VALUES (
@@ -48,16 +48,16 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @param id 数据的主键ID
 	 * @return 改变的行数
 	 */
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
+	@Delete("DELETE FROM ${table.nameSql} WHERE ${table.idColumn.name}=${r"#"}{id}")
 	int delete(@Param("id") Object id);
 	/**
 	 * 更新一条数据
 	 * @param model 更新的数据
 	 * @return 改变的行数
 	 */
-	<@single_line>@Update("UPDATE ${table.nameSQL} SET
+	<@single_line>@Update("UPDATE ${table.nameSql} SET
 			<#list table.columns as column>
-				${column.nameSQL}=${r"#"}{${column.fieldName}}
+				${column.nameSql}=${r"#"}{${column.fieldName}}
 				<#if column_has_next>,</#if>
 			</#list>
 			WHERE ${table.idColumn.name}=${r"#"}{${table.idColumn.fieldName}}
@@ -68,7 +68,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * 统计全部出数据
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM ${table.nameSQL}")
+	@Select("SELECT COUNT(*) FROM ${table.nameSql}")
 	int countAll();
 	/**
 	 * 根据ID获取
@@ -78,14 +78,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	<@single_line>@Select("SELECT
 		<#list table.columns as column>
 			<#if column.name==column.fieldName>
-				${column.nameSQL}
+				${column.nameSql}
 			</#if>
 			<#if column.name!=column.fieldName>
-				${column.nameSQL} ${column.fieldName}
+				${column.nameSql} ${column.fieldName}
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} WHERE ${table.idColumn.name}=${r"#"}{id}")
+		FROM ${table.nameSql} WHERE ${table.idColumn.name}=${r"#"}{id}")
 	</@single_line>
 	${className} findById(@Param("id") Object id);
 	/**
@@ -95,14 +95,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	<@single_line>@Select("SELECT
 		<#list table.columns as column>
 			<#if column.name==column.fieldName>
-			${column.nameSQL}
+			${column.nameSql}
 			</#if>
 			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
+			${column.nameSql} ${column.fieldName}
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${order}"}")
+		FROM ${table.nameSql} ${r"${order}"}")
 	</@single_line>
 	List<${className}> findAll(@Param("order") String order);
 	/**
@@ -114,14 +114,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	<@single_line>@Select("SELECT
 		<#list table.columns as column>
 			<#if column.name==column.fieldName>
-			${column.nameSQL}
+			${column.nameSql}
 			</#if>
 			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
+			${column.nameSql} ${column.fieldName}
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+		FROM ${table.nameSql} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	</@single_line>
 	List<${className}> findByPage(@Param("order") String order,@Param("limit") int limit,@Param("start") int start);
 	/**
@@ -129,7 +129,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @param where SQL条件语句
 	 * @return 改变的行数
 	 */
-	@Delete("DELETE FROM ${table.nameSQL} ${r"${where}"}")
+	@Delete("DELETE FROM ${table.nameSql} ${r"${where}"}")
 	int deleteWhere(@Param("where") String where);
 	/**
 	 * 根据属性值删除
@@ -137,14 +137,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @param value 值
 	 * @return 改变的行数
 	 */
-	@Delete("DELETE FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
+	@Delete("DELETE FROM ${table.nameSql} WHERE ${r"${property}"}=${r"#{value}"}")
 	int deleteByPropertyName(@Param("property") String property,@Param("value") Object value);
 	/**
 	 * 选择性统计
 	 * @param where SQL条件语句
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM ${table.nameSQL} ${r"${where}"}")
+	@Select("SELECT COUNT(*) FROM ${table.nameSql} ${r"${where}"}")
 	int countWhere(@Param("where") String where);
 	/**
 	 * 根据属性统计
@@ -152,7 +152,7 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	 * @param value 值
 	 * @return 统计数
 	 */
-	@Select("SELECT COUNT(*) FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"}")
+	@Select("SELECT COUNT(*) FROM ${table.nameSql} WHERE ${r"${property}"}=${r"#{value}"}")
 	int countByPropertyName(@Param("property") String property,@Param("value") Object value);
 	/**
 	 * 选择性查询
@@ -162,14 +162,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	<@single_line>@Select("SELECT
 		<#list table.columns as column>
 			<#if column.name==column.fieldName>
-			${column.nameSQL}
+			${column.nameSql}
 			</#if>
 			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
+			${column.nameSql} ${column.fieldName}
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"}")
+		FROM ${table.nameSql} ${r"${where}"} ${r"${order}"}")
 	</@single_line>
 	List<${className}> findListWhere(@Param("order") String order,@Param("where") String where);
 	/**
@@ -182,14 +182,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	<@single_line>@Select("SELECT
 		<#list table.columns as column>
 			<#if column.name==column.fieldName>
-			${column.nameSQL}
+			${column.nameSql}
 			</#if>
 			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
+			${column.nameSql} ${column.fieldName}
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
+		FROM ${table.nameSql} ${r"${where}"} ${r"${order}"} LIMIT ${r"${start}"},${r"${limit}"}")
 	</@single_line>
 	List<${className}> findListWhereByPage(@Param("order") String order,@Param("where") String where,@Param("limit") int limit,@Param("start") int start);
 	/**
@@ -201,14 +201,14 @@ public interface ${className}Mapper extends MybatisMultiDao<${className}>{
 	<@single_line>@Select("SELECT
 		<#list table.columns as column>
 			<#if column.name==column.fieldName>
-			${column.nameSQL}
+			${column.nameSql}
 			</#if>
 			<#if column.name!=column.fieldName>
-			${column.nameSQL} ${column.fieldName}
+			${column.nameSql} ${column.fieldName}
 			</#if>
 			<#if column_has_next>,</#if>
 		</#list>
-		FROM ${table.nameSQL} WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"}")
+		FROM ${table.nameSql} WHERE ${r"${property}"}=${r"#{value}"} ${r"${order}"}")
 	</@single_line>
 	List<${className}> findByPropertyName(@Param("order") String order,@Param("property") String property,@Param("value") Object value);
 }

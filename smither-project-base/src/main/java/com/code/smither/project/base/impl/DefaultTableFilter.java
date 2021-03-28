@@ -12,8 +12,8 @@ import static com.code.smither.engine.impl.DefaultFileFilter.regexFilter;
  */
 public class DefaultTableFilter implements TableFilter {
 
-    private TableExcludeFilter exclude;
-    private TableIncludeFilter include;
+    private final TableExcludeFilter exclude;
+    private final TableIncludeFilter include;
 
     public DefaultTableFilter(TableFilterConfig config) {
         if (config != null) {
@@ -36,7 +36,7 @@ public class DefaultTableFilter implements TableFilter {
      */
     public static class TableExcludeFilter implements TableFilter {
 
-        private String[] regex;
+        private final String[] regex;
 
         TableExcludeFilter(String[] regex){
             this.regex = regex;

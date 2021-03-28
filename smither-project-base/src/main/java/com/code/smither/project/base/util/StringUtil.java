@@ -43,6 +43,23 @@ public class StringUtil {
 		return origin;
 	}
 
+	public static String camelReverse(String origin, String division) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0, lc = 0; i < origin.length(); i++) {
+			char c = origin.charAt(i);
+			if (c > 0x40 && lc > c && (c & 0x20) != (lc & 0x20)) {
+				builder.append(division);
+			}
+			if (c < 0x40) {
+				builder.append(c);
+			} else {
+				builder.append((char) (c & ~0b00100000));
+			}
+			lc = c;
+		}
+		return builder.toString();
+	}
+
 	public static boolean isNullOrBlank(String remark) {
 		if (remark == null) {
 			return true;

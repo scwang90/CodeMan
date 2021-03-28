@@ -133,6 +133,7 @@ public class DbTableSource implements TableSource {
 		Table table = new Table();
 		table.setName(tableResult.getString("TABLE_NAME"), getDatabase());
 		table.setRemark(tableResult.getString("REMARKS"));
+		table.setComment(tableResult.getString("REMARKS"));
 		return table;
 	}
 

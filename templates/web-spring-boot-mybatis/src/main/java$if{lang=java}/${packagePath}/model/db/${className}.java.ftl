@@ -2,15 +2,16 @@ package ${packageName}.model.db;
 
 import ${packageName}.model.Entity;
 
-import io.swagger.annotations.ApiModelProperty;
-
-<#assign hasStringType=false>
-<#assign hasStringRequired=false>
+<#assign hasJsonIgnore=false>
 <#list table.columns as column>
-<#--	<#if column.stringType && !column.nullable && hasStringRequired==false>-->
-<#--import javax.validation.constraints.NotEmpty;-->
-<#--        <#assign hasStringRequired=true>-->
-<#--	</#if>-->
+	<#if hasJsonIgnore==false && (column == table.createColumn || column == table.updateColumn || column == table.passwordColumn) >
+import com.fasterxml.jackson.annotation.JsonIgnore;
+		<#assign hasJsonIgnore=true>
+	</#if>
+</#list>
+import io.swagger.annotations.ApiModelProperty;
+<#assign hasStringType=false>
+<#list table.columns as column>
 	<#if column.stringType && hasStringType==false>
 import javax.validation.constraints.Size;
         <#assign hasStringType=true>
@@ -40,12 +41,14 @@ public class ${className} extends Entity {
 	 * 数据库名称 ${column.name}
 		</#if>
 	 */
-	<#if column.stringType>
-	@Size(max = ${column.length?c}, message = "${column.remark}不能超过${column.length}个字符")
+	<#if column == table.createColumn || column == table.updateColumn || column == table.passwordColumn>
+	@JsonIgnore
 	</#if>
-	<#if column == table.createColumn || column == table.updateColumn>
-	@com.fasterxml.jackson.annotation.JsonIgnore
-	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, hidden = true</#if>)
+	<#if column.stringType>
+	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
+	</#if>
+	<#if column == table.createColumn || column == table.updateColumn || column == table.passwordColumn>
+	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>, hidden = true)
 	<#else>
 	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, required = true</#if>)
 	</#if>

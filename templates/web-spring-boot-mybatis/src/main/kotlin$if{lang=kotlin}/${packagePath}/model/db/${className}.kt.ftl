@@ -13,8 +13,8 @@ public class ${className} : Entity() {
 	<#list table.columns as column>
 	/**
 	 * ${column.remark}
-		<#if column.nameSQL!=column.fieldName>
-     * 数据库名称 ${column.nameSQL}
+		<#if column.nameSql!=column.fieldName>
+     * 数据库名称 ${column.nameSql}
 		</#if>
 	 */
     @ApiModelProperty("${column.remark}")

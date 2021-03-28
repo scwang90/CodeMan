@@ -31,6 +31,7 @@ public class ProjectConfigFactory {
         config.setColumnDivision(properties.getProperty("code.man.database.column.division",config.getColumnDivision()));
         config.setColumnCreate(properties.getProperty("code.man.database.column.create",config.getColumnCreate()));
         config.setColumnUpdate(properties.getProperty("code.man.database.column.update",config.getColumnUpdate()));
+        config.setColumnPassword(properties.getProperty("code.man.database.column.password",config.getColumnPassword()));
 
         config.setWordBreakDictPath(properties.getProperty("code.man.word.break.dict.path", config.getWordBreakDictPath()));
         config.setWordReplaceDictPath(properties.getProperty("code.man.word.replace.dict.path", config.getWordReplaceDictPath()));

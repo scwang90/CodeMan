@@ -109,7 +109,7 @@ public class ShiroConfiguration {
                 "/v2/api-docs"
         ).forEach(p->chain.put(p,"anon"));
 
-        chain.put("/**", "authJwt");
+        chain.put("/api/**", "authJwt");
         return chain;
     }
 

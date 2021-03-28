@@ -17,6 +17,7 @@ spring.jackson.time-zone=GMT+8
 spring.servlet.multipart.max-file-size = 80MB
 spring.servlet.multipart.max-request-size= 102400KB
 
+mybatis.configuration.map-underscore-to-camel-case=true
 mybatis.mapper-locations=classpath:/mapper/*.xml,classpath:/mapper/**/*.xml
 
 #文档框架测试访问主机（负债均衡/内网穿透并且时需要配置，未配置时使用）

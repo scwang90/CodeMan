@@ -1,6 +1,9 @@
 server.port = 8080
 server.address = 0.0.0.0
 
+logging.path = logging
+logging.level.root = info
+
 swagger.enabled = true
 
 logging.level.root = info

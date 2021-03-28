@@ -6,44 +6,20 @@
 		<property name="user">root</property>
 		<property name="password">scwang</property>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
-		<property name="jdbcUrl">jdbc:mysql://192.168.176.131:3306/medical-platform</property>
-		<property name="initialPoolSize">10</property>
-		<property name="maxIdleTime">30</property>
-		<property name="maxPoolSize">100</property>
-		<property name="minPoolSize">10</property>
+		<property name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/medical-platform</property>
 	</named-config>
-	<named-config name="WuDiHISServer-WXHIS">
+
+	<named-config name="traveler-server">
+		<property name="user">root</property>
+		<property name="password">123456</property>
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+		<property name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/traveler</property>
+	</named-config>
+
+	<named-config name="his">
 		<property name="user">HIS</property>
 		<property name="password">WDHIS</property>
 		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
-		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
-	</named-config>
-	<named-config name="WuDiHISServer-WxEmr">
-		<property name="user">WXEMR</property>
-		<property name="password">LINKER</property>
-		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
-		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
-	</named-config>
-	<named-config name="WuDiHISServer-WxMz">
-		<property name="user">WXMZ</property>
-		<property name="password">LINKER</property>
-		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
-		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
-	</named-config>
-	<named-config name="WuDiHISServer-WxLIS">
-		<property name="user">LIS</property>
-		<property name="password">wdlis</property>
-		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
-		<property name="jdbcUrl">jdbc:oracle:thin:@//139.129.231.125:1521/ORCL</property>
-	</named-config>
-	<named-config name="CreditChinaServer">
-		<property name="user"></property>
-		<property name="password"></property>
-		<property name="driverClass">com.mysql.jdbc.Driver</property>
-		<property name="jdbcUrl"></property>
-		<property name="initialPoolSize">10</property>
-		<property name="maxIdleTime">30</property>
-		<property name="maxPoolSize">100</property>
-		<property name="minPoolSize">10</property>
+		<property name="jdbcUrl">jdbc:oracle:thin:@//139.186.160.79:1521/ORCL</property>
 	</named-config>
 </c3p0-config>

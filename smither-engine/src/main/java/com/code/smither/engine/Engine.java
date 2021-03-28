@@ -116,11 +116,11 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         if (root.getModels() != null && root.getModels().size() > 0) {
             for (Model model : root.getModels()) {
                 root.bindModel(model);
-                processTemplate(task, root, set);
+                run(task, root, set);
             }
         } else {
             if (!task.getTemplateFile().getAbsolutePath().contains("{className}")) {
-                processTemplate(task, root, set);
+                run(task, root, set);
             }
         }
         logger.info("");
@@ -134,7 +134,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
      * @throws TemplateException 模板过程异常
      * @throws IOException 文件读写异常
      */
-    private void processTemplate(Task task, RootModel root, Set<String> set) throws TemplateException, IOException {
+    protected void run(Task task, RootModel root, Set<String> set) throws TemplateException, IOException {
 
         Template nameTemplate = getTemplate(task.getTargetFile().getAbsolutePath());
 
@@ -154,15 +154,18 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         if (!set.contains(path)) {
             File file = new File(path);
             if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || !config.isTemplateFtlOnly())) {
-                Template template = getTemplate(task.getTemplateFile());
-                Writer out = getFileWriter(file);
-                template.process(root, out);
-                out.close();
+                processTemplate(root, task.getTemplateFile(), file);
             } else {
                 FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
             }
             set.add(path);
             logger.info("  =>> : " + path);
+        }
+    }
+
+    protected void processTemplate(RootModel root, File templateFile, File file) throws IOException, TemplateException {
+        try(Writer out = getFileWriter(file)) {
+            getTemplate(templateFile).process(root, out);
         }
     }
 
@@ -222,6 +225,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                 if (modelValue.equals(value)) {
                     condition.put(key, value);
                 } else {
+                    logger.info("排除默认条件模板：" + templates.getAbsolutePath());
                     return null;
                 }
             } catch (Exception e) {

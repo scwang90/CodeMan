@@ -77,16 +77,16 @@
 
   <!-- 插入新数据（非空插入，不支持批量插入）-->
   <insert id="insert" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
-    INSERT INTO ${table.nameSQL} (
+    INSERT INTO ${table.nameSql} (
     <trim suffixOverrides=",">
     <#list table.columns as column>
       <#if column.autoIncrement>
         <if test="${column.fieldName} != 0">
-          ${column.nameSQL},
+          ${column.nameSql},
         </if>
       <#else >
         <if test="${column.fieldName} != null">
-          ${column.nameSQL},
+          ${column.nameSql},
         </if>
       </#if>
     </#list>
@@ -113,8 +113,8 @@
   <insert id="insertFull" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
     INSERT ALL
     <foreach item="model" collection="models">
-      INTO ${table.nameSQL}
-      (<#list table.columns as column>${column.nameSQL}<#if column_has_next>,</#if></#list>)
+      INTO ${table.nameSql}
+      (<#list table.columns as column>${column.nameSql}<#if column_has_next>,</#if></#list>)
       VALUES
       (<#list table.columns as column>${r"#"}{model.${column.fieldName}}<#if column_has_next>,</#if></#list>)
     </foreach>
@@ -122,8 +122,8 @@
   </insert>
 <#else >
   <insert id="insertFull" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
-    INSERT INTO ${table.nameSQL}
-    (<#list table.columns as column>${column.nameSQL}<#if column_has_next>,</#if></#list>)
+    INSERT INTO ${table.nameSql}
+    (<#list table.columns as column>${column.nameSql}<#if column_has_next>,</#if></#list>)
     VALUES
     <foreach item="model" collection="models" separator=",">
       (<#list table.columns as column>${r"#"}{model.${column.fieldName}}<#if column_has_next>,</#if></#list>)
@@ -133,34 +133,34 @@
 
   <!-- 更新一条数据（非空更新）-->
   <update id="update" parameterType="${packageName}.model.db.${className}">
-    UPDATE ${table.nameSQL}
+    UPDATE ${table.nameSql}
     <set>
       <#list table.columns as column>
         <#if column != table.idColumn>
       <if test="${column.fieldName} != null">
-        ${column.nameSQL}=${r"#"}{${column.fieldName}},
+        ${column.nameSql}=${r"#"}{${column.fieldName}},
       </if>
         </#if>
       </#list>
     </set>
-    WHERE ${table.idColumn.nameSQL}=${r"#"}{${table.idColumn.fieldName}}
+    WHERE ${table.idColumn.nameSql}=${r"#"}{${table.idColumn.fieldName}}
   </update>
 
   <!-- 更新一条数据（全更新）-->
   <update id="updateFull" parameterType="${packageName}.model.db.${className}">
-    UPDATE ${table.nameSQL}
+    UPDATE ${table.nameSql}
     <set>
       <#list table.columns as column>
-        ${column.nameSQL}=${r"#"}{${column.fieldName}},
+        ${column.nameSql}=${r"#"}{${column.fieldName}},
       </#list>
     </set>
-    WHERE ${table.idColumn.nameSQL}=${r"#"}{${table.idColumn.fieldName}}
+    WHERE ${table.idColumn.nameSql}=${r"#"}{${table.idColumn.fieldName}}
   </update>
 
   <!-- 更新一条数据（灵活构建意图）-->
   <update id="updateIntent">
     <if test="andMap.size > 0 or orMap.size > 0">
-      UPDATE ${table.nameSQL}
+      UPDATE ${table.nameSql}
       <set>
       <foreach collection="setMap" index="key" item="value" separator=",">
         ${r"$"}{key} = ${r"#"}{value}
@@ -175,7 +175,7 @@
 
   <!-- 根据ID删除（支持批量删除）-->
   <delete id="delete">
-    DELETE FROM ${table.nameSQL} WHERE ${table.idColumn.nameSQL} IN
+    DELETE FROM ${table.nameSql} WHERE ${table.idColumn.nameSql} IN
     <foreach collection="ids" item="id" open="(" close=")" separator=",">
         ${r"#"}{id}
     </foreach>
@@ -184,7 +184,7 @@
   <!-- 根据条件删除 -->
   <delete id="deleteWhere">
     <if test="where != null and where != ''">
-      DELETE FROM ${table.nameSQL}
+      DELETE FROM ${table.nameSql}
       <include refid="sqlWhere">
         <property name="where" value="${r"$"}{where}"/>
       </include>
@@ -194,7 +194,7 @@
   <!-- 根据条件删除（灵活构建意图） -->
   <delete id="deleteIntent">
     <if test="andMap.keys.size > 0 or orMap.keys.size > 0">
-    DELETE FROM ${table.nameSQL}
+    DELETE FROM ${table.nameSql}
       <include refid="intentWhere">
         <property name="orMap" value="${r"$"}{orMap}"/>
         <property name="andMap" value="${r"$"}{andMap}"/>
@@ -204,12 +204,12 @@
 
   <!-- 统计数据数量（全部） -->
   <select id="countAll" resultType="java.lang.Integer">
-    SELECT COUNT(0) FROM ${table.nameSQL}
+    SELECT COUNT(0) FROM ${table.nameSql}
   </select>
 
   <!-- 根据条件统计数据数量（Where 拼接） -->
   <select id="countWhere" resultType="java.lang.Integer">
-    SELECT COUNT(0) FROM ${table.nameSQL}
+    SELECT COUNT(0) FROM ${table.nameSql}
     <include refid="sqlWhere">
       <property name="where" value="${r"$"}{where}"/>
     </include>
@@ -217,7 +217,7 @@
 
   <!-- 根据条件统计数据数量（灵活构建意图） -->
   <select id="countIntent" resultType="java.lang.Integer">
-    SELECT COUNT(0) FROM ${table.nameSQL}
+    SELECT COUNT(0) FROM ${table.nameSql}
     <include refid="intentWhere">
       <property name="orMap" value="${r"$"}{orMap}"/>
       <property name="andMap" value="${r"$"}{andMap}"/>
@@ -226,12 +226,12 @@
 
   <!-- 根据ID获取 -->
   <select id="findById" resultMap="MAP">
-    SELECT * FROM ${table.nameSQL} WHERE ${table.idColumn.nameSQL}=${r"#"}{id}
+    SELECT * FROM ${table.nameSql} WHERE ${table.idColumn.nameSql}=${r"#"}{id}
   </select>
 
   <!-- 单条查询（Where 拼接 Order 拼接） -->
   <select id="findOneWhere" resultMap="MAP">
-    SELECT * FROM ${table.nameSQL}
+    SELECT * FROM ${table.nameSql}
     <include refid="sqlWhereOrder">
       <property name="where" value="${r"$"}{where}"/>
       <property name="order" value="${r"$"}{order}"/>
@@ -240,7 +240,7 @@
 
   <!-- 单条查询（灵活构建意图） -->
   <select id="findOneIntent" resultMap="MAP">
-    SELECT * FROM ${table.nameSQL}
+    SELECT * FROM ${table.nameSql}
     <include refid="intentWhereOrder">
       <property name="orMap" value="${r"$"}{orMap}"/>
       <property name="andMap" value="${r"$"}{andMap}"/>
@@ -250,7 +250,7 @@
 
   <!-- 批量查询（Where 拼接 Order 拼接） -->
   <select id="findListWhere" resultMap="MAP">
-    SELECT * FROM ${table.nameSQL}
+    SELECT * FROM ${table.nameSql}
     <include refid="sqlWhereOrder">
       <property name="where" value="${r"$"}{where}"/>
       <property name="order" value="${r"$"}{order}"/>
@@ -259,7 +259,7 @@
 
   <!-- 批量查询（灵活构建意图） -->
   <select id="findListIntent" resultMap="MAP">
-    SELECT * FROM ${table.nameSQL}
+    SELECT * FROM ${table.nameSql}
     <include refid="intentWhereOrder">
       <property name="orMap" value="${r"$"}{orMap}"/>
       <property name="andMap" value="${r"$"}{andMap}"/>

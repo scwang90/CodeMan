@@ -1,7 +1,7 @@
 package ${packageName}.model;
 
 <#list table.columns as column>
-<#if column.nameSQL!=column.fieldName>
+<#if column.nameSql!=column.fieldName>
 <#if (columnAdded!false)==false>
 import ${packageName}.annotations.dbmodel.Column;
 <#assign columnAdded=true>
@@ -17,7 +17,7 @@ import ${packageName}.model.base.ModelBase;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-@Table("${table.nameSQL}")
+@Table("${table.nameSql}")
 public class ${className} extends ModelBase{
 
 	<#list table.columns as column>
@@ -27,8 +27,8 @@ public class ${className} extends ModelBase{
 	<#if column == table.idColumn>
 	@Id
 	</#if>
-	<#if column.nameSQL!=column.fieldName>
-	@Column("${column.nameSQL}")
+	<#if column.nameSql!=column.fieldName>
+	@Column("${column.nameSql}")
 	</#if>
 	private ${column.fieldType} ${column.fieldName};
 	</#list>

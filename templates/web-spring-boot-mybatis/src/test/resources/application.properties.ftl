@@ -12,4 +12,5 @@ spring.datasource.password = ${jdbc.password}
 spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
 spring.jackson.time-zone=GMT+8
 
+mybatis.configuration.map-underscore-to-camel-case=true
 mybatis.mapper-locations=classpath:/mapper/*.xml,classpath:/mapper/**/*.xml
