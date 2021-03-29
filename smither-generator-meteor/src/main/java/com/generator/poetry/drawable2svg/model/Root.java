@@ -2,6 +2,7 @@ package com.generator.poetry.drawable2svg.model;
 
 import com.code.smither.engine.api.Model;
 import com.code.smither.engine.api.RootModel;
+import com.code.smither.engine.api.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +53,11 @@ public class Root implements RootModel {
             drawable = (Drawable) model;
             drawableName = ((Drawable) model).getName();
         }
+    }
+
+    @Override
+    public boolean isModelTask(Task task) {
+        String path = task.getTemplateFile().getAbsolutePath();
+        return path.contains("${drawableName}") || path.matches("\\$\\{drawable\\.\\S+?}");
     }
 }

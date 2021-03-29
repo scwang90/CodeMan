@@ -22,6 +22,7 @@ public class EngineConfig implements Config {
     private String templateCharset;
     private String targetCharset;
     private boolean templateFtlOnly = false;
+    private boolean forceOverwrite = false;
 
     private String includeFile = "*.*";
     private String includePath = "*";
@@ -40,6 +41,14 @@ public class EngineConfig implements Config {
 
     public void setTemplateFtlOnly(boolean templateFtlOnly) {
         this.templateFtlOnly = templateFtlOnly;
+    }
+
+    public boolean isForceOverwrite() {
+        return forceOverwrite;
+    }
+
+    public void setForceOverwrite(boolean forceOverwrite) {
+        this.forceOverwrite = forceOverwrite;
     }
 
     @Override

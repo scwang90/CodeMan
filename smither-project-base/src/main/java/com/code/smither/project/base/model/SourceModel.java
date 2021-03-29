@@ -1,6 +1,7 @@
 package com.code.smither.project.base.model;
 
 import com.code.smither.engine.api.Model;
+import com.code.smither.engine.api.Task;
 import com.code.smither.project.base.api.ClassConverter;
 import com.code.smither.project.base.api.LangRootModel;
 import com.code.smither.project.base.util.StringUtil;
@@ -225,5 +226,10 @@ public class SourceModel implements LangRootModel {
         }
     }
 
+    @Override
+    public boolean isModelTask(Task task) {
+        String path = task.getTemplateFile().getAbsolutePath();
+        return path.contains("${className}") || path.contains("${tableName}") || path.matches("\\$\\{table\\.\\S+?}");
+    }
     //</editor-fold>
 }

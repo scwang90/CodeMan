@@ -2,6 +2,7 @@ package com.code.smither.apidoc.model;
 
 import com.code.smither.engine.api.Model;
 import com.code.smither.engine.api.RootModel;
+import com.code.smither.engine.api.Task;
 
 import java.util.List;
 
@@ -99,6 +100,13 @@ public class ApiService extends HtmlModel implements RootModel {
             moduleName = ((ApiModule) model).getName();
         }
     }
+
+    @Override
+    public boolean isModelTask(Task task) {
+        String path = task.getTemplateFile().getAbsolutePath();
+        return path.contains("${moduleName}") || path.matches("\\$\\{module\\.\\S+?}");
+    }
+
     //</editor-fold>
 
 

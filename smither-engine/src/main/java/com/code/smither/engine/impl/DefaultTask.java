@@ -1,5 +1,7 @@
 package com.code.smither.engine.impl;
 
+import com.code.smither.engine.EngineConfig;
+import com.code.smither.engine.api.RootModel;
 import com.code.smither.engine.api.Task;
 
 import java.io.File;
@@ -12,15 +14,17 @@ public class DefaultTask implements Task {
 
     private final File templates;
     private final File target;
+    private final boolean forceOverWrite;
 
-    public DefaultTask(File templates, File target) {
-        this.templates = checkPath(templates);
-        this.target = checkPath(target);
-    }
+//    public DefaultTask(File templates, File target) {
+//        this.templates = checkPath(templates);
+//        this.target = checkPath(target);
+//    }
 
-    public DefaultTask(File file, File templates, File target) {
+    public DefaultTask(File file, File templates, File target, EngineConfig config, RootModel root) {
         this.templates = checkPath(file);
         this.target = checkPath(new File(file.getAbsolutePath().replace(templates.getAbsolutePath(), target.getAbsolutePath())));
+        this.forceOverWrite = config.isForceOverwrite() || root.isModelTask(this);
     }
 
     private File checkPath(File file) {
@@ -42,5 +46,10 @@ public class DefaultTask implements Task {
     @Override
     public File getTargetFile() {
         return target;
+    }
+
+    @Override
+    public boolean forceOverWrite() {
+        return forceOverWrite;
     }
 }

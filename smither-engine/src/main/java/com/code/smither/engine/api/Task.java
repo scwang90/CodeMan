@@ -18,4 +18,9 @@ public interface Task {
      * 获取目标文件
      */
     File getTargetFile();
+
+    /**
+     * 是否强制覆盖
+     */
+    boolean forceOverWrite();
 }

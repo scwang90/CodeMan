@@ -31,6 +31,7 @@ public class DrawableBuilder implements ModelBuilder {
 
     @Override
     public RootModel build() throws Exception {
+        Root root = new Root();
         EngineConfig con = new EngineConfig();
         con.setTemplatePath(config.getDrawablePath());
         con.initEmptyFieldsWithDefaultValues();
@@ -45,8 +46,7 @@ public class DrawableBuilder implements ModelBuilder {
             public boolean isNeedFilterPath(File path) {
                 return false;
             }
-        }, DefaultTask::new);
-        Root root = new Root();
+        }, (file, templates, target) -> new DefaultTask(file, templates, target, config, root));
         for (Task task : tasks) {
             try (InputStream input = new FileInputStream(task.getTemplateFile())) {
                 Elements vectors = Jsoup.parse(input, "UTF-8", "", new Parser(new XmlTreeBuilder())).select("vector");

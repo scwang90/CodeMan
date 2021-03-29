@@ -18,4 +18,9 @@ public interface RootModel extends Model {
      * 用于生成代码的数据核心，如 数据库表
      */
     List<? extends Model> getModels();
+
+    /**
+     * 是否是模型任务
+     */
+    boolean isModelTask(Task task);
 }

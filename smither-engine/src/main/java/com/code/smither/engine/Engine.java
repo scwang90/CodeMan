@@ -119,7 +119,8 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                 run(task, root, set);
             }
         } else {
-            if (!task.getTemplateFile().getAbsolutePath().contains("{className}")) {
+            //task.getTemplateFile().getAbsolutePath().contains("{className}")
+            if (!root.isModelTask(task)) {
                 run(task, root, set);
             }
         }
@@ -153,13 +154,17 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         //判断已经生成的目标文件集合中是否已经含有即将生成的文件
         if (!set.contains(path)) {
             File file = new File(path);
-            if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || !config.isTemplateFtlOnly())) {
-                processTemplate(root, task.getTemplateFile(), file);
+            if (!file.exists() || task.forceOverWrite()) {
+                if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || !config.isTemplateFtlOnly())) {
+                    processTemplate(root, task.getTemplateFile(), file);
+                } else {
+                    FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
+                }
+                logger.info("  =>> : " + path);
             } else {
-                FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
+                logger.info("已跳过 : " + path);
             }
             set.add(path);
-            logger.info("  =>> : " + path);
         }
     }
 
@@ -233,7 +238,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
             }
         }
         if (!condition.isEmpty()) {
-            ConditionTask task = new ConditionTask(file, templates, target, condition);
+            ConditionTask task = new ConditionTask(file, templates, target, condition, config, rootModel);
             String templateKey = task.getTargetFile().getAbsolutePath();
             if (!conditionTaskMap.containsKey(templateKey)) {
                 conditionTaskMap.put(templateKey, task);
@@ -250,7 +255,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
             }
             return task;
         }
-        return new DefaultTask(file, templates, target);
+        return new DefaultTask(file, templates, target, config, rootModel);
     }
 
     private static class ConditionTask extends DefaultTask {
@@ -260,8 +265,8 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         public final File targetFile;
         public final Map<String, String> condition;
 
-        public ConditionTask(File file, File templates, File target, Map<String, String> condition) {
-            super(file, templates, target);
+        public ConditionTask(File file, File templates, File target, Map<String, String> condition, EngineConfig config, RootModel root) {
+            super(file, templates, target, config, root);
             this.condition = condition;
             this.targetFile = buildTargetFile();
         }

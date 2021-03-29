@@ -31,6 +31,8 @@ public class ConfigFactory {
         config.setNow(properties.getProperty("code.man.now",config.getNow()));
 
         config.setTemplateFtlOnly("true".equalsIgnoreCase(properties.getProperty("code.man.template.ftl-only")));
+        config.setForceOverwrite("true".equalsIgnoreCase(properties.getProperty("code.man.task.force-overwrite")));
+
         config.setTemplatePath(properties.getProperty("code.man.template.path",config.getTemplatePath()));
         config.setTemplateCharset(properties.getProperty("code.man.template.charset",config.getTemplateCharset()));
 
@@ -41,6 +43,7 @@ public class ConfigFactory {
         config.setIncludePath(properties.getProperty("code.man.template.include.path",config.getIncludePath()));
         config.setFilterFile(properties.getProperty("code.man.template.filter.file",config.getFilterFile()));
         config.setFilterPath(properties.getProperty("code.man.template.filter.path",config.getFilterPath()));
+
         return config;
     }
 

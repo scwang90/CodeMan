@@ -75,13 +75,11 @@ public class ${className}Controller {
 		</#if>
 		</#list>
     })
+	public ApiResult<Object> insert(@Validated @ApiIgnore ${className} model) {
 	<#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
-	public ApiResult<String> insert(@Validated @ApiIgnore ${className} model) {
 		//if(model.get${table.idColumn.fieldNameUpper}() == null) {
 		//    model.set${table.idColumn.fieldNameUpper}(ID22.random());
 		//}
-	<#else>
-	public ApiResult<Boolean> insert(@Validated @ApiIgnore ${className} model) {
 	</#if>
 	<#list table.columns as column>
 		<#if column == table.updateColumn || column == table.createColumn>
@@ -94,11 +92,7 @@ public class ${className}Controller {
 	</#list>
         //mapper.insert(model);
 		service.insert(model);
-	<#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
 		return ApiResult.success(model.get${table.idColumn.fieldNameUpper}());
-	<#else>
-		return ApiResult.success(true);
-	</#if>
 	}
 
 	@PutMapping
