@@ -1,5 +1,8 @@
 package ${packageName}.model.api;
 
+import com.github.pagehelper.PageRowBounds;
+import org.apache.ibatis.session.RowBounds;
+
 /**
  * @apiNote 数据分页列表信息
  * @author ${author}
@@ -25,5 +28,9 @@ public class Paging {
 
     public void setSkip(int skip) {
         this.skip = skip;
+    }
+
+    public RowBounds toRowBounds() {
+        return new PageRowBounds(skip, size);
     }
 }

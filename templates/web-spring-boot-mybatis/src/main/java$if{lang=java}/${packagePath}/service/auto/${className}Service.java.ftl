@@ -1,7 +1,7 @@
-package ${packageName}.service.manager;
+package ${packageName}.service.auto;
 
 import com.github.pagehelper.PageRowBounds;
-import ${packageName}.mapper.common.${className}Mapper;
+import ${packageName}.mapper.auto.${className}Mapper;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
@@ -23,7 +23,7 @@ import java.util.List;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-@Service
+@Service("auto${className}Service")
 public class ${className}Service {
 
 //    private Logger logger = LoggerFactory.getLogger(this.getClass());

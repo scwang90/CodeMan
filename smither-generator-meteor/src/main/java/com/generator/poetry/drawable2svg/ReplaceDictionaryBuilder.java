@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ReplaceDictionaryBuilder extends ReplaceBuilder {
 
-    public ReplaceDictionaryBuilder(DataBaseConfig config, boolean isFilterChineseCloumn) {
+    public ReplaceDictionaryBuilder(ReplaceConfig config, boolean isFilterChineseCloumn) {
         super(config, isFilterChineseCloumn);
     }
 

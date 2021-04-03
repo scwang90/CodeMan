@@ -5,6 +5,7 @@ import ${packageName}.exception.AccessException;
 import ${packageName}.exception.ClientException;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.model.api.ApiResult;
+import ${packageName}.model.conf.ErrorConfig;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -45,12 +46,11 @@ public class ErrorController extends BasicErrorController {
 
     private final ObjectMapper mapper;
     private final ErrorAttributes error;
+    private final ErrorConfig config;
 
-    @Value("${r"$"}{error.original:false}")
-    private boolean original;
-
-    public ErrorController(ObjectMapper mapper) {
+    public ErrorController(ObjectMapper mapper, ErrorConfig config) {
         super(new DefaultErrorAttributes(), new ErrorProperties());
+        this.config = config;
         this.mapper = mapper;
         this.error = new DefaultErrorAttributes();
     }
@@ -102,10 +102,12 @@ public class ErrorController extends BasicErrorController {
             message = "参数验证错误，详细信息查看 errors";
             errors = messages;
             status = HttpStatus.EXPECTATION_FAILED;
-        } else if (!original && error != null) {
+        } else if (!config.original && error != null) {
             message = "服务器内部错误";
         } else if (cause instanceof SQLTransientConnectionException) {
             message = "连接数据库异常：" + cause.getMessage();
+        } else if (cause != null) {
+            message = message + ":" + cause.getMessage();
         }
         try {
             ApiResult<?> result = new ApiResult<>(null, status.value(), message, errors);

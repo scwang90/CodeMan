@@ -1,12 +1,12 @@
 package ${packageName}.controller.manager;
 
 import com.github.pagehelper.PageRowBounds;
-import ${packageName}.mapper.common.${className}Mapper;
+import ${packageName}.mapper.auto.${className}Mapper;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
-import ${packageName}.service.manager.${className}Service;
+import ${packageName}.service.auto.${className}Service;
 <#if !table.idColumn.autoIncrement && table.idColumn.stringType>
 import ${packageName}.util.ID22;
 </#if>
@@ -38,9 +38,9 @@ import springfox.documentation.annotations.ApiIgnore;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-@RestController
 @Api(tags = "${table.remark}")
 @RequestMapping("/api/v1/${table.urlPathName}")
+@RestController("auto${className}Controller")
 public class ${className}Controller {
 
 //    private Logger logger = LoggerFactory.getLogger(this.getClass());

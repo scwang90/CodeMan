@@ -1,6 +1,7 @@
-package ${packageName}.shiro.config;
+package ${packageName}.config;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import ${packageName}.model.conf.AuthTokenConfig;
 import ${packageName}.shiro.filter.JwtAuthFilter;
 import ${packageName}.shiro.realm.AuthRealm;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -12,9 +13,7 @@ import org.apache.shiro.subject.SubjectContext;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSessionStorageEvaluator;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,10 +34,11 @@ public class ShiroConfiguration {
 
     public static final String SECRET_KEY = "?::4343fdf4fdf6cvf):";
 
-    @Value("${r"${token.time.refresh:5}"}")
-    private int tokenRefreshTime = 5;
-    @Value("${r"${token.time.expiry:1}"}")
-    private double tokenExpiryTime = 1;
+    private final AuthTokenConfig tokenConfig;
+
+    public ShiroConfiguration(AuthTokenConfig tokenConfig) {
+        this.tokenConfig = tokenConfig;
+    }
 
     @Bean
     public Algorithm jwtAlgorithm() throws Exception {
@@ -93,20 +93,8 @@ public class ShiroConfiguration {
         Map<String, String> chain = new LinkedHashMap<>();
 
         Arrays.asList(
-                "/doc",
-                "/index/**",
-
-                //manager 管理
-                "/admin/**",
-                "/assets/**",
-                "/js/**",
-                "/css/**",
-
-                //swagger 文档
-                "/swagger-ui.html",
-                "/webjars/springfox-swagger-ui/**",
-                "/swagger-resources/**",
-                "/v2/api-docs"
+                //API
+                "/api/v1/auth/**",       //login 登录认证
         ).forEach(p->chain.put(p,"anon"));
 
         chain.put("/api/**", "authJwt");
@@ -115,7 +103,7 @@ public class ShiroConfiguration {
 
     private Filter buildJwtFilter() {
         try {
-            return new JwtAuthFilter(tokenRefreshTime, tokenExpiryTime, Algorithm.HMAC256(SECRET_KEY));
+            return new JwtAuthFilter(Algorithm.HMAC256(SECRET_KEY), tokenConfig);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

@@ -1,4 +1,4 @@
-package ${packageName}.mapper.common;
+package ${packageName}.mapper.auto;
 
 <#assign find1=false>
 <#assign find2=false>

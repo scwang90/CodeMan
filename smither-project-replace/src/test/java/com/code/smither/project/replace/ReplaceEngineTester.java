@@ -11,7 +11,15 @@ public class ReplaceEngineTester extends TestCase {
 
     public void testReplaceHis() throws Exception {
         ReplaceConfig config = ReplaceConfigFactory.loadConfig("replace-his.properties");
-
+        config.setForceOverwrite(true);
         new ReplaceEngine(config).launch(new ReplaceModelBuilder());
+    }
+
+    public void testReplaceAll() {
+        String input = "I like Java,jAva is very easy and jaVa is so popular.";
+        String replacement="你被替换了";
+
+        System.out.println(input);
+        System.out.println(input.replaceAll("(?i)java", replacement));
     }
 }

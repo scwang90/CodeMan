@@ -324,6 +324,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 
 		column.setStringType(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
+		column.setDateType(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
 
 		if (column.getDefValue() != null) {
 			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));

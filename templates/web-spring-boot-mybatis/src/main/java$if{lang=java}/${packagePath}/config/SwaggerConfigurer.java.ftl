@@ -1,9 +1,11 @@
 package ${packageName}.config;
 
+import ${packageName}.model.conf.ClientConfig;
+import ${packageName}.model.conf.SwaggerConfig;
+
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +28,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-@ConditionalOnProperty(name = "enabled", prefix = "swagger", havingValue = "true")
+@ConditionalOnProperty(name = "enabled", prefix = "app.swagger", havingValue = "true")
 public class SwaggerConfigurer {
 
-    @Value("${r"${swagger.host:''}"}")
-    private String swaggerHost = "";
+    final SwaggerConfig config;
+    final ClientConfig clientConfig;
+
+    public SwaggerConfigurer(SwaggerConfig config, ClientConfig clientConfig) {
+        if (StringUtils.isEmpty(config.getHost()) && !StringUtils.isEmpty(clientConfig.getVisitHost())) {
+            config.setHost(clientConfig.getVisitHost().replaceAll("https?://", ""));
+        }
+        this.config = config;
+        this.clientConfig = clientConfig;
+    }
 
     /**
      * 创建管理Api文档
@@ -44,7 +54,7 @@ public class SwaggerConfigurer {
         Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("2.后台管理")
                 .apiInfo(new ApiInfoBuilder()
                         .title("${projectName} 后台文档")//页面标题
-                        .contact(new Contact("${author}", "", "example@hotmail.com"))//创建人
+                        .contact(new Contact("${author}", "", "scwang90@hotmail.com"))//创建人
                         .version("1.0")//版本号
                         .description("${projectName} 管理后台 API")//描述
                         .build())
@@ -52,9 +62,7 @@ public class SwaggerConfigurer {
                 .apis(manager)
                 .paths(PathSelectors.any())
                 .build();
-        if (!StringUtils.isEmpty(swaggerHost)) {
-            docket.host(swaggerHost);
-        }
+        docket.host(config.getHost());
         return docket;
     }
 
@@ -71,7 +79,7 @@ public class SwaggerConfigurer {
         Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("1.接口文档")
                 .apiInfo(new ApiInfoBuilder()
                     .title("${projectName} 接口文档")//页面标题
-                    .contact(new Contact("${author}", "", "example@hotmail.com"))//创建人
+                    .contact(new Contact("${author}", "", "scwang90@hotmail.com"))//创建人
                     .version("1.0")//版本号
                     .description("${projectName} 接口文档 API")//描述
                     .build())
@@ -79,9 +87,7 @@ public class SwaggerConfigurer {
                 .apis(Predicates.and(pack, val))
                 .paths(PathSelectors.any())
                 .build();
-        if (!StringUtils.isEmpty(swaggerHost)) {
-            docket.host(swaggerHost);
-        }
+        docket.host(config.getHost());
         return docket;
     }
 

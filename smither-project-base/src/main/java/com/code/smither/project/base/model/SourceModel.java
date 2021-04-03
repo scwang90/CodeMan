@@ -229,7 +229,7 @@ public class SourceModel implements LangRootModel {
     @Override
     public boolean isModelTask(Task task) {
         String path = task.getTemplateFile().getAbsolutePath();
-        return path.contains("${className}") || path.contains("${tableName}") || path.matches("\\$\\{table\\.\\S+?}");
+        return path.contains("${className}") || path.contains("${tableName}") || path.matches(".*\\$\\{table\\.\\S+?}.*");
     }
     //</editor-fold>
 }

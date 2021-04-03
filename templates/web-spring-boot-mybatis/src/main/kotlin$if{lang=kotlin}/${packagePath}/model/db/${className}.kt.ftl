@@ -1,4 +1,4 @@
-package ${packageName}.model.db;
+package ${packageName}.model.db
 
 import ${packageName}.model.Entity
 import io.swagger.annotations.ApiModelProperty

@@ -17,17 +17,17 @@
         <thead>
         <tr>
             <th>序号</th>
-            <th>原表名</th>
             <th>新表名(绿色：替换)</th>
+            <th>原表名</th>
             <th>备注（绿色：替换）</th>
         </tr>
         </thead>
         <#list tables as table>
         <tr>
             <td>${table_index}</td>
-            <td>${table.name}</td>
             <td class="<#if table.name != table.nameSql>green</#if>">${table.nameSql}</td>
-<#--            <td class="green">${table.nameSqlInStr?length > 0}</td>-->
+            <td>${table.name}</td>
+            <#-- <td class="green">${table.nameSqlInStr?length > 0}</td>-->
             <#if (table.nameSqlInStr?length > 0) >
                 <td class="green">${table.nameSqlInStr}</td>
             <#else>
@@ -38,10 +38,11 @@
     </table>
     <h1 style="text-align:center;">详细替换 ${projectName}</h1>
     <#list tables as table>
-        <h3><b>表</b> : <span>${table.name}</span> -> <span>${table.nameSql}</span> [${table.comment}]</h3>
+        <h3><b>表</b> : <span>${table.name}</span> -> <span class="<#if table.name != table.nameSql>green</#if>">${table.nameSql}</span> [${table.comment}]</h3>
         <table class="table table-hover table-bordered table-condensed table-striped" name="${table.name}" remark="${table.remark}">
             <thead>
             <tr>
+                <th>序号</th>
                 <th>原字段</th>
                 <th>新字段</th>
                 <th>数据类型</th>
@@ -57,6 +58,7 @@
 
             <#list table.columns as column>
                 <tr>
+                    <td>${column_index}</td>
                     <td>${column.name}</td>
                     <td class="<#if column.name != column.nameSql>green</#if>">${column.nameSql}</td>
                     <td>${column.type}</td>

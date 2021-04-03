@@ -1,13 +1,16 @@
-package ${packageName}.mapper.common;
+package ${packageName}.mapper.auto;
 
 import ${packageName}.mapper.TypedMapper;
+import ${packageName}.mapper.intent.impl.Condition;
+import ${packageName}.mapper.intent.tables.${table.classNameUpper};
 import ${packageName}.model.db.${className};
 import ${packageName}.util.SqlIntent;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ import java.util.List;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Mapper
-@Component
+@Component("auto${className}Mapper")
 public interface ${className}Mapper extends TypedMapper<${className}>{
 
 	/**
@@ -174,4 +177,30 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	@Override
 	List<${className}> findListIntent(SqlIntent intent, RowBounds rows);
 
+	/**
+	 * 单条查询（灵活构建条件）
+  	 * @param condition 条件
+	 */
+	${className} findOneCondition(Condition<${table.classNameUpper}> condition);
+
+	/**
+	 * 批量查询（灵活构建条件）
+	 * @param condition 条件
+	 */
+	List<${className}> findListCondition(Condition<${table.classNameUpper}> condition);
+
+	/**
+	 * 批量查询（灵活构建条件，分页）
+	 * @param condition 条件
+	 */
+	List<${className}> findListCondition(RowBounds rows, Condition<${table.classNameUpper}> condition);
+
+	<#if table.idColumn.autoIncrement>
+	/**
+	 * 重置表自增编号
+	 */
+	@Update("alter table ${table.nameSql} auto_increment = 0")
+	void resetAutoIncrement();
+
+	</#if>
 }

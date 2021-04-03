@@ -39,6 +39,7 @@ public class TableColumn {
 	private boolean autoIncrement;//是否自增
 	private boolean primaryKey;//是否是 PrimaryKey
 	private boolean stringType;//是否是 string类型
+	private boolean dateType;//是否是 date类型
 
 	private List<String> descriptions;// 多行详细描述
 
@@ -287,5 +288,13 @@ public class TableColumn {
 
 	public void setStringType(boolean stringType) {
 		this.stringType = stringType;
+	}
+
+	public boolean isDateType() {
+		return dateType;
+	}
+
+	public void setDateType(boolean dateType) {
+		this.dateType = dateType;
 	}
 }

@@ -21,18 +21,22 @@ import java.util.Date;
  */
 public class JwtUtils {
 
-    public static String createToken(JwtBearer bearer, Algorithm jwtAlgorithm, int expires) {
+    public static String createToken(JwtBearer bearer, Algorithm jwtAlgorithm, long expires) {
         long now = System.currentTimeMillis();
         return JWT.create()
             .withClaim("userId", bearer.userId)
-            .withClaim("userName", bearer.userName)
+            //.withClaim("userName", bearer.userName)
             .withIssuedAt(new Date(now))
             .withExpiresAt(new Date(now + expires))
             .sign(jwtAlgorithm);
     }
 
     public static JwtBearer loadBearer(DecodedJWT jwt) {
-        return new JwtBearer(jwt.getClaim("userId").asString(), jwt.getClaim("userName").asString());
+<#if loginTable.idColumn.stringType>
+        return new JwtBearer(jwt.getClaim("userId").asString());//, jwt.getClaim("userName").asString());
+<#else >
+        return new JwtBearer(jwt.getClaim("userId").asInt());//, jwt.getClaim("userName").asString());
+</#if>
     }
 
     public static JwtBearer currentBearer() {
@@ -54,9 +58,11 @@ public class JwtUtils {
             return authorization.replace("Bearer ", "");
         }
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie: cookies) {
-            if (cookie != null && "Bearer".equals(cookie.getName())) {
-                return cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie: cookies) {
+                if (cookie != null && "Bearer".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
         return null;

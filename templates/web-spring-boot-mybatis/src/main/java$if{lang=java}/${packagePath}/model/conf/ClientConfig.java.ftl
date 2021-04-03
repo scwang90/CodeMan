@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Component
-@ConfigurationProperties(prefix="client")
+@ConfigurationProperties(prefix="app.client")
 public class ClientConfig {
 
     private String visitHost;

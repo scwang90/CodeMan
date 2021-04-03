@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Component
-@ConfigurationProperties(prefix="auth.token")
+@ConfigurationProperties(prefix="app.auth.token")
 public class AuthTokenConfig {
 
     /**
@@ -35,5 +35,13 @@ public class AuthTokenConfig {
 
     public void setRefresh(int refresh) {
         this.refresh = refresh;
+    }
+
+    public long getExpiryTime() {
+        return expiry * 1000L;
+    }
+
+    public long getRefreshTime() {
+        return refresh * 1000L;
     }
 }

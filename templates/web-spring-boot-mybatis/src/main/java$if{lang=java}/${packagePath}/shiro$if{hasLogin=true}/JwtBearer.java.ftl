@@ -7,10 +7,10 @@ package ${packageName}.shiro;
  */
 public class JwtBearer {
 
-    public final String userId;
+    public final ${loginTable.idColumn.fieldType} userId;
     public final String userName;
 
-    public JwtBearer(String userId, String userName) {
+    public JwtBearer(${loginTable.idColumn.fieldType} userId, String userName) {
         this.userId = userId;
         this.userName = userName;
     }

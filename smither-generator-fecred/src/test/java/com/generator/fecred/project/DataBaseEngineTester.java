@@ -73,4 +73,15 @@ public class DataBaseEngineTester {
         }
     }
 
+
+    @Test
+    public void DataBaseMidaier() {
+        try {
+            DataBaseConfig config = DbConfigFactory.loadConfig("midaier-server.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

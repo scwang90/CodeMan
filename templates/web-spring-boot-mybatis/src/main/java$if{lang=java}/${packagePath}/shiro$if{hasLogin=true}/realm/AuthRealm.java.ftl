@@ -3,7 +3,7 @@ package ${packageName}.shiro.realm;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import ${packageName}.mapper.common.${loginTable.className}Mapper;
+import ${packageName}.mapper.auto${loginTable.className}Mapper;
 import ${packageName}.model.db.${loginTable.className};
 import ${packageName}.shiro.JwtToken;
 import ${packageName}.shiro.JwtBearer;
@@ -30,10 +30,10 @@ import java.util.Arrays;
 public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
 
     private final Algorithm jwtAlgorithm;
-    //private final ${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper;
+    private final ${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper;
 
-    public AuthRealm(/*${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper, */Algorithm jwtAlgorithm) {
-        //this.${loginTable.classNameCamel}Mapper = ${loginTable.classNameCamel}Mapper;
+    public AuthRealm(${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper, Algorithm jwtAlgorithm) {
+        this.${loginTable.classNameCamel}Mapper = ${loginTable.classNameCamel}Mapper;
         this.jwtAlgorithm = jwtAlgorithm;
         //设置密码匹配位自己，实现了 doCredentialsMatch 方法
         this.setCredentialsMatcher(this);

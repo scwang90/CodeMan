@@ -5,6 +5,8 @@ import com.code.smither.project.database.DataBaseEngine;
 import com.code.smither.project.database.factory.DbConfigFactory;
 
 import com.generator.poetry.drawable2svg.ReplaceBuilder;
+import com.generator.poetry.drawable2svg.ReplaceConfig;
+import com.generator.poetry.drawable2svg.ReplaceConfigFactory;
 import com.generator.poetry.drawable2svg.ReplaceDictionaryBuilder;
 import org.junit.Test;
 
@@ -32,11 +34,22 @@ public class DataBaseEngineTester {
         }
     }
 
+    @Test
+    public void DataBaseTravelerClient() {
+        try {
+            DataBaseConfig config = DbConfigFactory.loadConfig("traveler-client.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private final static boolean IS_FILTER_CHINESE_CLOUMN = true;
 
     @Test
     public void DataBaseHisReplace() throws Exception {
-        DataBaseConfig config = DbConfigFactory.loadConfig("replace-his.properties");
+        ReplaceConfig config = ReplaceConfigFactory.loadConfig("replace-his.properties");
         config.setFilterFile("*.txt.ftl");
         DataBaseEngine engine = new DataBaseEngine(config);
         engine.launch(new ReplaceBuilder(config, IS_FILTER_CHINESE_CLOUMN));
@@ -44,13 +57,12 @@ public class DataBaseEngineTester {
 
     @Test
     public void DataBaseHisDictionary() throws Exception {
-        DataBaseConfig config = DbConfigFactory.loadConfig("replace-his.properties");
+        ReplaceConfig config = ReplaceConfigFactory.loadConfig("replace-his.properties");
         config.setFilterFile("*.html.ftl;*.sql.ftl");
-        config.setTargetPath("../templates-datasource");
+        config.setTargetPath("../templates-datasource/dict-wd-his");
         DataBaseEngine engine = new DataBaseEngine(config);
         engine.launch(new ReplaceDictionaryBuilder(config, IS_FILTER_CHINESE_CLOUMN));
     }
-
 
 
 }

@@ -2,13 +2,13 @@ package ${packageName}.service;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import ${packageName}.model.api.LoginInfo;
+import ${packageName}.model.conf.AuthTokenConfig;
 import ${packageName}.model.db.${loginTable.className};
 import ${packageName}.shiro.JwtBearer;
 import ${packageName}.util.JwtUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +21,11 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final Algorithm jwtAlgorithm;
+    private final AuthTokenConfig tokenConfig;
 
-    @Value("${r"${token.time.expiry:1}"}")
-    private double tokenExpiryTime = 1;
-
-    public AuthService(Algorithm jwtAlgorithm) {
+    public AuthService(Algorithm jwtAlgorithm, AuthTokenConfig tokenConfig) {
         this.jwtAlgorithm = jwtAlgorithm;
+        this.tokenConfig = tokenConfig;
     }
 
     @Transient
@@ -41,7 +40,7 @@ public class AuthService {
     }
 
     private String buildToken(${loginTable.className} ${loginTable.classNameCamel}) {
-        JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}() + "", "${loginTable.classNameCamel}.getUserName()");
-        return JwtUtils.createToken(bearer, jwtAlgorithm, (int)(tokenExpiryTime*60*1000));
+        JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}(), "${loginTable.classNameCamel}.getUserName()");
+        return JwtUtils.createToken(bearer, jwtAlgorithm, tokenConfig.getExpiryTime());
     }
 }

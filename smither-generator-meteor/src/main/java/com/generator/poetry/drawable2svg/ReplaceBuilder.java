@@ -1,6 +1,7 @@
 package com.generator.poetry.drawable2svg;
 
 import com.code.smither.engine.api.RootModel;
+import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.model.SourceModel;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
@@ -9,6 +10,8 @@ import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.model.DbModelBuilder;
 import com.code.smither.project.database.model.DbSourceModel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -17,10 +20,28 @@ import java.util.regex.Pattern;
 public class ReplaceBuilder extends DbModelBuilder {
 
     private final boolean isFilterChineseCloumn;
+    private final ReplaceConfig replaceConfig;
 
-    public ReplaceBuilder(DataBaseConfig config, boolean isFilterChineseCloumn) {
+    private boolean isIgnoreCurrentTable = false;
+
+    public ReplaceBuilder(ReplaceConfig config, boolean isFilterChineseCloumn) {
         super(config, config.getDbFactory(), config.getTableSource());
+        this.replaceConfig = config;
         this.isFilterChineseCloumn = isFilterChineseCloumn;
+    }
+
+    @Override
+    protected Table tableCompute(Table table, MetaDataTable tableMate) throws Exception {
+        isIgnoreCurrentTable = replaceConfig.getDictIgnore().containsKey(table.getName());
+        return super.tableCompute(table, tableMate);
+    }
+
+    @Override
+    protected String convertIfNeed(String name) {
+        if (isIgnoreCurrentTable) {
+            return name;
+        }
+        return super.convertIfNeed(name);
     }
 
     @Override
@@ -34,7 +55,9 @@ public class ReplaceBuilder extends DbModelBuilder {
 
         for (Table table : model.getTables()) {
             table.setNameSql(StringUtil.camelReverse(table.getClassName(), "_"));
-            if (StringUtil.isNullOrBlank(table.getComment()) && isContainsChinese(table.getName())) {
+            if (replaceConfig.getDictRemark().containsKey(table.getName())) {
+                table.setNameSqlInStr(replaceConfig.getDictRemark().get(table.getName()).value);
+            } else if (StringUtil.isNullOrBlank(table.getComment()) && isContainsChinese(table.getName())) {
                 table.setNameSqlInStr(table.getName()
                         .replace("农合", "医保")
                         .replace("门诊处方", "结算"));
@@ -45,7 +68,6 @@ public class ReplaceBuilder extends DbModelBuilder {
             for (TableColumn column : table.getColumns()) {
                 if (!isFilterChineseCloumn || !isContainsChinese(column.getName())) {
                     column.setNameSql(StringUtil.camelReverse(column.getFieldName(), "_")
-                            .replaceAll("^[CS]_", "")
                             .replaceAll("(.+)_(BEFORE|NOW|FEE|RESULT|WAY)$", "$2_$1"));
                     set.add(column.getNameSql());
                     if (StringUtil.isNullOrBlank(column.getComment()) && isContainsChinese(column.getName())) {
@@ -56,6 +78,7 @@ public class ReplaceBuilder extends DbModelBuilder {
                 } else {
                     column.setNameSqlInStr(null);
                     column.setNameSql(column.getName());
+                    set.add(column.getNameSql());
                 }
             }
             for (TableColumn column : table.getColumns()) {
@@ -70,6 +93,7 @@ public class ReplaceBuilder extends DbModelBuilder {
                 }
             }
         }
+        model.getTables().sort(Comparator.comparing(Table::getNameSql));
         return model;
     }
 

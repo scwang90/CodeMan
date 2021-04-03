@@ -21,13 +21,13 @@ mybatis.configuration.map-underscore-to-camel-case=true
 mybatis.mapper-locations=classpath:/mapper/*.xml,classpath:/mapper/**/*.xml
 
 #文档框架测试访问主机（负债均衡/内网穿透并且时需要配置，未配置时使用）
-swagger.host=
-swagger.enabled=false
+app.swagger.host=
+app.swagger.enabled=false
 
 #客户端访问链接（负债均衡/内网穿透并且使用到框架中的上传时需要）
-client.visit-host=
+app.client.visit-host=
 
 #凭证有效时间 (秒钟)
-auth.token.expiry = 36000
-#凭证刷新间隔 (秒钟)//小程序网络框架未能实现更新token，把刷新时间关闭
-auth.token.refresh = 30
+app.auth.token.expiry = 36000
+#凭证刷新间隔 (秒钟)
+app.auth.token.refresh = 30

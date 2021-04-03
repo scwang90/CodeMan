@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Component
-@ConfigurationProperties(prefix="swagger")
+@ConfigurationProperties(prefix="app.swagger")
 public class SwaggerConfig {
 
     /**

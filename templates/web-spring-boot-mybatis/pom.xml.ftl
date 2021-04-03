@@ -142,7 +142,6 @@
 			<artifactId>shiro-spring</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-		</#if>
 
 		<!-- JWT -->
 		<dependency>
@@ -150,12 +149,13 @@
 			<artifactId>java-jwt</artifactId>
 			<version>3.2.0</version>
 		</dependency>
+		</#if>
 
-		<!--对象拷贝框架-->
+		<!--代码辅助-->
 		<dependency>
-			<groupId>com.github.houbb</groupId>
-			<artifactId>bean-mapping-core</artifactId>
-			<version>0.2.6</version>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<#if lang=="kotlin">

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class DefaultWordReplacer implements WordReplacer {
 
-    private static class Replace {
+    public static class Replace {
         public final String key;
         public final String value;
         public final boolean isRegex;
@@ -31,7 +31,7 @@ public class DefaultWordReplacer implements WordReplacer {
     @Override
     public String replace(String str, String...divisions) {
         if (dictionary == null && dictPath != null && dictPath.trim().length() > 0) {
-            loadDictionary(divisions);
+            dictionary = loadDictionary(dictPath, divisions);
         }
         return replaceInternal(str, dictionary, 0);
     }
@@ -67,7 +67,7 @@ public class DefaultWordReplacer implements WordReplacer {
         return str;
     }
 
-    protected void loadDictionary(String[] divisions) {
+    public static Map<String, Replace> loadDictionary(String dictPath, String... divisions) {
         File file = new File(dictPath);
         if (!file.exists()) {
             throw new RuntimeException("找不到文件：" + dictPath);
@@ -108,17 +108,18 @@ public class DefaultWordReplacer implements WordReplacer {
         }
         List<String> keys = keySet.stream().sorted((l, r) -> Integer.compare(length(r), length(l))).collect(Collectors.toList());
 
-        this.dictionary = new LinkedHashMap<>();
+        Map<String, Replace> dictionary = new LinkedHashMap<>();
         for (String key : keys) {
-            this.dictionary.put(key, dict.get(key));
+            dictionary.put(key, dict.get(key));
         }
         List<String> keysRegex = keySetRegex.stream().sorted((l, r) -> Integer.compare(length(r), length(l))).collect(Collectors.toList());
         for (String key : keysRegex) {
-            this.dictionary.put(key, dictRegex.get(key));
+            dictionary.put(key, dictRegex.get(key));
         }
+        return dictionary;
     }
 
-    private int length(String key) {
+    private static int length(String key) {
         if (key.startsWith("regex:")) {
             return key.replaceAll("(?<!\\\\)\\\\","").length() - 6;
         }

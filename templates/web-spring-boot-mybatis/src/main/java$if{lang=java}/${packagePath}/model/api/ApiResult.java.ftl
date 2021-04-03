@@ -18,7 +18,7 @@ public class ApiResult<T> extends Model {
     @ApiModelProperty("返回代码：200-成功 401-未登录 400-客户端错误 500-服务端错误")
     public int code;
     @ApiModelProperty("失败原因")
-    public String reason = "调用成功";
+    public String message = "调用成功";
     @ApiModelProperty("错误详细")
     public Object errors = "";
 
@@ -27,14 +27,14 @@ public class ApiResult<T> extends Model {
         this.code = code;
     }
 
-    public ApiResult(T result, int code, String reason) {
+    public ApiResult(T result, int code, String message) {
         this.result = result;
         this.code = code;
-        this.reason = reason;
+        this.message = message;
     }
 
-    public ApiResult(T result, int code, String reason, Object errors) {
-        this(result, code, reason);
+    public ApiResult(T result, int code, String message, Object errors) {
+        this(result, code, message);
         this.errors = errors;
     }
 
@@ -50,11 +50,11 @@ public class ApiResult<T> extends Model {
         return new ApiResult<>(result, 200, msg);
     }
 
-    public static <TT> ApiResult<TT> failure400(String reason) {
-        return new ApiResult<>(null, 400, reason);
+    public static <TT> ApiResult<TT> failure400(String message) {
+        return new ApiResult<>(null, 400, message);
     }
 
-    public static <TT> ApiResult<TT> failure500(String reason) {
-        return new ApiResult<>(null, 500, reason);
+    public static <TT> ApiResult<TT> failure500(String message) {
+        return new ApiResult<>(null, 500, message);
     }
 }

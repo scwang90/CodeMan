@@ -4,7 +4,7 @@ server.address = 0.0.0.0
 logging.path = logging
 logging.level.root = info
 
-swagger.enabled = true
+app.swagger.enabled = true
 
 logging.level.root = info
 logging.level.${packageName}.mapper = debug

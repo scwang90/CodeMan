@@ -1,6 +1,6 @@
 package ${packageName}.controller.manager
 
-import ${packageName}.mapper.common.${className}Mapper
+import ${packageName}.mapper.auto${className}Mapper
 import ${packageName}.model.api.ApiResult
 import ${packageName}.model.api.Paged
 import ${packageName}.model.api.Paging

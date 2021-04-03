@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${packageName}.mapper.common.${className}Mapper">
+<mapper namespace="${packageName}.mapper.auto.${className}Mapper">
   <!--${table.remark} 的 Mapper 实现 -->
   <#list table.descriptions as description>
   <!--${description} -->
@@ -265,6 +265,137 @@
       <property name="andMap" value="${r"$"}{andMap}"/>
       <property name="orderSet" value="${r"$"}{orderSet}"/>
     </include>
+  </select>
+
+
+
+
+  <sql id="intentII">
+    <choose>
+      <when test="conditionII.value != null">
+        ${r"$"}{conditionII.column} ${r"$"}{conditionII.op} ${r"#"}{conditionII.value}
+      </when>
+      <otherwise>
+        ${r"$"}{conditionII.column} ${r"$"}{conditionII.op}
+      </otherwise>
+    </choose>
+  </sql>
+
+  <sql id="intentsII">
+    (
+    <choose>
+      <when test="conditionI.op == 'OR'">
+        <foreach collection="conditionI.conditions" item="conditionII" separator=" OR ">
+          <include refid="intentII" />
+        </foreach>
+      </when>
+      <otherwise>
+        <foreach collection="conditionI.conditions" item="conditionII" separator=" AND ">
+          <include refid="intentII" />
+        </foreach>
+      </otherwise>
+    </choose>
+    )
+  </sql>
+
+  <sql id="intentI">
+    <choose>
+      <when test="conditionI.conditions != null">
+        <include refid="intentsII"/>
+      </when>
+      <otherwise>
+        <choose>
+          <when test="conditionI.value != null">
+            ${r"$"}{conditionI.column} ${r"$"}{conditionI.op} ${r"#"}{conditionI.value}
+          </when>
+          <otherwise>
+            ${r"$"}{conditionI.column} ${r"$"}{conditionI.op}
+          </otherwise>
+        </choose>
+      </otherwise>
+    </choose>
+  </sql>
+
+  <sql id="intentsI">
+    (
+    <choose>
+      <when test="condition.op == 'OR'">
+        <foreach collection="condition.conditions" item="conditionI" separator=" OR ">
+          <include refid="intentI" />
+        </foreach>
+      </when>
+      <otherwise>
+        <foreach collection="condition.conditions" item="conditionI" separator=" AND ">
+          <include refid="intentI" />
+        </foreach>
+      </otherwise>
+    </choose>
+    )
+  </sql>
+
+  <sql id="intent">
+    <choose>
+      <when test="condition.conditions != null">
+        <include refid="intentsI"/>
+      </when>
+      <otherwise>
+        <choose>
+          <when test="condition.value != null">
+            ${r"$"}{condition.column} ${r"$"}{condition.op} ${r"#"}{condition.value}
+          </when>
+          <otherwise>
+            ${r"$"}{condition.column} ${r"$"}{condition.op}
+          </otherwise>
+        </choose>
+      </otherwise>
+    </choose>
+  </sql>
+
+  <sql id="intents">
+    <where>
+      <choose>
+        <when test="column != null">
+          <choose>
+            <when test="value != null">
+              ${r"$"}{column} ${r"$"}{op} ${r"#"}{value}
+            </when>
+            <otherwise>
+              ${r"$"}{column} ${r"$"}{op}
+            </otherwise>
+          </choose>
+        </when>
+        <otherwise>
+          <choose>
+            <when test="op == 'OR'">
+              <foreach collection="conditions" item="condition" separator=" OR ">
+                <include refid="intent" />
+              </foreach>
+            </when>
+            <otherwise>
+              <foreach collection="conditions" item="condition" separator=" AND ">
+                <include refid="intent" />
+              </foreach>
+            </otherwise>
+          </choose>
+        </otherwise>
+      </choose>
+    </where>
+  </sql>
+
+  <#-- 单条查询（灵活构建条件） -->
+  <select id="findOneCondition" resultMap="MAP">
+    SELECT * FROM ${table.nameSql}
+    <if test="column != null or conditions != null">
+      <include refid="intents"/>
+    </if>
+  </select>
+
+  <#-- 批量查询（灵活构建条件） -->
+  <select id="findListCondition" resultMap="MAP">
+    SELECT * FROM ${table.nameSql}
+    <if test="column != null or conditions != null">
+      <include refid="intents"/>
+    </if>
   </select>
 
 </mapper>

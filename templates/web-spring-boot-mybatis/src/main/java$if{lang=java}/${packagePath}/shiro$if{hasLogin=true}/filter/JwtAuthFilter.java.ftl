@@ -32,14 +32,12 @@ public class JwtAuthFilter extends AuthenticatingFilter {
 
     private Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
 
-    private final int tokenRefreshTime;
-    private final double tokenExpiryTime;
     private final Algorithm jwtAlgorithm;
+    private final AuthTokenConfig tokenConfig;
 
-    public JwtAuthFilter(int tokenRefreshTime, double tokenExpiryTime, Algorithm jwtAlgorithm) {
-        this.tokenRefreshTime = tokenRefreshTime;
-        this.tokenExpiryTime = tokenExpiryTime;
+    public JwtAuthFilter(Algorithm jwtAlgorithm, AuthTokenConfig tokenConfig) {
         this.jwtAlgorithm = jwtAlgorithm;
+        this.tokenConfig = tokenConfig;
     }
 
     /**
@@ -83,8 +81,8 @@ public class JwtAuthFilter extends AuthenticatingFilter {
             JwtBearer jwtBearer = subject.getPrincipals().oneByType(JwtBearer.class);
             DecodedJWT jwt = subject.getPrincipals().oneByType(DecodedJWT.class);
             Date issuedAt = jwt.getIssuedAt();
-            if (System.currentTimeMillis() - issuedAt.getTime() > tokenRefreshTime * 1000 && tokenRefreshTime > 0) {
-                String jwtToken = JwtUtils.createToken(jwtBearer, jwtAlgorithm, (int) (tokenExpiryTime * 60 * 1000));
+            if (System.currentTimeMillis() - issuedAt.getTime() > tokenConfig.getRefreshTime() && tokenConfig.getRefresh() > 0) {
+                String jwtToken = JwtUtils.createToken(jwtBearer, jwtAlgorithm, tokenConfig.getExpiryTime());
                 JwtUtils.writeToHeader(jwtToken, (HttpServletRequest) request, (HttpServletResponse) response);
             }
         }

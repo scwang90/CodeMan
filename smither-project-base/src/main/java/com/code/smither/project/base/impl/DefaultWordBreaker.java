@@ -23,7 +23,7 @@ public class DefaultWordBreaker implements WordBreaker {
     @Override
     public String breaks(String str, String division) {
         if (dictionary == null && dictPath != null && dictPath.trim().length() > 0) {
-            loadDictionary();
+            dictionary = loadDictionary(dictPath);
         }
         if (dictionary != null && !dictionary.isEmpty()) {
             int i = 0;
@@ -43,7 +43,7 @@ public class DefaultWordBreaker implements WordBreaker {
         return str;
     }
 
-    private void loadDictionary() {
+    public static Map<String,String> loadDictionary(String dictPath) {
         File file = new File(dictPath);
         Set<String> keySet = new LinkedHashSet<>();
         Map<String,String> dict = new LinkedHashMap<>();
@@ -63,10 +63,11 @@ public class DefaultWordBreaker implements WordBreaker {
             e.printStackTrace();
         }
         List<String> keys = keySet.stream().sorted((l, r) -> Integer.compare(r.length(), l.length())).collect(Collectors.toList());
-        this.dictionary = new LinkedHashMap<>();
+        Map<String,String> dictionary = new LinkedHashMap<>();
         for (String key : keys) {
-            this.dictionary.put(key, dict.get(key));
+            dictionary.put(key, dict.get(key));
         }
+        return dictionary;
     }
 
 }

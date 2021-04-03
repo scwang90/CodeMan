@@ -11,5 +11,9 @@ target/
 /src/test/resources/c3p0-config.xml
 /src/test/resources/config.properties
 
+*/src/test/resources/*.properties
+
 /templates/web-spring-boot-wd/
+/templates/web-spring-boot-traveler/
+/templates/web-spring-boot-midaier/
 /smither-parent/smither-parent.iml

@@ -27,9 +27,10 @@ public class Table implements IModel {
     private String classNameLower;// 类名全小写
 
     private TableColumn idColumn; // ID列
+    private TableColumn ogrColumn;//机构列
     private TableColumn createColumn;//创建日志列
     private TableColumn updateColumn;//更新日志列
-    private TableColumn passwordColumn;//更新日志列
+    private TableColumn passwordColumn;//密码列
 
     private List<TableColumn> columns;// 表字段
     private List<String> descriptions;// 多行详细描述
@@ -147,6 +148,14 @@ public class Table implements IModel {
 
     public void setIdColumn(TableColumn idColumn) {
         this.idColumn = idColumn;
+    }
+
+    public TableColumn getOgrColumn() {
+        return ogrColumn;
+    }
+
+    public void setOgrColumn(TableColumn ogrColumn) {
+        this.ogrColumn = ogrColumn;
     }
 
     public TableColumn getUpdateColumn() {
