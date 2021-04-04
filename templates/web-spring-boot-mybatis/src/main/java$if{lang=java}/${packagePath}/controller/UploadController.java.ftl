@@ -5,8 +5,12 @@ import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Upload;
+import ${packageName}.model.conf.ClientConfig;
 import ${packageName}.service.UploadService;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,23 +19,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import springfox.documentation.annotations.ApiIgnore;
+import static ${packageName}.controller.HostController.urlSchemeHostPort;
 
 /**
  * 文件上传接口
@@ -40,17 +35,13 @@ import springfox.documentation.annotations.ApiIgnore;
  */
 @Validated
 @Controller
-@Api(value = "user", description = "文件上传API")
+@AllArgsConstructor
+@Api(tags = "文件上传")
 @RequestMapping("/api/v1/file")
 public class UploadController {
 
 	private final UploadMapper mapper;
 	private final UploadService service;
-
-	public UploadController(UploadMapper mapper, UploadService service) {
-		this.mapper = mapper;
-		this.service = service;
-	}
 
 	//处理文件上传
 	@ResponseBody
@@ -58,24 +49,17 @@ public class UploadController {
 	@PostMapping(value = "upload")
 	public ApiResult<Upload> upload(@RequestParam("file") @ApiParam("上传文件") MultipartFile multipart, HttpServletRequest request) {
 		Upload upload = new Upload(multipart);
-		upload.path = service.pathWith(null, UploadType.from(multipart));
-		try {
-			service.saveFile(multipart, upload);
-			upload.path = request.getRequestURL().toString().replace("upload", "download") + "/" + upload.token;
-		} catch (ServiceException e) {
-			return ApiResult.failure500("上传失败");
-		} catch (Throwable e) {
-			e.printStackTrace();
-			upload.path = String.format("%s://%s:%d/upload/%s", request.getScheme(), request.getServerName(), request.getServerPort(), upload.path);
-		}
+		upload.setPath(service.pathWith(null, UploadType.from(multipart)));
+		service.saveFile(multipart, upload);
+		upload.setPath(urlWithToken(request, upload.getId()));
 		return ApiResult.success(upload);
 	}
 
 	@ApiOperation(value = "文件下载")
-	@GetMapping("download/{token}")
-	public ResponseEntity<FileSystemResource> download(@PathVariable String token, @RequestHeader("User-Agent") @ApiIgnore String userAgent)  {
+	@GetMapping("download/{id}")
+	public ResponseEntity<FileSystemResource> download(@PathVariable String id, @RequestHeader("User-Agent") @ApiIgnore String userAgent)  {
 
-		Upload upload = mapper.findByToken(token);
+		Upload upload = mapper.findById(id);
 		if (upload == null) {
 			throw new ServiceException("找不到对应文件信息");
 		}
@@ -87,10 +71,10 @@ public class UploadController {
 
 		HttpHeaders headers = new HttpHeaders();
 		if (userAgent != null && userAgent.contains("Mozilla/")) {
-			headers.setContentType(MediaType.parseMediaType(upload.mimeType));
+			headers.setContentType(MediaType.parseMediaType(upload.getMimeType()));
 		} else {
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-			headers.setContentDispositionFormData("attachment", upload.name);
+			headers.setContentDispositionFormData("attachment", upload.getName());
 		}
 		return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.CREATED);
 
@@ -106,6 +90,6 @@ public class UploadController {
 		if (token == null || token.startsWith("http")) {
 			return token;
 		}
-		return String.format("%s://%s:%d/api/app/file/download/%s", request.getScheme(), request.getServerName(), request.getServerPort(), token);
+		return String.format("%s/api/v1/file/download/%s", urlSchemeHostPort(request), token);
 	}
 }

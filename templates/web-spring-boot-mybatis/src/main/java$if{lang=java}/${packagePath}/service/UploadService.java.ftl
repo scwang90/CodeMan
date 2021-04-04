@@ -4,9 +4,8 @@ import ${packageName}.constant.UploadType;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
 import ${packageName}.model.api.Upload;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -23,51 +22,47 @@ import java.util.Date;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Slf4j
 @Service
+@AllArgsConstructor
 public class UploadService {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    private DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
     private final UploadMapper mapper;
 
-    public UploadService(UploadMapper mapper) {
-        this.mapper = mapper;
-    }
-
     /**
-     * 根据 图片token 删除图片信息
-     *
-     * @param token 图片token
+     * 根据 图片id 删除图片信息
+     * @param id 图片id
      */
-    public void deleteUploadByToken(@Nullable String token) {
-        if (token == null || token.startsWith("http")) {
+    public void deleteUploadById(@Nullable String id) {
+        if (id == null || id.startsWith("http")) {
             return;
         }
 
-        File file = findFileByToken(token);
+        File file = findFileById(id);
         if (file != null && !file.delete()) {
-            logger.warn("deleteUploadByToken.file.delete=false:{}", file.getAbsolutePath());
+            log.warn("deleteUploadById.file.delete=false:{}", file.getAbsolutePath());
         }
 
-        int deleted = mapper.deleteByToken(token);
+        int deleted = mapper.deleteById(id);
         if (deleted != 1) {
-            logger.warn("deleteUploadByToken({})={}", token, deleted);
+            log.warn("deleteUploadById({})={}", id, deleted);
         }
-    }
+}
 
     /**
-     * 根据图片 token 获取文件
-     * @param token 图片 token
+     * 根据图片 id 获取文件
+     * @param id 图片 id
      * @return file or null
      */
     @Nullable
-    public File findFileByToken(String token) {
-        Upload upload = mapper.findByToken(token);
+    public File findFileById(String id) {
+        Upload upload = mapper.findById(id);
         if (upload != null) {
             return getFileByUpload(upload);
         } else {
-            logger.warn("findFileByToken.findByToken=null:{}", token);
+            log.warn("findFileById.findById=null:{}", id);
         }
         return null;
     }
@@ -79,12 +74,11 @@ public class UploadService {
      */
     @NonNull
     public File getFileByUpload(Upload upload) {
-        return new File(new File("upload", upload.path), upload.token).getAbsoluteFile();
+        return new File(new File("upload", upload.getPath()), upload.getId()).getAbsoluteFile();
     }
 
     /**
      * 根据类型和用户生成上传文件的保存路径
-     *
      * @param account   账户
      * @param type      类型
      * @return path
@@ -98,7 +92,6 @@ public class UploadService {
 
     /**
      * 根据 upload 对象配置，把文件保存到服务器目录
-     *
      * @param part   文件对象
      * @param upload 上传配置
      */
@@ -106,13 +99,13 @@ public class UploadService {
         File file = getFileByUpload(upload);
         File parent = file.getParentFile();
         if (!parent.exists() && !parent.mkdirs()) {
-            logger.error("创建目录失败:" + parent.getAbsolutePath());
+            log.error("创建目录失败:" + parent.getAbsolutePath());
             throw new ServiceException("上传失败");
         }
         try {
             part.transferTo(file);
         } catch (IOException e) {
-            logger.error("保存文件失败", e);
+            log.error("保存文件失败", e);
             throw new ServiceException("上传失败");
         }
         mapper.insert(upload);

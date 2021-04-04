@@ -42,6 +42,8 @@ public class TableColumn implements MetaDataColumn {
 	private boolean primaryKey;//是否是 PrimaryKey
 	private boolean stringType;//是否是 string类型
 	private boolean dateType;//是否是 Date类型
+	private boolean hiddenForClient;//是否对前端需要隐藏
+	private boolean hiddenForSubmit;//是否对提交需要隐藏
 
 	private List<String> descriptions;//多行详细描述
 
@@ -308,5 +310,21 @@ public class TableColumn implements MetaDataColumn {
 
 	public void setDateType(boolean dateType) {
 		this.dateType = dateType;
+	}
+
+	public boolean isHiddenForClient() {
+		return hiddenForClient;
+	}
+
+	public void setHiddenForClient(boolean hiddenForClient) {
+		this.hiddenForClient = hiddenForClient;
+	}
+
+	public boolean isHiddenForSubmit() {
+		return hiddenForSubmit;
+	}
+
+	public void setHiddenForSubmit(boolean hiddenForSubmit) {
+		this.hiddenForSubmit = hiddenForSubmit;
 	}
 }

@@ -135,13 +135,13 @@
   <update id="update" parameterType="${packageName}.model.db.${className}">
     UPDATE ${table.nameSql}
     <set>
-      <#list table.columns as column>
-        <#if column != table.idColumn>
+<#list table.columns as column>
+    <#if column != table.idColumn && column != table.orgColumn && column != table.codeColumn>
       <if test="${column.fieldName} != null">
         ${column.nameSql}=${r"#"}{${column.fieldName}},
       </if>
-        </#if>
-      </#list>
+    </#if>
+</#list>
     </set>
     WHERE ${table.idColumn.nameSql}=${r"#"}{${table.idColumn.fieldName}}
   </update>
@@ -151,7 +151,9 @@
     UPDATE ${table.nameSql}
     <set>
       <#list table.columns as column>
+        <#if column != table.idColumn>
         ${column.nameSql}=${r"#"}{${column.fieldName}},
+        </#if>
       </#list>
     </set>
     WHERE ${table.idColumn.nameSql}=${r"#"}{${table.idColumn.fieldName}}
@@ -174,7 +176,7 @@
   </update>
 
   <!-- 根据ID删除（支持批量删除）-->
-  <delete id="delete">
+  <delete id="deleteById">
     DELETE FROM ${table.nameSql} WHERE ${table.idColumn.nameSql} IN
     <foreach collection="ids" item="id" open="(" close=")" separator=",">
         ${r"#"}{id}
@@ -382,6 +384,20 @@
     </where>
   </sql>
 
+  <!-- 根据条件统计数据数量（灵活构建条件） -->
+  <select id="countCondition" resultType="java.lang.Integer">
+    SELECT COUNT(0) FROM ${table.nameSql}
+    <include refid="intents"/>
+  </select>
+
+  <!-- 根据条件删除（灵活构建条件） -->
+  <delete id="deleteCondition">
+    <if test="column != null or conditions != null">
+      DELETE FROM ${table.nameSql}
+      <include refid="intents"/>
+    </if>
+  </delete>
+
   <#-- 单条查询（灵活构建条件） -->
   <select id="findOneCondition" resultMap="MAP">
     SELECT * FROM ${table.nameSql}
@@ -396,6 +412,12 @@
     <if test="column != null or conditions != null">
       <include refid="intents"/>
     </if>
+<#list table.columns as column>
+  <#if column == table.codeColumn>
+    ORDER BY ${column.nameSql}
+    <#break >
+  </#if>
+</#list>
   </select>
 
 </mapper>

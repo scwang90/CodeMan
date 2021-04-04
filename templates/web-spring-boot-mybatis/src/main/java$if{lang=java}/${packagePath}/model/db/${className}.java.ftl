@@ -4,7 +4,7 @@ import ${packageName}.model.Entity;
 
 <#assign hasJsonIgnore=false>
 <#list table.columns as column>
-	<#if hasJsonIgnore==false && (column == table.createColumn || column == table.updateColumn || column == table.passwordColumn) >
+	<#if hasJsonIgnore==false && column.hiddenForClient>
 import com.fasterxml.jackson.annotation.JsonIgnore;
 		<#assign hasJsonIgnore=true>
 	</#if>
@@ -41,13 +41,13 @@ public class ${className} extends Entity {
 	 * 数据库名称 ${column.name}
 		</#if>
 	 */
-	<#if column == table.createColumn || column == table.updateColumn || column == table.passwordColumn>
+	<#if column.hiddenForClient>
 	@JsonIgnore
 	</#if>
 	<#if column.stringType>
 	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
 	</#if>
-	<#if column == table.createColumn || column == table.updateColumn || column == table.passwordColumn>
+	<#if column.hiddenForClient>
 	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>, hidden = true)
 	<#else>
 	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, required = true</#if>)

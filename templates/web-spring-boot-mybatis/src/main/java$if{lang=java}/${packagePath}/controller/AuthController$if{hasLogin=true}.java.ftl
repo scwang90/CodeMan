@@ -4,7 +4,7 @@ import ${packageName}.constant.ResultCode;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.LoginInfo;
 import ${packageName}.service.AuthService;
-import ${packageName}.shiro.JwtBearer;
+import ${packageName}.shiro.model.JwtBearer;
 import ${packageName}.util.JwtUtils;
 
 import org.slf4j.Logger;

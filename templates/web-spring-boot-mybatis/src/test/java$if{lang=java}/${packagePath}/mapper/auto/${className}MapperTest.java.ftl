@@ -141,7 +141,7 @@ public class ${className}MapperTest extends BaseMapperTests<${className}> {
     </#if>
 
         //单条删除测试开始
-        int delRow1 = mapper.delete(models1.get(0).get${table.idColumn.fieldNameUpper}());
+        int delRow1 = mapper.deleteById(models1.get(0).get${table.idColumn.fieldNameUpper}());
         int delRow2 = mapper.deleteWhere("${column1.nameSqlInStr}='" + (strInsert + 2) + "'");
         int delRow3 = mapper.deleteIntent(SqlIntent.New().where("${column1.nameSqlInStr}",strInsert + 3));
 

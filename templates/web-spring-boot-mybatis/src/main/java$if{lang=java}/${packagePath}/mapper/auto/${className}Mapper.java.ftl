@@ -80,7 +80,7 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 * @return 改变的行数
 	 */
 	@Override
-	int delete(@Param("ids") Object... ids);
+	int deleteById(@Param("ids") Object... ids);
 
 	/**
 	 * 根据条件删除（Where 拼接）
@@ -176,6 +176,20 @@ public interface ${className}Mapper extends TypedMapper<${className}>{
 	 */
 	@Override
 	List<${className}> findListIntent(SqlIntent intent, RowBounds rows);
+
+	/**
+	 * 统计数量（灵活构建条件）
+	 * @param condition 条件
+	 * @return 统计数量
+	 */
+	int countCondition(Condition<${table.classNameUpper}> condition);
+
+	/**
+	 * 根据条件删除（灵活构建条件）
+	 * @param condition 条件
+	 * @return 改变的行数
+	 */
+	int deleteCondition(Condition<${table.classNameUpper}> condition);
 
 	/**
 	 * 单条查询（灵活构建条件）

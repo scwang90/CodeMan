@@ -60,7 +60,7 @@ public interface TypedMapper<T> {
 	 * @param ids 数据的主键ID
 	 * @return 改变的行数
 	 */
-	int delete(Object... ids);
+	int deleteById(Object... ids);
 
 	/**
 	 * 根据条件删除（Where 拼接）

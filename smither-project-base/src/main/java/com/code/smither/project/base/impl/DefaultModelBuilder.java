@@ -58,8 +58,40 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
+		model.setOrgColumn(findOrgColumn(tables));
+		model.setCodeColumn(findCodeColumn(tables));
 		model.setLoginTable(findLoginTable(tables, config.getTableLogin()));
 		return model;
+	}
+
+	private static TableColumn findCodeColumn(List<Table> tables) {
+		TableColumn column = null;
+		for (Table table : tables) {
+			TableColumn org = table.getCodeColumn();
+			if (org != null) {
+				if (column == null) {
+					column = org;
+				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
+					column = org;
+				}
+			}
+		}
+		return column;
+	}
+
+	private static TableColumn findOrgColumn(List<Table> tables) {
+		TableColumn column = null;
+		for (Table table : tables) {
+			TableColumn org = table.getOrgColumn();
+			if (org != null) {
+				if (column == null) {
+					column = org;
+				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
+					column = org;
+				}
+			}
+		}
+		return column;
 	}
 
 	private static Table findLoginTable(List<Table> tables, String tableLogin) {
@@ -244,7 +276,10 @@ public class DefaultModelBuilder implements ModelBuilder {
             columns.stream().filter(c->c.getName().toLowerCase().endsWith("id")).findFirst().ifPresent(table::setIdColumn);
         }
         if (table.getIdColumn() == null) {
-            if (columns.size() > 0) {
+			/*
+			 * 主键是一定要有到
+			 */
+			if (columns.size() > 0) {
                 table.setIdColumn(columns.get(0));
             } else {
                 table.setIdColumn(columnKeyDefault(columns));
@@ -257,6 +292,26 @@ public class DefaultModelBuilder implements ModelBuilder {
 				id.setFieldType(this.classConverter.converterFieldType(id));
             }
         }
+		String columnOrg = config.getColumnOrg();
+		if (!StringUtil.isNullOrBlank(columnOrg)) {
+			String[] columnNames = columnOrg.split(",");
+			for (String columnName : columnNames) {
+				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setOrgColumn);
+				if (table.getOrgColumn() != null) {
+					break;
+				}
+			}
+		}
+		String columnCode = config.getColumnCode();
+		if (!StringUtil.isNullOrBlank(columnCode)) {
+			String[] columnNames = columnCode.split(",");
+			for (String columnName : columnNames) {
+				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setCodeColumn);
+				if (table.getCodeColumn() != null) {
+					break;
+				}
+			}
+		}
 		String columnCreate = config.getColumnCreate();
 		if (!StringUtil.isNullOrBlank(columnCreate)) {
 			String[] columnNames = columnCreate.split(",");
@@ -287,6 +342,22 @@ public class DefaultModelBuilder implements ModelBuilder {
 				}
 			}
 		}
+		String columnUsername = config.getColumnUsername();
+		if (!StringUtil.isNullOrBlank(columnUsername)) {
+			String[] columnNames = columnUsername.split(",");
+			for (String columnName : columnNames) {
+				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setUsernameColumn);
+				if (table.getUsernameColumn() != null) {
+					break;
+				}
+			}
+		}
+		if (table.getOrgColumn() == null) {
+			table.setOrgColumn(new TableColumn());
+		}
+		if (table.getCodeColumn() == null) {
+			table.setCodeColumn(new TableColumn());
+		}
 		if (table.getCreateColumn() == null) {
 			table.setCreateColumn(new TableColumn());
 		}
@@ -295,6 +366,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 		if (table.getPasswordColumn() == null) {
 			table.setPasswordColumn(new TableColumn());
+		}
+		if (table.getUsernameColumn() == null) {
+			table.setUsernameColumn(new TableColumn());
 		}
 		table.setColumns(columns);
 		return table;

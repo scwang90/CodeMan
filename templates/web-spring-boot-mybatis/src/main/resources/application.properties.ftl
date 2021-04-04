@@ -5,6 +5,7 @@ server.servlet.context-path = /
 logging.level.root = info
 logging.level.${packageName}.mapper = info
 logging.level.${packageName}.controller = info
+logging.level.org.apache.shiro = error
 
 spring.datasource.url = ${jdbc.url}
 spring.datasource.username = ${jdbc.username}

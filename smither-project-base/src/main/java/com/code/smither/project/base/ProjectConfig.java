@@ -23,9 +23,12 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnPrefix = "";
     protected String columnSuffix = "";
     protected String columnDivision = "";
+    protected String columnOrg = "company_id,org_id";
+    protected String columnCode = "code,no";
     protected String columnCreate = "create_time,create_date";
     protected String columnUpdate = "update_time,update_date";
     protected String columnPassword = "password,pwd";
+    protected String columnUsername = "account,username,phone,name";
 
     protected String templateLang = ProgramLang.Lang.Java.value;
     protected String templatePath = "../templates/web-spring-boot-mybatis";
@@ -192,12 +195,36 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
         this.columnUpdate = columnUpdate;
     }
 
+    public String getColumnOrg() {
+        return columnOrg;
+    }
+
+    public void setColumnOrg(String columnOrg) {
+        this.columnOrg = columnOrg;
+    }
+
+    public String getColumnCode() {
+        return columnCode;
+    }
+
+    public void setColumnCode(String columnCode) {
+        this.columnCode = columnCode;
+    }
+
     public String getColumnPassword() {
         return columnPassword;
     }
 
     public void setColumnPassword(String columnPassword) {
         this.columnPassword = columnPassword;
+    }
+
+    public String getColumnUsername() {
+        return columnUsername;
+    }
+
+    public void setColumnUsername(String columnUsername) {
+        this.columnUsername = columnUsername;
     }
 
     public String getTemplateLang() {

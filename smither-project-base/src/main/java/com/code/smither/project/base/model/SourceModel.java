@@ -17,12 +17,14 @@ import java.util.List;
  * 模板根 Model
  * Created by SCWANG on 2016/8/18.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("ALL")
 public class SourceModel implements LangRootModel {
 
     private Table table;
     private Table loginTable;            //用户登录表
     private List<Table> tables;
+    private TableColumn orgColumn;       //机构所在列
+    private TableColumn codeColumn;      //编码所在列
     private DatabaseJdbc jdbc;
     private String className;
     private String tableName;
@@ -34,6 +36,8 @@ public class SourceModel implements LangRootModel {
     private String dbType;
     private String lang;                //程序设计语言
     private Date now = new Date();
+    private boolean hasOrg;             //是否有机构
+    private boolean hasCode;            //是否有编码
     private boolean hasLogin;           //是否有登录功能
 
     public SourceModel() {
@@ -107,6 +111,22 @@ public class SourceModel implements LangRootModel {
 
     public void setLoginTable(Table loginTable) {
         this.loginTable = loginTable;
+    }
+
+    public TableColumn getOrgColumn() {
+        return orgColumn;
+    }
+
+    public void setOrgColumn(TableColumn orgColumn) {
+        this.orgColumn = orgColumn;
+    }
+
+    public TableColumn getCodeColumn() {
+        return codeColumn;
+    }
+
+    public void setCodeColumn(TableColumn codeColumn) {
+        this.codeColumn = codeColumn;
     }
 
     public String getClassName() {
@@ -189,6 +209,22 @@ public class SourceModel implements LangRootModel {
 
     public void setHasLogin(boolean hasLogin) {
         this.hasLogin = hasLogin;
+    }
+
+    public boolean isHasOrg() {
+        return orgColumn != null;
+    }
+
+    public void setHasOrg(boolean hasOrg) {
+        this.hasOrg = hasOrg;
+    }
+
+    public boolean isHasCode() {
+        return codeColumn != null;
+    }
+
+    public void setHasCode(boolean hasCode) {
+        this.hasCode = hasCode;
     }
 
     //<editor-fold desc="接口实现">

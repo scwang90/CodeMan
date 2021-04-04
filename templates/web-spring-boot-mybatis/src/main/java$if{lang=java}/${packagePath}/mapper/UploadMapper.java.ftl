@@ -17,14 +17,14 @@ import org.springframework.stereotype.Component;
 @Mapper
 @Component
 public interface UploadMapper {
-                                                                            
-    @Insert("INSERT INTO upload_file (id, name, type, path, media_type, create_time, update_time) VALUES (${r"#{token}"}, ${r"#{name}"}, ${r"#{type}"}, ${r"#{path}"}, ${r"#{mimeType}"}, ${r"#{time}"}, ${r"#{time}"})")
+
+    @Insert("INSERT INTO upload_file (id, name, type, path, mime_type, time) VALUES (${r"#"}{id}, ${r"#"}{name}, ${r"#"}{type}, ${r"#"}{path}, ${r"#"}{mimeType}, ${r"#"}{time})")
     int insert(Upload file);
 
-    @Select("SELECT id AS token, name, type, path, media_type AS mimeType, create_time AS time FROM upload_file WHERE id=${r"#{token}"} LIMIT 1")
-    Upload findByToken(@Param("token") String token);
+    @Select("SELECT * FROM upload_file WHERE id=${r"#"}{id} LIMIT 1")
+    Upload findById(@Param("id") String id);
 
-    @Delete("DELETE FROM upload_file WHERE id=${r"#{token}"}")
-    int deleteByToken(@Param("token") String token);
+    @Delete("DELETE FROM upload_file WHERE id=${r"#"}{id}")
+    int deleteById(@Param("id") String id);
 
 }

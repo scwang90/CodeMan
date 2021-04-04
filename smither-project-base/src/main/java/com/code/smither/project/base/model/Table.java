@@ -30,9 +30,12 @@ public class Table implements Model, MetaDataTable {
     private String classNameLower;// 类名全小写
 
     private TableColumn idColumn; // ID列
+    private TableColumn orgColumn;// 机构列
+    private TableColumn codeColumn;// 编号构列
     private TableColumn createColumn;//创建日志列
     private TableColumn updateColumn;//更新日志列
-    private TableColumn passwordColumn;//更新日志列
+    private TableColumn usernameColumn;//账户列
+    private TableColumn passwordColumn;//密码列
 
     private List<TableColumn> columns;// 表字段
     private List<String> descriptions;// 多行详细描述
@@ -156,11 +159,31 @@ public class Table implements Model, MetaDataTable {
         this.idColumn = idColumn;
     }
 
+    public TableColumn getOrgColumn() {
+        return orgColumn;
+    }
+
+    public void setOrgColumn(TableColumn orgColumn) {
+        orgColumn.setHiddenForClient(true);
+        orgColumn.setHiddenForSubmit(true);
+        this.orgColumn = orgColumn;
+    }
+
+    public TableColumn getCodeColumn() {
+        return codeColumn;
+    }
+
+    public void setCodeColumn(TableColumn codeColumn) {
+        codeColumn.setHiddenForSubmit(true);
+        this.codeColumn = codeColumn;
+    }
+
     public TableColumn getCreateColumn() {
         return createColumn;
     }
 
     public void setCreateColumn(TableColumn createColumn) {
+        createColumn.setHiddenForSubmit(true);
         this.createColumn = createColumn;
     }
 
@@ -169,6 +192,7 @@ public class Table implements Model, MetaDataTable {
     }
 
     public void setUpdateColumn(TableColumn updateColumn) {
+        updateColumn.setHiddenForSubmit(true);
         this.updateColumn = updateColumn;
     }
 
@@ -177,7 +201,16 @@ public class Table implements Model, MetaDataTable {
     }
 
     public void setPasswordColumn(TableColumn passwordColumn) {
+        passwordColumn.setHiddenForClient(true);
         this.passwordColumn = passwordColumn;
+    }
+
+    public TableColumn getUsernameColumn() {
+        return usernameColumn;
+    }
+
+    public void setUsernameColumn(TableColumn usernameColumn) {
+        this.usernameColumn = usernameColumn;
     }
 
     public List<TableColumn> getColumns() {

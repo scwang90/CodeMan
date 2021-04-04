@@ -29,9 +29,13 @@ public class ProjectConfigFactory {
         config.setColumnPrefix(properties.getProperty("code.man.database.column.prefix",config.getColumnPrefix()));
         config.setColumnSuffix(properties.getProperty("code.man.database.column.suffix",config.getColumnSuffix()));
         config.setColumnDivision(properties.getProperty("code.man.database.column.division",config.getColumnDivision()));
+
+        config.setColumnOrg(properties.getProperty("code.man.database.column.org",config.getColumnOrg()));
+        config.setColumnCode(properties.getProperty("code.man.database.column.code",config.getColumnCode()));
         config.setColumnCreate(properties.getProperty("code.man.database.column.create",config.getColumnCreate()));
         config.setColumnUpdate(properties.getProperty("code.man.database.column.update",config.getColumnUpdate()));
         config.setColumnPassword(properties.getProperty("code.man.database.column.password",config.getColumnPassword()));
+        config.setColumnUsername(properties.getProperty("code.man.database.column.username",config.getColumnUsername()));
 
         config.setWordBreakDictPath(properties.getProperty("code.man.word.break.dict.path", config.getWordBreakDictPath()));
         config.setWordReplaceDictPath(properties.getProperty("code.man.word.replace.dict.path", config.getWordReplaceDictPath()));

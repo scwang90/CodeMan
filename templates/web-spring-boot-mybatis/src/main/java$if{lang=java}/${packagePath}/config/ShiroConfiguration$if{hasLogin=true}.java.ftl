@@ -2,8 +2,8 @@ package ${packageName}.config;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import ${packageName}.model.conf.AuthTokenConfig;
-import ${packageName}.shiro.filter.JwtAuthFilter;
-import ${packageName}.shiro.realm.AuthRealm;
+import ${packageName}.shiro.AuthRealm;
+import ${packageName}.shiro.JwtAuthFilter;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.mgt.SessionStorageEvaluator;

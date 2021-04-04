@@ -3,7 +3,7 @@ package ${packageName}.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import ${packageName}.shiro.JwtBearer;
+import ${packageName}.shiro.model.JwtBearer;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.util.StringUtils;
@@ -25,7 +25,9 @@ public class JwtUtils {
         long now = System.currentTimeMillis();
         return JWT.create()
             .withClaim("userId", bearer.userId)
-            //.withClaim("userName", bearer.userName)
+<#if orgColumn??>
+            .withClaim("${orgColumn.fieldName}", bearer.${orgColumn.fieldName})
+</#if>
             .withIssuedAt(new Date(now))
             .withExpiresAt(new Date(now + expires))
             .sign(jwtAlgorithm);
@@ -33,9 +35,9 @@ public class JwtUtils {
 
     public static JwtBearer loadBearer(DecodedJWT jwt) {
 <#if loginTable.idColumn.stringType>
-        return new JwtBearer(jwt.getClaim("userId").asString());//, jwt.getClaim("userName").asString());
+        return new JwtBearer(jwt.getClaim("userId").asString()<#if orgColumn??>, jwt.getClaim("${orgColumn.fieldName}").asString()</#if>);
 <#else >
-        return new JwtBearer(jwt.getClaim("userId").asInt());//, jwt.getClaim("userName").asString());
+        return new JwtBearer(jwt.getClaim("userId").asInt())<#if orgColumn??>, jwt.getClaim("${orgColumn.fieldName}").asInt()</#if>);
 </#if>
     }
 

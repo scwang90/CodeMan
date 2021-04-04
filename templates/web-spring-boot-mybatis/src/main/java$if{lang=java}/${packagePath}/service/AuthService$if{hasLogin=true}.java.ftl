@@ -4,7 +4,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import ${packageName}.model.api.LoginInfo;
 import ${packageName}.model.conf.AuthTokenConfig;
 import ${packageName}.model.db.${loginTable.className};
-import ${packageName}.shiro.JwtBearer;
+import ${packageName}.shiro.model.JwtBearer;
 import ${packageName}.util.JwtUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
