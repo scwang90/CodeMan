@@ -2,6 +2,7 @@ package com.code.smither.project.base.model;
 
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.constant.Database;
+import lombok.Data;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * Created by SCWANG on 2015-07-04.
  */
 @SuppressWarnings("unused")
+@Data
 public class TableColumn implements MetaDataColumn {
 	
 	private String name;// 原名称
@@ -70,26 +72,6 @@ public class TableColumn implements MetaDataColumn {
 		}
 	}
 
-	public String getNameSql() {
-		return nameSql;
-	}
-
-	public void setNameSql(String nameSql) {
-		this.nameSql = nameSql;
-	}
-
-	public String getNameSqlInStr() {
-		return nameSqlInStr;
-	}
-
-	public void setNameSqlInStr(String nameSqlInStr) {
-		this.nameSqlInStr = nameSqlInStr;
-	}
-
-	public String getType() {
-		return type;
-	}
-
 	public void setType(String type) {
 		if (type == null) {
 			type = "";
@@ -97,35 +79,11 @@ public class TableColumn implements MetaDataColumn {
 		this.type = type;
 	}
 
-	public String getTypeJdbc() {
-		return typeJdbc;
-	}
-
 	public void setTypeJdbc(String typeJdbc) {
 		if (typeJdbc == null) {
 			typeJdbc = "";
 		}
 		this.typeJdbc = typeJdbc;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public String getDefValue() {
-		return defValue;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public List<String> getDescriptions() {
-		return descriptions;
 	}
 
 	public void setRemark(String remark) {
@@ -154,39 +112,11 @@ public class TableColumn implements MetaDataColumn {
 		this.descriptions = Arrays.asList(description.split("\n"));
 	}
 
-	public void setDescriptions(List<String> descriptions) {
-		this.descriptions = descriptions;
-	}
-
-	public int getLength() {
-		return length;
-	}
-
-	public void setLength(int length) {
-		this.length = length;
-	}
-
-	public int getTypeInt() {
-		return typeInt;
-	}
-
-	public void setTypeInt(int typeInt) {
-		this.typeInt = typeInt;
-	}
-
-	public String getFieldName() {
-		return fieldName;
-	}
-
 	public void setFieldName(String fieldName) {
 		if (fieldName == null) {
 			fieldName = "";
 		}
 		this.fieldName = fieldName;
-	}
-
-	public String getFieldNameUpper() {
-		return fieldNameUpper;
 	}
 
 	public void setFieldNameUpper(String fieldNameUpper) {
@@ -196,19 +126,11 @@ public class TableColumn implements MetaDataColumn {
 		this.fieldNameUpper = fieldNameUpper;
 	}
 
-	public String getFieldNameLower() {
-		return fieldNameLower;
-	}
-
 	public void setFieldNameLower(String fieldNameLower) {
 		if (fieldNameLower == null) {
 			fieldNameLower = "";
 		}
 		this.fieldNameLower = fieldNameLower;
-	}
-
-	public String getFieldType() {
-		return fieldType;
 	}
 
 	public void setFieldType(String fieldType) {
@@ -218,35 +140,11 @@ public class TableColumn implements MetaDataColumn {
 		this.fieldType = fieldType;
 	}
 
-	public String getFieldTypeObject() {
-		return fieldTypeObject;
-	}
-
-	public void setFieldTypeObject(String fieldTypeObject) {
-		this.fieldTypeObject = fieldTypeObject;
-	}
-
-	public String getFieldTypePrimitive() {
-		return fieldTypePrimitive;
-	}
-
-	public void setFieldTypePrimitive(String fieldTypePrimitive) {
-		this.fieldTypePrimitive = fieldTypePrimitive;
-	}
-
-	public String getFieldJavaType() {
-		return fieldJavaType;
-	}
-
 	public void setFieldJavaType(String fieldJavaType) {
 		if (fieldJavaType == null) {
 			fieldJavaType = "";
 		}
 		this.fieldJavaType = fieldJavaType;
-	}
-
-	public String getFieldCSharpType() {
-		return fieldCSharpType;
 	}
 
 	public void setFieldCSharpType(String fieldCSharpType) {
@@ -256,75 +154,4 @@ public class TableColumn implements MetaDataColumn {
 		this.fieldCSharpType = fieldCSharpType;
 	}
 
-	public String getFieldKotlinType() {
-		return fieldKotlinType;
-	}
-
-	public void setFieldKotlinType(String fieldKotlinType) {
-		this.fieldKotlinType = fieldKotlinType;
-	}
-
-	public boolean isNullable() {
-		return nullable;
-	}
-
-	public void setNullable(boolean nullable) {
-		this.nullable = nullable;
-	}
-
-	public boolean isAutoIncrement() {
-		return autoIncrement;
-	}
-
-	public void setAutoIncrement(boolean autoIncrement) {
-		this.autoIncrement = autoIncrement;
-	}
-
-	public boolean isPrimaryKey() {
-		return primaryKey;
-	}
-
-	public void setPrimaryKey(boolean primaryKey) {
-		this.primaryKey = primaryKey;
-	}
-
-	public int getDecimalDigits() {
-		return decimalDigits;
-	}
-
-	public void setDecimalDigits(int decimalDigits) {
-		this.decimalDigits = decimalDigits;
-	}
-
-	public boolean isStringType() {
-		return stringType;
-	}
-
-	public void setStringType(boolean stringType) {
-		this.stringType = stringType;
-	}
-
-	public boolean isDateType() {
-		return dateType;
-	}
-
-	public void setDateType(boolean dateType) {
-		this.dateType = dateType;
-	}
-
-	public boolean isHiddenForClient() {
-		return hiddenForClient;
-	}
-
-	public void setHiddenForClient(boolean hiddenForClient) {
-		this.hiddenForClient = hiddenForClient;
-	}
-
-	public boolean isHiddenForSubmit() {
-		return hiddenForSubmit;
-	}
-
-	public void setHiddenForSubmit(boolean hiddenForSubmit) {
-		this.hiddenForSubmit = hiddenForSubmit;
-	}
 }

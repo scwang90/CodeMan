@@ -1,37 +1,25 @@
 package ${packageName}.service.auto;
-<#assign hasOrgColumn=false/>
-<#list table.columns as column>
-	<#if column == table.orgColumn>
-		<#assign hasOrgColumn=true/>
-		<#break />
-	</#if>
-</#list>
-<#assign hasCodeColumn=false/>
-<#list table.columns as column>
-	<#if column == table.codeColumn && column.stringType>
-		<#assign hasCodeColumn=true/>
-		<#break />
-	</#if>
-</#list>
 
+<#if table.hasOrg || table == loginTable>
 import ${packageName}.exception.ClientException;
-<#if hasCodeColumn>
+</#if>
+<#if table.hasCode>
 import ${packageName}.mapper.CommonMapper;
 </#if>
-<#if hasOrgColumn>
+<#if table.hasOrg || table.hasCode>
 import ${packageName}.mapper.intent.Tables;
 </#if>
 import ${packageName}.mapper.auto.${className}Mapper;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
-<#if hasCodeColumn>
+<#if table.hasCode>
 import ${packageName}.util.CommonUtil;
 </#if>
 <#if !table.idColumn.autoIncrement && table.idColumn.stringType>
 import ${packageName}.util.ID22;
 </#if>
-<#if hasOrgColumn>
+<#if table.hasOrg || table == loginTable>
 import ${packageName}.util.JwtUtils;
 </#if>
 
@@ -53,7 +41,7 @@ import java.util.List;
 @Service("auto${className}Service")
 public class ${className}Service {
 
-<#if hasCodeColumn>
+<#if table.hasCode>
 	private final CommonMapper commonMapper;
 </#if>
 	private final ${className}Mapper mapper;
@@ -63,7 +51,7 @@ public class ${className}Service {
 	 * @param paging 分页对象
 	 */
     public Paged<${className}> list(Paging paging) {
-<#if hasOrgColumn>
+<#if table.hasOrg>
 	${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
 	List<${className}> list = mapper.findListCondition(paging.toRowBounds(), Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName}));
 <#else >
@@ -78,23 +66,23 @@ public class ${className}Service {
 	 × @return 返回新数据的Id
 	 */
 	public ${table.idColumn.fieldType} insert(${className} model) {
-<#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>
+<#if table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType>
 		if(model.get${table.idColumn.fieldNameUpper}() == null) {
 			model.set${table.idColumn.fieldNameUpper}(ID22.random());
 		}
 </#if>
-<#if hasCodeColumn || hasOrgColumn>
+<#if table.hasOrg>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
 </#if>
-<#if hasCodeColumn>
-	<#if hasOrgColumn>
+<#if table.hasCode>
+	<#if table.hasOrg>
 		int code = commonMapper.maxCodeByTableAndOrg(Tables.${table.className}.getName(), ${table.orgColumn.fieldName});
 	<#else>
 		int code = commonMapper.maxCodeByTable(Tables.${table.className}.getName());
 	</#if>
 		model.setCode(CommonUtil.formatCode(code));
 </#if>
-<#if hasOrgColumn>
+<#if table.hasOrg>
 		model.set${table.orgColumn.fieldNameUpper}(${table.orgColumn.fieldName});
 </#if>
 <#list table.columns as column>
@@ -133,8 +121,8 @@ public class ${className}Service {
 	 * @param id 数据主键
 	 × @return 数据实体对象
 	 */
-    public ${className} get(Object id) {
-<#if hasOrgColumn>
+    public ${className} findById(Object id) {
+<#if table.hasOrg>
 		${className} model = mapper.findById(id);
 		if (model == null) {
 			throw new ClientException("无效的${table.remarkName}Id");
@@ -160,10 +148,10 @@ public class ${className}Service {
 	 × @return 返回数据修改的行数
 	 */
     public int deleteById(String ids) {
-<#if hasOrgColumn || table == loginTable>
+<#if table.hasOrg || table == loginTable>
 		if (!ids.contains(",")) {
 	<#if table == loginTable>
-			${className} model = this.get(ids);
+			${className} model = this.findById(ids);
 		<#if table.idColumn.stringType>
 			if (JwtUtils.currentBearer().userId.equals(model.get${table.idColumn.fieldNameUpper}())) {
 		<#else>

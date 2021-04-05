@@ -2,7 +2,7 @@ package ${packageName}.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ${packageName}.model.Entity;
-import ${packageName}.${projectName}ApplicationTests;
+import ${packageName}.${projectName?cap_first}ApplicationTests;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-public class BaseMapperTests<T extends Entity> extends ${projectName}ApplicationTests {
+public class BaseMapperTests<T extends Entity> extends ${projectName?cap_first}ApplicationTests {
 
     @Autowired
     protected TypedMapper<T> mapper;

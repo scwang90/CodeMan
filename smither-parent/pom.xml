@@ -20,6 +20,7 @@
 		<findbugs.version>3.0.2</findbugs.version>
 		<sqlserver.version>4.0.2206.100</sqlserver.version>
 		<freemarker.version>2.3.25-incubating</freemarker.version>
+		<lombok.version>1.18.18</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -114,12 +115,14 @@
 				<version>${c3p0.version}</version>
 			</dependency>
 
+			<!-- 模板引擎 -->
 			<dependency>
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
 				<version>${freemarker.version}</version>
 			</dependency>
 
+			<!-- Json解析 -->
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
@@ -152,10 +155,17 @@
 				<version>${findbugs.version}</version>
 			</dependency>
 
+			<!-- Logging -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
+			</dependency>
+
+			<!-- 代码辅助 -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>${lombok.version}</artifactId>
 			</dependency>
 
 			<!-- Junit -->

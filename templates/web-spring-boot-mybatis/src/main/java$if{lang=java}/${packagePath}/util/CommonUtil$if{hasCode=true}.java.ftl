@@ -1,0 +1,1 @@
+package ${packageName}.util;/** * 通用工具类 * @author ${author} * @since ${now?string("yyyy-MM-dd zzzz")} */public class CommonUtil {    public static String formatCode(int max) {        return String.format("%06d", max + 1);    }}

@@ -4,6 +4,7 @@ import com.code.smither.engine.api.ModelBuilder;
 import com.code.smither.engine.api.RootModel;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
+import com.code.smither.project.base.api.internel.*;
 import com.code.smither.project.base.constant.JdbcLang;
 import com.code.smither.project.base.model.DatabaseJdbc;
 import com.code.smither.project.base.model.SourceModel;
@@ -58,43 +59,63 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
-		model.setOrgColumn(findOrgColumn(tables));
-		model.setCodeColumn(findCodeColumn(tables));
-		model.setLoginTable(findLoginTable(tables, config.getTableLogin()));
+//		model.setOrgColumn(findOrgColumn(tables));
+//		model.setCodeColumn(findCodeColumn(tables));
+		model.setLoginTable(findLoginTable(tables, config.getTableLogin(), model::setHasLogin));
+		model.setHasOrg(findColumn(tables, Table::isHasOrg, Table::getOrgColumn, model::setOrgColumn));
+		model.setHasCode(findColumn(tables, Table::isHasCode, Table::getCodeColumn, model::setCodeColumn));
 		return model;
 	}
 
-	private static TableColumn findCodeColumn(List<Table> tables) {
+	private static boolean findColumn(List<Table> tables, IsTableHas tableHas, GetColumn get, SetTableColumn set) {
 		TableColumn column = null;
 		for (Table table : tables) {
-			TableColumn org = table.getCodeColumn();
-			if (org != null) {
+			if (tableHas.has(table)) {
+				TableColumn col = get.get(table);
 				if (column == null) {
-					column = org;
-				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
-					column = org;
+					column = col;
+				} else if (col.getComment() != null && (column.getComment() == null || col.getComment().length() > column.getComment().length())) {
+					column = col;
 				}
 			}
 		}
-		return column;
-	}
-
-	private static TableColumn findOrgColumn(List<Table> tables) {
-		TableColumn column = null;
-		for (Table table : tables) {
-			TableColumn org = table.getOrgColumn();
-			if (org != null) {
-				if (column == null) {
-					column = org;
-				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
-					column = org;
-				}
-			}
+		if (column != null) {
+			set.set(column);
 		}
-		return column;
+		return column != null;
 	}
 
-	private static Table findLoginTable(List<Table> tables, String tableLogin) {
+//	private static TableColumn findCodeColumn(List<Table> tables) {
+//		TableColumn column = null;
+//		for (Table table : tables) {
+//			if (table.isHasCode()) {
+//				TableColumn org = table.getCodeColumn();
+//				if (column == null) {
+//					column = org;
+//				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
+//					column = org;
+//				}
+//			}
+//		}
+//		return column;
+//	}
+//
+//	private static TableColumn findOrgColumn(List<Table> tables) {
+//		TableColumn column = null;
+//		for (Table table : tables) {
+//			if (table.isHasOrg()) {
+//				TableColumn org = table.getOrgColumn();
+//				if (column == null) {
+//					column = org;
+//				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
+//					column = org;
+//				}
+//			}
+//		}
+//		return column;
+//	}
+
+	private static Table findLoginTable(List<Table> tables, String tableLogin, Action<Boolean> success) {
 		Table tableEqualsName = null;
 		Table tableEqualsClassName = null;
 		Table tableEqualsUser = null;
@@ -152,10 +173,11 @@ public class DefaultModelBuilder implements ModelBuilder {
 		};
 		for (Table table : loginTables) {
 			if (table != null) {
+				success.onAction(true);
 				return table;
 			}
 		}
-		return null;
+		return new Table();
 	}
 
 	protected List<Table> buildTables() throws Exception {
@@ -292,86 +314,45 @@ public class DefaultModelBuilder implements ModelBuilder {
 				id.setFieldType(this.classConverter.converterFieldType(id));
             }
         }
-		String columnOrg = config.getColumnOrg();
-		if (!StringUtil.isNullOrBlank(columnOrg)) {
-			String[] columnNames = columnOrg.split(",");
-			for (String columnName : columnNames) {
-				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setOrgColumn);
-				if (table.getOrgColumn() != null) {
-					break;
-				}
-			}
-		}
-		String columnCode = config.getColumnCode();
-		if (!StringUtil.isNullOrBlank(columnCode)) {
-			String[] columnNames = columnCode.split(",");
-			for (String columnName : columnNames) {
-				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setCodeColumn);
-				if (table.getCodeColumn() != null) {
-					break;
-				}
-			}
-		}
-		String columnCreate = config.getColumnCreate();
-		if (!StringUtil.isNullOrBlank(columnCreate)) {
-			String[] columnNames = columnCreate.split(",");
-			for (String columnName : columnNames) {
-				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setCreateColumn);
-				if (table.getCreateColumn() != null) {
-					break;
-				}
-			}
-		}
-		String columnUpdate = config.getColumnUpdate();
-		if (!StringUtil.isNullOrBlank(columnUpdate)) {
-			String[] columnNames = columnUpdate.split(",");
-			for (String columnName : columnNames) {
-				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setUpdateColumn);
-				if (table.getUpdateColumn() != null) {
-					break;
-				}
-			}
-		}
-		String columnPassword = config.getColumnPassword();
-		if (!StringUtil.isNullOrBlank(columnPassword)) {
-			String[] columnNames = columnPassword.split(",");
-			for (String columnName : columnNames) {
-				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setPasswordColumn);
-				if (table.getPasswordColumn() != null) {
-					break;
-				}
-			}
-		}
-		String columnUsername = config.getColumnUsername();
-		if (!StringUtil.isNullOrBlank(columnUsername)) {
-			String[] columnNames = columnUsername.split(",");
-			for (String columnName : columnNames) {
-				columns.stream().filter(c->c.getName().equals(columnName)||c.getFieldNameLower().equals(columnName)).findFirst().ifPresent(table::setUsernameColumn);
-				if (table.getUsernameColumn() != null) {
-					break;
-				}
-			}
-		}
-		if (table.getOrgColumn() == null) {
-			table.setOrgColumn(new TableColumn());
-		}
-		if (table.getCodeColumn() == null) {
-			table.setCodeColumn(new TableColumn());
-		}
-		if (table.getCreateColumn() == null) {
-			table.setCreateColumn(new TableColumn());
-		}
-		if (table.getUpdateColumn() == null) {
-			table.setUpdateColumn(new TableColumn());
-		}
-		if (table.getPasswordColumn() == null) {
-			table.setPasswordColumn(new TableColumn());
-		}
-		if (table.getUsernameColumn() == null) {
-			table.setUsernameColumn(new TableColumn());
-		}
+
+		initTableColumn(columns, config.getColumnOrg(), table::getOrgColumn, table::setOrgColumn, table::setHasOrg);
+		initTableColumn(columns, config.getColumnCode(), table::getCodeColumn, table::setCodeColumn, table::setHasCode);
+		initTableColumn(columns, config.getColumnCreate(), table::getCreateColumn, table::setCreateColumn, table::setHasCreate);
+		initTableColumn(columns, config.getColumnUpdate(), table::getUpdateColumn, table::setUpdateColumn, table::setHasUpdate);
+		initTableColumn(columns, config.getColumnPassword(), table::getPasswordColumn, table::setPasswordColumn, table::setHasPassword);
+		initTableColumn(columns, config.getColumnUsername(), table::getUsernameColumn, table::setUsernameColumn, table::setHasUsername);
+
 		table.setColumns(columns);
 		return table;
+	}
+
+	private void initTableColumn(List<TableColumn> columns, String keys, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
+		if (!StringUtil.isNullOrBlank(keys)) {
+			String[] columnNames = keys.split(",");
+			matchColumn(columns, columnNames, get, set, success);
+			if (get.get() == null && keys.contains("_")) {
+				columnNames = keys.replace("_", "").split(",");
+				matchColumn(columns, columnNames, get, set, success);
+			}
+		}
+		if (get.get() == null) {
+			set.set(new TableColumn());
+		}
+	}
+
+	private void matchColumn(List<TableColumn> columns, String[] columnNames, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
+		for (String columnName : columnNames) {
+			columns.stream()
+					.filter(c->c.getName().equalsIgnoreCase(columnName))
+					.findFirst()
+					.ifPresent(column -> {
+				success.onAction(true);
+				set.set(column);
+			});
+			if (get.get() != null) {
+				break;
+			}
+		}
 	}
 
 	/**

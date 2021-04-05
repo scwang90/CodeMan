@@ -1,0 +1,1 @@
+package com.code.smither.project.base.api.internel;public interface Action<T> {    void onAction(T value);}

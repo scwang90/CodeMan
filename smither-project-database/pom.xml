@@ -15,6 +15,10 @@
     <dependencies>
         <dependency>
             <groupId>com.code.smither</groupId>
+            <artifactId>smither-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.code.smither</groupId>
             <artifactId>smither-project-base</artifactId>
         </dependency>
 

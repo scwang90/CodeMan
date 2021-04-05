@@ -1,10 +1,7 @@
 package com.code.smither.engine.factory;
 
 import freemarker.cache.StringTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.DefaultObjectWrapperBuilder;
-import freemarker.template.Template;
+import freemarker.template.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,11 +15,12 @@ public class FreemarkerFactory {
 	private static Configuration cfg;
 
 	public static Configuration getConfiguration(String url) {
-		cfg = new Configuration();
+		Version version = new Version("2.3.20");
+		cfg = new Configuration(version);
 		File file = new File(url);
 		try {
 			cfg.setDirectoryForTemplateLoading(file);
-			cfg.setObjectWrapper(new DefaultObjectWrapper());
+			cfg.setObjectWrapper(new DefaultObjectWrapper(version));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

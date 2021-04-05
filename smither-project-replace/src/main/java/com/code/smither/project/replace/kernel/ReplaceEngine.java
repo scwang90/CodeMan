@@ -21,7 +21,7 @@ public class ReplaceEngine extends Engine<ReplaceConfig> {
 
     public ReplaceEngine(ReplaceConfig config) {
         super(config);
-        config.setTemplateFtlOnly(false);
+        config.setTemplateProcessAll(false);
     }
 
     @Override

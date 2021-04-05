@@ -1,0 +1,1 @@
+package com.code.smither.project.base.api.internel;import com.code.smither.project.base.model.TableColumn;public interface SetTableColumn {    void set(TableColumn column);}

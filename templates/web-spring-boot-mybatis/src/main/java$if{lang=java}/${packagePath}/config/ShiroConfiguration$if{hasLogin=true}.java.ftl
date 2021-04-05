@@ -94,7 +94,7 @@ public class ShiroConfiguration {
 
         Arrays.asList(
                 //API
-                "/api/v1/auth/**",       //login 登录认证
+                "/api/v1/auth/**"       //login 登录认证
         ).forEach(p->chain.put(p,"anon"));
 
         chain.put("/api/**", "authJwt");

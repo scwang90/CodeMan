@@ -23,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @WebAppConfiguration
-class ${projectName}ApplicationTests {
+class ${projectName?cap_first}ApplicationTests {
 
     @Autowired
     private lateinit var context: WebApplicationContext

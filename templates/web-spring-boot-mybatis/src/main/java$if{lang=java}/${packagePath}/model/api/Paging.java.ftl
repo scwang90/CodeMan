@@ -31,6 +31,6 @@ public class Paging {
     }
 
     public RowBounds toRowBounds() {
-        return new PageRowBounds(skip, size);
+        return new PageRowBounds(start(), size);
     }
 }

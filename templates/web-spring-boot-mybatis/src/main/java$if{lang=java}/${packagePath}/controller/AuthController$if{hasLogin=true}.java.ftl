@@ -1,28 +1,30 @@
 package ${packageName}.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import ${packageName}.constant.ResultCode;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.LoginInfo;
 import ${packageName}.service.AuthService;
 import ${packageName}.shiro.model.JwtBearer;
 import ${packageName}.util.JwtUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.DigestUtils;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * 登录验证 API 实现
@@ -35,13 +37,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final AuthService service;
-
-    public ApiAuthController(AuthService service) {
-        this.service = service;
-    }
 
     @PostMapping("login")
     @ApiOperation(value = "登录", notes = "后台管理相关API都需要先登录")
@@ -58,7 +54,7 @@ public class AuthController {
             if (e.getCause() != null) {
                 throw e.getCause();
             }
-            logger.error("登录失败", e);
+            log.error("登录失败", e);
             return ApiResult.failure400("登录失败");
         }
     }
@@ -68,7 +64,7 @@ public class AuthController {
     public ApiResult<Object> status() {
         Subject subject = SecurityUtils.getSubject();
         JwtBearer bearer = subject.getPrincipals().oneByType(JwtBearer.class);
-        logger.info("userId=" + bearer.userId);
+        log.info("userId=" + bearer.userId);
         return ApiResult.success(Arrays.asList(subject.getPrincipals().oneByType(JwtBearer.class),subject.getPrincipals().oneByType(DecodedJWT.class)));
     }
 

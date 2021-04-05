@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-public class ${projectName}ApplicationTests {
+public class ${projectName?cap_first}ApplicationTests {
 
     @Autowired
     protected WebApplicationContext context;

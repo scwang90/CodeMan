@@ -43,8 +43,8 @@ public class EnumConverterFactory implements ConverterFactory<String, Enum> {
         return result;
     }
  
-    class EnumConverter<T extends Enum> implements Converter<String, T> {
-        private Map<String, T> enumMap = new HashMap<>();
+    static class EnumConverter<T extends Enum> implements Converter<String, T> {
+        private final Map<String, T> enumMap = new HashMap<>();
  
         EnumConverter(Class<T> enumType) {
             T[] enums = enumType.getEnumConstants();

@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @SpringBootApplication
-public class ${projectName}Application implements WebMvcConfigurer {
+public class ${projectName?cap_first}Application implements WebMvcConfigurer {
 
     /**
      * 绑定枚举类型参数
@@ -26,7 +26,7 @@ public class ${projectName}Application implements WebMvcConfigurer {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(${projectName}Application.class, args);
+        SpringApplication.run(${projectName?cap_first}Application.class, args);
     }
 
 }

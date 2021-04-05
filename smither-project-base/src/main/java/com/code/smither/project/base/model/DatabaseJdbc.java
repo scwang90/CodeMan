@@ -1,9 +1,12 @@
 package com.code.smither.project.base.model;
 
+import lombok.Data;
+
 /**
  * 模板Model-jdbc
  * Created by SCWANG on 2015-07-04.
  */
+@Data
 @SuppressWarnings("unused")
 public class DatabaseJdbc {
 
@@ -12,38 +15,4 @@ public class DatabaseJdbc {
     private String username;
     private String password;
 
-    public DatabaseJdbc() {
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getDriver() {
-        return driver;
-    }
-
-    public void setDriver(String driver) {
-        this.driver = driver;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

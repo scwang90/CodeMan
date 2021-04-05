@@ -1,6 +1,6 @@
 package ${packageName}.controller;
 
-import ${packageName}.${projectName}ApplicationTests;
+import ${packageName}.${projectName?cap_first}ApplicationTests;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-public class BaseControllerTests extends ${projectName}ApplicationTests {
+public class BaseControllerTests extends ${projectName?cap_first}ApplicationTests {
 
     protected MockMvc mockMvc;
 

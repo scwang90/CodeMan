@@ -155,7 +155,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         if (!set.contains(path)) {
             File file = new File(path);
             if (!file.exists() || task.forceOverWrite()) {
-                if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || !config.isTemplateFtlOnly())) {
+                if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || config.isTemplateProcessAll())) {
                     processTemplate(root, task.getTemplateFile(), file);
                 } else {
                     FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
@@ -230,7 +230,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                 if (modelValue.equals(value)) {
                     condition.put(key, value);
                 } else {
-                    logger.info("排除默认条件模板：" + templates.getAbsolutePath());
+                    logger.info("排除默认条件模板：" + file.getPath());
                     return null;
                 }
             } catch (Exception e) {

@@ -23,7 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @Configuration
 @EnableSwagger2
 @SpringBootApplication
-class ${projectName}Application : WebMvcConfigurer {
+class ${projectName?cap_first}Application : WebMvcConfigurer {
 
     /**
      * 添加登录验证拦截器
@@ -60,5 +60,5 @@ class ${projectName}Application : WebMvcConfigurer {
 }
 
 fun main(args: Array<String>) {
-    runApplication<${projectName}Application>(*args)
+    runApplication<${projectName?cap_first}Application>(*args)
 }

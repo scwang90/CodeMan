@@ -7,7 +7,6 @@ import ${packageName}.exception.ServiceException;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.conf.ErrorConfig;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
@@ -102,7 +101,7 @@ public class ErrorController extends BasicErrorController {
             message = "参数验证错误，详细信息查看 errors";
             errors = messages;
             status = HttpStatus.EXPECTATION_FAILED;
-        } else if (!config.original && error != null) {
+        } else if (!config.getOriginal() && error != null) {
             message = "服务器内部错误";
         } else if (cause instanceof SQLTransientConnectionException) {
             message = "连接数据库异常：" + cause.getMessage();

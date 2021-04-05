@@ -40,7 +40,11 @@ public class AuthService {
     }
 
     private String buildToken(${loginTable.className} ${loginTable.classNameCamel}) {
-        JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}(), "${loginTable.classNameCamel}.getUserName()");
+<#if loginTable.hasOrg>
+        JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}(), ${loginTable.classNameCamel}.get${loginTable.orgColumn.fieldNameUpper}());
+<#else>
+        JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}());
+</#if>
         return JwtUtils.createToken(bearer, jwtAlgorithm, tokenConfig.getExpiryTime());
     }
 }

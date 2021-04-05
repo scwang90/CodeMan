@@ -1,0 +1,1 @@
+package com.code.smither.project.base.api.internel;import com.code.smither.project.base.model.Table;public interface IsTableHas {    boolean has(Table table);}

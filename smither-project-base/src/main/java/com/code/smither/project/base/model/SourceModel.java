@@ -5,6 +5,7 @@ import com.code.smither.engine.api.Task;
 import com.code.smither.project.base.api.ClassConverter;
 import com.code.smither.project.base.api.LangRootModel;
 import com.code.smither.project.base.util.StringUtil;
+import lombok.Data;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -18,6 +19,7 @@ import java.util.List;
  * Created by SCWANG on 2016/8/18.
  */
 @SuppressWarnings("ALL")
+@Data
 public class SourceModel implements LangRootModel {
 
     private Table table;
@@ -73,158 +75,10 @@ public class SourceModel implements LangRootModel {
         }
     }
 
-    public Date getNow() {
-        return now;
-    }
-
-    public void setNow(Date now) {
-        this.now = now;
-    }
-
-    public List<Table> getTables() {
-        return tables;
-    }
-
-    public void setTables(List<Table> tables) {
-        this.tables = tables;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public Table getTable() {
-        return table;
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
-    }
-
-    public Table getLoginTable() {
-        return loginTable;
-    }
-
-    public void setLoginTable(Table loginTable) {
-        this.loginTable = loginTable;
-    }
-
-    public TableColumn getOrgColumn() {
-        return orgColumn;
-    }
-
-    public void setOrgColumn(TableColumn orgColumn) {
-        this.orgColumn = orgColumn;
-    }
-
-    public TableColumn getCodeColumn() {
-        return codeColumn;
-    }
-
-    public void setCodeColumn(TableColumn codeColumn) {
-        this.codeColumn = codeColumn;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
     public void setPackageName(String packageName) {
         this.packageName = packageName;
         this.packagePath = packageName.replace(".", File.separatorChar + "");
 //        this.packagePath = packagePath.replace("::", File.separatorChar + "");
-    }
-
-    public String getPackagePath() {
-        return packagePath;
-    }
-
-    public void setPackagePath(String packagePath) {
-        this.packagePath = packagePath;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
-    public String getCharset() {
-        return charset;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
-    }
-
-    public String getDbType() {
-        return dbType;
-    }
-
-    public void setDbType(String dbType) {
-        this.dbType = dbType;
-    }
-
-    public DatabaseJdbc getJdbc() {
-        return jdbc;
-    }
-
-    public void setJdbc(DatabaseJdbc jdbc) {
-        this.jdbc = jdbc;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public boolean isHasLogin() {
-        return loginTable != null;
-    }
-
-    public void setHasLogin(boolean hasLogin) {
-        this.hasLogin = hasLogin;
-    }
-
-    public boolean isHasOrg() {
-        return orgColumn != null;
-    }
-
-    public void setHasOrg(boolean hasOrg) {
-        this.hasOrg = hasOrg;
-    }
-
-    public boolean isHasCode() {
-        return codeColumn != null;
-    }
-
-    public void setHasCode(boolean hasCode) {
-        this.hasCode = hasCode;
     }
 
     //<editor-fold desc="接口实现">

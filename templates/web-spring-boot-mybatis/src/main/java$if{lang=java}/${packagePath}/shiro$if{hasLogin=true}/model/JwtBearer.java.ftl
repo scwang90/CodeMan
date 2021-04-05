@@ -8,16 +8,16 @@ package ${packageName}.shiro.model;
 public class JwtBearer {
 
     public final ${loginTable.idColumn.fieldType} userId;
-<#if orgColumn??>
+<#if loginTable.hasOrg>
     <#assign orgFieldType=orgColumn.fieldType/>
     <#if loginTable.orgColumn.nullable>
         <#assign orgFieldType=orgColumn.fieldTypeObject/>
     </#if>
-    public final ${orgFieldType} ${orgColumn.fieldName};
+    public final ${orgFieldType} ${loginTable.orgColumn.fieldName};
 
-    public JwtBearer(${loginTable.idColumn.fieldType} userId, ${orgFieldType} ${orgColumn.fieldName}) {
+    public JwtBearer(${loginTable.idColumn.fieldType} userId, ${orgFieldType} ${loginTable.orgColumn.fieldName}) {
         this.userId = userId;
-        this.${orgColumn.fieldName} = ${orgColumn.fieldName};
+        this.${loginTable.orgColumn.fieldName} = ${loginTable.orgColumn.fieldName};
     }
 <#else >
 

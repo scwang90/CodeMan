@@ -25,8 +25,8 @@ public class JwtUtils {
         long now = System.currentTimeMillis();
         return JWT.create()
             .withClaim("userId", bearer.userId)
-<#if orgColumn??>
-            .withClaim("${orgColumn.fieldName}", bearer.${orgColumn.fieldName})
+<#if loginTable.hasOrg>
+            .withClaim("${loginTable.orgColumn.fieldName}", bearer.${loginTable.orgColumn.fieldName})
 </#if>
             .withIssuedAt(new Date(now))
             .withExpiresAt(new Date(now + expires))
@@ -35,9 +35,9 @@ public class JwtUtils {
 
     public static JwtBearer loadBearer(DecodedJWT jwt) {
 <#if loginTable.idColumn.stringType>
-        return new JwtBearer(jwt.getClaim("userId").asString()<#if orgColumn??>, jwt.getClaim("${orgColumn.fieldName}").asString()</#if>);
+        return new JwtBearer(jwt.getClaim("userId").asString()<#if loginTable.hasOrg>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asString()</#if>);
 <#else >
-        return new JwtBearer(jwt.getClaim("userId").asInt())<#if orgColumn??>, jwt.getClaim("${orgColumn.fieldName}").asInt()</#if>);
+        return new JwtBearer(jwt.getClaim("userId").asInt()<#if loginTable.hasOrg>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asInt()</#if>);
 </#if>
     }
 

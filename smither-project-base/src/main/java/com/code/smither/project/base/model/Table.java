@@ -3,6 +3,7 @@ package com.code.smither.project.base.model;
 import com.code.smither.engine.api.Model;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
+import lombok.Data;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * 模板Model-table
  * Created by SCWANG on 2016/8/18.
  */
+@Data
 @SuppressWarnings("unused")
 public class Table implements Model, MetaDataTable {
 
@@ -29,13 +31,21 @@ public class Table implements Model, MetaDataTable {
     private String classNameUpper;// 类名全大写
     private String classNameLower;// 类名全小写
 
-    private TableColumn idColumn; // ID列
-    private TableColumn orgColumn;// 机构列
-    private TableColumn codeColumn;// 编号构列
-    private TableColumn createColumn;//创建日志列
-    private TableColumn updateColumn;//更新日志列
-    private TableColumn usernameColumn;//账户列
-    private TableColumn passwordColumn;//密码列
+    private TableColumn idColumn;           // ID列
+    private TableColumn orgColumn;          // 机构列
+    private TableColumn codeColumn;         // 编号构列
+    private TableColumn createColumn;       // 创建日志列
+    private TableColumn updateColumn;       // 更新日志列
+    private TableColumn usernameColumn;     // 账户列
+    private TableColumn passwordColumn;     // 密码列
+
+    private boolean hasId = false;          // 是否有ID列
+    private boolean hasOrg = false;         // 是否有机构列
+    private boolean hasCode = false;        // 是否有编号构列
+    private boolean hasCreate = false;      // 是否有创建日志列
+    private boolean hasUpdate = false;      // 是否有更新日志列
+    private boolean hasUsername = false;    // 是否有账户列
+    private boolean hasPassword = false;    // 是否有密码列
 
     private List<TableColumn> columns;// 表字段
     private List<String> descriptions;// 多行详细描述
@@ -58,26 +68,6 @@ public class Table implements Model, MetaDataTable {
         }
     }
 
-    public String getNameSql() {
-        return nameSql;
-    }
-
-    public void setNameSql(String nameSql) {
-        this.nameSql = nameSql;
-    }
-
-    public String getNameSqlInStr() {
-        return nameSqlInStr;
-    }
-
-    public void setNameSqlInStr(String nameSqlInStr) {
-        this.nameSqlInStr = nameSqlInStr;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
     public void setRemark(String remark) {
         this.remark = remark;
         this.remarkName = remark;
@@ -86,81 +76,9 @@ public class Table implements Model, MetaDataTable {
         }
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setDescription(String description) {
         this.description = description;
         this.descriptions = Arrays.asList(description.split("\n"));
-    }
-
-    public List<String> getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescriptions(List<String> descriptions) {
-        this.descriptions = descriptions;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getRemarkName() {
-        return remarkName;
-    }
-
-    public void setRemarkName(String remarkName) {
-        this.remarkName = remarkName;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getClassNameCamel() {
-        return classNameCamel;
-    }
-
-    public void setClassNameCamel(String classNameCamel) {
-        this.classNameCamel = classNameCamel;
-    }
-
-    public String getClassNameUpper() {
-        return classNameUpper;
-    }
-
-    public void setClassNameUpper(String classNameUpper) {
-        this.classNameUpper = classNameUpper;
-    }
-
-    public String getClassNameLower() {
-        return classNameLower;
-    }
-
-    public void setClassNameLower(String classNameLower) {
-        this.classNameLower = classNameLower;
-    }
-
-    public TableColumn getIdColumn() {
-        return idColumn;
-    }
-
-    public void setIdColumn(TableColumn idColumn) {
-        this.idColumn = idColumn;
-    }
-
-    public TableColumn getOrgColumn() {
-        return orgColumn;
     }
 
     public void setOrgColumn(TableColumn orgColumn) {
@@ -169,17 +87,9 @@ public class Table implements Model, MetaDataTable {
         this.orgColumn = orgColumn;
     }
 
-    public TableColumn getCodeColumn() {
-        return codeColumn;
-    }
-
     public void setCodeColumn(TableColumn codeColumn) {
         codeColumn.setHiddenForSubmit(true);
         this.codeColumn = codeColumn;
-    }
-
-    public TableColumn getCreateColumn() {
-        return createColumn;
     }
 
     public void setCreateColumn(TableColumn createColumn) {
@@ -187,17 +97,9 @@ public class Table implements Model, MetaDataTable {
         this.createColumn = createColumn;
     }
 
-    public TableColumn getUpdateColumn() {
-        return updateColumn;
-    }
-
     public void setUpdateColumn(TableColumn updateColumn) {
         updateColumn.setHiddenForSubmit(true);
         this.updateColumn = updateColumn;
-    }
-
-    public TableColumn getPasswordColumn() {
-        return passwordColumn;
     }
 
     public void setPasswordColumn(TableColumn passwordColumn) {
@@ -205,27 +107,4 @@ public class Table implements Model, MetaDataTable {
         this.passwordColumn = passwordColumn;
     }
 
-    public TableColumn getUsernameColumn() {
-        return usernameColumn;
-    }
-
-    public void setUsernameColumn(TableColumn usernameColumn) {
-        this.usernameColumn = usernameColumn;
-    }
-
-    public List<TableColumn> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<TableColumn> columns) {
-        this.columns = columns;
-    }
-
-    public String getUrlPathName() {
-        return urlPathName;
-    }
-
-    public void setUrlPathName(String urlPathName) {
-        this.urlPathName = urlPathName;
-    }
 }

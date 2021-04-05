@@ -22,7 +22,7 @@ public class ConfigFactory {
 
 		config.setNow(properties.getProperty("code.man.now",config.getNow()));
 
-		config.setTemplateFtlOnly("true".equals(properties.getProperty("code.man.template.ftl-only")));
+		config.setTemplateProcessAll("true".equals(properties.getProperty("code.man.template.process-all")));
 		config.setTemplatePath(properties.getProperty("code.man.template.path",config.getTemplatePath()));
 		config.setTemplateCharset(properties.getProperty("code.man.template.charset",config.getTemplateCharset()));
 

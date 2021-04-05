@@ -21,8 +21,8 @@ public class EngineConfig implements Config {
     private String templatePath;
     private String templateCharset;
     private String targetCharset;
-    private boolean templateFtlOnly = false;
-    private boolean forceOverwrite = false;
+    private boolean forceOverwrite = false;         //强制覆盖所有文件
+    private boolean templateProcessAll = false;     //对所有文件执行模板替换
 
     private String includeFile = "*.*";
     private String includePath = "*";
@@ -35,12 +35,12 @@ public class EngineConfig implements Config {
 
 
     @Override
-    public boolean isTemplateFtlOnly() {
-        return templateFtlOnly;
+    public boolean isTemplateProcessAll() {
+        return templateProcessAll;
     }
 
-    public void setTemplateFtlOnly(boolean templateFtlOnly) {
-        this.templateFtlOnly = templateFtlOnly;
+    public void setTemplateProcessAll(boolean templateProcessAll) {
+        this.templateProcessAll = templateProcessAll;
     }
 
     public boolean isForceOverwrite() {

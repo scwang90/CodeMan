@@ -11,7 +11,7 @@ public interface Config extends FilterConfig {
     /**
      * 是否只对 ftl 模板文件进行数据模型匹配
      */
-    boolean isTemplateFtlOnly();
+    boolean isTemplateProcessAll();
 
     TaskLoader getTaskLoader();
     FieldFiller getFieldFiller();
