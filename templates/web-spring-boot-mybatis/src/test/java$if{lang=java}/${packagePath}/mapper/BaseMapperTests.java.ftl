@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class BaseMapperTests<T extends Entity> extends ${projectName?cap_first}ApplicationTests {
 
-    @Autowired
-    protected TypedMapper<T> mapper;
-
     protected final ObjectMapper json = new ObjectMapper();
 
     protected static final String strInsert = "$TEST$";

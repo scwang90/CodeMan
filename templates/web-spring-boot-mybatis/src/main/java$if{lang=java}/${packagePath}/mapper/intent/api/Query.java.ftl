@@ -1,0 +1,1 @@
+package ${packageName}.mapper.intent.api;import ${packageName}.mapper.intent.impl.OrderQuery;import ${packageName}.mapper.intent.impl.Where;import java.util.List;public interface Query<T> {    default List<Where<T>> getWheres() {        return null;    }    default List<OrderQuery<T>> getOrders() {        return null;    }}

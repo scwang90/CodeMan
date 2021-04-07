@@ -48,6 +48,8 @@ public class Table implements Model, MetaDataTable {
     private boolean hasPassword = false;    // 是否有密码列
 
     private List<TableColumn> columns;// 表字段
+    private List<ForeignKey> foregins;// 外键
+
     private List<String> descriptions;// 多行详细描述
 
     public String getName() {
@@ -106,5 +108,4 @@ public class Table implements Model, MetaDataTable {
         passwordColumn.setHiddenForClient(true);
         this.passwordColumn = passwordColumn;
     }
-
 }

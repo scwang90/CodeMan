@@ -16,7 +16,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import ${packageName}.exception.ClientException;
 import ${packageName}.mapper.auto.${loginTable.className}Mapper;
 <#if hasUsernameColumn && hasOrg>
-import ${packageName}.mapper.intent.impl.Condition;
+import ${packageName}.mapper.intent.impl.Where;
 import ${packageName}.mapper.intent.Tables;
 import ${packageName}.mapper.intent.tables.${loginTable.classNameUpper};
 </#if>
@@ -111,17 +111,17 @@ public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
         ${loginTable.className} ${loginTable.classNameCamel} = null;
     </#if>
     <#if hasOrg>
-        ${prefix}Condition<${loginTable.classNameUpper}> condition = Tables.${loginTable.className}.${loginTable.usernameColumn.fieldNameUpper}.eq(token.getUsername());
+        ${prefix}Where<${loginTable.classNameUpper}> where = Tables.${loginTable.className}.${loginTable.usernameColumn.fieldNameUpper}.eq(token.getUsername());
         ${prefix}if (token.getHost() != null) {
         <#if orgColumn.stringType>
-        ${prefix}   condition.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(token.getHost()));
+        ${prefix}   where.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(token.getHost()));
         <#else>
-        ${prefix}   condition.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(Integer.parseInt(token.getHost())));
+        ${prefix}   where.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(Integer.parseInt(token.getHost())));
         </#if>
         ${prefix}}
-        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.findOneCondition(condition);
+        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.selecOneWhere(where);
     <#else>
-        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.findOneCondition(Tables.${loginTable.className}.${loginTable.usernameColumn.fieldName}.eq(token.getUsername()));
+        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.selecOneWhere(Tables.${loginTable.className}.${loginTable.usernameColumn.fieldName}.eq(token.getUsername()));
     </#if>
         if (${loginTable.classNameCamel} == null) {
             throw new ClientException("用户名或密码错误");

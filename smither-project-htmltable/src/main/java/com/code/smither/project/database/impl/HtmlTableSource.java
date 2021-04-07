@@ -1,6 +1,7 @@
 package com.code.smither.project.database.impl;
 
 import com.code.smither.project.base.api.MetaDataColumn;
+import com.code.smither.project.base.api.MetaDataForegin;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.api.TableSource;
 import com.code.smither.project.base.constant.Database;
@@ -190,6 +191,11 @@ public class HtmlTableSource implements TableSource {
     }
 
     @Override
+    public List<? extends MetaDataForegin> queryForegins(MetaDataTable table) throws Exception {
+        return Collections.emptyList();
+    }
+
+    @Override
     public String queryColumnRemark(MetaDataColumn columnMate) {
         return null;
     }
@@ -203,6 +209,7 @@ public class HtmlTableSource implements TableSource {
         Table table = new Table();
         table.setName(metaData.getTableName(tableElement));
         table.setRemark(metaData.getTableRemark(tableElement));
+        table.setComment(metaData.getTableRemark(tableElement));
         return table;
     }
 

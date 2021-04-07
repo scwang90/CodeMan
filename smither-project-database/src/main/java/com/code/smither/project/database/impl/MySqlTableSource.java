@@ -42,10 +42,7 @@ public class MySqlTableSource extends DbTableSource implements Database {
                 return true;
             }
         }
-        if (value.matches(".*[^\\x00-\\xff].*")) {
-            return true;
-        }
-        return false;
+        return value.matches(".*[^\\x00-\\xff].*");
     }
 
     @Override

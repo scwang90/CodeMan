@@ -3,6 +3,7 @@ package com.code.smither.project.database.impl;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.base.model.ForeignKey;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.database.api.DbFactory;
@@ -49,11 +50,15 @@ public class DbTableSource implements TableSource {
 	}
 
 	protected ResultSet queryTables(DatabaseMetaData metaData) throws SQLException {
-		return metaData.getTables(connection.getCatalog(), "%", "%", new String[] { "TABLE" });
+		return metaData.getTables(connection.getCatalog(), null, null, new String[] { "TABLE" });
 	}
 
 	protected ResultSet queryPrimaryKeys(DatabaseMetaData metaData, String tableName) throws SQLException {
 		return metaData.getPrimaryKeys(connection.getCatalog(), null, tableName);
+	}
+
+	protected ResultSet queryForeignKeys(DatabaseMetaData metaData, String tableName) throws SQLException {
+		return metaData.getImportedKeys(connection.getCatalog(), null, tableName);
 	}
 
 	protected ResultSet queryColumns(DatabaseMetaData metaData, String tableName) throws SQLException {
@@ -85,12 +90,44 @@ public class DbTableSource implements TableSource {
 	@Override
 	public Set<String> queryPrimaryKeys(MetaDataTable table) throws SQLException {
 		Set<String> keys = new LinkedHashSet<>();
-		ResultSet resultKey = queryPrimaryKeys(databaseMetaData, table.getName());
-		while (resultKey.next()) {
-			keys.add(resultKey.getString("COLUMN_NAME"));
+		ResultSet result = queryPrimaryKeys(databaseMetaData, table.getName());
+		while (result.next()) {
+			keys.add(result.getString("COLUMN_NAME"));
 		}
-		resultKey.close();
+		result.close();
 		return keys;
+	}
+
+	@Override
+	public List<? extends MetaDataForegin> queryForegins(MetaDataTable table) throws Exception {
+		List<ForeignKey> foregins = new LinkedList<>();
+		try (ResultSet result = queryForeignKeys(databaseMetaData, table.getName())) {
+			while (result.next()) {
+				foregins.add(foreginFromResultSet(result));
+			}
+		}
+		return foregins;
+	}
+
+	private ForeignKey foreginFromResultSet(ResultSet result) throws SQLException {
+		////    PKTABLE_NAME string => 被导入的主键表名称
+		////    PKCOLUMN_NAME string => 被导入的主键列名称
+		////    FKTABLE_NAME string => 外键表名称
+		////    FKCOLUMN_NAME string => 外键列名称
+		//
+		////    key_seq short => 外键中的序列号
+		//
+		////    fk_name string => 外键的名称（可为 null）
+		////    pk_name string => 主键的名称（可为 null）
+		ForeignKey foregin = new ForeignKey();
+		foregin.setIndex(result.getInt("KEY_SEQ"));
+		foregin.setFkName(result.getString("FK_NAME"));
+		foregin.setPkName(result.getString("PK_NAME"));
+		foregin.setPkTableName(result.getString("PKTABLE_NAME"));
+		foregin.setPkColumnName(result.getString("PKCOLUMN_NAME"));
+		foregin.setFkTableName(result.getString("FKTABLE_NAME"));
+		foregin.setFkColumnName(result.getString("FKCOLUMN_NAME"));
+		return foregin;
 	}
 
 	@Override
@@ -105,6 +142,14 @@ public class DbTableSource implements TableSource {
 	public TableColumn buildColumn(MetaDataColumn columnMate) {
 		if (columnMate instanceof TableColumn) {
 			return ((TableColumn) columnMate);
+		}
+		return null;
+	}
+
+	@Override
+	public ForeignKey buildForegin(MetaDataForegin foregin) {
+		if (foregin instanceof ForeignKey) {
+			return ((ForeignKey) foregin);
 		}
 		return null;
 	}
@@ -137,25 +182,25 @@ public class DbTableSource implements TableSource {
 		return table;
 	}
 
-	protected TableColumn columnFromResultSet(ResultSet resultSet) throws SQLException {
+	protected TableColumn columnFromResultSet(ResultSet result) throws SQLException {
 		TableColumn column = new TableColumn();
-		column.setName(resultSet.getString("COLUMN_NAME"), getDatabase());
-		column.setType(resultSet.getString("TYPE_NAME"));
-		column.setTypeInt(resultSet.getInt("DATA_TYPE"));
-		column.setLength(resultSet.getInt("COLUMN_SIZE"));
-		column.setDefValue(resultSet.getString("COLUMN_DEF"));
-		column.setNullable(resultSet.getBoolean("NULLABLE"));
-		column.setRemark(resultSet.getString("REMARKS"));
-		column.setComment(resultSet.getString("REMARKS"));
-		column.setDecimalDigits(resultSet.getInt("DECIMAL_DIGITS"));
+		column.setName(result.getString("COLUMN_NAME"), getDatabase());
+		column.setType(result.getString("TYPE_NAME"));
+		column.setTypeInt(result.getInt("DATA_TYPE"));
+		column.setLength(result.getInt("COLUMN_SIZE"));
+		column.setDefValue(result.getString("COLUMN_DEF"));
+		column.setNullable(result.getBoolean("NULLABLE"));
+		column.setRemark(result.getString("REMARKS"));
+		column.setComment(result.getString("REMARKS"));
+		column.setDecimalDigits(result.getInt("DECIMAL_DIGITS"));
 		return column;
 	}
 
 	@SuppressWarnings("unused")
-	public void printResultSet(ResultSet resultSet) throws SQLException {
-		ResultSetMetaData metaData = resultSet.getMetaData(); 
+	public void printResultSet(ResultSet result) throws SQLException {
+		ResultSetMetaData metaData = result.getMetaData(); 
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
-        	System.out.println(metaData.getColumnName(i)+"="+resultSet.getObject(i));
+        	System.out.println(metaData.getColumnName(i)+"="+result.getObject(i));
 		}
 	}
 

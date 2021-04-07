@@ -1,12 +1,23 @@
 package ${packageName}.service.auto;
+<#assign hasSearch=false/>
+<#list table.columns as column>
+	<#if column.name?lower_case?contains('name')>
+		<#assign searchColumn=column/>
+		<#assign hasSearch=true/>
+		<#break />
+	</#if>
+</#list>
 
 <#if table.hasOrg || table == loginTable>
 import ${packageName}.exception.ClientException;
 </#if>
+<#if hasSearch>
+import com.github.pagehelper.util.StringUtil;
+</#if>
 <#if table.hasCode>
 import ${packageName}.mapper.CommonMapper;
 </#if>
-<#if table.hasOrg || table.hasCode>
+<#if table.hasOrg || table.hasCode || hasSearch>
 import ${packageName}.mapper.intent.Tables;
 </#if>
 import ${packageName}.mapper.auto.${className}Mapper;
@@ -49,14 +60,28 @@ public class ${className}Service {
 	/**
 	 * ${table.remarkName}列表
 	 * @param paging 分页对象
-	 */
-    public Paged<${className}> list(Paging paging) {
-<#if table.hasOrg>
-	${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
-	List<${className}> list = mapper.findListCondition(paging.toRowBounds(), Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName}));
-<#else >
-	List<${className}> list = mapper.findListCondition(paging.toRowBounds(), null);
+<#if hasSearch>
+	 * @param key 搜索关键字
 </#if>
+	 */
+    public Paged<${className}> list(Paging paging<#if hasSearch>, String key</#if>) {
+<#if hasSearch>
+		if (StringUtil.isNotEmpty(key)) {
+	<#if table.hasOrg>
+			${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
+			List<${className}> list = mapper.selectWhere(Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName}).and(Tables.${table.className}.${searchColumn.fieldNameUpper}.like("%" + key + "%")), paging.toRowBounds());
+	<#else >
+			List<${className}> list = mapper.selectWhere(Tables.${table.className}.${searchColumn.fieldNameUpper}.like("%" + key + "%"), paging.toRowBounds());
+	</#if>
+			return new Paged<>(paging, list);
+		}
+</#if>
+	<#if table.hasOrg>
+		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
+		List<${className}> list = mapper.selectWhere(Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName}), paging.toRowBounds());
+	<#else >
+		List<${className}> list = mapper.selectWhere(null, paging.toRowBounds());
+	</#if>
 		return new Paged<>(paging, list);
     }
 
@@ -76,7 +101,7 @@ public class ${className}Service {
 </#if>
 <#if table.hasCode>
 	<#if table.hasOrg>
-		int code = commonMapper.maxCodeByTableAndOrg(Tables.${table.className}.getName(), ${table.orgColumn.fieldName});
+		int code = commonMapper.maxCodeByTableAndOrg(Tables.${table.className}.name, ${table.orgColumn.fieldName});
 	<#else>
 		int code = commonMapper.maxCodeByTable(Tables.${table.className}.getName());
 	</#if>
@@ -116,32 +141,34 @@ public class ${className}Service {
 		return mapper.update(model);
 	}
 
+<#if table.hasId>
 	/**
 	 * 获取${table.remarkName}
 	 * @param id 数据主键
 	 × @return 数据实体对象
 	 */
     public ${className} findById(Object id) {
-<#if table.hasOrg>
+	<#if table.hasOrg>
 		${className} model = mapper.findById(id);
 		if (model == null) {
 			throw new ClientException("无效的${table.remarkName}Id");
 		}
-	<#if hasLogin && loginTable.orgColumn.nullable>
+		<#if hasLogin && loginTable.orgColumn.nullable>
 		if (JwtUtils.currentBearer().${table.orgColumn.fieldName} == null || !JwtUtils.currentBearer().${table.orgColumn.fieldName}.equals(model.get${table.orgColumn.fieldNameUpper}())) {
-	<#elseif table.orgColumn.stringType>
+		<#elseif table.orgColumn.stringType>
 		if (model.get${table.orgColumn.fieldNameUpper}() == null || !model.get${table.orgColumn.fieldNameUpper}().equals(JwtUtils.currentBearer().${table.orgColumn.fieldName})) {
-	<#else>
+		<#else>
 		if (JwtUtils.currentBearer().${table.orgColumn.fieldName} != model.get${table.orgColumn.fieldNameUpper}()) {
-	</#if>
+		</#if>
 			throw new ClientException("无效的${table.remarkName}Id");
 		}
 		return model;
-<#else>
+	<#else>
 		return mapper.findById(id);
-</#if>
+	</#if>
 	}
 
+</#if>
 	/**
 	 * 获取${table.remarkName}
 	 * @param ids 数据主键
@@ -168,7 +195,7 @@ public class ${className}Service {
 				throw new ClientException("不能删除自己！");
 			}
 	<#else >
-			this.get(ids);
+			this.findById(ids);
 	</#if>
 		}
 </#if>

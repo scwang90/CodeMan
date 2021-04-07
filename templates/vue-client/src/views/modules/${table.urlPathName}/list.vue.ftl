@@ -8,7 +8,7 @@
             <el-button type="primary" icon="el-icon-circle-plus" @click="onAddClick">添加</el-button>
             <el-button type="danger" icon="el-icon-remove" @click="onRemoveClick">删除</el-button>
         </template>
-        <el-table ref="table" class="table" height="100%" :data="items" stripe border @selection-change="onSelectionChange">
+        <el-table ref="table" class="table" height="100%" :data="items" @selection-change="onSelectionChange" stripe border highlight-current-row>
             <el-table-column fixed="left" type="selection" width="45"> </el-table-column>
             <el-table-column fixed="left" type="index" label="序号" width="50"> </el-table-column>
             <#list table.columns as column>
@@ -183,7 +183,7 @@ export default {
             if (!this.selections || !this.selections.length) {
                 this.$message.info('请先在列表左边勾选需要删除到行!');
             } else {
-                this.$confirm('此操作将永久删除多条出局, 是否继续?', '提示', {
+                this.$confirm('此操作将永久删除多条数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'

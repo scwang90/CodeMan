@@ -1,4 +1,12 @@
 package ${packageName}.controller.manager;
+<#assign hasSearch=false/>
+<#list table.columns as column>
+	<#if column.name?lower_case?contains('name')>
+		<#assign searchColumn=column/>
+		<#assign hasSearch=true/>
+		<#break />
+	</#if>
+</#list>
 
 import ${packageName}.mapper.auto.${className}Mapper;
 import ${packageName}.model.api.ApiResult;
@@ -29,29 +37,34 @@ import java.util.List;
 @RestController("auto${className}Controller")
 public class ${className}Controller {
 
+<#--<#if !table.hasOrg && !table.hasCode && !table.hasCreate && !table.hasUpdate && table != loginTable && !(table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>-->
 	private final ${className}Mapper mapper;
-<#if table.hasOrg || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
+<#--</#if>-->
+<#if hasSearch || table.hasOrg || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 	private final ${className}Service service;
 </#if>
 
 	@GetMapping
 	@ApiOperation(value = "${table.remarkName}列表", notes = "分页参数支持两种形式，page 页数，skip 起始数据，两个传一个即可")
 	@ApiImplicitParams({
+<#if hasSearch>
+		@ApiImplicitParam(paramType = "query", name = "key", value = "索索关键字"),
+</#if>
 		@ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
 		@ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
 		@ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
 	})
-    public ApiResult<Paged<${className}>> list(@ApiIgnore Paging paging) {
-<#if table.hasOrg>
-		return ApiResult.success(service.list(paging));
+    public ApiResult<Paged<${className}>> list(@ApiIgnore Paging paging<#if hasSearch>, String key</#if>) {
+<#if table.hasOrg || hasSearch>
+		return ApiResult.success(service.list(paging<#if hasSearch>, key</#if>));
 <#else >
-		List<${className}> list = mapper.findListCondition(paging.toRowBounds(), null);
+		List<${className}> list = mapper.selectWhere(null, paging.toRowBounds());
 		return ApiResult.success(new Paged<>(paging, list));
 </#if>
     }
 
     @PostMapping
-    @ApiOperation(value = "添加${table.remarkName}", notes = <#if !table.idColumn.autoIncrement && table.idColumn.isStringType()>"返回新数据的Id"<#else>"返回是否成功"</#if>)
+    @ApiOperation(value = "添加${table.remarkName}", notes = "返回新数据的Id")
     @ApiImplicitParams({
 <#list table.columns as column>
 	<#if column != table.idColumn && !column.hiddenForSubmit>
@@ -85,16 +98,18 @@ public class ${className}Controller {
 </#if>
 	}
 
+<#if table.hasId>
 	@ApiOperation(value = "获取${table.remarkName}")
 	@GetMapping("/{id}")
     public ApiResult<${className}> findById(@PathVariable @ApiParam("${table.remark}Id") String id) {
-<#if table.hasOrg>
+	<#if table.hasOrg>
 		return ApiResult.success(service.findById(id));
-<#else>
+	<#else>
 		return ApiResult.success(mapper.findById(id));
-</#if>
+	</#if>
 	}
 
+</#if>
 	@ApiOperation(value = "删除${table.remarkName}")
 	@DeleteMapping("/{ids}")
     public ApiResult<Integer> deleteById(@PathVariable @ApiParam("${table.remark}Ids") String ids) {

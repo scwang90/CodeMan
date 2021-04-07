@@ -6,10 +6,7 @@ import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.api.internel.*;
 import com.code.smither.project.base.constant.JdbcLang;
-import com.code.smither.project.base.model.DatabaseJdbc;
-import com.code.smither.project.base.model.SourceModel;
-import com.code.smither.project.base.model.Table;
-import com.code.smither.project.base.model.TableColumn;
+import com.code.smither.project.base.model.*;
 import com.code.smither.project.base.util.PinYinUtil;
 import com.code.smither.project.base.util.StringUtil;
 import org.slf4j.Logger;
@@ -271,7 +268,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 */
     protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
 		Set<String> keys = tableSource.queryPrimaryKeys(tableMate);
-
+		List<? extends MetaDataForegin> listForegin = tableSource.queryForegins(tableMate);
+		List<ForeignKey> foreignKeys = new ArrayList<>(listForegin.size());
+		for (MetaDataForegin foregin : listForegin) {
+			foreignKeys.add(tableSource.buildForegin(foregin));
+		}
+		table.setForegins(foreignKeys);
 		List<? extends MetaDataColumn> listMetaData = tableSource.queryColumns(tableMate);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
 		for (MetaDataColumn columnMate : listMetaData) {
@@ -281,6 +283,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 					table.setIdColumn(column);
 				}
 				if (column.getTypeInt() == Types.DECIMAL || column.getTypeInt() == Types.NUMERIC || column.getTypeInt() == Types.DOUBLE) {
+					//主键不应该是小数
 					column.setTypeInt(Types.BIGINT);
 				}
 			}
@@ -313,6 +316,7 @@ public class DefaultModelBuilder implements ModelBuilder {
                 id.setTypeInt(Types.BIGINT);
 				id.setFieldType(this.classConverter.converterFieldType(id));
             }
+            table.setHasId(true);
         }
 
 		initTableColumn(columns, config.getColumnOrg(), table::getOrgColumn, table::setOrgColumn, table::setHasOrg);
