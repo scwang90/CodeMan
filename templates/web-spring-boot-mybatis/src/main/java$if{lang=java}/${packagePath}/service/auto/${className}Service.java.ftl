@@ -30,7 +30,7 @@ import ${packageName}.util.CommonUtil;
 <#if !table.idColumn.autoIncrement && table.idColumn.stringType>
 import ${packageName}.util.ID22;
 </#if>
-<#if table.hasOrg || table == loginTable>
+<#if table.hasOrg || table == loginTable || (hasLogin && table.hasCreator)>
 import ${packageName}.util.JwtUtils;
 </#if>
 
@@ -110,6 +110,9 @@ public class ${className}Service {
 <#if table.hasOrg>
 		model.set${table.orgColumn.fieldNameUpper}(${table.orgColumn.fieldName});
 </#if>
+<#if table.hasCreator && hasLogin>
+		model.set${table.creatorColumn.fieldNameUpper}(JwtUtils.currentBearer().userId);
+</#if>
 <#list table.columns as column>
 	<#if column == table.updateColumn || column == table.createColumn>
 		<#if column.fieldType == 'long'>
@@ -123,25 +126,25 @@ public class ${className}Service {
 		return model.get${table.idColumn.fieldNameUpper}();
 	}
 
+<#if table.hasId>
 	/**
 	 * 更新${table.remarkName}
 	 * @param model 实体对象
 	 × @return 返回数据修改的行数
 	 */
     public int update(${className} model) {
-		<#list table.columns as column>
-			<#if column == table.updateColumn>
-				<#if column.fieldType == 'long'>
+<#list table.columns as column>
+	<#if column == table.updateColumn>
+		<#if column.fieldType == 'long'>
 		model.set${column.fieldNameUpper}(System.currentTimeMillis());
-				<#elseif column.fieldType == 'java.util.Date'>
+		<#elseif column.fieldType == 'java.util.Date'>
 		model.set${column.fieldNameUpper}(new java.util.Date());
-				</#if>
-			</#if>
-		</#list>
+		</#if>
+	</#if>
+</#list>
 		return mapper.update(model);
 	}
 
-<#if table.hasId>
 	/**
 	 * 获取${table.remarkName}
 	 * @param id 数据主键
@@ -168,38 +171,38 @@ public class ${className}Service {
 	</#if>
 	}
 
-</#if>
 	/**
 	 * 获取${table.remarkName}
 	 * @param ids 数据主键
 	 × @return 返回数据修改的行数
 	 */
     public int deleteById(String ids) {
-<#if table.hasOrg || table == loginTable>
+	<#if table.hasOrg || table == loginTable>
 		if (!ids.contains(",")) {
-	<#if table == loginTable>
+		<#if table == loginTable>
 			${className} model = this.findById(ids);
-		<#if table.idColumn.stringType>
+			<#if table.idColumn.stringType>
 			if (JwtUtils.currentBearer().userId.equals(model.get${table.idColumn.fieldNameUpper}())) {
-		<#else>
+			<#else>
 			if (JwtUtils.currentBearer().userId == model.get${table.idColumn.fieldNameUpper}()) {
-		</#if>
+			</#if>
 				throw new ClientException("不能删除自己！");
 			}
 		} else {
-		<#if table.idColumn.stringType>
+			<#if table.idColumn.stringType>
 			if (java.util.Arrays.stream(ids.split(",")).anyMatch(id->JwtUtils.currentBearer().userId.equals(id))) {
-		<#else>
+			<#else>
 			if (java.util.Arrays.stream(ids.split(",")).anyMatch(id->Integer.parseInt(id)==JwtUtils.currentBearer().userId)) {
-		</#if>
+			</#if>
 				throw new ClientException("不能删除自己！");
 			}
-	<#else >
+		<#else >
 			this.findById(ids);
-	</#if>
+		</#if>
 		}
-</#if>
+	</#if>
 		return mapper.deleteById((Object[]) ids.split(","));
 	}
 
+</#if>
 }

@@ -67,6 +67,7 @@ public interface ${className}Mapper {
 	 */
 	int updateSetter(${table.classNameUpper}.SetterQuery setter);
 
+<#if table.hasId>
 	/**
 	 * 根据ID删除（支持批量删除）
 	 * @param ids 数据的主键ID
@@ -74,6 +75,7 @@ public interface ${className}Mapper {
 	 */
 	int deleteById(@Param("ids") Object... ids);
 
+</#if>
 	/**
 	 * 根据查询条件删除（灵活构建查询条件）
 	 * @param where 查询条件

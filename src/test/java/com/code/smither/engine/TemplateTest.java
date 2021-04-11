@@ -13,6 +13,14 @@ import static org.jooq.meta.mysql.information_schema.Tables.TABLES;
  */
 public class TemplateTest {
 
+    @Test
+    public void testHashCode() {
+        System.out.println("\"\".hashCode() = " + "".hashCode());
+        System.out.println("\"\".hashCode() = " + "".hashCode());
+        System.out.println("new Object().hashCode()) = " + new Object().toString());
+        System.out.println("new Object().hashCode()) = " + new Object().hashCode());
+    }
+
     /**
      * 请到 smither-project-database\src\test\java\com\codesmither\project\TemplateTest.java
      * 中运行测试

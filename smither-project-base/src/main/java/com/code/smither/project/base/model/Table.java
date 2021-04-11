@@ -3,8 +3,12 @@ package com.code.smither.project.base.model;
 import com.code.smither.engine.api.Model;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +17,7 @@ import java.util.List;
  * Created by SCWANG on 2016/8/18.
  */
 @Data
+@ToString(exclude = {"exportedTables","exportedKeys","importedKeys"})
 @SuppressWarnings("unused")
 public class Table implements Model, MetaDataTable {
 
@@ -36,6 +41,7 @@ public class Table implements Model, MetaDataTable {
     private TableColumn codeColumn;         // 编号构列
     private TableColumn createColumn;       // 创建日志列
     private TableColumn updateColumn;       // 更新日志列
+    private TableColumn creatorColumn;      // 创建者列
     private TableColumn usernameColumn;     // 账户列
     private TableColumn passwordColumn;     // 密码列
 
@@ -44,13 +50,18 @@ public class Table implements Model, MetaDataTable {
     private boolean hasCode = false;        // 是否有编号构列
     private boolean hasCreate = false;      // 是否有创建日志列
     private boolean hasUpdate = false;      // 是否有更新日志列
+    private boolean hasCreator = false;     // 是否有创建者列
     private boolean hasUsername = false;    // 是否有账户列
     private boolean hasPassword = false;    // 是否有密码列
 
-    private List<TableColumn> columns;// 表字段
-    private List<ForeignKey> foregins;// 外键
+    private List<TableColumn> columns;      // 表字段
+    private List<ForeignKey> exportedKeys;  // 外键（导出）
+    private List<ForeignKey> importedKeys;  // 外键（导入）
 
-    private List<String> descriptions;// 多行详细描述
+    @Setter(AccessLevel.PROTECTED)
+    private List<Table> exportedTables = new ArrayList<>();//  引用键值对（与外键相反）
+
+    private List<String> descriptions;      // 多行详细描述
 
     public String getName() {
         return name;
@@ -99,6 +110,11 @@ public class Table implements Model, MetaDataTable {
         this.createColumn = createColumn;
     }
 
+    public void setCreatorColumn(TableColumn creatorColumn) {
+        creatorColumn.setHiddenForSubmit(true);
+        this.creatorColumn = creatorColumn;
+    }
+
     public void setUpdateColumn(TableColumn updateColumn) {
         updateColumn.setHiddenForSubmit(true);
         this.updateColumn = updateColumn;
@@ -108,4 +124,9 @@ public class Table implements Model, MetaDataTable {
         passwordColumn.setHiddenForClient(true);
         this.passwordColumn = passwordColumn;
     }
+
+    public void pushExportedTable(Table table) {
+        exportedTables.add(table);
+    }
+
 }

@@ -27,6 +27,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnCode = "code,no";
     protected String columnCreate = "create_time,create_date,create_at,created_at";
     protected String columnUpdate = "update_time,update_date,update_at,updated_at";
+    protected String columnCreator = "creator_id, author_id";
     protected String columnPassword = "password,pwd";
     protected String columnUsername = "account,username,phone,name";
 
@@ -193,6 +194,14 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 
     public void setColumnUpdate(String columnUpdate) {
         this.columnUpdate = columnUpdate;
+    }
+
+    public String getColumnCreator() {
+        return columnCreator;
+    }
+
+    public void setColumnCreator(String columnCreator) {
+        this.columnCreator = columnCreator;
     }
 
     public String getColumnOrg() {

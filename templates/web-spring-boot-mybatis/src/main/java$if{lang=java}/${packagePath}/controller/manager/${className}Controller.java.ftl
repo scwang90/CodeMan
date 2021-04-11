@@ -81,26 +81,26 @@ public class ${className}Controller {
 		return ApiResult.success(model.get${table.idColumn.fieldNameUpper}());
 	}
 
+<#if table.hasId>
 	@PutMapping
 	@ApiOperation(value = "更新${table.remarkName}", notes = "返回数据修改的行数")
 	@ApiImplicitParams({
-<#list table.columns as column>
-	<#if !column.hiddenForSubmit>
+	<#list table.columns as column>
+		<#if !column.hiddenForSubmit>
 		@ApiImplicitParam(paramType = "form", name = "${column.fieldName}", value = "${column.remark}<#if column.stringType && !column.name?matches("^\\w+?(ID|CODE)$")>（最多${column.length}字符）</#if>", dataType = "${column.fieldType?replace("short","int")?replace("java.util.Date","date")?lower_case}" <#if column.defValue?length != 0>, defaultValue = "${column.defValue?trim}"</#if>)<#if column_has_next>,</#if>
-	</#if>
-</#list>
+		</#if>
+	</#list>
 	})
     public ApiResult<Integer> update(@Validated @ApiIgnore ${className} model) {
-<#if table.hasOrg || table.hasCreate || table.hasUpdate>
+	<#if table.hasOrg || table.hasCreate || table.hasUpdate>
 		return ApiResult.success(service.update(model));
-<#else>
+	<#else>
 		return ApiResult.success(mapper.update(model));
-</#if>
+	</#if>
 	}
 
-<#if table.hasId>
-	@ApiOperation(value = "获取${table.remarkName}")
 	@GetMapping("/{id}")
+	@ApiOperation(value = "获取${table.remarkName}")
     public ApiResult<${className}> findById(@PathVariable @ApiParam("${table.remark}Id") String id) {
 	<#if table.hasOrg>
 		return ApiResult.success(service.findById(id));
@@ -109,15 +109,15 @@ public class ${className}Controller {
 	</#if>
 	}
 
-</#if>
-	@ApiOperation(value = "删除${table.remarkName}")
 	@DeleteMapping("/{ids}")
+	@ApiOperation(value = "删除${table.remarkName}")
     public ApiResult<Integer> deleteById(@PathVariable @ApiParam("${table.remark}Ids") String ids) {
-<#if table.hasOrg || table == loginTable>
+	<#if table.hasOrg || table == loginTable>
 		return ApiResult.success(service.deleteById(ids));
-<#else>
+	<#else>
 		return ApiResult.success(mapper.deleteById((Object[]) ids.split(",")));
-</#if>
+	</#if>
 	}
 
+</#if>
 }

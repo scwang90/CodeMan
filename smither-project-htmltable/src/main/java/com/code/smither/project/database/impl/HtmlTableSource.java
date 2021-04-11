@@ -5,6 +5,7 @@ import com.code.smither.project.base.api.MetaDataForegin;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.api.TableSource;
 import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.base.model.ForeignKey;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.htmltable.HtmlTableConfig;
@@ -145,6 +146,11 @@ public class HtmlTableSource implements TableSource {
     }
 
     @Override
+    public ForeignKey buildForeginKey(MetaDataForegin foregin) {
+        return null;
+    }
+
+    @Override
     public List<? extends MetaDataTable> queryTables() throws Exception {
         List<Document> documents = new ArrayList<>();
         for (File file : htmlFiles) {
@@ -191,7 +197,12 @@ public class HtmlTableSource implements TableSource {
     }
 
     @Override
-    public List<? extends MetaDataForegin> queryForegins(MetaDataTable table) throws Exception {
+    public List<? extends MetaDataForegin> queryImportedKeys(MetaDataTable table) throws Exception {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<? extends MetaDataForegin> queryExportedKeys(MetaDataTable table) throws Exception {
         return Collections.emptyList();
     }
 

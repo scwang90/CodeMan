@@ -12,6 +12,7 @@ import com.code.smither.project.base.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.DatabaseMetaData;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +57,30 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
-//		model.setOrgColumn(findOrgColumn(tables));
-//		model.setCodeColumn(findCodeColumn(tables));
 		model.setLoginTable(findLoginTable(tables, config.getTableLogin(), model::setHasLogin));
 		model.setHasOrg(findColumn(tables, Table::isHasOrg, Table::getOrgColumn, model::setOrgColumn));
 		model.setHasCode(findColumn(tables, Table::isHasCode, Table::getCodeColumn, model::setCodeColumn));
+		checkForeginKey(tables);
 		return model;
+	}
+
+	private static void checkForeginKey(List<Table> tables) {
+		for (Table table : tables) {
+			for (ForeignKey key : table.getImportedKeys()) {
+				key.setPkTable(table);
+				tables.stream().filter(t->t.getName().equals(key.getFkName())).findFirst().ifPresent(key::setFkTable);
+			}
+			for (ForeignKey key : table.getExportedKeys()) {
+				key.setPkTable(table);
+				tables.stream().filter(t->t.getName().equals(key.getFkName())).findFirst().ifPresent(pkTable -> {
+					key.setPkTable(pkTable);
+					if (key.getDeleteRule() == DatabaseMetaData.importedKeyNoAction
+							|| key.getDeleteRule() == DatabaseMetaData.importedKeyRestrict) {
+						table.pushExportedTable(pkTable);
+					}
+				});
+			}
+		}
 	}
 
 	private static boolean findColumn(List<Table> tables, IsTableHas tableHas, GetColumn get, SetTableColumn set) {
@@ -81,36 +100,6 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 		return column != null;
 	}
-
-//	private static TableColumn findCodeColumn(List<Table> tables) {
-//		TableColumn column = null;
-//		for (Table table : tables) {
-//			if (table.isHasCode()) {
-//				TableColumn org = table.getCodeColumn();
-//				if (column == null) {
-//					column = org;
-//				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
-//					column = org;
-//				}
-//			}
-//		}
-//		return column;
-//	}
-//
-//	private static TableColumn findOrgColumn(List<Table> tables) {
-//		TableColumn column = null;
-//		for (Table table : tables) {
-//			if (table.isHasOrg()) {
-//				TableColumn org = table.getOrgColumn();
-//				if (column == null) {
-//					column = org;
-//				} else if (org.getComment() != null && (column.getComment() == null || org.getComment().length() > column.getComment().length())) {
-//					column = org;
-//				}
-//			}
-//		}
-//		return column;
-//	}
 
 	private static Table findLoginTable(List<Table> tables, String tableLogin, Action<Boolean> success) {
 		Table tableEqualsName = null;
@@ -268,12 +257,18 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 */
     protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
 		Set<String> keys = tableSource.queryPrimaryKeys(tableMate);
-		List<? extends MetaDataForegin> listForegin = tableSource.queryForegins(tableMate);
-		List<ForeignKey> foreignKeys = new ArrayList<>(listForegin.size());
-		for (MetaDataForegin foregin : listForegin) {
-			foreignKeys.add(tableSource.buildForegin(foregin));
+		List<? extends MetaDataForegin> importedKeys = tableSource.queryImportedKeys(tableMate);
+		List<ForeignKey> importedForeignKeys = new ArrayList<>(importedKeys.size());
+		for (MetaDataForegin key : importedKeys) {
+			importedForeignKeys.add(tableSource.buildForeginKey(key));
 		}
-		table.setForegins(foreignKeys);
+		table.setImportedKeys(importedForeignKeys);
+		List<? extends MetaDataForegin> exportedKeys = tableSource.queryExportedKeys(tableMate);
+		List<ForeignKey> exportedForeignKeys = new ArrayList<>(exportedKeys.size());
+		for (MetaDataForegin key : exportedKeys) {
+			exportedForeignKeys.add(tableSource.buildForeginKey(key));
+		}
+		table.setExportedKeys(exportedForeignKeys);
 		List<? extends MetaDataColumn> listMetaData = tableSource.queryColumns(tableMate);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
 		for (MetaDataColumn columnMate : listMetaData) {
@@ -323,6 +318,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		initTableColumn(columns, config.getColumnCode(), table::getCodeColumn, table::setCodeColumn, table::setHasCode);
 		initTableColumn(columns, config.getColumnCreate(), table::getCreateColumn, table::setCreateColumn, table::setHasCreate);
 		initTableColumn(columns, config.getColumnUpdate(), table::getUpdateColumn, table::setUpdateColumn, table::setHasUpdate);
+		initTableColumn(columns, config.getColumnCreator(), table::getCreatorColumn, table::setCreatorColumn, table::setHasCreator);
 		initTableColumn(columns, config.getColumnPassword(), table::getPasswordColumn, table::setPasswordColumn, table::setHasPassword);
 		initTableColumn(columns, config.getColumnUsername(), table::getUsernameColumn, table::setUsernameColumn, table::setHasUsername);
 

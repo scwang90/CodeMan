@@ -20,9 +20,9 @@
     <choose>
       <when test="whereII.value != null">
         <choose>
-          <when test="whereI.op == 'IN'">
+          <when test="whereII.op == 'IN'">
             ${r"$"}{whereII.column} IN
-            <foreach collection="value" item="item" open="(" close=")" separator=",">
+            <foreach collection="whereII.value" item="item" open="(" close=")" separator=",">
               ${r"#"}{item}
             </foreach>
           </when>
@@ -63,7 +63,7 @@
             <choose>
               <when test="whereI.op == 'IN'">
                 ${r"$"}{whereI.column} IN
-                <foreach collection="value" item="item" open="(" close=")" separator=",">
+                <foreach collection="whereI.value" item="item" open="(" close=")" separator=",">
                   ${r"#"}{item}
                 </foreach>
               </when>
@@ -106,7 +106,7 @@
             <choose>
               <when test="where.op == 'IN'">
                 ${r"$"}{where.column} IN
-                <foreach collection="value" item="item" open="(" close=")" separator=",">
+                <foreach collection="where.value" item="item" open="(" close=")" separator=",">
                   ${r"#"}{item}
                 </foreach>
               </when>
@@ -285,6 +285,7 @@
     </if>
   </update>
 
+<#if table.hasId>
   <!-- 根据ID删除（支持批量删除）-->
   <delete id="deleteById">
     DELETE FROM ${table.nameSql} WHERE ${table.idColumn.nameSql} IN
@@ -293,6 +294,7 @@
     </foreach>
   </delete>
 
+</#if>
   <!-- 根据条件删除（灵活构建查询条件） -->
   <delete id="deleteWhere">
       DELETE FROM ${table.nameSql} WHERE

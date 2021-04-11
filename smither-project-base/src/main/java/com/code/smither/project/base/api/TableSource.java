@@ -7,6 +7,9 @@ import com.code.smither.project.base.model.TableColumn;
 
 import javax.annotation.Nullable;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -20,11 +23,12 @@ public interface TableSource {
 
     Table buildTable(MetaDataTable table);
     TableColumn buildColumn(MetaDataColumn column);
-    ForeignKey buildForegin(MetaDataForegin foregin);
+    ForeignKey buildForeginKey(MetaDataForegin foregin);
 
     List<? extends MetaDataTable> queryTables() throws Exception;
     List<? extends MetaDataColumn> queryColumns(MetaDataTable table) throws Exception;
-    List<? extends MetaDataForegin> queryForegins(MetaDataTable table) throws Exception;
+    List<? extends MetaDataForegin> queryImportedKeys(MetaDataTable table) throws Exception;
+    List<? extends MetaDataForegin> queryExportedKeys(MetaDataTable table) throws Exception;
 
     String queryColumnRemark(MetaDataColumn column) throws Exception;
     String queryTableRemark(MetaDataTable table) throws Exception;

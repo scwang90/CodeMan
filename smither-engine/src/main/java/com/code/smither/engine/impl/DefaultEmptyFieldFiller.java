@@ -16,17 +16,22 @@ public class DefaultEmptyFieldFiller implements FieldFiller {
 
     @Override
     public RootModel fill(RootModel model) {
-        fill((Object) model);
+        Set<Object> hash = new LinkedHashSet<>();
+        fill(model, hash);
         return model;
     }
 
-    private void fill(Object model) {
+    private void fill(Object model, Set<Object> hash) {
         if (model == null || model instanceof Map || model instanceof CharSequence) {
             return;
         }
         if (model.getClass().getName().startsWith("java.")) {
             return;
         }
+        if (hash.contains(model)) {
+            return;
+        }
+        hash.add(model);
         Field[] fields = Reflecter.getField(model.getClass());
         for (Field field : fields) {
             if (!Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()) && !field.getName().startsWith("this$")) {
@@ -55,15 +60,15 @@ public class DefaultEmptyFieldFiller implements FieldFiller {
                     } else if (type.isArray()) {
                         Object[] array = (Object[]) value;
                         for (Object item : array) {
-                            fill(item);
+                            fill(item, hash);
                         }
                     } else if (Collection.class.isAssignableFrom(type)) {
                         Collection<?> collection = (Collection<?>) value;
                         for (Object item : collection) {
-                            fill(item);
+                            fill(item, hash);
                         }
                     } else if (!type.isEnum()&&!type.isPrimitive()&&!type.getName().startsWith("java.lang.")) {
-                        fill(value);
+                        fill(value, hash);
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

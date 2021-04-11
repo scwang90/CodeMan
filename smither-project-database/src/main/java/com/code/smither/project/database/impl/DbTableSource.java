@@ -57,8 +57,12 @@ public class DbTableSource implements TableSource {
 		return metaData.getPrimaryKeys(connection.getCatalog(), null, tableName);
 	}
 
-	protected ResultSet queryForeignKeys(DatabaseMetaData metaData, String tableName) throws SQLException {
+	protected ResultSet queryImportedKeys(DatabaseMetaData metaData, String tableName) throws SQLException {
 		return metaData.getImportedKeys(connection.getCatalog(), null, tableName);
+	}
+
+	protected ResultSet queryExportedKeys(DatabaseMetaData metaData, String tableName) throws SQLException {
+		return metaData.getExportedKeys(connection.getCatalog(), null, tableName);
 	}
 
 	protected ResultSet queryColumns(DatabaseMetaData metaData, String tableName) throws SQLException {
@@ -99,26 +103,28 @@ public class DbTableSource implements TableSource {
 	}
 
 	@Override
-	public List<? extends MetaDataForegin> queryForegins(MetaDataTable table) throws Exception {
-		List<ForeignKey> foregins = new LinkedList<>();
-		try (ResultSet result = queryForeignKeys(databaseMetaData, table.getName())) {
+	public List<? extends MetaDataForegin> queryImportedKeys(MetaDataTable table) throws Exception {
+		List<ForeignKey> keys = new LinkedList<>();
+		try (ResultSet result = queryImportedKeys(databaseMetaData, table.getName())) {
 			while (result.next()) {
-				foregins.add(foreginFromResultSet(result));
+				keys.add(foreginFromResultSet(result));
 			}
 		}
-		return foregins;
+		return keys;
+	}
+
+	@Override
+	public List<? extends MetaDataForegin> queryExportedKeys(MetaDataTable table) throws Exception {
+		List<ForeignKey> keys = new LinkedList<>();
+		try (ResultSet result = queryExportedKeys(databaseMetaData, table.getName())) {
+			while (result.next()) {
+				keys.add(foreginFromResultSet(result));
+			}
+		}
+		return keys;
 	}
 
 	private ForeignKey foreginFromResultSet(ResultSet result) throws SQLException {
-		////    PKTABLE_NAME string => 被导入的主键表名称
-		////    PKCOLUMN_NAME string => 被导入的主键列名称
-		////    FKTABLE_NAME string => 外键表名称
-		////    FKCOLUMN_NAME string => 外键列名称
-		//
-		////    key_seq short => 外键中的序列号
-		//
-		////    fk_name string => 外键的名称（可为 null）
-		////    pk_name string => 主键的名称（可为 null）
 		ForeignKey foregin = new ForeignKey();
 		foregin.setIndex(result.getInt("KEY_SEQ"));
 		foregin.setFkName(result.getString("FK_NAME"));
@@ -127,6 +133,8 @@ public class DbTableSource implements TableSource {
 		foregin.setPkColumnName(result.getString("PKCOLUMN_NAME"));
 		foregin.setFkTableName(result.getString("FKTABLE_NAME"));
 		foregin.setFkColumnName(result.getString("FKCOLUMN_NAME"));
+		foregin.setUpdateRule(result.getInt("UPDATE_RULE"));
+		foregin.setDeleteRule(result.getInt("DELETE_RULE"));
 		return foregin;
 	}
 
@@ -147,7 +155,7 @@ public class DbTableSource implements TableSource {
 	}
 
 	@Override
-	public ForeignKey buildForegin(MetaDataForegin foregin) {
+	public ForeignKey buildForeginKey(MetaDataForegin foregin) {
 		if (foregin instanceof ForeignKey) {
 			return ((ForeignKey) foregin);
 		}
