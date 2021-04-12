@@ -56,9 +56,8 @@ public class UploadController {
 	}
 
 	@ApiOperation(value = "文件下载")
-	@GetMapping("download/{id}")
-	public ResponseEntity<FileSystemResource> download(@PathVariable String id, @RequestHeader("User-Agent") @ApiIgnore String userAgent)  {
-
+	@GetMapping({"download/{id}","view/{id}"})
+	public ResponseEntity<FileSystemResource> download(@PathVariable String id, HttpServletRequest request)  {
 		Upload upload = mapper.findById(id);
 		if (upload == null) {
 			throw new ServiceException("找不到对应文件信息");
@@ -70,14 +69,11 @@ public class UploadController {
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-		if (userAgent != null && userAgent.contains("Mozilla/")) {
-			headers.setContentType(MediaType.parseMediaType(upload.getMimeType()));
-		} else {
-			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		headers.setContentType(MediaType.parseMediaType(upload.getMimeType()));
+		if (request.getServletPath().contains("download")) {
 			headers.setContentDispositionFormData("attachment", upload.getName());
 		}
-		return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.CREATED);
-
+		return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.OK);
 	}
 
 	/**

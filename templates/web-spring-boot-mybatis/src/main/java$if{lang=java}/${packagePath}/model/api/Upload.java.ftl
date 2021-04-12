@@ -3,6 +3,7 @@ package ${packageName}.model.api;
 import ${packageName}.constant.UploadType;
 import ${packageName}.util.ID22;
 
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -16,11 +17,14 @@ import io.swagger.annotations.ApiModelProperty;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Data
 @ApiModel(description = "上传文件")
 public class Upload {
 
     @ApiModelProperty("文件类型")
     private int type = 0;
+    @ApiModelProperty("文件大小")
+    private long size = 0;
     @ApiModelProperty("文件 Id")
     private String id = null;
     @ApiModelProperty("文件名称")
@@ -45,57 +49,10 @@ public class Upload {
     public Upload(MultipartFile file) {
         this.setId(ID22.random());
         this.setTime(new Date());
+        this.setSize(file.getSize());
         this.setName(file.getOriginalFilename());
         this.setMimeType(file.getContentType());
         this.setType(UploadType.from(file).ordinal());
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
     }
 
 }

@@ -3,7 +3,7 @@ import request from '@/plugins/request'
 // @Summary ${table.remarkName}列表
 // @Produce  application/json
 // @Param query {size:"int",page:"int",skip:"int"}
-// @Router '${table.urlPathName}/list' [get]
+// @Router '${table.urlPathName}' [get]
 export const list = (data) => {
     return request.get('${table.urlPathName}/list', data)
 }
@@ -11,7 +11,7 @@ export const list = (data) => {
 // @Summary 添加${table.remarkName}
 // @Produce  application/json
 // @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn>${column.fieldName}: "${column.fieldType}"<#if column_has_next>,</#if></#if></#list>}
-// @Router '${table.urlPathName}/insert' [post]
+// @Router '${table.urlPathName}' [post]
 export const insert = (data) => {
     return request.post('${table.urlPathName}/insert', data)
 }
@@ -20,7 +20,7 @@ export const insert = (data) => {
 // @Summary 更新${table.remarkName}
 // @Produce  application/json
 // @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn>${column.fieldName}: "${column.fieldType}"<#if column_has_next>,</#if></#if></#list>}
-// @Router '${table.urlPathName}/update' [put]
+// @Router '${table.urlPathName}' [put]
 export const update = (data) => {
     return request.put('${table.urlPathName}/update', data)
 }
