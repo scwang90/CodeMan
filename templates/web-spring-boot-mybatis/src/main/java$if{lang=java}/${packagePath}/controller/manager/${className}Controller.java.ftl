@@ -1,7 +1,7 @@
 package ${packageName}.controller.manager;
 <#assign hasSearch=false/>
 <#list table.columns as column>
-	<#if column.name?lower_case?contains('name')>
+	<#if column.name?lower_case?contains('name') || column.name?lower_case?contains('title') >
 		<#assign searchColumn=column/>
 		<#assign hasSearch=true/>
 		<#break />
@@ -72,7 +72,7 @@ public class ${className}Controller {
 	</#if>
 </#list>
     })
-	public ApiResult<Object> insert(@Validated @ApiIgnore ${className} model) {
+	public ApiResult<${table.idColumn.fieldTypeObject}> insert(@Validated @ApiIgnore ${className} model) {
 <#if table.hasOrg || table.hasCode || table.hasCreate || table.hasUpdate || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 		service.insert(model);
 <#else>

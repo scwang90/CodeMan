@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>数据字典 ${projectName}</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-beta2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container"><h1 style="text-align:center;">数据字典 ${projectName}</h1>

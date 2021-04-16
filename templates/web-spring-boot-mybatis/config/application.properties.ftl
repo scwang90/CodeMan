@@ -10,7 +10,7 @@ logging.level.root = info
 logging.level.${packageName}.mapper = debug
 logging.level.${packageName}.controller = info
 
-spring.datasource.url = ${jdbc.url}
+spring.datasource.url = ${jdbc.url}?serverTimezone=Asia/Shanghai
 spring.datasource.username = ${jdbc.username}
 spring.datasource.password = ${jdbc.password}
 

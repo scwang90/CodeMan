@@ -57,59 +57,60 @@ public class ErrorController extends BasicErrorController {
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
-        Map<String, Object> body = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.ALL));
-        String message = body.get("error") + "-" + body.get("message");
+        Map<String, Object> body = getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.ALL));
+        if (body.get("path") != null && !body.get("path").toString().startsWith("/api")) {
+            return super.error(request);
+        }
+
+        StringBuilder message = new StringBuilder("" + body.get("error"));
+        if (body.get("message") != null) {
+            message.append(" - ").append(body.get("message"));
+        }
+
         Object errors = body.get("errors");
         Throwable error = this.error.getError(new ServletWebRequest(request));
         Throwable cause = error;
         while (cause != null && cause.getCause() != null && cause.getCause() != cause) {
+            message.append(" <- ").append(cause.message);
             cause = cause.getCause();
         }
         if (error instanceof ServiceException) {
-            message = error.getMessage();
+            message = new StringBuilder(error.getMessage());
         } else if (error instanceof AccessException) {
-            message = error.getMessage();
+            message = new StringBuilder(error.getMessage());
             status = HttpStatus.NOT_ACCEPTABLE;
         } else if (error instanceof ClientException) {
-            message = error.getMessage();
+            message = new StringBuilder(error.getMessage());
             status = HttpStatus.BAD_REQUEST;
         } else if (error instanceof ConstraintViolationException) {
             List<String> messages = new LinkedList<>();
             for (ConstraintViolation<?> constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
-                message = constraint.getMessageTemplate();
+                message = new StringBuilder(constraint.getMessageTemplate());
                 messages.add(constraint.getPropertyPath() + ":" + message);
             }
             errors = messages;
             status = HttpStatus.BAD_REQUEST;
-        } else if (error instanceof MethodArgumentNotValidException) {
-            List<String> messages = new LinkedList<>();
-            BindingResult result = ((MethodArgumentNotValidException) error).getBindingResult();
-            for (FieldError fieldError : result.getFieldErrors()) {
-                message = fieldError.getDefaultMessage();
-                messages.add(fieldError.getField() + ":" + message);
-            }
-            message = "参数验证错误，详细信息查看 errors";
-            errors = messages;
-            status = HttpStatus.EXPECTATION_FAILED;
         } else if (error instanceof BindException) {
             List<String> messages = new LinkedList<>();
             BindingResult result = ((BindException) error).getBindingResult();
             for (FieldError fieldError : result.getFieldErrors()) {
-                message = fieldError.getDefaultMessage();
+                message = new StringBuilder(fieldError.getDefaultMessage());
                 messages.add(fieldError.getField() + ":" + message);
             }
-            message = "参数验证错误，详细信息查看 errors";
+            if (messages.size() > 1) {
+                message = new StringBuilder("参数验证错误，详细信息查看 errors");
+            }
             errors = messages;
             status = HttpStatus.EXPECTATION_FAILED;
         } else if (!config.getOriginal() && error != null) {
-            message = "服务器内部错误";
+            message = new StringBuilder("服务器内部错误");
         } else if (cause instanceof SQLTransientConnectionException) {
-            message = "连接数据库异常：" + cause.getMessage();
+            message = new StringBuilder("连接数据库异常：" + cause.getMessage());
         } else if (cause != null) {
-            message = message + ":" + cause.getMessage();
+            message.append(" <- ").append(cause.getMessage());
         }
         try {
-            ApiResult<?> result = new ApiResult<>(null, status.value(), message, errors);
+            ApiResult<?> result = new ApiResult<>(null, status.value(), message.toString(), errors);
             //noinspection unchecked
             Map<String, Object> map = mapper.readValue(mapper.writeValueAsString(result), Map.class);
             return new ResponseEntity<>(map, HttpStatus.OK);

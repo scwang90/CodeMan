@@ -158,7 +158,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                 if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || config.isTemplateProcessAll())) {
                     processTemplate(root, task.getTemplateFile(), file);
                 } else {
-                    FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
+                    copyFile(task, file);
                 }
                 logger.info("  =>> : " + path);
             } else {
@@ -166,6 +166,10 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
             }
             set.add(path);
         }
+    }
+
+    protected void copyFile(Task task, File file) throws IOException {
+        FileUtil.copyFile(task.getTemplateFile(), checkPath(file));
     }
 
     protected void processTemplate(RootModel root, File templateFile, File file) throws IOException, TemplateException {

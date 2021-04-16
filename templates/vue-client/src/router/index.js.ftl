@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+<#if hasLogin>
 import Login from '@/views/login'
+</#if>
 import Index from '@/views/index'
 import Home from '@/views/home'
 <#list tables as table>
@@ -13,11 +15,15 @@ export default new Router({
     routes: [
         {
             path: '/',
+<#if hasLogin>
             component: Login
         },{
             path: '/login',
             component: Login,
             hidden: true
+<#else>
+            redirect: '/index/home',
+</#if>
         },{
             path: '/index',
             redirect: '/index/home',

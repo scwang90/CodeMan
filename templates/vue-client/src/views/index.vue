@@ -7,14 +7,7 @@
             <el-aside width="250px" class="aside">
                 <Sidebar/>
             </el-aside>
-            <el-container>
-                <el-header class="header">
-                    <el-page-header @back="onBackClick" content="详情页面"></el-page-header>
-                </el-header>
-                <el-main class="main">
-                    <router-view/>
-                </el-main>
-            </el-container>
+            <router-view/>
         </el-container>
     </el-container>
 </template>
@@ -26,13 +19,9 @@ export default {
     components:{Navbar,Sidebar},
     data() {
         return {
-            collapse: false
         }
     },
     methods: {
-        onBackClick() {
-            
-        }
     }
 }
 </script>
@@ -51,10 +40,5 @@ export default {
 }
 .container {
     overflow: hidden;
-}
-.main {
-    background: #F1F3FA;
-    box-shadow:inset 2px 5px 5px -5px #0002;
-    padding: 40px 30px;
 }
 </style>

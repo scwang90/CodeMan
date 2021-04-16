@@ -2,12 +2,12 @@
     <nav class="navbar">
         <div class="left">
             <i class="logo el-icon-eleme"></i>
-            <span class="title">旅人</span>
+            <span class="title">简写</span>
             <i class="icon el-icon-menu" @click="onMenuToggleClick"></i>
         </div>
         <div class="middle">
-            <span class="title">LRHQGLXT</span>
-            <span class="detail">旅人后期管理系统</span>
+            <span class="title">PYJX</span>
+            <span class="detail">${projectName}</span>
         </div>
         <div class="right">
             <el-menu class="menu" mode="horizontal"
@@ -24,16 +24,27 @@
                     <template #title>消息</template>
                 </el-menu-item>
                 <el-submenu index="2" class="user-info">
+<#if hasLogin>
                     <template #title>
-                        <img class="avatar" src="/static/images/common/image-avatar.jpg" alt="" srcset="">
+                        <img class="avatar" :src="userInfo.avatar || '/static/images/common/image-avatar.jpg'" alt="" srcset="">
                         <div class="content">
-                            <span class="name">scwang90</span>
-                            <span class="role">超级管理员</span>
+                            <span class="name">{{userInfo.name}}</span>
+                            <span class="role">{{userInfo.type}}</span>
                         </div>
                     </template>
                     <el-menu-item ><i class="el-icon-s-custom"></i><span>我的资料</span></el-menu-item>
                     <el-menu-item ><i class="el-icon-s-tools"></i><span>系统设置</span></el-menu-item>
                     <el-menu-item ><i class="el-icon-s-opportunity"></i><span>注销登录</span></el-menu-item>
+<#else >
+                    <template #title>
+                        <img class="avatar" src="/static/images/common/image-avatar.jpg" alt="" srcset="">
+                        <div class="content">
+                            <span class="name">${author}</span>
+                            <span class="role">超级管理员</span>
+                        </div>
+                    </template>
+                    <el-menu-item ><i class="el-icon-s-tools"></i><span>系统设置</span></el-menu-item>
+</#if>
                 </el-submenu>
             </el-menu>
         </div>
@@ -47,23 +58,30 @@ export default {
             index: null,
         }
     },
+<#if hasLogin>
     computed: {
-        ...Vuex.mapState(['setting', 'sidebar']),
+        ...Vuex.mapState('user', ['userInfo']),
     },
     methods: {
-        ...Vuex.mapMutations(['pushStore']),
+        ...Vuex.mapMutations('user', ['logout']),
 
-        onMenuToggleClick() {
-            this.pushStore({store:'sidebar', field:'collapse', data:!this.sidebar.collapse});
+        async onLogoutClick() {
+            await this.logout();
+            this.$router.push({path:'/login'});
         },
+<#else >
+    methods: {
 
+</#if>
         onMenuSelected(index, indexPath) {
-            console.log('onMenuSelected',index, indexPath,this.$router);
             if (this.$router.history.current.path != index) {
                 this.$router.push({path:index});
             }
-            this.index = '11';
-        }
+            this.index = '';
+        },
+
+        onMenuToggleClick() {
+        },
     }
 }
 </script>

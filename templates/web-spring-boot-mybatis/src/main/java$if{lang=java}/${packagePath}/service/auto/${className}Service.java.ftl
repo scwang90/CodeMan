@@ -1,7 +1,7 @@
 package ${packageName}.service.auto;
 <#assign hasSearch=false/>
 <#list table.columns as column>
-	<#if column.name?lower_case?contains('name')>
+	<#if column.name?lower_case?contains('name') || column.name?lower_case?contains('title') >
 		<#assign searchColumn=column/>
 		<#assign hasSearch=true/>
 		<#break />
@@ -103,9 +103,9 @@ public class ${className}Service {
 	<#if table.hasOrg>
 		int code = commonMapper.maxCodeByTableAndOrg(Tables.${table.className}.name, ${table.orgColumn.fieldName});
 	<#else>
-		int code = commonMapper.maxCodeByTable(Tables.${table.className}.getName());
+		int code = commonMapper.maxCodeByTable(Tables.${table.className}.name);
 	</#if>
-		model.setCode(CommonUtil.formatCode(code));
+		model.set${table.codeColumn.fieldNameUpper}(CommonUtil.formatCode(code));
 </#if>
 <#if table.hasOrg>
 		model.set${table.orgColumn.fieldNameUpper}(${table.orgColumn.fieldName});
