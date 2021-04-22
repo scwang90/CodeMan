@@ -24,6 +24,7 @@ public class ProjectConfigFactory {
         config.setTablePrefix(properties.getProperty("code.man.database.table.prefix",config.getTablePrefix()));
         config.setTableSuffix(properties.getProperty("code.man.database.table.suffix",config.getTableSuffix()));
         config.setTableDivision(properties.getProperty("code.man.database.table.division",config.getTableDivision()));
+        config.setTableOrgan(properties.getProperty("code.man.database.table.organ",config.getTableOrgan()));
         config.setTableLogin(properties.getProperty("code.man.database.table.login",config.getTableLogin()));
 
         config.setColumnPrefix(properties.getProperty("code.man.database.column.prefix",config.getColumnPrefix()));
@@ -34,6 +35,7 @@ public class ProjectConfigFactory {
         config.setColumnCode(properties.getProperty("code.man.database.column.code",config.getColumnCode()));
         config.setColumnCreate(properties.getProperty("code.man.database.column.create",config.getColumnCreate()));
         config.setColumnUpdate(properties.getProperty("code.man.database.column.update",config.getColumnUpdate()));
+        config.setColumnRemove(properties.getProperty("code.man.database.column.remove",config.getColumnRemove()));
         config.setColumnPassword(properties.getProperty("code.man.database.column.password",config.getColumnPassword()));
         config.setColumnUsername(properties.getProperty("code.man.database.column.username",config.getColumnUsername()));
         config.setColumnCreator(properties.getProperty("code.man.database.column.creator",config.getColumnCreator()));

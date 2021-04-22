@@ -18,7 +18,8 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String tablePrefix = "";
     protected String tableSuffix = "";
     protected String tableDivision = "";
-    protected String tableLogin = "";           //登陆表
+    protected String tableOrgan = "company,organ,hospital,school";        //机构表
+    protected String tableLogin = "login,user,admin,account";             //登录表
 
     protected String columnPrefix = "";
     protected String columnSuffix = "";
@@ -27,7 +28,9 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnCode = "code,no";
     protected String columnCreate = "create_time,create_date,create_at,created_at";
     protected String columnUpdate = "update_time,update_date,update_at,updated_at";
-    protected String columnCreator = "creator_id, author_id";
+    protected String columnGender = "sex,gender";
+    protected String columnRemove = "remove,removed,delete,deleted";
+    protected String columnCreator = "creator_id,author_id";
     protected String columnPassword = "password,pwd";
     protected String columnUsername = "account,username,phone,name";
 
@@ -148,6 +151,14 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
         this.tableDivision = tableDivision;
     }
 
+    public String getTableOrgan() {
+        return tableOrgan;
+    }
+
+    public void setTableOrgan(String tableOrgan) {
+        this.tableOrgan = tableOrgan;
+    }
+
     public String getTableLogin() {
         return tableLogin;
     }
@@ -194,6 +205,22 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 
     public void setColumnUpdate(String columnUpdate) {
         this.columnUpdate = columnUpdate;
+    }
+
+    public String getColumnRemove() {
+        return columnRemove;
+    }
+
+    public void setColumnGender(String columnGender) {
+        this.columnGender = columnGender;
+    }
+
+    public String getColumnGender() {
+        return columnGender;
+    }
+
+    public void setColumnRemove(String columnRemove) {
+        this.columnRemove = columnRemove;
     }
 
     public String getColumnCreator() {

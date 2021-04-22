@@ -15,10 +15,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import ${packageName}.exception.ClientException;
 import ${packageName}.mapper.auto.${loginTable.className}Mapper;
-<#if hasUsernameColumn && hasOrg>
-import ${packageName}.mapper.intent.impl.Where;
+<#if hasUsernameColumn && hasOrgan>
+import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.mapper.intent.Tables;
-import ${packageName}.mapper.intent.tables.${loginTable.classNameUpper};
 </#if>
 import ${packageName}.model.conf.AuthPasswordConfig;
 import ${packageName}.model.db.${loginTable.className};
@@ -110,8 +109,8 @@ public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
         <#assign prefix="//"/>
         ${loginTable.className} ${loginTable.classNameCamel} = null;
     </#if>
-    <#if hasOrg>
-        ${prefix}Where<${loginTable.classNameUpper}> where = Tables.${loginTable.className}.${loginTable.usernameColumn.fieldNameUpper}.eq(token.getUsername());
+    <#if hasOrgan>
+        ${prefix}WhereQuery<${loginTable.className}> where = Tables.${loginTable.className}.${loginTable.usernameColumn.fieldNameUpper}.eq(token.getUsername());
         ${prefix}if (token.getHost() != null) {
         <#if orgColumn.stringType>
         ${prefix}   where.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(token.getHost()));

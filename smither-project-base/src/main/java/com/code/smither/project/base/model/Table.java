@@ -39,20 +39,25 @@ public class Table implements Model, MetaDataTable {
     private TableColumn idColumn;           // ID列
     private TableColumn orgColumn;          // 机构列
     private TableColumn codeColumn;         // 编号构列
+    private TableColumn genderColumn;       // 性别列
     private TableColumn createColumn;       // 创建日志列
     private TableColumn updateColumn;       // 更新日志列
+    private TableColumn removeColumn;       // 删除列
     private TableColumn creatorColumn;      // 创建者列
     private TableColumn usernameColumn;     // 账户列
     private TableColumn passwordColumn;     // 密码列
 
     private boolean hasId = false;          // 是否有ID列
-    private boolean hasOrg = false;         // 是否有机构列
+    private boolean hasOrgan = false;       // 是否有机构列
     private boolean hasCode = false;        // 是否有编号构列
     private boolean hasCreate = false;      // 是否有创建日志列
     private boolean hasUpdate = false;      // 是否有更新日志列
+    private boolean hasGender = false;      // 是否有性别列
+    private boolean hasRemove = false;      // 是否有删除列
     private boolean hasCreator = false;     // 是否有创建者列
     private boolean hasUsername = false;    // 是否有账户列
     private boolean hasPassword = false;    // 是否有密码列
+    private boolean isRelateTable = false;  // 是否是关联表
 
     private List<TableColumn> columns;      // 表字段
     private List<ForeignKey> exportedKeys;  // 外键（导出）
@@ -94,6 +99,13 @@ public class Table implements Model, MetaDataTable {
         this.descriptions = Arrays.asList(description.split("\n"));
     }
 
+    public void setIdColumn(TableColumn idColumn) {
+        if (idColumn.getName().toLowerCase().endsWith("id")) {
+            idColumn.setHiddenForSubmit(true);
+        }
+        this.idColumn = idColumn;
+    }
+
     public void setOrgColumn(TableColumn orgColumn) {
         orgColumn.setHiddenForClient(true);
         orgColumn.setHiddenForSubmit(true);
@@ -108,6 +120,12 @@ public class Table implements Model, MetaDataTable {
     public void setCreateColumn(TableColumn createColumn) {
         createColumn.setHiddenForSubmit(true);
         this.createColumn = createColumn;
+    }
+
+    public void setRemoveColumn(TableColumn removeColumn) {
+        removeColumn.setHiddenForSubmit(true);
+        removeColumn.setHiddenForClient(true);
+        this.removeColumn = removeColumn;
     }
 
     public void setCreatorColumn(TableColumn creatorColumn) {

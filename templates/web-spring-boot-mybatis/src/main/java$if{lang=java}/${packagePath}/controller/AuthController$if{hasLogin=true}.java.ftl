@@ -68,6 +68,13 @@ public class AuthController {
         return ApiResult.success(Arrays.asList(subject.getPrincipals().oneByType(JwtBearer.class),subject.getPrincipals().oneByType(DecodedJWT.class)));
     }
 
+    @PostMapping("logout")
+    @ApiOperation(value = "注销登录")
+    public ApiResult<String> logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {
+        JwtUtils.writeToHeader("null", request, response);
+        return ApiResult.success("注销登录成功");
+    }
+
     @ApiOperation(value = "请先登录", hidden = true)
     @RequestMapping("failed")
     public ApiResult<Object> failed() {

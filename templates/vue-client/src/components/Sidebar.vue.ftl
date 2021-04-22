@@ -1,8 +1,8 @@
 <template>
     <section class="sidebar">
-        <el-menu :collapse="sidebar.collapse" @select="onMenuSelected">
-            <el-menu-item :index="`/index/${item.path}`" v-for="(item,index) in menus" :key="index">
-                <i :class="`el-icon-${item.icon}`"></i>
+        <el-menu @select="onMenuSelected">
+            <el-menu-item :index="`/index/${r"$"}{item.path}`" v-for="(item,index) in menus" :key="index">
+                <i :class="`el-icon-${r"$"}{item.icon}`"></i>
                 <template #title>{{item.name}}</template>
             </el-menu-item>
         </el-menu>
@@ -18,7 +18,9 @@ export default {
         return {
             menus:[
 <#list tables as table>
+    <#if table.relateTable == false>
                 {name:'${table.remarkName}管理', path:'${table.urlPathName}', icon:'s-menu'},
+    </#if>
 </#list>
             ]
         }

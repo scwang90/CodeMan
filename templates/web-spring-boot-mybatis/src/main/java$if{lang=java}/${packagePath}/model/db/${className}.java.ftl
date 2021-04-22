@@ -47,11 +47,12 @@ public class ${className} extends Entity {
 	<#if column.stringType>
 	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
 	</#if>
-	<#if column.hiddenForClient>
-	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>, hidden = true)
-	<#else>
-	@ApiModelProperty(value = "${column.remark}"<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if><#if column.nullable!=true>, required = true</#if>)
-	</#if>
+	@ApiModelProperty(value = "${column.remark}"<@compress single_line=true>
+		<#if column.nullable != true>, required = true</#if>
+		<#if column.hiddenForClient>, hidden = true</#if>
+		<#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"</#if>
+		<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>
+	</@compress>)
 	private ${column.fieldType} ${column.fieldName};
 	</#list>
 

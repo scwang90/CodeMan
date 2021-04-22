@@ -34,7 +34,7 @@
                     </template>
                     <el-menu-item ><i class="el-icon-s-custom"></i><span>我的资料</span></el-menu-item>
                     <el-menu-item ><i class="el-icon-s-tools"></i><span>系统设置</span></el-menu-item>
-                    <el-menu-item ><i class="el-icon-s-opportunity"></i><span>注销登录</span></el-menu-item>
+                    <el-menu-item @click="onLogoutClick"><i class="el-icon-s-opportunity"></i><span>注销登录</span></el-menu-item>
 <#else >
                     <template #title>
                         <img class="avatar" src="/static/images/common/image-avatar.jpg" alt="" srcset="">
@@ -63,10 +63,14 @@ export default {
         ...Vuex.mapState('user', ['userInfo']),
     },
     methods: {
-        ...Vuex.mapMutations('user', ['logout']),
+        ...Vuex.mapActions('user', ['logout']),
 
         async onLogoutClick() {
-            await this.logout();
+            try {
+                await this.logout();
+            } catch (error) {
+                console.log(error);
+            }
             this.$router.push({path:'/login'});
         },
 <#else >
@@ -74,10 +78,12 @@ export default {
 
 </#if>
         onMenuSelected(index, indexPath) {
-            if (this.$router.history.current.path != index) {
-                this.$router.push({path:index});
+            if (index) {
+                if (this.$router.history.current.path != index) {
+                    this.$router.push({path:index});
+                }
+                this.index = '';
             }
-            this.index = '';
         },
 
         onMenuToggleClick() {
@@ -124,13 +130,13 @@ export default {
     align-items: center;
 }
 .navbar .left .logo {
-    font-size: 45px;
+    font-size: 35px;
     font-weight: bold;
     margin: 15px;
 }
 .navbar .left .title {
     flex: 1;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: bold;
 }
 .navbar .left .icon {

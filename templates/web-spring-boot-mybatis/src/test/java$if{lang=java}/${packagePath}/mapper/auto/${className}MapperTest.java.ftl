@@ -23,8 +23,10 @@ import ${packageName}.util.ID22;
 </#if>
 import org.apache.ibatis.session.RowBounds;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 <#if find1>
@@ -40,7 +42,8 @@ import java.util.List;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-@Ignore
+@Disabled
+@DisplayName("【${table.remarkName}】的Mapper层测试类")
 public class ${className}MapperTest extends BaseMapperTests<${className}> {
 
     @Autowired
@@ -70,7 +73,8 @@ public class ${className}MapperTest extends BaseMapperTests<${className}> {
      * @throws JsonProcessingException JSON 解析异常
      */
 	@Test
-    @Ignore
+    @Disabled
+    @DisplayName("增删改查全测试")
 	public void testFull() throws JsonProcessingException {
 <#if find1>
         //删除之前的测试数据

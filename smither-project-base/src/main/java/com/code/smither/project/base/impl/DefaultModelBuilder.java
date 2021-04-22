@@ -5,6 +5,7 @@ import com.code.smither.engine.api.RootModel;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.api.internel.*;
+import com.code.smither.project.base.constant.AbstractProgramLang;
 import com.code.smither.project.base.constant.JdbcLang;
 import com.code.smither.project.base.model.*;
 import com.code.smither.project.base.util.PinYinUtil;
@@ -14,11 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.DatabaseMetaData;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 public class DefaultModelBuilder implements ModelBuilder {
@@ -29,6 +29,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final WordBreaker wordBreaker;
 	protected final WordReplacer wordReplacer;
 	protected final ClassConverter classConverter;
+	protected final ProgramLang programLang;
 	protected final JdbcLang jdbcLang = new JdbcLang();
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultModelBuilder.class);
@@ -41,6 +42,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		this.classConverter = config.getClassConverter();
 		this.wordBreaker = config.getWordBreaker();
 		this.wordReplacer = config.getWordReplacer();
+		this.programLang = AbstractProgramLang.getLang(config.getTemplateLang());
 	}
 
 	@Override
@@ -57,9 +59,13 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
-		model.setLoginTable(findLoginTable(tables, config.getTableLogin(), model::setHasLogin));
-		model.setHasOrg(findColumn(tables, Table::isHasOrg, Table::getOrgColumn, model::setOrgColumn));
+//		model.setLoginTable(findLoginTable(tables, config.getTableLogin(), model::setHasLogin));
+
+		model.setLoginTable(findTable(tables, config.getTableLogin(), model::setHasLogin));
+		model.setOrganTable(findTable(tables, config.getTableOrgan(), model::setHasOrgan));
+
 		model.setHasCode(findColumn(tables, Table::isHasCode, Table::getCodeColumn, model::setCodeColumn));
+		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn));
 		checkForeginKey(tables);
 		return model;
 	}
@@ -83,6 +89,26 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 	}
 
+	private static Table findTable(List<Table> tables, String tableKey, Action<Boolean> success) {
+		Stream<String> keys = Arrays.stream(tableKey.split(","));
+		Optional<Table> find = keys.map(key -> {
+			return tables.stream().filter(t -> t.getName().equalsIgnoreCase(key)).findFirst().orElse(null);
+		}).filter(Objects::nonNull).findFirst();
+		if (find.isPresent()) {
+			success.onAction(true);
+			return find.get();
+		}
+		keys = Arrays.stream(tableKey.split(","));
+		find = keys.map(key -> {
+			return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
+		}).filter(Objects::nonNull).findFirst();
+		if (find.isPresent()) {
+			success.onAction(true);
+			return find.get();
+		}
+		return new Table();
+	}
+
 	private static boolean findColumn(List<Table> tables, IsTableHas tableHas, GetColumn get, SetTableColumn set) {
 		TableColumn column = null;
 		for (Table table : tables) {
@@ -99,71 +125,6 @@ public class DefaultModelBuilder implements ModelBuilder {
 			set.set(column);
 		}
 		return column != null;
-	}
-
-	private static Table findLoginTable(List<Table> tables, String tableLogin, Action<Boolean> success) {
-		Table tableEqualsName = null;
-		Table tableEqualsClassName = null;
-		Table tableEqualsUser = null;
-		Table tableEqualsAdmin = null;
-		Table tableEqualsLogin = null;
-		Table tableEqualsAccount = null;
-		Table tableContainsUser = null;
-		Table tableContainsAdmin = null;
-		Table tableContainsLogin = null;
-		Table tableContainsAccount = null;
-
-		for (Table table : tables) {
-			if (tableEqualsName == null && StringUtil.equals(table.getName(), tableLogin)) {
-				tableEqualsName = table;
-			}
-			if (tableEqualsClassName == null && StringUtil.equals(table.getClassName(), tableLogin)) {
-				tableEqualsClassName = table;
-			}
-			if (tableEqualsUser == null && table.getClassNameUpper().equals("USER")) {
-				tableEqualsUser = table;
-			}
-			if (tableEqualsAdmin == null && table.getClassNameUpper().equals("ADMIN")) {
-				tableEqualsAdmin = table;
-			}
-			if (tableEqualsLogin == null && table.getClassNameUpper().equals("LOGIN")) {
-				tableEqualsLogin = table;
-			}
-			if (tableEqualsAccount == null && table.getClassNameUpper().equals("ACCOUNT")) {
-				tableEqualsAccount = table;
-			}
-			if (tableContainsUser == null && table.getClassNameUpper().contains("USER")) {
-				tableContainsUser = table;
-			}
-			if (tableContainsAdmin == null && table.getClassNameUpper().contains("ADMIN")) {
-				tableContainsAdmin = table;
-			}
-			if (tableContainsLogin == null && table.getClassNameUpper().contains("LOGIN")) {
-				tableContainsLogin = table;
-			}
-			if (tableContainsAccount == null && table.getClassNameUpper().contains("ACCOUNT")) {
-				tableContainsAccount = table;
-			}
-		}
-		Table[] loginTables = new Table[]{
-		    tableEqualsName,
-		    tableEqualsClassName,
-		    tableEqualsUser,
-		    tableEqualsAdmin,
-		    tableEqualsLogin,
-		    tableEqualsAccount,
-		    tableContainsUser,
-		    tableContainsAdmin,
-		    tableContainsLogin,
-		    tableContainsAccount,
-		};
-		for (Table table : loginTables) {
-			if (table != null) {
-				success.onAction(true);
-				return table;
-			}
-		}
-		return new Table();
 	}
 
 	protected List<Table> buildTables() throws Exception {
@@ -314,16 +275,37 @@ public class DefaultModelBuilder implements ModelBuilder {
             table.setHasId(true);
         }
 
-		initTableColumn(columns, config.getColumnOrg(), table::getOrgColumn, table::setOrgColumn, table::setHasOrg);
+		initTableColumn(columns, config.getColumnOrg(), table::getOrgColumn, table::setOrgColumn, table::setHasOrgan);
 		initTableColumn(columns, config.getColumnCode(), table::getCodeColumn, table::setCodeColumn, table::setHasCode);
 		initTableColumn(columns, config.getColumnCreate(), table::getCreateColumn, table::setCreateColumn, table::setHasCreate);
 		initTableColumn(columns, config.getColumnUpdate(), table::getUpdateColumn, table::setUpdateColumn, table::setHasUpdate);
+		initTableColumn(columns, config.getColumnGender(), table::getGenderColumn, table::setGenderColumn, table::setHasGender);
+		initTableColumn(columns, config.getColumnRemove(), table::getRemoveColumn, table::setRemoveColumn, table::setHasRemove);
 		initTableColumn(columns, config.getColumnCreator(), table::getCreatorColumn, table::setCreatorColumn, table::setHasCreator);
 		initTableColumn(columns, config.getColumnPassword(), table::getPasswordColumn, table::setPasswordColumn, table::setHasPassword);
 		initTableColumn(columns, config.getColumnUsername(), table::getUsernameColumn, table::setUsernameColumn, table::setHasUsername);
 
+		if (table.isHasRemove()) {
+			Class<?> javaType = programLang.getJavaType(table.getRemoveColumn());
+			if (!Integer.class.equals(javaType) && !Boolean.class.equals(javaType) && !String.class.equals(javaType)) {
+				table.setHasRemove(false);//类型不符：不能设置为删除列
+			}
+		}
+
 		table.setColumns(columns);
+
+		table.setRelateTable(isRelateTable(table));
 		return table;
+	}
+
+	private boolean isRelateTable(Table table) {
+		List<TableColumn> columns = new ArrayList<>(table.getColumns().size());
+		for (TableColumn column : table.getColumns()) {
+			if (!column.isPrimaryKey() && !column.isHiddenForClient() && table.getImportedKeys().stream().noneMatch(k -> column.getName().equals(k.getFkColumnName()))) {
+				columns.add(column);
+			}
+		}
+		return columns.size() == 0 && table.getImportedKeys().size() >= 2;
 	}
 
 	private void initTableColumn(List<TableColumn> columns, String keys, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
@@ -378,8 +360,11 @@ public class DefaultModelBuilder implements ModelBuilder {
 			column.setFieldType(column.getFieldTypePrimitive());
 		}
 
-		column.setStringType(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
-		column.setDateType(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
+		Class<?> javaType = programLang.getJavaType(column);
+		column.setStringType(String.class.equals(javaType));//(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
+		column.setDateType(Date.class.equals(javaType));//(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
+		column.setBoolType(Boolean.class.equals(javaType));
+		column.setIntType(Integer.class.equals(javaType));
 
 		if (column.getDefValue() != null) {
 			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));

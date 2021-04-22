@@ -45,7 +45,7 @@ public class DataBaseEngineTester {
         }
     }
 
-    private final static boolean IS_FILTER_CHINESE_CLOUMN = true;
+    private final static boolean IS_FILTER_CHINESE_CLOUMN = false;
 
     @Test
     public void DataBaseHisReplace() throws Exception {
@@ -58,11 +58,26 @@ public class DataBaseEngineTester {
     @Test
     public void DataBaseHisDictionary() throws Exception {
         ReplaceConfig config = ReplaceConfigFactory.loadConfig("replace-his.properties");
-        config.setFilterFile("*.html.ftl;*.sql.ftl");
+        config.setFilterFile("*.html.ftl;*.sql.ftl;*.json.ftl");
         config.setTargetPath("../templates-datasource/dict-wd-his");
         DataBaseEngine engine = new DataBaseEngine(config);
         engine.launch(new ReplaceDictionaryBuilder(config, IS_FILTER_CHINESE_CLOUMN));
     }
 
+    @Test
+    public void DataBaseEmrReplace() throws Exception {
+        ReplaceConfig config = ReplaceConfigFactory.loadConfig("replace-emr.properties");
+        config.setFilterFile("*.txt.ftl");
+        DataBaseEngine engine = new DataBaseEngine(config);
+        engine.launch(new ReplaceBuilder(config, IS_FILTER_CHINESE_CLOUMN));
+    }
 
+    @Test
+    public void DataBaseEmrDictionary() throws Exception {
+        ReplaceConfig config = ReplaceConfigFactory.loadConfig("replace-emr.properties");
+        config.setFilterFile("*.html.ftl;*.sql.ftl;*.json.ftl");
+        config.setTargetPath("../templates-datasource/dict-wd-emr");
+        DataBaseEngine engine = new DataBaseEngine(config);
+        engine.launch(new ReplaceDictionaryBuilder(config, IS_FILTER_CHINESE_CLOUMN));
+    }
 }

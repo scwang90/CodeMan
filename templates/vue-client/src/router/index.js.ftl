@@ -11,7 +11,7 @@ import ${table.className} from '@/views/modules/${table.urlPathName}/list'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
     routes: [
         {
             path: '/',
@@ -20,10 +20,13 @@ export default new Router({
         },{
             path: '/login',
             component: Login,
-            hidden: true
+            hidden: true,
 <#else>
             redirect: '/index/home',
 </#if>
+            meta: {
+                ignoreAuth: true
+            }
         },{
             path: '/index',
             redirect: '/index/home',
@@ -48,3 +51,23 @@ export default new Router({
         }
     ]
 })
+
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.ignoreAuth) { // 判断该路由是否需要登录权限
+        if(sessionStorage.getItem("token") == 'true'){
+            next('/index');
+        } else {
+            next();
+        }
+    } else {
+        if (sessionStorage.getItem("token") == 'true') { // 判断本地是否存在token
+            next();
+        } else {
+            // 未登录,跳转到登陆页面
+            next('/login')
+        }
+    }
+});
+
+export default router;

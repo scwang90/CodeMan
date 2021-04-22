@@ -8,6 +8,7 @@ export default {
     state: {
         baseApi: apiBase,
         baseUrl: baseUrl + '/api/v1',
+        webName: process.env.SETTING_WEB_NAME,
     },
     mutations: {
     },

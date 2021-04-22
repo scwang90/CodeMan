@@ -37,10 +37,10 @@ import java.util.List;
 @RestController("auto${className}Controller")
 public class ${className}Controller {
 
-<#--<#if !table.hasOrg && !table.hasCode && !table.hasCreate && !table.hasUpdate && table != loginTable && !(table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>-->
+<#--<#if !table.hasOrgan && !table.hasCode && !table.hasCreate && !table.hasUpdate && table != loginTable && !(table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>-->
 	private final ${className}Mapper mapper;
 <#--</#if>-->
-<#if hasSearch || table.hasOrg || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
+<#if hasSearch || table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 	private final ${className}Service service;
 </#if>
 
@@ -55,7 +55,7 @@ public class ${className}Controller {
 		@ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
 	})
     public ApiResult<Paged<${className}>> list(@ApiIgnore Paging paging<#if hasSearch>, String key</#if>) {
-<#if table.hasOrg || hasSearch>
+<#if table.hasOrgan || hasSearch>
 		return ApiResult.success(service.list(paging<#if hasSearch>, key</#if>));
 <#else >
 		List<${className}> list = mapper.selectWhere(null, paging.toRowBounds());
@@ -73,7 +73,7 @@ public class ${className}Controller {
 </#list>
     })
 	public ApiResult<${table.idColumn.fieldTypeObject}> insert(@Validated @ApiIgnore ${className} model) {
-<#if table.hasOrg || table.hasCode || table.hasCreate || table.hasUpdate || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
+<#if table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 		service.insert(model);
 <#else>
         mapper.insert(model);
@@ -92,7 +92,7 @@ public class ${className}Controller {
 	</#list>
 	})
     public ApiResult<Integer> update(@Validated @ApiIgnore ${className} model) {
-	<#if table.hasOrg || table.hasCreate || table.hasUpdate>
+	<#if table.hasOrgan || table.hasCreate || table.hasUpdate>
 		return ApiResult.success(service.update(model));
 	<#else>
 		return ApiResult.success(mapper.update(model));
@@ -102,7 +102,7 @@ public class ${className}Controller {
 	@GetMapping("/{id}")
 	@ApiOperation(value = "获取${table.remarkName}")
     public ApiResult<${className}> findById(@PathVariable @ApiParam("${table.remark}Id") String id) {
-	<#if table.hasOrg>
+	<#if table.hasOrgan>
 		return ApiResult.success(service.findById(id));
 	<#else>
 		return ApiResult.success(mapper.findById(id));
@@ -112,7 +112,7 @@ public class ${className}Controller {
 	@DeleteMapping("/{ids}")
 	@ApiOperation(value = "删除${table.remarkName}")
     public ApiResult<Integer> deleteById(@PathVariable @ApiParam("${table.remark}Ids") String ids) {
-	<#if table.hasOrg || table == loginTable>
+	<#if table.hasOrgan || table == loginTable>
 		return ApiResult.success(service.deleteById(ids));
 	<#else>
 		return ApiResult.success(mapper.deleteById((Object[]) ids.split(",")));

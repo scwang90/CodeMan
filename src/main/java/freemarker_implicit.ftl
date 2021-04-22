@@ -3,6 +3,7 @@
 [#-- @ftlvariable name="now" type="java.util.Date" --]
 [#-- @ftlvariable name="projectName" type="String" --]
 [#-- @ftlvariable name="table" type="com.code.smither.project.base.model.Table" --]
+[#-- @ftlvariable name="organTable" type="com.code.smither.project.base.model.Table" --]
 [#-- @ftlvariable name="loginTable" type="com.code.smither.project.base.model.Table" --]
 [#-- @ftlvariable name="orgColumn" type="com.code.smither.project.base.model.TableColumn" --]
 [#-- @ftlvariable name="codeColumn" type="com.code.smither.project.base.model.TableColumn" --]
@@ -13,7 +14,7 @@
 [#-- @ftlvariable name="lang" type="String" --]
 [#-- @ftlvariable name="tables" type="java.util.List<com.code.smither.project.base.model.Table>" --]
 [#-- @ftlvariable name="hasLogin" type="boolean" --]
-[#-- @ftlvariable name="hasOrg" type="boolean" --]
+[#-- @ftlvariable name="hasOrgan" type="boolean" --]
 [#-- @ftlvariable name="hasCode" type="boolean" --]
 
 

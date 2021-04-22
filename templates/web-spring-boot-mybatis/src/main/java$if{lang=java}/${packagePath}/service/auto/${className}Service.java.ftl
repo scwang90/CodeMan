@@ -8,19 +8,21 @@ package ${packageName}.service.auto;
 	</#if>
 </#list>
 
-<#if table.hasOrg || table == loginTable>
+<#if table.hasOrgan || table == loginTable>
 import ${packageName}.exception.ClientException;
 </#if>
 <#if hasSearch>
 import com.github.pagehelper.util.StringUtil;
 </#if>
+<#if table == organTable && hasLogin>
+import com.traveler.server.exception.AccessException;
+</#if>
 <#if table.hasCode>
 import ${packageName}.mapper.CommonMapper;
 </#if>
-<#if table.hasOrg || table.hasCode || hasSearch>
 import ${packageName}.mapper.intent.Tables;
-</#if>
 import ${packageName}.mapper.auto.${className}Mapper;
+import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
@@ -30,14 +32,20 @@ import ${packageName}.util.CommonUtil;
 <#if !table.idColumn.autoIncrement && table.idColumn.stringType>
 import ${packageName}.util.ID22;
 </#if>
-<#if table.hasOrg || table == loginTable || (hasLogin && table.hasCreator)>
+<#if table.hasOrgan || table == loginTable || (table == organTable  && hasLogin) || (hasLogin && table.hasCreator)>
 import ${packageName}.util.JwtUtils;
 </#if>
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+<#if table.hasRemove>
+import java.util.Arrays;
+</#if>
 import java.util.List;
+<#if table.hasRemove && table.idColumn.intType>
+import java.util.stream.Collectors;
+</#if>
 
 
 /**
@@ -65,23 +73,27 @@ public class ${className}Service {
 </#if>
 	 */
     public Paged<${className}> list(Paging paging<#if hasSearch>, String key</#if>) {
-<#if hasSearch>
-		if (StringUtil.isNotEmpty(key)) {
-	<#if table.hasOrg>
-			${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
-			List<${className}> list = mapper.selectWhere(Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName}).and(Tables.${table.className}.${searchColumn.fieldNameUpper}.like("%" + key + "%")), paging.toRowBounds());
-	<#else >
-			List<${className}> list = mapper.selectWhere(Tables.${table.className}.${searchColumn.fieldNameUpper}.like("%" + key + "%"), paging.toRowBounds());
-	</#if>
-			return new Paged<>(paging, list);
-		}
-</#if>
-	<#if table.hasOrg>
+<#if table.hasOrgan>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
-		List<${className}> list = mapper.selectWhere(Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName}), paging.toRowBounds());
-	<#else >
-		List<${className}> list = mapper.selectWhere(null, paging.toRowBounds());
+		WhereQuery<${className}> where = Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName});
+<#else>
+		WhereQuery<${className}> where = Tables.${table.className}.where();
+</#if>
+<#if table.hasRemove>
+	<#if table.removeColumn.boolType>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(Boolean.FALSE)));
+	<#elseif table.removeColumn.intType>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(0)));
+	<#else>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.ne("removed")));
 	</#if>
+</#if>
+	<#if hasSearch>
+		if (StringUtil.isNotEmpty(key)) {
+			where = where.and(Tables.${table.className}.${searchColumn.fieldNameUpper}.contains(key));
+		}
+	</#if>
+		List<${className}> list = mapper.selectWhere(where, paging.toRowBounds());
 		return new Paged<>(paging, list);
     }
 
@@ -96,18 +108,18 @@ public class ${className}Service {
 			model.set${table.idColumn.fieldNameUpper}(ID22.random());
 		}
 </#if>
-<#if table.hasOrg>
+<#if table.hasOrgan>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
 </#if>
 <#if table.hasCode>
-	<#if table.hasOrg>
+	<#if table.hasOrgan>
 		int code = commonMapper.maxCodeByTableAndOrg(Tables.${table.className}.name, ${table.orgColumn.fieldName});
 	<#else>
 		int code = commonMapper.maxCodeByTable(Tables.${table.className}.name);
 	</#if>
 		model.set${table.codeColumn.fieldNameUpper}(CommonUtil.formatCode(code));
 </#if>
-<#if table.hasOrg>
+<#if table.hasOrgan>
 		model.set${table.orgColumn.fieldNameUpper}(${table.orgColumn.fieldName});
 </#if>
 <#if table.hasCreator && hasLogin>
@@ -133,6 +145,16 @@ public class ${className}Service {
 	 × @return 返回数据修改的行数
 	 */
     public int update(${className} model) {
+<#if organTable == table && hasLogin>
+		${orgColumn.fieldTypeObject} ${orgColumn.fieldName} = JwtUtils.currentBearer().${orgColumn.fieldName};
+	<#if hasLogin && loginTable.orgColumn.nullable>
+		if (${orgColumn.fieldName} != null && !${orgColumn.fieldName}.equals(model.get${table.idColumn.fieldNameUpper}())) {
+	<#else>
+		if (!model.get${table.idColumn.fieldNameUpper}().equals(${orgColumn.fieldName})) {
+	</#if>
+			throw new AccessException("权限不足");
+		}
+</#if>
 <#list table.columns as column>
 	<#if column == table.updateColumn>
 		<#if column.fieldType == 'long'>
@@ -151,7 +173,7 @@ public class ${className}Service {
 	 × @return 数据实体对象
 	 */
     public ${className} findById(Object id) {
-	<#if table.hasOrg>
+	<#if table.hasOrgan>
 		${className} model = mapper.findById(id);
 		if (model == null) {
 			throw new ClientException("无效的${table.remarkName}Id");
@@ -177,7 +199,7 @@ public class ${className}Service {
 	 × @return 返回数据修改的行数
 	 */
     public int deleteById(String ids) {
-	<#if table.hasOrg || table == loginTable>
+	<#if table.hasOrgan || table == loginTable>
 		if (!ids.contains(",")) {
 		<#if table == loginTable>
 			${className} model = this.findById(ids);
@@ -197,11 +219,26 @@ public class ${className}Service {
 				throw new ClientException("不能删除自己！");
 			}
 		<#else >
-			this.findById(ids);
+			this.findById(ids); //调用获取接口可以验证相关合法性
 		</#if>
 		}
 	</#if>
+<#if table.hasRemove>
+	<#if table.idColumn.stringType>
+		List<String> list = Arrays.asList(ids.split(","));
+	<#else>
+		List<Integer> list = Arrays.stream(ids.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+	</#if>
+	<#if table.removeColumn.boolType>
+		return mapper.updateSetter(Tables.${className}.set${table.removeColumn.fieldNameUpper}(Boolean.TRUE).where(Tables.${className}.${table.idColumn.fieldNameUpper}.in(list)));
+	<#elseif table.removeColumn.intType>
+		return mapper.updateSetter(Tables.${className}.set${table.removeColumn.fieldNameUpper}(1).where(Tables.${className}.${table.idColumn.fieldNameUpper}.in(list)));
+	<#else>
+		return mapper.updateSetter(Tables.${className}.set${table.removeColumn.fieldNameUpper}("removed").where(Tables.${className}.${table.idColumn.fieldNameUpper}.in(list)));
+	</#if>
+<#else>
 		return mapper.deleteById((Object[]) ids.split(","));
+</#if>
 	}
 
 </#if>

@@ -1,7 +1,7 @@
 package ${packageName}.mapper.auto;
 
 import ${packageName}.mapper.intent.api.Query;
-import ${packageName}.mapper.intent.impl.Where;
+import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.mapper.intent.tables.${table.classNameUpper};
 import ${packageName}.model.db.${className};
 
@@ -81,7 +81,7 @@ public interface ${className}Mapper {
 	 * @param where 查询条件
 	 * @return 改变的行数
 	 */
-	int deleteWhere(Where<${table.classNameUpper}> where);
+	int deleteWhere(WhereQuery<${table.className}> where);
 
 	/**
 	 * 统计数量（全部）
@@ -94,7 +94,7 @@ public interface ${className}Mapper {
 	 * @param where 查询条件
 	 * @return 统计行数
 	 */
-	int countWhere(Where<${table.classNameUpper}> where);
+	int countWhere(WhereQuery<${table.className}> where);
 
 <#if table.hasId>
 	/**
@@ -110,14 +110,14 @@ public interface ${className}Mapper {
 	 * @param where 查询条件
 	 * @return null 或者 匹配条件的数据
 	 */
-	${className} selectOneWhere(Query<${table.classNameUpper}> where);
+	${className} selectOneWhere(Query<${table.className}> where);
 
 	/**
 	 * 批量查询（灵活构建查询条件）
 	 * @param where 查询条件
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<${className}> selectWhere(Query<${table.classNameUpper}> where);
+	List<${className}> selectWhere(Query<${table.className}> where);
 
 	/**
 	 * 批量查询（灵活构建查询条件，分页）
@@ -125,7 +125,7 @@ public interface ${className}Mapper {
 	 * @param rows 分页参数
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<${className}> selectWhere(Query<${table.classNameUpper}> where, RowBounds rows);
+	List<${className}> selectWhere(Query<${table.className}> where, RowBounds rows);
 
 <#if table.idColumn.autoIncrement>
 	/**

@@ -8,7 +8,7 @@ package ${packageName}.shiro.model;
 public class JwtBearer {
 
     public final ${loginTable.idColumn.fieldType} userId;
-<#if loginTable.hasOrg>
+<#if loginTable.hasOrgan>
     <#assign orgFieldType=orgColumn.fieldType/>
     <#if loginTable.orgColumn.nullable>
         <#assign orgFieldType=orgColumn.fieldTypeObject/>

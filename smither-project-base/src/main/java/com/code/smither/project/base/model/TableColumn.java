@@ -21,6 +21,7 @@ public class TableColumn implements MetaDataColumn {
 	private String type;// 字段类型名称（数据库返回的值）
 	private String typeJdbc;// 字段类型名称（JDBC 枚举，所有数据库一致性，java.sql.Types 枚举所有的类型）
 	private String remark;// 字段注释
+	private String remarkName;//备注名称（与remark的区别时不已'列'结尾）
 	private String defValue;// 字段注释
 	private String description;//详细描述（分析得到）
 	private String comment;//原始备注（remark+description）
@@ -44,6 +45,8 @@ public class TableColumn implements MetaDataColumn {
 	private boolean primaryKey;//是否是 PrimaryKey
 	private boolean stringType;//是否是 string类型
 	private boolean dateType;//是否是 Date类型
+	private boolean boolType;//是否是 Bool类型
+	private boolean intType;//是否是 Int 类型
 	private boolean hiddenForClient;//是否对前端需要隐藏
 	private boolean hiddenForSubmit;//是否对提交需要隐藏
 
@@ -91,6 +94,17 @@ public class TableColumn implements MetaDataColumn {
 			remark = "";
 		}
 		this.remark = remark;
+		this.remarkName = remark;
+		if (remark.endsWith("列")) {
+			this.remarkName = remark.substring(0, remark.length() - 1);
+		}
+		if (remark.startsWith("是否已经")) {
+			this.remarkName = remark.substring(4);
+		} else if (remark.startsWith("是否已")) {
+			this.remarkName = remark.substring(3);
+		} else if (remark.startsWith("是否")) {
+			this.remarkName = remark.substring(2);
+		}
 	}
 
 	public void setComment(String comment) {

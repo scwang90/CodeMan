@@ -1,7 +1,7 @@
 <template>
     <el-container class="body">
         <el-header height="60px">
-            <Navbar :collapse="collapse"/>
+            <Navbar/>
         </el-header>
         <el-container class="container">
             <el-aside width="250px" class="aside">

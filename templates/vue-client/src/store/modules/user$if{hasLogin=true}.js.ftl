@@ -4,30 +4,41 @@ import apiAuth from '@/api/auth'
 export default {
     namespaced: true,
     state: {
+        token: "",
         userInfo: {
             name: "",
             avatar: "",
             userId: "",
-<#if hasOrg>
+<#if hasOrgan>
             companyId: "",
 </#if>
         },
-        token: "",
     },
     mutations: {
+        pushStore(state, {store, field, value}) {
+            if (field) {
+                if (state[store]) {
+                    state[store][field] = value;
+                } else {
+                    state[store] = {[field]:value};
+                }
+            } else {
+                state[store] = value;
+            }
+        },
         setUserInfo(state, userInfo) {
             // 这里的 `state` 对象是模块的局部状态
-            state.userInfo = userInfo
+            state.userInfo = userInfo;
         },
         setToken(state, token) {
             // 这里的 `state` 对象是模块的局部状态
-            state.token = token
+            state.token = token;
         },
         logout(state) {
-            state.userInfo = {}
-            state.token = ""
-            sessionStorage.clear()
-            window.location.reload()
+            state.token = "";
+            state.userInfo = {};
+            sessionStorage.clear();
+            window.location.reload();
         },
     },
     actions: {

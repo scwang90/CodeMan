@@ -103,12 +103,13 @@ public class Replacer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<String> keys = keySet.stream().sorted((l, r) -> Integer.compare(length(r), length(l))).collect(Collectors.toList());
 
+        List<String> keys = keySet.stream().sorted((l, r) -> Integer.compare(length(r), length(l))).collect(Collectors.toList());
         this.dictionary = new LinkedHashMap<>();
         for (String key : keys) {
             this.dictionary.put(key, dict.get(key));
         }
+
         List<String> keysRegex = keySetRegex.stream().sorted((l, r) -> Integer.compare(length(r), length(l))).collect(Collectors.toList());
         for (String key : keysRegex) {
             this.dictionary.put(key, dictRegex.get(key));

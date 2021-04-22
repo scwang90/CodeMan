@@ -51,6 +51,13 @@ public interface ProgramLang {
     String getBasicType(TableColumn column);
 
     /**
+     * 把 JDBC 数据库类型转成 Java 类对象
+     * @param column 数据库列
+     * @return Java 类对象
+     */
+    Class<?> getJavaType(TableColumn column);
+
+    /**
      * 把数据库表名转成类名
      * @param tableName 数据库表明
      * @return 相关编程语言命名规则的 类名

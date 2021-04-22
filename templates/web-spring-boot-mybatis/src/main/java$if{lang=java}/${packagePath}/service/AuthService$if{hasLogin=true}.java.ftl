@@ -40,7 +40,7 @@ public class AuthService {
     }
 
     private String buildToken(${loginTable.className} ${loginTable.classNameCamel}) {
-<#if loginTable.hasOrg>
+<#if loginTable.hasOrgan>
         JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}(), ${loginTable.classNameCamel}.get${loginTable.orgColumn.fieldNameUpper}());
 <#else>
         JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}());

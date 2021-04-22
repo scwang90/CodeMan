@@ -22,4 +22,10 @@
 		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
 		<property name="jdbcUrl">jdbc:oracle:thin:@//139.186.160.79:1521/ORCL</property>
 	</named-config>
+	<named-config name="emr">
+		<property name="user">EMR</property>
+		<property name="password">WDEMR</property>
+		<property name="driverClass">oracle.jdbc.driver.OracleDriver</property>
+		<property name="jdbcUrl">jdbc:oracle:thin:@//139.186.160.79:1521/ORCL</property>
+	</named-config>
 </c3p0-config>

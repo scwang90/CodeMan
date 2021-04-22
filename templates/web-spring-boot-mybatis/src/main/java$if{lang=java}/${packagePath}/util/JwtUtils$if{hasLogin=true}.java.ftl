@@ -25,7 +25,7 @@ public class JwtUtils {
         long now = System.currentTimeMillis();
         return JWT.create()
             .withClaim("userId", bearer.userId)
-<#if loginTable.hasOrg>
+<#if loginTable.hasOrgan>
             .withClaim("${loginTable.orgColumn.fieldName}", bearer.${loginTable.orgColumn.fieldName})
 </#if>
             .withIssuedAt(new Date(now))
@@ -35,9 +35,9 @@ public class JwtUtils {
 
     public static JwtBearer loadBearer(DecodedJWT jwt) {
 <#if loginTable.idColumn.stringType>
-        return new JwtBearer(jwt.getClaim("userId").asString()<#if loginTable.hasOrg>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asString()</#if>);
+        return new JwtBearer(jwt.getClaim("userId").asString()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asString()</#if>);
 <#else >
-        return new JwtBearer(jwt.getClaim("userId").asInt()<#if loginTable.hasOrg>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asInt()</#if>);
+        return new JwtBearer(jwt.getClaim("userId").asInt()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asInt()</#if>);
 </#if>
     }
 
@@ -49,6 +49,9 @@ public class JwtUtils {
     public static void writeToHeader(String token, HttpServletRequest request, HttpServletResponse response) {
         String path = request.getContextPath();
         Cookie cookie = new Cookie("Bearer", token);
+        cookie.setPath(path.isEmpty() ? "/" : path);
+        response.addCookie(cookie);
+        cookie = new Cookie("SameSite", "None");
         cookie.setPath(path.isEmpty() ? "/" : path);
         response.addCookie(cookie);
         response.addHeader("x-auth-token", token);

@@ -1,0 +1,1 @@
+package ${packageName}.mapper.intent.api;public interface WhereQuery<T> extends OrderQuery<T> {    WhereQuery<T> or(WhereQuery<T> where);    WhereQuery<T> and(WhereQuery<T> where);}

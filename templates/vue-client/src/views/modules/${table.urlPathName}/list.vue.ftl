@@ -18,8 +18,18 @@
             <el-table-column fixed="left" type="selection" width="45"> </el-table-column>
             <el-table-column fixed="left" type="index" label="序号" width="50"> </el-table-column>
             <#list table.columns as column>
-            <#if column != table.idColumn && !column.hiddenForClient && !column.hiddenForSubmit && !column.name?lower_case?ends_with("id")>
-            <el-table-column prop="${column.fieldName}" label="${column.remark}" width="${min(max(column.length*180/32, 60), 400)}"> </el-table-column>
+            <#if !column.hiddenForClient && !column.name?lower_case?ends_with("id")>
+            <el-table-column prop="${column.fieldName}" label="${column.remarkName}" ><#-- width="${min(max(column.length*180/32, 80), 400)}" -->
+                <#if column == table.genderColumn>
+                <template #default="scope">
+                    <span>{{scope.row.${column.fieldName}|gender}}</span>
+                </template>
+                <#elseif column.boolType>
+                <template #default="scope">
+                    <span v-text="scope.row.${column.fieldName} ? '是' : '否'"></span>
+                </template>
+                </#if>
+            </el-table-column>
             </#if>
             </#list>
             <el-table-column fixed="right" label="操作" width="150">
@@ -37,21 +47,42 @@
                 @current-change="onPageIndex($event)">
         </el-pagination>
         <el-dialog :title="`${r"$"}{model.${table.idColumn.fieldName}?'修改':'添加'}${table.remarkName}信息`" :visible.sync="showDialog" v-loading="loadingModel" :close-on-click-modal="false">
-            <el-form :model="model" :rules="rules" ref="form" label-position="right" label-width="80px">
+            <el-form :model="model" :rules="rules" ref="form" label-position="right" label-width="100px">
                 <el-row>
 <#list table.columns as column>
-    <#if column != table.idColumn && !column.hiddenForSubmit && !column.name?lower_case?ends_with("id")>
-                    <el-col :span="<#if (column.length > 32)>21<#else>10</#if>" :offset="1">
-                        <el-form-item label="${column.remark}" prop="${column.fieldName}">
-        <#if column.dateType>
-                            <el-date-picker type="date" placeholder="选择日期" v-model="model.${column.fieldName}" style="width: 100%;"></el-date-picker>
-        <#elseif (column.length > 64)>
-                            <el-input v-model="model.${column.fieldName}" type="textarea" maxlength="${column.length}" show-word-limit></el-input>
-        <#else>
-                            <el-input v-model="model.${column.fieldName}" <#if (column.length > 32)>maxlength="${column.length}" show-word-limit</#if>></el-input>
-        </#if>
+    <#if !column.hiddenForSubmit && !column.name?lower_case?ends_with("id")>
+        <#if column == table.passwordColumn>
+                    <el-col :span="10" :offset="1" v-if="!model.${table.idColumn.fieldName}">
+                        <el-form-item label="登录密码" prop="${column.fieldName}">
+                            <el-input v-model="model.${column.fieldName}"></el-input>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="10" :offset="1" v-if="model.${table.idColumn.fieldName}">
+                        <el-form-item label="账户密码" >
+                            <el-input type="${column.fieldName}" value="**********" :disabled="true"></el-input>
+                        </el-form-item>
+                    </el-col>
+        <#else>
+                    <el-col :span="<#if (column.length > 32)>21<#else>10</#if>" :offset="1">
+                        <el-form-item label="${column.remarkName}" prop="${column.fieldName}">
+            <#if column == table.genderColumn>
+                            <el-radio-group v-model="model.${column.fieldName}">
+                                <el-radio :label="0">待定</el-radio>
+                                <el-radio :label="1">男</el-radio>
+                                <el-radio :label="2">女</el-radio>
+                            </el-radio-group>
+            <#elseif column.boolType>
+                            <el-switch v-model="model.${column.fieldName}" active-text="已${column.remarkName}" inactive-text="未${column.remarkName}"/>
+            <#elseif column.dateType>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="model.${column.fieldName}" value-format="yyyy-MM-dd"></el-date-picker>
+            <#elseif (column.length > 64)>
+                            <el-input v-model="model.${column.fieldName}" type="textarea" maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"></el-input>
+            <#else>
+                            <el-input v-model="model.${column.fieldName}" <#if (column.length > 32)>maxlength="${column.length}" show-word-limit</#if> @keyup.ctrl.enter.native="onSubmitClick"></el-input>
+            </#if>
+                        </el-form-item>
+                    </el-col>
+        </#if>
     </#if>
 </#list>
                 </el-row>
@@ -65,7 +96,8 @@
 </ViewFrame>
 </template>
 <script>
-import api from '@/api/${table.urlPathName}';
+import api from '@/api/auto/${table.urlPathName}';
+import ViewFrame from '@/components/ViewFrame';
 
 const rules = {
 <#list table.columns as column>
@@ -75,7 +107,7 @@ const rules = {
         { required: true, message: '请输入${column.remark}', trigger: 'blur' },
         </#if>
         <#if column.stringType>
-        { min: 2, max: ${column.length}, message: '${column.remark}长度在 2 到 ${column.length} 个字符', trigger: 'blur' },
+        { min: 2, max: ${column.length?c}, message: '${column.remark}长度在 2 到 ${column.length} 个字符', trigger: 'blur' },
         </#if>
     ],
     </#if>
@@ -83,6 +115,7 @@ const rules = {
 };
 
 export default {
+    components: { ViewFrame },
     data() {
         return {
             page: 1,
@@ -240,7 +273,7 @@ export default {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    max-height: 100%;
+    height: 100%;
     box-sizing: border-box;
 }
 .body .title {

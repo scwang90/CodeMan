@@ -8,23 +8,26 @@ import router from './router'
 Vue.config.productionTip = false
 
 import Link from './plugins/link'
-Vue.use(Link)
+Vue.use(Link);
 
 import Logger from './plugins/logger'
-Vue.use(Logger)
+Vue.use(Logger);
 
 import Directive from './plugins/directive'
-Vue.use(Directive)
+Vue.use(Directive);
 
 import VueResource from "vue-resource"
 Vue.use(VueResource);
 
+import Filters from './plugins/filters'
+Vue.use(Filters);
+
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(Element)
+Vue.use(Element);
 
 import Request from './plugins/request'
-Vue.use(Request, {root: store.state.setting.baseUrl})
+Vue.use(Request, {root: store.state.setting.baseUrl});
 
 /* eslint-disable no-new */
 new Vue({

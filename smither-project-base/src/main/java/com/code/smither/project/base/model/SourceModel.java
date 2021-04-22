@@ -23,6 +23,7 @@ import java.util.List;
 public class SourceModel implements LangRootModel {
 
     private Table table;
+    private Table organTable;            //机构表
     private Table loginTable;            //用户登录表
     private List<Table> tables;
     private TableColumn orgColumn;       //机构所在列
@@ -38,8 +39,8 @@ public class SourceModel implements LangRootModel {
     private String dbType;
     private String lang;                //程序设计语言
     private Date now = new Date();
-    private boolean hasOrg;             //是否有机构
     private boolean hasCode;            //是否有编码
+    private boolean hasOrgan;           //是否有机构
     private boolean hasLogin;           //是否有登录功能
 
     public SourceModel() {

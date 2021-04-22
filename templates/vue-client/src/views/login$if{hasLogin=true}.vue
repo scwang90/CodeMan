@@ -5,22 +5,22 @@
                 <div class="header">
                     <!-- <img  class="logo" src="/static/images/common/logo.svg" alt=""> -->
                     <i class="logo el-icon-eleme"></i>
-                    <span class="title">旅人后期管理系统</span>
+                    <span class="title">{{webName}}</span>
                 </div>
                 <img class="post" src="/static/images/login/image-post.png" alt="" srcset="">
             </div>
             <div class="right">
                 <span class="title">欢迎登录</span>
-                <el-form class="form">
+                <el-form ref="form" :model="model" class="form" :rules="rules" @keyup.enter.native="onLoginClick">
                     <el-form-item class="item">
-                        <el-input class="username" placeholder="请输入账号" v-model="username" type="text">
+                        <el-input class="username" placeholder="请输入账号" v-model="model.username" type="text">
                             <template #prepend>
                             <i class="icon el-icon-user"></i>
                             </template>
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input class="password" placeholder="请输入密码" v-model="password" type="password">
+                        <el-input class="password" placeholder="请输入密码" v-model="model.password" type="password">
                             <template #prepend>
                             <i class="icon el-icon-lock"></i>
                             </template>
@@ -35,22 +35,66 @@
                     </el-form-item>
                     <el-button class="submit" type="primary" @click="onLoginClick">立即登录</el-button>
                 </el-form>
-                
+
             </div>
         </div>
     </div>
 </template>
 <script>
+import Vuex from 'vuex';
+
 export default {
     data() {
+        const checkUsername = (rule, value, callback) => {
+            if (value.length < 5 || value.length > 24) {
+                return callback(new Error("请输入正确的用户名"));
+            } else {
+                callback();
+            }
+        };
+        const checkPassword = (rule, value, callback) => {
+            if (value.length < 6 || value.length > 24) {
+                return callback(new Error("请输入正确的密码"));
+            } else {
+                callback();
+            }
+        };
         return {
-            username: 'scwang90',
-            password: '********'
+            model: {
+                username: 'admin',
+                password: 'admin'
+            },
+            rules: {
+                username: [{ validator: checkUsername, trigger: "blur" }],
+                password: [{ validator: checkPassword, trigger: "blur" }],
+            }
         }
     },
+    computed: {
+        ...Vuex.mapState('setting',['webName']),
+    },
     methods: {
+        ...Vuex.mapActions("user", ["login"]),
+
         onLoginClick() {
-            this.$router.push({path:'/index'});
+            this.$refs.form.validate(async (v) => {
+                if (v) {
+                    try {
+                        await this.login(this.model);
+                        sessionStorage.setItem("token", 'true');
+                        this.$router.push({path:'/index'});
+                    } catch (error) {
+                        this.$message.error(error);
+                    }
+                } else {
+                    this.$message({
+                        type: "error",
+                        message: "请正确填写登录信息",
+                        showClose: true,
+                    });
+                    return false;
+                }
+            });
         }
     }
 }

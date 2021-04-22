@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.sql.SQLTransientConnectionException;
@@ -63,7 +62,7 @@ public class ErrorController extends BasicErrorController {
         }
 
         StringBuilder message = new StringBuilder("" + body.get("error"));
-        if (body.get("message") != null) {
+        if (body.get("message") != null && body.get("message").toString().length() > 0) {
             message.append(" - ").append(body.get("message"));
         }
 
@@ -94,7 +93,7 @@ public class ErrorController extends BasicErrorController {
             List<String> messages = new LinkedList<>();
             BindingResult result = ((BindException) error).getBindingResult();
             for (FieldError fieldError : result.getFieldErrors()) {
-                message = new StringBuilder(fieldError.getDefaultMessage());
+                message = new StringBuilder("" + fieldError.getDefaultMessage());
                 messages.add(fieldError.getField() + ":" + message);
             }
             if (messages.size() > 1) {

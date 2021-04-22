@@ -1,13 +1,11 @@
 package ${packageName};
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
@@ -15,21 +13,28 @@ import org.springframework.web.context.WebApplicationContext;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
-@WebAppConfiguration
 public class ${projectName?cap_first}ApplicationTests {
 
     @Autowired
     protected WebApplicationContext context;
 
-    @Before
-    public void before() {
+
+    @BeforeEach
+    public final void performBefore()<#if hasLogin> throws Exception</#if> {
+        before();
+    }
+
+    @AfterEach
+    public final void perforAfter()<#if hasLogin> throws Exception</#if> {
+        after();
+    }
+
+    protected void before()<#if hasLogin> throws Exception</#if> {
         System.out.println("开始测试-----------------");
     }
 
-    @After
-    public void after() {
+    protected void after()<#if hasLogin> throws Exception</#if> {
         System.out.println("测试结束-----------------");
     }
 

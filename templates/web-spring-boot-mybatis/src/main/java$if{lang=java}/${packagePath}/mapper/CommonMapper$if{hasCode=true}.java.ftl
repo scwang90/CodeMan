@@ -20,7 +20,7 @@ public interface CommonMapper {
 	@Select("SELECT COALESCE(MAX(${codeColumn.nameSqlInStr}),'0') FROM ${r"$"}{table}")
 	int maxCodeByTable(@Param("table") String table);
 
-<#if hasOrg>
+<#if hasOrgan>
 	/**
 	 * 统计某机构某表中的编码的最大值
 	 * @param table 表名

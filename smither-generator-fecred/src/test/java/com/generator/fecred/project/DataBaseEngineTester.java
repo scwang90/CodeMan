@@ -84,4 +84,15 @@ public class DataBaseEngineTester {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void DataBaseMidaierClient() {
+        try {
+            DataBaseConfig config = DbConfigFactory.loadConfig("midaier-client.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
