@@ -5,6 +5,7 @@ import ${packageName}.${projectName?cap_first}ApplicationTests;
 <#if hasLogin>
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 </#if>
+import org.junit.jupiter.api.Disabled;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Disabled
 public class BaseControllerTests extends ${projectName?cap_first}ApplicationTests {
 <#if hasLogin>
 

@@ -1,0 +1,1 @@
+package ${packageName}.mapper.intent.implimport ${packageName}.mapper.intent.api.Queryabstract class WhereItem<T>() : Query<T> {    var op: String? = null    var column: String? = null    var value: Any? = null    constructor(where: WhereItem<T>) : this() {        this.op = where.op        this.value = where.value        this.column = where.column    }}

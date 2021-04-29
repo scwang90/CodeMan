@@ -1,0 +1,1 @@
+package ${packageName}.mapper.intent.apiinterface Setter<T : Any> {    fun set(column: String, value: Any?): T}

@@ -1,0 +1,1 @@
+package ${packageName}.mapper.intent.apiinterface WhereQuery<T> : Query<T> {    fun or(where: WhereQuery<T>): WhereQuery<T>    fun and(where: WhereQuery<T>): WhereQuery<T>    fun orderBy(vararg orders: OrderQuery<T>): OrderQuery<T>}
