@@ -33,6 +33,8 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnCreator = "creator_id,author_id";
     protected String columnPassword = "password,pwd";
     protected String columnUsername = "account,username,phone,name";
+    protected String columnHideForClient = "";
+    protected String columnHideForSubmit = "";
 
     protected String templateLang = ProgramLang.Lang.Java.value;
     protected String templatePath = "../templates/web-spring-boot-mybatis";
@@ -261,6 +263,22 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 
     public void setColumnUsername(String columnUsername) {
         this.columnUsername = columnUsername;
+    }
+
+    public String getColumnHideForClient() {
+        return columnHideForClient;
+    }
+
+    public void setColumnHideForClient(String columnHideForClient) {
+        this.columnHideForClient = columnHideForClient;
+    }
+
+    public String getColumnHideForSubmit() {
+        return columnHideForSubmit;
+    }
+
+    public void setColumnHideForSubmit(String columnHideForSubmit) {
+        this.columnHideForSubmit = columnHideForSubmit;
     }
 
     public String getTemplateLang() {

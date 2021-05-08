@@ -285,6 +285,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 		initTableColumn(columns, config.getColumnPassword(), table::getPasswordColumn, table::setPasswordColumn, table::setHasPassword);
 		initTableColumn(columns, config.getColumnUsername(), table::getUsernameColumn, table::setUsernameColumn, table::setHasUsername);
 
+		initTableColumn(columns, config.getColumnHideForClient(), null, column -> column.setHiddenForClient(true), null);
+		initTableColumn(columns, config.getColumnHideForSubmit(), null, column -> column.setHiddenForSubmit(true), null);
 		if (table.isHasRemove()) {
 			Class<?> javaType = programLang.getJavaType(table.getRemoveColumn());
 			if (!Integer.class.equals(javaType) && !Boolean.class.equals(javaType) && !String.class.equals(javaType)) {
@@ -312,27 +314,29 @@ public class DefaultModelBuilder implements ModelBuilder {
 		if (!StringUtil.isNullOrBlank(keys)) {
 			String[] columnNames = keys.split(",");
 			matchColumn(columns, columnNames, get, set, success);
-			if (get.get() == null && keys.contains("_")) {
+			if (get != null && get.get() == null && keys.contains("_")) {
 				columnNames = keys.replace("_", "").split(",");
 				matchColumn(columns, columnNames, get, set, success);
 			}
 		}
-		if (get.get() == null) {
+		if (get != null && set != null && get.get() == null) {
 			set.set(new TableColumn());
 		}
 	}
 
 	private void matchColumn(List<TableColumn> columns, String[] columnNames, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
 		for (String columnName : columnNames) {
-			columns.stream()
-					.filter(c->c.getName().equalsIgnoreCase(columnName))
-					.findFirst()
-					.ifPresent(column -> {
-				success.onAction(true);
-				set.set(column);
-			});
-			if (get.get() != null) {
-				break;
+			Stream<TableColumn> stream = columns.stream().filter(c -> c.getName().equalsIgnoreCase(columnName));
+			if (get != null) {
+				stream.findFirst().ifPresent(column -> {
+					success.onAction(true);
+					set.set(column);
+				});
+				if (get.get() != null) {
+					break;
+				}
+			} else if (set != null) {
+				stream.forEach(set::set);
 			}
 		}
 	}

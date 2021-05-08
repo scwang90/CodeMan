@@ -50,7 +50,7 @@
             <el-form :model="model" :rules="rules" ref="form" label-position="right" label-width="100px">
                 <el-row>
 <#list table.columns as column>
-    <#if !column.hiddenForSubmit && !column.name?lower_case?ends_with("id")>
+    <#if !column.hiddenForClient && !column.name?lower_case?ends_with("id")>
         <#if column == table.passwordColumn>
                     <el-col :span="10" :offset="1" v-if="!model.${table.idColumn.fieldName}">
                         <el-form-item label="登录密码" prop="${column.fieldName}">
@@ -63,22 +63,22 @@
                         </el-form-item>
                     </el-col>
         <#else>
-                    <el-col :span="<#if (column.length > 32)>21<#else>10</#if>" :offset="1">
+                    <el-col :span="<#if (column.length > 32)>21<#else>10</#if>" :offset="1"<#if column.hiddenForSubmit> v-if="model.${table.idColumn.fieldName}"</#if>>
                         <el-form-item label="${column.remarkName}" prop="${column.fieldName}">
             <#if column == table.genderColumn>
-                            <el-radio-group v-model="model.${column.fieldName}">
+                            <el-radio-group v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"</#if>>
                                 <el-radio :label="0">待定</el-radio>
                                 <el-radio :label="1">男</el-radio>
                                 <el-radio :label="2">女</el-radio>
                             </el-radio-group>
             <#elseif column.boolType>
-                            <el-switch v-model="model.${column.fieldName}" active-text="已${column.remarkName}" inactive-text="未${column.remarkName}"/>
+                            <el-switch v-model="model.${column.fieldName}" active-text="已${column.remarkName}" inactive-text="未${column.remarkName}"<#if column.hiddenForSubmit> :disabled="true"<#else> </#if>/>
             <#elseif column.dateType>
-                            <el-date-picker type="date" placeholder="选择日期" v-model="model.${column.fieldName}" value-format="yyyy-MM-dd"></el-date-picker>
+                            <el-date-picker type="date" v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> placeholder="选择日期" value-format="yyyy-MM-dd"</#if>></el-date-picker>
             <#elseif (column.length > 64)>
-                            <el-input v-model="model.${column.fieldName}" type="textarea" maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"></el-input>
+                            <el-input v-model="model.${column.fieldName}" type="textarea"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             <#else>
-                            <el-input v-model="model.${column.fieldName}" <#if (column.length > 32)>maxlength="${column.length}" show-word-limit</#if> @keyup.ctrl.enter.native="onSubmitClick"></el-input>
+                            <el-input v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> <#if (column.length > 32)>maxlength="${column.length}" show-word-limit</#if> @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             </#if>
                         </el-form-item>
                     </el-col>
