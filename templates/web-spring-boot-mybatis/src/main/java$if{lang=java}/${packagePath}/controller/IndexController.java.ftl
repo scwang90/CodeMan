@@ -2,7 +2,7 @@ package ${packageName}.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
 
@@ -21,36 +21,47 @@ import springfox.documentation.annotations.ApiIgnore;
 @Controller
 public class IndexController {
 
-	@RequestMapping({"doc","swagger"})
+	@GetMapping({"doc","swagger"})
     public String doc() {
 		return "redirect:/swagger-ui.html";
 	}
 
-	@RequestMapping("document")
+	@GetMapping("document")
     public void document(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/swagger-ui.html").forward(request, response);
 	}
 
-	@RequestMapping("admin")
-    public String home() {
-		return "redirect:/admin/index";
+	@GetMapping("admin")
+	public void admin(HttpServletRequest request , HttpServletResponse response) {
+		request.getRequestDispatcher("/admin/index.html").forward(request, response);
 	}
 
-	@RequestMapping("admin/index")
-    public String index(Model model) {
-		return "index";
+	@GetMapping({"admin/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}/{*:[\\w\\-]+}"})
+	public void admin404(HttpServletRequest request , HttpServletResponse response) {
+		//LoggerFactory.getLogger("admin404").info("path=" + request.servletPath);
+		request.getRequestDispatcher("/admin/index.html").forward(request, response);
 	}
 
-	@RequestMapping("admin/login")
-    public String login(Model model) {
-		return "login";
-	}
-
+//	  @GetMapping("admin")
+//    public String home() {
+//		  return "redirect:/admin/index";
+//    }
+//
+//	  @GetMapping("admin/index")
+//    public String index(Model model) {
+//		  return "index";
+//    }
+//
+//	  @GetMapping("admin/login")
+//    public String login(Model model) {
+//	      return "login";
+//    }
+//
     <#list tables as table>
-    //数据库【${table.name}】表
-	@RequestMapping("admin/manager/${table.urlPathName}")
-    public String ${table.classNameCamel}() {
-		return "manager/${table.urlPathName}";
-	}
+//    //数据库【${table.name}】表
+//	  @GetMapping("admin/manager/${table.urlPathName}")
+//    public String ${table.classNameCamel}() {
+//	      return "manager/${table.urlPathName}";
+//	  }
     </#list>
 }

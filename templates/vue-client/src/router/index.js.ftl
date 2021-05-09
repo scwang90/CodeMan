@@ -12,6 +12,8 @@ import ${table.className} from '@/views/modules/${table.urlPathName}/list'
 Vue.use(Router)
 
 const router = new Router({
+    base: process.env.ROUTER_BASE,
+    mode: process.env.ROUTER_MODE,
     routes: [
         {
             path: '/',
@@ -52,22 +54,32 @@ const router = new Router({
     ]
 })
 
+<#if hasLogin>
 
+const routerIndex = '/index';
+const routerLogin = '/login';
+const routerBase = process.env.ROUTER_BASE;
 router.beforeEach((to, from, next) => {
-    if (to.meta.ignoreAuth) { // 判断该路由是否需要登录权限
+    console.error('router-to', to, routerBase, to.fullPath.startsWith(routerBase));
+    // 判断该路由是否需要登录权限
+    if (to.matched.length && !to.matched.every(r=>r.meta.ignoreAuth)) {
+        if (sessionStorage.getItem("token") == 'true') {
+            // 判断本地是否存在token
+            next();
+        } else {
+            // 未登录,跳转到登陆页面
+            next(routerLogin)
+        }
+    } else if (to.path == routerLogin && to.meta.ignoreAuth) {
         if(sessionStorage.getItem("token") == 'true'){
-            next('/index');
+            next(routerIndex);
         } else {
             next();
         }
     } else {
-        if (sessionStorage.getItem("token") == 'true') { // 判断本地是否存在token
-            next();
-        } else {
-            // 未登录,跳转到登陆页面
-            next('/login')
-        }
+        next();
     }
 });
+</#if>
 
 export default router;

@@ -4,9 +4,24 @@
 
 const path = require('path')
 
-let dist = '../dist'
+let dist = '../dist';
 if (process.argv.find(arg=>arg=='--spring')) {
-    dist = '../../spring-boot/src/main/resource/static/backstage'
+    dist = '../../../projects-idea/spring-boot-web/static';
+}
+
+let publicPath = '/';
+let subDirectory = 'static';
+let publicPathArg = process.argv.find(arg=>arg.startsWith('--publicPath'))
+if (publicPathArg) {
+    subDirectory = './static';
+    if (publicPathArg.startsWith('--publicPath=')) {
+        publicPath = publicPathArg.substring(13).replace(/(^\/|\/$)/g,'');
+        dist += `/${publicPath}`;
+        publicPath = `/${publicPath}/`;
+    } else {
+        publicPath = './';
+        dist = dist + '/admin';
+    }
 }
 
 module.exports = {
@@ -47,8 +62,8 @@ module.exports = {
 
         // Paths
         assetsRoot: path.resolve(__dirname, dist),
-        assetsSubDirectory: 'static',
-        assetsPublicPath: '/',
+        assetsSubDirectory: subDirectory,
+        assetsPublicPath: publicPath,
 
         /**
          * Source Maps

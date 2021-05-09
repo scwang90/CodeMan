@@ -4,6 +4,12 @@ const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
 
+let publicPath = undefined;
+
+if (process.argv.find(arg=>arg.startsWith('--publicPath'))) {
+    publicPath = '../../';
+}
+
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
     ? config.build.assetsSubDirectory
@@ -47,7 +53,8 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: 'vue-style-loader',
+        publicPath: publicPath        // 作用是设置打包过程中提取css的方法
       })
     } else {
       return ['vue-style-loader'].concat(loaders)

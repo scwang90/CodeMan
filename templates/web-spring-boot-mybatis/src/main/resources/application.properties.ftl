@@ -18,6 +18,9 @@ spring.jackson.date-format = yyyy-MM-dd HH:mm:ss
 spring.servlet.multipart.max-file-size = 80MB
 spring.servlet.multipart.max-request-size = 102400KB
 
+spring.web.resources.chain.cache=false
+spring.web.resources.static-locations=./static/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
 mybatis.configuration.map-underscore-to-camel-case = true
 mybatis.mapper-locations = classpath:/mapper/*.xml,classpath:/mapper/**/*.xml
 

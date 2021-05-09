@@ -8,7 +8,10 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "build-spring": "node build/build.js --spring"
+    "build-p": "npm run build-path",
+    "build-s": "npm run build-spring",
+    "build-path": "node build/build.js --publicPath",
+    "build-spring": "node build/build.js --spring --history --publicPath=admin"
   },
   "dependencies": {
     "element-ui": "^2.12.0",
