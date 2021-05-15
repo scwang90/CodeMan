@@ -26,7 +26,8 @@
                 <el-submenu index="2" class="user-info">
 <#if hasLogin>
                     <template #title>
-                        <img class="avatar" :src="userInfo.avatar || '/static/images/common/image-avatar.jpg'" alt="" srcset="">
+                        <img class="avatar" v-if="userInfo.avatar" :src="userInfo.avatar" alt="" srcset="">
+                        <img class="avatar" v-else src="../../static/images/common/image-avatar.jpg" alt="" srcset="">
                         <div class="content">
                             <span class="name">{{userInfo.name}}</span>
                             <span class="role">{{userInfo.type}}</span>
@@ -51,7 +52,7 @@
     </nav>
 </template>
 <script>
-import Vuex from "vuex";
+import Vuex from 'vuex'
 export default {
     data() {
         return {
@@ -80,7 +81,7 @@ export default {
         onMenuSelected(index, indexPath) {
             if (index) {
                 if (this.$router.history.current.path != index) {
-                    this.$router.push({path:index});
+                    this.$router.push({ path:index });
                 }
                 this.index = '';
             }

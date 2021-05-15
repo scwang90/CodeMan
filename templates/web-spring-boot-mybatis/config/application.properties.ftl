@@ -1,11 +1,10 @@
 server.port = 8080
 server.address = 0.0.0.0
 
-logging.path = logging
-logging.level.root = info
-
+app.error.original = true
 app.swagger.enabled = true
 
+logging.path = logs
 logging.level.root = info
 logging.level.${packageName}.mapper = debug
 logging.level.${packageName}.controller = info

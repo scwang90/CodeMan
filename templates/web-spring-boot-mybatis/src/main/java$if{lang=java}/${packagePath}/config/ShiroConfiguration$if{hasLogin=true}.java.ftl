@@ -1,7 +1,7 @@
 package ${packageName}.config;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import ${packageName}.model.conf.AuthTokenConfig;
+import ${packageName}.model.conf.AuthConfig;
 import ${packageName}.shiro.AuthRealm;
 import ${packageName}.shiro.JwtAuthFilter;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -34,10 +34,10 @@ public class ShiroConfiguration {
 
     public static final String SECRET_KEY = "?::4343fdf4fdf6cvf):";
 
-    private final AuthTokenConfig tokenConfig;
+    private final AuthConfig authConfig;
 
-    public ShiroConfiguration(AuthTokenConfig tokenConfig) {
-        this.tokenConfig = tokenConfig;
+    public ShiroConfiguration(AuthConfig authConfig) {
+        this.authConfig = authConfig;
     }
 
     @Bean
@@ -103,7 +103,7 @@ public class ShiroConfiguration {
 
     private Filter buildJwtFilter() {
         try {
-            return new JwtAuthFilter(Algorithm.HMAC256(SECRET_KEY), tokenConfig);
+            return new JwtAuthFilter(Algorithm.HMAC256(SECRET_KEY), authConfig);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

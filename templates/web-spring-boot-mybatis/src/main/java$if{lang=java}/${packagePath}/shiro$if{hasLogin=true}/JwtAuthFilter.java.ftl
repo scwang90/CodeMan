@@ -3,7 +3,7 @@ package ${packageName}.shiro;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import ${packageName}.model.conf.AuthTokenConfig;
+import ${packageName}.model.conf.AuthConfig;
 import ${packageName}.shiro.model.JwtToken;
 import ${packageName}.shiro.model.JwtBearer;
 import ${packageName}.util.JwtUtils;
@@ -13,7 +13,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -33,11 +33,11 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     private Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     private final Algorithm jwtAlgorithm;
-    private final AuthTokenConfig tokenConfig;
+    private final AuthConfig authConfig;
 
-    public JwtAuthFilter(Algorithm jwtAlgorithm, AuthTokenConfig tokenConfig) {
+    public JwtAuthFilter(Algorithm jwtAlgorithm, AuthConfig authConfig) {
         this.jwtAlgorithm = jwtAlgorithm;
-        this.tokenConfig = tokenConfig;
+        this.authConfig = authConfig;
     }
 
     /**
@@ -47,7 +47,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
         if (request instanceof HttpServletRequest) {
             String bearer = JwtUtils.fromHeader(((HttpServletRequest) request));
-            if (!StringUtils.isEmpty(bearer)) {
+            if (!ObjectUtils.isEmpty(bearer)) {
                 return new JwtToken(bearer);
             }
         }
@@ -81,8 +81,8 @@ public class JwtAuthFilter extends AuthenticatingFilter {
             JwtBearer jwtBearer = subject.getPrincipals().oneByType(JwtBearer.class);
             DecodedJWT jwt = subject.getPrincipals().oneByType(DecodedJWT.class);
             Date issuedAt = jwt.getIssuedAt();
-            if (System.currentTimeMillis() - issuedAt.getTime() > tokenConfig.getRefreshTime() && tokenConfig.getRefresh() > 0) {
-                String jwtToken = JwtUtils.createToken(jwtBearer, jwtAlgorithm, tokenConfig.getExpiryTime());
+            if (System.currentTimeMillis() - issuedAt.getTime() > authConfig.getRefreshTime() && authConfig.getRefreshTime() > 0) {
+                String jwtToken = JwtUtils.createToken(jwtBearer, jwtAlgorithm, authConfig.getExpiryTime());
                 JwtUtils.writeToHeader(jwtToken, (HttpServletRequest) request, (HttpServletResponse) response);
             }
         }

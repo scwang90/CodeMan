@@ -1,7 +1,6 @@
 package ${packageName}.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
@@ -26,18 +25,23 @@ public class IndexController {
 		return "redirect:/swagger-ui.html";
 	}
 
+	@GetMapping("back")
+	public String admin() {
+		return "redirect:/admin";
+	}
+
 	@GetMapping("document")
     public void document(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/swagger-ui.html").forward(request, response);
 	}
 
 	@GetMapping("admin")
-	public void admin(HttpServletRequest request , HttpServletResponse response) {
+	public void admin(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/admin/index.html").forward(request, response);
 	}
 
 	@GetMapping({"admin/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}/{*:[\\w\\-]+}"})
-	public void admin404(HttpServletRequest request , HttpServletResponse response) {
+	public void admin404(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
 		//LoggerFactory.getLogger("admin404").info("path=" + request.servletPath);
 		request.getRequestDispatcher("/admin/index.html").forward(request, response);
 	}

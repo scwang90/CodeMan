@@ -36,7 +36,6 @@ public class Upload {
     @ApiModelProperty("上传日期时间")
     private Date time = null;
 
-
     public Upload() {
     }
 

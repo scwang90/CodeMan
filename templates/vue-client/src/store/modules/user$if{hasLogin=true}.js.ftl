@@ -15,7 +15,7 @@ export default {
         },
     },
     mutations: {
-        pushStore(state, {store, field, value}) {
+        push(state, {store, field, value}) {
             if (field) {
                 if (state[store]) {
                     state[store][field] = value;

@@ -6,7 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import ${packageName}.shiro.model.JwtBearer;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -51,15 +51,12 @@ public class JwtUtils {
         Cookie cookie = new Cookie("Bearer", token);
         cookie.setPath(path.isEmpty() ? "/" : path);
         response.addCookie(cookie);
-        cookie = new Cookie("SameSite", "None");
-        cookie.setPath(path.isEmpty() ? "/" : path);
-        response.addCookie(cookie);
         response.addHeader("x-auth-token", token);
     }
 
     public static String fromHeader(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
-        if (!StringUtils.isEmpty(authorization)) {
+        if (!ObjectUtils.isEmpty(authorization)) {
             return authorization.replace("Bearer ", "");
         }
         Cookie[] cookies = request.getCookies();

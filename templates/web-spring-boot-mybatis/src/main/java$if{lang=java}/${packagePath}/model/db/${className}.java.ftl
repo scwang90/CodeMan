@@ -1,7 +1,5 @@
 package ${packageName}.model.db;
 
-import ${packageName}.model.Entity;
-
 <#assign hasJsonIgnore=false>
 <#list table.columns as column>
 	<#if hasJsonIgnore==false && column.hiddenForClient>
@@ -29,7 +27,7 @@ import javax.validation.constraints.Size;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-public class ${className} extends Entity {
+public class ${className} {
 
 	<#list table.columns as column>
 	/**

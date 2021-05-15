@@ -23,10 +23,10 @@ class ApiResult<T>(
         fun <TT> success(result: TT?): ApiResult<TT> {
             return ApiResult(result, 200)
         }
-        fun failure400(reason: String?): ApiResult<String> {
+        fun fail400(reason: String?): ApiResult<String> {
             return ApiResult(null, 400, reason)
         }
-        fun failure500(reason: String?): ApiResult<String> {
+        fun fail500(reason: String?): ApiResult<String> {
             return ApiResult(null, 500, reason)
         }
     }

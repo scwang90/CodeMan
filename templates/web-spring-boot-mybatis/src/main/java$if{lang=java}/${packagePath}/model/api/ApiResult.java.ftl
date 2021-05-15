@@ -1,7 +1,5 @@
 package ${packageName}.model.api;
 
-import ${packageName}.model.Model;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -11,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @ApiModel(description = "通用返回格式")
-public class ApiResult<T> extends Model {
+public class ApiResult<T> {
 
     @ApiModelProperty("接口返回实体")
     public T result;
@@ -38,23 +36,27 @@ public class ApiResult<T> extends Model {
         this.errors = errors;
     }
 
-    public static <TT> ApiResult<TT> msg(String msg) {
+    public static <T> ApiResult<T> msg(String msg) {
         return new ApiResult<>(null, 200, msg);
     }
 
-    public static <TT> ApiResult<TT> success(TT result) {
+    public static <T> ApiResult<T> success(T result) {
         return new ApiResult<>(result, 200);
     }
 
-    public static <TT> ApiResult<TT> success(TT result, String msg) {
+    public static <T> ApiResult<T> success(T result, String msg) {
         return new ApiResult<>(result, 200, msg);
     }
 
-    public static <TT> ApiResult<TT> failure400(String message) {
+    public static <T> ApiResult<T> fail(int code, String msg) {
+        return new ApiResult<>(null, code, msg);
+    }
+
+    public static <T> ApiResult<T> fail400(String message) {
         return new ApiResult<>(null, 400, message);
     }
 
-    public static <TT> ApiResult<TT> failure500(String message) {
+    public static <T> ApiResult<T> fail500(String message) {
         return new ApiResult<>(null, 500, message);
     }
 }

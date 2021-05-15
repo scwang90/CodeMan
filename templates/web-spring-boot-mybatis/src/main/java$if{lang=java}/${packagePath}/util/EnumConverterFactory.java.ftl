@@ -42,7 +42,7 @@ public class EnumConverterFactory implements ConverterFactory<String, Enum> {
         }
         return result;
     }
- 
+
     static class EnumConverter<T extends Enum> implements Converter<String, T> {
         private final Map<String, T> enumMap = new HashMap<>();
  

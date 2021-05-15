@@ -14,7 +14,7 @@ import ${packageName}.model.api.Paged
 import ${packageName}.model.api.Paging
 import ${packageName}.model.db.${className}
 import ${packageName}.service.auto.${className}Service
-import ${packageName}.util.ModelRequest
+import ${packageName}.util.RequestUtil
 
 import io.swagger.annotations.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -73,7 +73,7 @@ class ${className}Controller {
 </#list>
     )
 	fun insert(@Validated @ApiIgnore model: ${className}): ApiResult<${table.idColumn.fieldType}> {
-		ModelRequest.validate(model)
+		RequestUtil.validate(model)
 <#if table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 		service.insert(model)
 <#else>

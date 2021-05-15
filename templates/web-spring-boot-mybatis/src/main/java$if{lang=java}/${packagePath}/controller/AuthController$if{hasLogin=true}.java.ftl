@@ -17,6 +17,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,27 +28,42 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 /**
- * 登录验证 API 实现
+ * 登录认证 API 实现
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Slf4j
 @Validated
 @RestController
-@Api(tags = "登录验证API")
+@AllArgsConstructor
+@Api(tags = "登录认证")
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService service;
 
+    @GetMapping("version")
+    @ApiOperation(value = "版本信息", notes = "获取maven打包版本")
+    public ApiResult<String> version() {
+        String version = IndexController.class.getPackage().getImplementationVersion();
+        if (version == null) {
+            return ApiResult.success("调试版本");
+        }
+        return ApiResult.success(version);
+    }
+
     @PostMapping("login")
     @ApiOperation(value = "登录", notes = "后台管理相关API都需要先登录")
     @ApiImplicitParams({
-        @ApiImplicitParam(paramType = "form", value = "登录账户", name = "username", required = true, defaultValue = "admin"),
-        @ApiImplicitParam(paramType = "form", value = "登录密码", name = "password", required = true, defaultValue = "admin"),
+        @ApiImplicitParam(paramType = "form", name = "username", value = "登录账户", required = true, defaultValue = "admin"),
+        @ApiImplicitParam(paramType = "form", name = "password", value = "登录密码", required = true, defaultValue = "admin"),
+    <#if loginTable.hasOrgan>
+        @ApiImplicitParam(paramType = "form", name = "${loginTable.orgColumn.fieldName}", value = "${table.orgColumn.remarkName}", required = true),
+    </#if>
     })
-    public ApiResult<LoginInfo> login(String username, String password, @ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) throws Throwable {
+    public ApiResult<LoginInfo> login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldType} ${loginTable.orgColumn.fieldName}, </#if>String username, String password, HttpServletRequest request, HttpServletResponse response) throws Throwable {
         try {
-            LoginInfo info = service.login(username, password);
+            LoginInfo info = service.login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password);
             JwtUtils.writeToHeader(info.token, request, response);
             return ApiResult.success(info);
         } catch (AuthenticationException e) {
@@ -55,7 +71,7 @@ public class AuthController {
                 throw e.getCause();
             }
             log.error("登录失败", e);
-            return ApiResult.failure400("登录失败");
+            return ApiResult.fail400("登录失败");
         }
     }
 
@@ -70,7 +86,7 @@ public class AuthController {
 
     @PostMapping("logout")
     @ApiOperation(value = "注销登录")
-    public ApiResult<String> logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {
+    public ApiResult<String> logout(HttpServletRequest request, HttpServletResponse response) {
         JwtUtils.writeToHeader("null", request, response);
         return ApiResult.success("注销登录成功");
     }
@@ -87,4 +103,5 @@ public class AuthController {
     public ApiResult<Object> expired() {
         return new ApiResult<>(null, ResultCode.C403.code, ResultCode.C403.remark);
     }
+
 }

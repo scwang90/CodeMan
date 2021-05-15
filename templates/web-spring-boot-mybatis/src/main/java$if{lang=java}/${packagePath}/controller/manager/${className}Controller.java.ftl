@@ -32,7 +32,7 @@ import java.util.List;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @AllArgsConstructor
-@Api(tags = "${table.remark}")
+@Api(tags = "${table.remarkName}")
 @RequestMapping("/api/v1/${table.urlPathName}")
 @RestController("auto${className}Controller")
 public class ${className}Controller {

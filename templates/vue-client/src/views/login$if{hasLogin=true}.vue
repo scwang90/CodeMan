@@ -1,5 +1,5 @@
 <template>
-    <div class="body">
+    <div class="body" v-loading="logging">
         <div class="center">
             <div class="left">
                 <div class="header">
@@ -7,11 +7,11 @@
                     <i class="logo el-icon-eleme"></i>
                     <span class="title">{{webName}}</span>
                 </div>
-                <img class="post" src="/static/images/login/image-post.png" alt="" srcset="">
+                <img class="post" src="../../static/images/login/image-post.png" alt="" srcset="">
             </div>
             <div class="right">
                 <span class="title">欢迎登录</span>
-                <el-form ref="form" :model="model" class="form" :rules="rules" @keyup.enter.native="onLoginClick">
+                <el-form class="form" ref="form" :model="model" :rules="rules" @keyup.enter.native="onLoginClick">
                     <el-form-item class="item">
                         <el-input class="username" placeholder="请输入账号" v-model="model.username" type="text">
                             <template #prepend>
@@ -41,7 +41,7 @@
     </div>
 </template>
 <script>
-import Vuex from 'vuex';
+import Vuex from 'vuex'
 
 export default {
     data() {
@@ -60,6 +60,7 @@ export default {
             }
         };
         return {
+            logging: false,
             model: {
                 username: 'admin',
                 password: 'admin'
@@ -80,11 +81,14 @@ export default {
             this.$refs.form.validate(async (v) => {
                 if (v) {
                     try {
+                        this.logging = true;
                         await this.login(this.model);
                         sessionStorage.setItem("token", 'true');
                         this.$router.push({path:'/index'});
                     } catch (error) {
                         this.$message.error(error);
+                    } finally {
+                        this.logging = false;
                     }
                 } else {
                     this.$message({
@@ -112,13 +116,9 @@ export default {
 .center {
     width: 1125px;
     height: 512px;
-
     display: flex;
     flex-direction: row;
-
     box-shadow: 0 0 20px #0004;
-
-
     transform: translate(-8px, -40px);
 }
 .left {

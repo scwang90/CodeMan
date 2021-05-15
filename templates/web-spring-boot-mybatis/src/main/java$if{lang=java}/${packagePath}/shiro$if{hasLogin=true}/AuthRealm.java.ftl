@@ -19,10 +19,11 @@ import ${packageName}.mapper.auto.${loginTable.className}Mapper;
 import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.mapper.intent.Tables;
 </#if>
-import ${packageName}.model.conf.AuthPasswordConfig;
+import ${packageName}.model.conf.AuthConfig;
 import ${packageName}.model.db.${loginTable.className};
 import ${packageName}.shiro.model.JwtToken;
 import ${packageName}.shiro.model.JwtBearer;
+import ${packageName}.shiro.model.LoginToken;
 import ${packageName}.util.JwtUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
@@ -47,19 +48,24 @@ public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
     private final Algorithm jwtAlgorithm;
     private final ${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper;
     private final CredentialsMatcher matcher;
-    private final AuthPasswordConfig passwordConfig;
+    private final AuthConfig authConfig;
 
-    public AuthRealm(${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper, Algorithm jwtAlgorithm, AuthPasswordConfig passwordConfig) {
+    public AuthRealm(${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper, Algorithm jwtAlgorithm, AuthConfig authConfig) {
         this.${loginTable.classNameCamel}Mapper = ${loginTable.classNameCamel}Mapper;
+        this.authConfig = authConfig;
         this.jwtAlgorithm = jwtAlgorithm;
-        this.passwordConfig = passwordConfig;
 
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
-        matcher.setHashIterations(passwordConfig.getIterations());// 设置散列次数： 意为加密几次
-        matcher.setHashAlgorithmName(passwordConfig.getAlgorithm());// 使用md5 算法进行加密
+        matcher.setHashIterations(authConfig.getPassword().getIterations());// 设置散列次数： 意为加密几次
+        matcher.setHashAlgorithmName(authConfig.getPassword().getAlgorithm());// 使用md5 算法进行加密
         this.matcher = matcher;
         //设置密码匹配位自己，实现了 doCredentialsMatch 方法
         this.setCredentialsMatcher(this);
+    }
+
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return super.supports(token) || token instanceof JwtToken || token instanceof LoginToken;
     }
 
     /**
@@ -88,8 +94,8 @@ public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         if (authenticationToken instanceof JwtToken) {
             return getAuthenticationInfo((JwtToken) authenticationToken);
-        } else if (authenticationToken instanceof UsernamePasswordToken) {
-            return getAuthenticationInfo((UsernamePasswordToken) authenticationToken);
+        } else if (authenticationToken instanceof LoginToken) {
+            return getAuthenticationInfo((LoginToken) authenticationToken);
         }
         return null;
     }
@@ -102,25 +108,21 @@ public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
         return new SimpleAuthenticationInfo(Arrays.asList(bearer, jwt), jwt, "authRealm");
     }
 
-    private AuthenticationInfo getAuthenticationInfo(UsernamePasswordToken token) {
+    private AuthenticationInfo getAuthenticationInfo(LoginToken token) {
     <#if hasUsernameColumn>
         <#assign prefix=""/>
     <#else>
         <#assign prefix="//"/>
         ${loginTable.className} ${loginTable.classNameCamel} = null;
     </#if>
-    <#if hasOrgan>
+    <#if loginTable.hasOrgan>
         ${prefix}WhereQuery<${loginTable.className}> where = Tables.${loginTable.className}.${loginTable.usernameColumn.fieldNameUpper}.eq(token.getUsername());
-        ${prefix}if (token.getHost() != null) {
-        <#if orgColumn.stringType>
-        ${prefix}   where.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(token.getHost()));
-        <#else>
-        ${prefix}   where.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(Integer.parseInt(token.getHost())));
-        </#if>
+        ${prefix}if (token.get${loginTable.orgColumn.fieldNameUpper}()<#if orgColumn.stringType> != null<#else> > 0</#if>) {
+        ${prefix}   where.and(Tables.${loginTable.className}.${orgColumn.fieldNameUpper}.eq(token.get${loginTable.orgColumn.fieldNameUpper}()));
         ${prefix}}
-        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.selecOneWhere(where);
+        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.selectOneWhere(where);
     <#else>
-        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.selecOneWhere(Tables.${loginTable.className}.${loginTable.usernameColumn.fieldName}.eq(token.getUsername()));
+        ${prefix}${loginTable.className} ${loginTable.classNameCamel} = ${loginTable.classNameCamel}Mapper.selectOneWhere(Tables.${loginTable.className}.${loginTable.usernameColumn.fieldName}.eq(token.getUsername()));
     </#if>
         if (${loginTable.classNameCamel} == null) {
             throw new ClientException("用户名或密码错误");
@@ -128,7 +130,7 @@ public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
         //if ("1".equals(${loginTable.classNameCamel}.getEfficet())) {
         //    throw new ClientException("当前用户帐号已被停用，请联系技术服务人员！");
         //}
-        ByteSource salt = ByteSource.Util.bytes(passwordConfig.getSalt());
+        ByteSource salt = ByteSource.Util.bytes(authConfig.getPassword().getSalt());
     <#if hasPasswordColumn>
         return new SimpleAuthenticationInfo(${loginTable.classNameCamel}, ${loginTable.classNameCamel}.get${loginTable.passwordColumn.fieldNameUpper}(), salt, "authRealm");
     <#else>

@@ -96,8 +96,8 @@
 </ViewFrame>
 </template>
 <script>
-import api from '@/api/auto/${table.urlPathName}';
-import ViewFrame from '@/components/ViewFrame';
+import api from '@/api/auto/${table.urlPathName}'
+import ViewFrame from '@/components/ViewFrame'
 
 const rules = {
 <#list table.columns as column>

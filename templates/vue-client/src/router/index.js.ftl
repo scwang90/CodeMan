@@ -60,7 +60,6 @@ const routerIndex = '/index';
 const routerLogin = '/login';
 const routerBase = process.env.ROUTER_BASE;
 router.beforeEach((to, from, next) => {
-    console.error('router-to', to, routerBase, to.fullPath.startsWith(routerBase));
     // 判断该路由是否需要登录权限
     if (to.matched.length && !to.matched.every(r=>r.meta.ignoreAuth)) {
         if (sessionStorage.getItem("token") == 'true') {

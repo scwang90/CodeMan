@@ -2,15 +2,16 @@ package ${packageName}.service;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import ${packageName}.model.api.LoginInfo;
-import ${packageName}.model.conf.AuthTokenConfig;
+import ${packageName}.model.conf.AuthConfig;
 import ${packageName}.model.db.${loginTable.className};
 import ${packageName}.shiro.model.JwtBearer;
+import ${packageName}.shiro.model.LoginToken;
 import ${packageName}.util.JwtUtils;
+import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 登录信息
@@ -18,20 +19,16 @@ import org.springframework.stereotype.Service;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Service
+@AllArgsConstructor
 public class AuthService {
 
     private final Algorithm jwtAlgorithm;
-    private final AuthTokenConfig tokenConfig;
+    private final AuthConfig authConfig;
 
-    public AuthService(Algorithm jwtAlgorithm, AuthTokenConfig tokenConfig) {
-        this.jwtAlgorithm = jwtAlgorithm;
-        this.tokenConfig = tokenConfig;
-    }
-
-    @Transient
-    public LoginInfo login(String username, String password) {
+    @Transactional(rollbackFor = Throwable.class)
+    public LoginInfo login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldTypePrimitive} ${loginTable.orgColumn.fieldName}, </#if>String username, String password) {
         Subject subject = SecurityUtils.getSubject();
-        subject.login(new UsernamePasswordToken(username, password));
+        subject.login(new LoginToken(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password));
         ${loginTable.className} ${loginTable.classNameCamel} = subject.getPrincipals().oneByType(${loginTable.className}.class);
 
         //${loginTable.classNameCamel}.setPassword("");
@@ -45,6 +42,6 @@ public class AuthService {
 <#else>
         JwtBearer bearer = new JwtBearer(${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}());
 </#if>
-        return JwtUtils.createToken(bearer, jwtAlgorithm, tokenConfig.getExpiryTime());
+        return JwtUtils.createToken(bearer, jwtAlgorithm, authConfig.getExpiryTime());
     }
 }

@@ -26,4 +26,9 @@ body > div {
     /*-moz-osx-font-smoothing: grayscale; */
     /*color: #2c3e50; */
 }
+.el-form-item .el-select,
+.el-form-item .el-date-editor,
+.el-form-item .el-cascader {
+    width: 100%;
+}
 </style>

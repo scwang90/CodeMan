@@ -5,12 +5,12 @@ import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.Upload;
-import ${packageName}.model.conf.ClientConfig;
 import ${packageName}.service.UploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.util.URLEncoder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,10 +21,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 import static ${packageName}.controller.HostController.urlSchemeHostPort;
 
@@ -47,7 +47,7 @@ public class UploadController {
 	@ResponseBody
 	@ApiOperation(value = "文件上传")
 	@PostMapping(value = "upload")
-	public ApiResult<Upload> upload(@RequestParam("file") @ApiParam("上传文件") MultipartFile multipart, HttpServletRequest request) {
+	public synchronized ApiResult<Upload> upload(@RequestParam("file") @ApiParam("上传文件") MultipartFile multipart, HttpServletRequest request) {
 		Upload upload = new Upload(multipart);
 		upload.setPath(service.pathWith(null, UploadType.from(multipart)));
 		service.saveFile(multipart, upload);
@@ -71,7 +71,8 @@ public class UploadController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType(upload.getMimeType()));
 		if (request.getServletPath().contains("download")) {
-			headers.setContentDispositionFormData("attachment", upload.getName());
+			String name = URLEncoder.QUERY.encode(upload.getName(), StandardCharsets.UTF_8);
+			headers.setContentDispositionFormData("attachment", name);
 		}
 		return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.OK);
 	}
@@ -88,4 +89,18 @@ public class UploadController {
 		}
 		return String.format("%s/api/v1/file/download/%s", urlSchemeHostPort(request), token);
 	}
+
+	/**
+	 * 根据图片Url 获取图片 token
+	 * @param request 请求对象
+	 * @param url 图片Url
+	 * @return token
+	 */
+	public static String tokenWithUrl(HttpServletRequest request, @Nullable String url) {
+		if (url == null) {
+			return null;
+		}
+		return url.replace(urlSchemeHostPort(request) + "/api/v1/file/download/", "");
+	}
+
 }

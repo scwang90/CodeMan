@@ -1,8 +1,8 @@
 package ${packageName}.controller;
 
-import ${packageName}.model.conf.ClientConfig;
+import ${packageName}.model.conf.AppConfig;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class HostController {
 
-    private static ClientConfig CONFIG = null;
+    private static AppConfig CONFIG = null;
 
-    public HostController(ClientConfig config) {
+    public HostController(AppConfig config) {
         CONFIG = config;
     }
     /**
@@ -28,7 +28,7 @@ public class HostController {
      */
     public static String urlSchemeHostPort(HttpServletRequest request) {
         String url = CONFIG != null ? CONFIG.getVisitHost() : null;
-        if (StringUtils.isEmpty(url)) {
+        if (ObjectUtils.isEmpty(url)) {
             url = String.format("%s://%s:%d", request.getScheme(), request.getServerName(), request.getServerPort());
         } else if (!url.contains("://")) {
             url = String.format("%s://%s", request.getScheme(), url);
@@ -38,7 +38,7 @@ public class HostController {
         } else if (request.getServerPort() == 443 && url.startsWith("https:")) {
             url = url.replace(":443", "");
         }
-        if (!StringUtils.isEmpty(request.getContextPath())) {
+        if (!ObjectUtils.isEmpty(request.getContextPath())) {
             url = String.format("%s/%s", url, request.getContextPath());
         }
         return url;

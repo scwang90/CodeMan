@@ -2,7 +2,7 @@ package ${packageName}.util;
 
 import ${packageName}.exception.ClientException;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-public class ModelRequest {
+public class RequestUtil {
 
     private static final List<String> ignores = Arrays.asList("id,createTime,updateTime,createDate,updateDate".split(","));
     /**
@@ -36,7 +36,7 @@ public class ModelRequest {
                     if (annotation.required() && !ignores.contains(field.getName())) {
                         field.setAccessible(true);
                         Object o = field.get(model);
-                        if (o == null || (o instanceof String && StringUtils.isEmpty(o))) {
+                        if (o == null || (o instanceof String && ObjectUtils.isEmpty(o))) {
                             throw new ClientException(annotation.value() + "不能为空");
                         }
                     }

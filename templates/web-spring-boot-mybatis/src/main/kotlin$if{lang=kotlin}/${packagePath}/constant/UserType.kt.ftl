@@ -6,5 +6,5 @@ package ${packageName}.constant;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 enum class UserType {
-    User, Admin
+    Admin, User
 }

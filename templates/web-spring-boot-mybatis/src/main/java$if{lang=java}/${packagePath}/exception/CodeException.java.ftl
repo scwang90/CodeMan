@@ -1,7 +1,7 @@
 package ${packageName}.exception;
 
 /**
- * 自定义异常 - 带Code
+ * 自定义异常 - 错误码
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

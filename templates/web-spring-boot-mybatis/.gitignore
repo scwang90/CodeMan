@@ -25,6 +25,9 @@
 /.nb-gradle/
 
 ### Project ###
+.DS_Store
 /config/
 /logs/
-/src/main/resources/static/backstage/
+/logging/
+/upload/
+/static/

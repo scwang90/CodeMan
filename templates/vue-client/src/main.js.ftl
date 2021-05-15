@@ -23,7 +23,7 @@ import Filters from './plugins/filters'
 Vue.use(Filters);
 
 import Element from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(Element);
 
 import Request from './plugins/request'

@@ -3,7 +3,7 @@ package ${packageName}.exception;
 import org.springframework.http.HttpStatus;
 
 /**
- * 客户端自定义异常
+ * 自定义异常 - 错误的请求
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

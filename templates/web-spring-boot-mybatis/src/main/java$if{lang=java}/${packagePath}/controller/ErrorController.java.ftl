@@ -1,35 +1,37 @@
 package ${packageName}.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ${packageName}.exception.AccessException;
 import ${packageName}.exception.ClientException;
-import ${packageName}.exception.ServiceException;
+import ${packageName}.exception.CodeException;
 import ${packageName}.model.api.ApiResult;
-import ${packageName}.model.conf.ErrorConfig;
+import ${packageName}.model.conf.AppConfig;
 
-import org.springframework.boot.autoconfigure.web.ErrorProperties;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.sql.SQLTransientConnectionException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-
-import springfox.documentation.annotations.ApiIgnore;
+import javax.validation.ValidationException;
 
 /**
  * 统一错误返回格式
@@ -38,21 +40,64 @@ import springfox.documentation.annotations.ApiIgnore;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
-@ApiIgnore
-@Controller
+@Slf4j
+@RestControllerAdvice
 public class ErrorController extends BasicErrorController {
-
+    
     private final ObjectMapper mapper;
     private final ErrorAttributes error;
-    private final ErrorConfig config;
+    private final AppConfig config;
 
-    public ErrorController(ObjectMapper mapper, ErrorConfig config) {
-        super(new DefaultErrorAttributes(), new ErrorProperties());
+    public ErrorController(ObjectMapper mapper, AppConfig config, ErrorAttributes error, ServerProperties server, ObjectProvider<ErrorViewResolver> errorView) {
+        super(error, server.getError(), errorView.stream().collect(Collectors.toList()));
+        this.error = error;
         this.config = config;
         this.mapper = mapper;
-        this.error = new DefaultErrorAttributes();
     }
 
+    @ExceptionHandler(CodeException.class)
+    public ApiResult<Object> handle(CodeException ex) {
+        String message = ex.getMessage();
+        if (ex instanceof ClientException) {
+            log.debug(ex.getMessage());
+        } else {
+            log.error(ex.getMessage(), ex);
+        }
+        return ApiResult.fail(ex.getCode(), message);
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ApiResult<Object> handler(BindException ex) {
+        log.debug(ex.getMessage());
+        String message = ex.getMessage();
+        List<String> messages = new LinkedList<>();
+        if (ex.hasGlobalErrors()) {
+            for (ObjectError error : ex.getGlobalErrors()) {
+                messages.add(String.format("%s:%s", error.getObjectName(), error.getDefaultMessage()));
+            }
+        }
+        if (ex.hasFieldErrors()) {
+            for (FieldError error : ex.getFieldErrors()) {
+                messages.add(String.format("%s:%s:%s", error.getObjectName(), error.getField(), error.getDefaultMessage()));
+            }
+        }
+        return new ApiResult<>(null, HttpStatus.BAD_REQUEST.value(), message, messages);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ApiResult<Object>  handler(ValidationException ex) {
+        log.debug(ex.getMessage());
+        String message = ex.getMessage();
+        if (ex instanceof ConstraintViolationException) {
+            List<String> messages = new LinkedList<>();
+            for (ConstraintViolation<?> constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
+                messages.add(constraint.getPropertyPath() + ":" + constraint.getMessageTemplate());
+            }
+            return new ApiResult<>(null, HttpStatus.BAD_REQUEST.value(), message, messages);
+        }
+        return ApiResult.fail(HttpStatus.BAD_REQUEST.value(), message);
+    }
+    
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
@@ -70,38 +115,12 @@ public class ErrorController extends BasicErrorController {
         Throwable error = this.error.getError(new ServletWebRequest(request));
         Throwable cause = error;
         while (cause != null && cause.getCause() != null && cause.getCause() != cause) {
-            message.append(" <- ").append(cause.message);
+            message.append(" <- ").append(cause.getMessage());
             cause = cause.getCause();
         }
-        if (error instanceof ServiceException) {
-            message = new StringBuilder(error.getMessage());
-        } else if (error instanceof AccessException) {
-            message = new StringBuilder(error.getMessage());
-            status = HttpStatus.NOT_ACCEPTABLE;
-        } else if (error instanceof ClientException) {
-            message = new StringBuilder(error.getMessage());
-            status = HttpStatus.BAD_REQUEST;
-        } else if (error instanceof ConstraintViolationException) {
-            List<String> messages = new LinkedList<>();
-            for (ConstraintViolation<?> constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
-                message = new StringBuilder(constraint.getMessageTemplate());
-                messages.add(constraint.getPropertyPath() + ":" + message);
-            }
-            errors = messages;
-            status = HttpStatus.BAD_REQUEST;
-        } else if (error instanceof BindException) {
-            List<String> messages = new LinkedList<>();
-            BindingResult result = ((BindException) error).getBindingResult();
-            for (FieldError fieldError : result.getFieldErrors()) {
-                message = new StringBuilder("" + fieldError.getDefaultMessage());
-                messages.add(fieldError.getField() + ":" + message);
-            }
-            if (messages.size() > 1) {
-                message = new StringBuilder("参数验证错误，详细信息查看 errors");
-            }
-            errors = messages;
-            status = HttpStatus.EXPECTATION_FAILED;
-        } else if (!config.getOriginal() && error != null) {
+        if (error instanceof CodeException) {
+            status = HttpStatus.valueOf(((CodeException) error).getCode());
+        } else if (!config.isOriginalError() && error != null) {
             message = new StringBuilder("服务器内部错误");
         } else if (cause instanceof SQLTransientConnectionException) {
             message = new StringBuilder("连接数据库异常：" + cause.getMessage());
