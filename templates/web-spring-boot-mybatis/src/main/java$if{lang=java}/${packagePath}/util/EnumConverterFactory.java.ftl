@@ -50,6 +50,7 @@ public class EnumConverterFactory implements ConverterFactory<String, Enum> {
             T[] enums = enumType.getEnumConstants();
             for(T e : enums) {
                 enumMap.put(e.ordinal() + "", e);
+                enumMap.put(e.toString() + "", e);
             }
         }
 

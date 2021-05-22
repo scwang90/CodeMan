@@ -13,15 +13,15 @@ class ServiceException : CodeException {
         this.code = HttpStatus.INTERNAL_SERVER_ERROR.value()
     }
 
-    constructor(s: String) : super(s) {
+    constructor(message: String) : super(message) {
         this.code = HttpStatus.INTERNAL_SERVER_ERROR.value()
     }
 
-    constructor(code: Int, s: String) : super(s) {
+    constructor(code: Int, message: String) : super(message) {
         this.code = code
     }
 
-    constructor(s: String, throwable: Throwable) : super(s, throwable) {
+    constructor(message: String, throwable: Throwable) : super(message, throwable) {
         this.code = HttpStatus.INTERNAL_SERVER_ERROR.value()
     }
 

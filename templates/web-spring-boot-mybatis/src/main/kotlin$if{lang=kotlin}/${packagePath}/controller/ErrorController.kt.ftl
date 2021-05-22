@@ -53,28 +53,34 @@ class ErrorController(
 
     @ExceptionHandler(CodeException::class)
     fun handle(ex: CodeException): ApiResult<Any> {
-        val message = ex.message ?: ""
+        var message = ex.message ?: ""
         if (ex is ClientException) {
             logger.debug(ex.message)
         } else {
+            if (!config.error.original) {
+                message = "服务器内部错误"
+            }
             logger.error(ex.message, ex)
         }
         return ApiResult.fail(ex.code, message)
     }
 
+
     @ExceptionHandler(BindException::class)
     fun handler(ex: BindException): ApiResult<Any> {
         logger.debug(ex.message)
-        val message = ex.message
+        var message = "参数验证错误"
         val messages: MutableList<String> = LinkedList()
         if (ex.hasGlobalErrors()) {
-            for (globalError in ex.globalErrors) {
-                messages.add("${globalError.objectName}:${globalError.defaultMessage}")
+            for (error in ex.globalErrors) {
+                message = "$message\n${error.objectName}:${error.defaultMessage}"
+                messages.add("${error.objectName}:${error.defaultMessage}")
             }
         }
         if (ex.hasFieldErrors()) {
-            for (fieldError in ex.fieldErrors) {
-                messages.add("${fieldError.objectName}:${fieldError.field}:${fieldError.defaultMessage}")
+            for (error in ex.fieldErrors) {
+                message = "$message\n${error.field}:${error.defaultMessage}"
+                messages.add("${error.objectName}:${error.field}:${error.defaultMessage}")
             }
         }
         //errors = messages
@@ -84,11 +90,12 @@ class ErrorController(
     @ExceptionHandler(ValidationException::class)
     fun handler(ex: ValidationException): ApiResult<Any> {
         logger.debug(ex.message)
-        val message = ex.message ?: ""
+        var message = "参数验证错误"
         if (ex is ConstraintViolationException) {
             val messages: MutableList<String> = LinkedList()
             for (constraint in ex.constraintViolations) {
-                messages.add("${constraint.propertyPath}:$message")
+                message = "$message\n${constraint.propertyPath}:${constraint.message}"
+                messages.add("${constraint.propertyPath}:${constraint.message}")
             }
             //errors = messages
         }

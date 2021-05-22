@@ -13,15 +13,15 @@ open class ClientException : CodeException {
         this.code = HttpStatus.BAD_REQUEST.value()
     }
 
-    constructor(s: String) : super(s) {
+    constructor(message: String) : super(message) {
         this.code = HttpStatus.BAD_REQUEST.value()
     }
 
-    constructor(code: Int, s: String) : super(s) {
+    constructor(code: Int, message: String) : super(message) {
         this.code = code
     }
 
-    constructor(s: String, throwable: Throwable) : super(s, throwable) {
+    constructor(message: String, throwable: Throwable) : super(message, throwable) {
         this.code = HttpStatus.BAD_REQUEST.value()
     }
 

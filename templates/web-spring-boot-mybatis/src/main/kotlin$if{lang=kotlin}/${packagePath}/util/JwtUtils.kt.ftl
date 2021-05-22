@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
 object JwtUtils {
 
     @JvmStatic
-    fun createToken(bearer: JwtBearer, jwtAlgorithm: Algorithm?, expires: Int): String {
+    fun createToken(bearer: JwtBearer, jwtAlgorithm: Algorithm, expires: Int): String {
         val now = System.currentTimeMillis()
         return JWT.create()
                 .withClaim("type", bearer.type)
