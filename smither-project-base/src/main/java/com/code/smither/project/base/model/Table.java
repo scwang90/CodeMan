@@ -57,11 +57,14 @@ public class Table implements Model, MetaDataTable {
     private boolean hasCreator = false;     // 是否有创建者列
     private boolean hasUsername = false;    // 是否有账户列
     private boolean hasPassword = false;    // 是否有密码列
+    private boolean hasSearches = false;    // 收费有搜索列
     private boolean isRelateTable = false;  // 是否是关联表
 
     private List<TableColumn> columns;      // 表字段
     private List<ForeignKey> exportedKeys;  // 外键（导出）
     private List<ForeignKey> importedKeys;  // 外键（导入）
+
+    private List<TableColumn> searchColumns = new ArrayList<>();// 搜索列
 
     @Setter(AccessLevel.PROTECTED)
     private List<Table> exportedTables = new ArrayList<>();//  引用键值对（与外键相反）

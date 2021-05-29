@@ -41,7 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired
 class ${className}MapperTest : BaseMapperTests<${className}>() {
 
     @Autowired
-    protected lateinit var mapper: ${className}Mapper
+    protected lateinit var mapper: ${className}AutoMapper
 
 	private fun newModel(index: Int): ${className} {
 		val model = ${className}()

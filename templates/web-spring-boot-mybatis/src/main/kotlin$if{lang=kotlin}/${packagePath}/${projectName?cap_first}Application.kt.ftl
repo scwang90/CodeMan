@@ -1,19 +1,14 @@
 package ${packageName}
 
-import ${packageName}.interceptor.LoginInterceptor
+import ${packageName}.config.EnumConverterFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry
+import org.springframework.format.FormatterRegistry
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import springfox.documentation.builders.ApiInfoBuilder
-import springfox.documentation.builders.PathSelectors
-import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.service.Contact
-import springfox.documentation.spi.DocumentationType
-import springfox.documentation.spring.web.plugins.Docket
-import springfox.documentation.swagger2.annotations.EnableSwagger2
+import java.util.*
 
 /**
  * SpringBoot 程序入口
@@ -21,40 +16,32 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Configuration
-@EnableSwagger2
 @SpringBootApplication
 class ${projectName?cap_first}Application : WebMvcConfigurer {
 
     /**
-     * 添加登录验证拦截器
+     * 所有产生随机数到地方都使用同一个随机数生成器，优化生成器的随机性
      */
-    override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(LoginInterceptor())
-                .addPathPatterns("/api/**")
-                .addPathPatterns("/admin/**")
-                .excludePathPatterns("/api/v1/auth/*")
-                .excludePathPatterns("/admin/login")
-        super.addInterceptors(registry)
+    @Bean
+    fun random(): Random {
+        return Random()
     }
 
     /**
-     * 创建Api文档
-     * path:/doc
-     * path:/swagger-ui.html
+     * 绑定枚举类型参数
      */
-    @Bean
-    fun createManagerApi(): Docket {
-        return Docket(DocumentationType.SWAGGER_2).groupName("后台管理")
-                .apiInfo(ApiInfoBuilder()
-                        .title("${projectName} 后台文档")//页面标题
-                        .contact(Contact("${author}", "", "example@hotmail.com"))//创建人
-                        .version("1.0")//版本号
-                        .description("${projectName} 管理后台 API")//描述
-                        .build())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("${packageName}.controller"))
-                .paths(PathSelectors.any())
-                .build()
+    override fun addFormatters(registry: FormatterRegistry) {
+        registry.addConverterFactory(EnumConverterFactory())
+    }
+
+    /**
+     * 添加跨域列表
+     */
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/api/**")
+            .allowedMethods("*")
+            .allowCredentials(true)
+            .allowedOriginPatterns("*www.example.com*", "*localhost*", "*127.0.0.1*", "*0.0.0.0*")
     }
 
 }

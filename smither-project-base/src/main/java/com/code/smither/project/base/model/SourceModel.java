@@ -25,7 +25,8 @@ public class SourceModel implements LangRootModel {
     private Table table;
     private Table organTable;            //机构表
     private Table loginTable;            //用户登录表
-    private List<Table> tables;
+    private List<Table> loginTables;     //用户登录表（多表登录）
+    private List<Table> tables;          //数据库所有表
     private TableColumn orgColumn;       //机构所在列
     private TableColumn codeColumn;      //编码所在列
     private DatabaseJdbc jdbc;
@@ -39,9 +40,13 @@ public class SourceModel implements LangRootModel {
     private String dbType;
     private String lang;                //程序设计语言
     private Date now = new Date();
+    private Features features;          //特性列表（可以指定使用模板中的某种特性功能或代码）
     private boolean hasCode;            //是否有编码
     private boolean hasOrgan;           //是否有机构
     private boolean hasLogin;           //是否有登录功能
+    private boolean hasMultiLogin;      //是否有多表登录功能
+    private boolean hasStringId;        //是否含有字符串Id
+    private boolean hasIntegerId;       //时候含有整形Id
 
     public SourceModel() {
     }
@@ -120,7 +125,27 @@ public class SourceModel implements LangRootModel {
     @Override
     public boolean isModelTask(Task task) {
         String path = task.getTemplateFile().getAbsolutePath();
-        return path.contains("${className}") || path.contains("${tableName}") || path.matches(".*\\$\\{table\\.\\S+?}.*");
+        return path.matches(".*\\$\\{(table\\.\\S+?|(class|table)Name)\\S*?}.*");
+//        return path.contains("${className}") || path.contains("${tableName}") || path.matches(".*\\$\\{table\\.\\S+?}.*");
     }
+
+    public boolean isHasIntegerId() {
+        for (Table table : tables) {
+            if (table.isHasId() && table.getIdColumn().isAutoIncrement()) {
+                return true;
+            }
+        }
+        return hasStringId;
+    }
+
+    public boolean isHasStringId() {
+        for (Table table : tables) {
+            if (table.isHasId() && table.getIdColumn().isStringType()) {
+                return true;
+            }
+        }
+        return hasIntegerId;
+    }
+
     //</editor-fold>
 }

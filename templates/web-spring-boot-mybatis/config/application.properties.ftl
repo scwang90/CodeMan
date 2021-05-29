@@ -8,6 +8,9 @@ logging.path = logs
 logging.level.root = info
 logging.level.${packageName}.mapper = debug
 logging.level.${packageName}.controller = info
+logging.level.org.apache.coyote.http11 = debug
+logging.level.org.springframework.web.method = trace
+logging.level.org.springframework.web.servlet = trace
 
 spring.datasource.url = ${jdbc.url}?serverTimezone=Asia/Shanghai
 spring.datasource.username = ${jdbc.username}

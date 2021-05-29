@@ -52,11 +52,11 @@ public class ApiResult<T> {
         return new ApiResult<>(null, code, msg);
     }
 
-    public static <T> ApiResult<T> fail400(String message) {
+    public static <T> ApiResult<T> failClient(String message) {
         return new ApiResult<>(null, 400, message);
     }
 
-    public static <T> ApiResult<T> fail500(String message) {
+    public static <T> ApiResult<T> failServer(String message) {
         return new ApiResult<>(null, 500, message);
     }
 }

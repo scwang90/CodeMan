@@ -1,5 +1,7 @@
 package ${packageName}.constant;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * 统一返回错误代码
  * @author ${author}
@@ -7,13 +9,12 @@ package ${packageName}.constant;
  */
 public enum ResultCode {
 
-    C200(200, "请求成功"),
-    C400(400, "客户端错误"),
-    C401(401, "请先登录"),
-    C403(403, "权限不足"),
-    C404(404, "未找到路径"),
-    C417(417, "未满足期望值"),
-    C500(500, "服务器错误");
+    OK(HttpStatus.OK.value(), "请求成功"),
+    BadRequest(HttpStatus.BAD_REQUEST.value(), "客户端错误"),
+    Unauthorized(HttpStatus.UNAUTHORIZED.value(), "请先登录"),
+    Forbidden(HttpStatus.FORBIDDEN.value(), "凭证过期"),
+    NotFound(HttpStatus.NOT_FOUND.value(), "未找到路径"),
+    ServerError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器错误");
 
     public final int code;
     public final String remark;

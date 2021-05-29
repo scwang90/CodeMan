@@ -1,7 +1,5 @@
 package ${packageName}.controller
 
-package ${packageName}.controller
-
 import ${packageName}.exception.ClientException
 import ${packageName}.exception.CodeException
 import ${packageName}.model.api.ApiResult
@@ -25,6 +23,7 @@ import org.springframework.validation.BindException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.ServletWebRequest
+import springfox.documentation.annotations.ApiIgnore
 import java.sql.SQLTransientConnectionException
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -35,9 +34,10 @@ import javax.validation.ValidationException
  * 统一错误返回格式
  * 支持-区分服务器异常、客户端异常
  * 支持-配置是否返回原始错误信息
- * @author 树朾
- * @since 2021-03-03 中国标准时间
+ * @author ${author}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@ApiIgnore
 @RestControllerAdvice
 class ErrorController(
     private var config: AppConfig,
@@ -73,14 +73,14 @@ class ErrorController(
         val messages: MutableList<String> = LinkedList()
         if (ex.hasGlobalErrors()) {
             for (error in ex.globalErrors) {
-                message = "$message\n${error.objectName}:${error.defaultMessage}"
-                messages.add("${error.objectName}:${error.defaultMessage}")
+                message = "$message\n${r"$"}{error.objectName}:${r"$"}{error.defaultMessage}"
+                messages.add("${r"$"}{error.objectName}:${r"$"}{error.defaultMessage}")
             }
         }
         if (ex.hasFieldErrors()) {
             for (error in ex.fieldErrors) {
-                message = "$message\n${error.field}:${error.defaultMessage}"
-                messages.add("${error.objectName}:${error.field}:${error.defaultMessage}")
+                message = "$message\n${r"$"}{error.field}:${r"$"}{error.defaultMessage}"
+                messages.add("${r"$"}{error.objectName}:${r"$"}{error.field}:${r"$"}{error.defaultMessage}")
             }
         }
         //errors = messages
@@ -94,8 +94,8 @@ class ErrorController(
         if (ex is ConstraintViolationException) {
             val messages: MutableList<String> = LinkedList()
             for (constraint in ex.constraintViolations) {
-                message = "$message\n${constraint.propertyPath}:${constraint.message}"
-                messages.add("${constraint.propertyPath}:${constraint.message}")
+                message = "$message\n${r"$"}{constraint.propertyPath}:${r"$"}{constraint.message}"
+                messages.add("${r"$"}{constraint.propertyPath}:${r"$"}{constraint.message}")
             }
             //errors = messages
         }
@@ -103,14 +103,14 @@ class ErrorController(
     }
 
     override fun error(request: HttpServletRequest): ResponseEntity<Map<String, Any?>> {
-        val status = getStatus(request).value()
+        var status = getStatus(request).value()
         var httpStatus: HttpStatus = HttpStatus.OK
         var body: Map<String, Any?> = getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.ALL))
         if (body["path"]?.toString()?.startsWith("/api") != true) {
             return super.error(request)
         }
 
-        var message = "${body["error"]}"
+        var message = "${r"$"}{body["error"]}"
         body["message"]?.also { msg->
             if (StringUtil.isNotEmpty("$msg")) {
                 message = "$message - msg"
@@ -123,7 +123,10 @@ class ErrorController(
             message += " <- " + cause.message
             cause = cause.cause
         }
-        if (!config.original && error != null) {
+        if (cause is CodeException) {
+            status = cause.code
+            message = if (cause is ClientException) cause.message ?: "" else message
+        } else if (!config.error.original && error != null) {
             message = "服务器内部错误"
         } else if (cause is SQLTransientConnectionException) {
             message = "连接数据库异常：" + cause.message
@@ -140,7 +143,7 @@ class ErrorController(
         try {
             val result = ApiResult(status, message, null)
 
-            val mutable = mutableMapOf<String, Any?>();
+            val mutable = mutableMapOf<String, Any?>()
             val map = mapper.readValue(mapper.writeValueAsString(result), MutableMap::class.java)
             for (entry in map) {
                 mutable[entry.key?.toString()?:""] = entry.value
@@ -148,7 +151,7 @@ class ErrorController(
             errors?.also {
                 mutable["errors"] = it
             }
-            body = mutable;
+            body = mutable
         } catch (e: Exception) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
         }

@@ -25,6 +25,9 @@ object JwtUtils {
         return JWT.create()
                 .withClaim("type", bearer.type)
                 .withClaim("userId", bearer.userId)
+<#if loginTable.hasOrgan>
+                .withClaim("${loginTable.orgColumn.fieldName}", bearer.${loginTable.orgColumn.fieldName})
+</#if>
                 .withIssuedAt(Date(now))
                 .withExpiresAt(Date(now + expires))
                 .sign(jwtAlgorithm)
@@ -32,7 +35,7 @@ object JwtUtils {
 
     @JvmStatic
     fun loadBearer(jwt: DecodedJWT): JwtBearer {
-        return JwtBearer(jwt.getClaim("type").asString(), jwt.getClaim("userId").asInt(), jwt.getClaim("authId").asInt())
+        return JwtBearer(jwt.getClaim("type").asString(), jwt.getClaim("userId").<#if loginTable.idColumn.stringType>asString()<#else>asInt()</#if><#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").<#if loginTable.orgColumn.stringType>asString()<#else>asInt()</#if></#if>)
     }
 
     fun currentBearer(): JwtBearer {

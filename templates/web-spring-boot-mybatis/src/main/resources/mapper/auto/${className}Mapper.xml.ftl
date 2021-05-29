@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${packageName}.mapper.auto.${className}Mapper">
+<mapper namespace="${packageName}.mapper.auto.${className}AutoMapper">
     <!--${table.remark} 的 Mapper 实现 -->
     <#list table.descriptions as description>
     <!--${description} -->

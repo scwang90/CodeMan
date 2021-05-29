@@ -18,6 +18,7 @@ import java.sql.Types;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
@@ -59,13 +60,17 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
-//		model.setLoginTable(findLoginTable(tables, config.getTableLogin(), model::setHasLogin));
+		
+		model.setFeatures(new Features(Arrays.asList(config.getTargetFeatures().split(","))));
 
-		model.setLoginTable(findTable(tables, config.getTableLogin(), model::setHasLogin));
 		model.setOrganTable(findTable(tables, config.getTableOrgan(), model::setHasOrgan));
+		model.setLoginTable(findTable(tables, config.getTableLogin(), model::setHasLogin));
+		model.setLoginTables(findTables(tables, config.getTableLogin(), size -> model.setHasMultiLogin(size > 1)));
 
 		model.setHasCode(findColumn(tables, Table::isHasCode, Table::getCodeColumn, model::setCodeColumn));
-		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn));
+		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn) && model.isHasLogin());
+		//项目总特性中 是否包含机构，需要同时含有登录、并且登录表中含有机构Id 才算
+		model.setHasOrgan(model.isHasOrgan() && model.isHasLogin() && model.getLoginTable().isHasOrgan());
 		checkForeginKey(tables);
 		return model;
 	}
@@ -107,6 +112,20 @@ public class DefaultModelBuilder implements ModelBuilder {
 			return find.get();
 		}
 		return new Table();
+	}
+
+	private static List<Table> findTables(List<Table> tables, String tableKey, Action<Integer> success) {
+		Stream<String> keys = Arrays.stream(tableKey.split(","));
+		List<Table> find = keys.map(key -> {
+			return tables.stream().filter(t -> t.getName().equalsIgnoreCase(key)).findFirst().orElse(null);
+		}).filter(Objects::nonNull).collect(Collectors.toList());
+		if (find.isEmpty()) {
+			find = keys.map(key -> {
+				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
+			}).filter(Objects::nonNull).collect(Collectors.toList());
+		}
+		success.onAction(find.size());
+		return find;
 	}
 
 	private static boolean findColumn(List<Table> tables, IsTableHas tableHas, GetColumn get, SetTableColumn set) {
@@ -287,6 +306,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 		initTableColumn(columns, config.getColumnHideForClient(), null, column -> column.setHiddenForClient(true), null);
 		initTableColumn(columns, config.getColumnHideForSubmit(), null, column -> column.setHiddenForSubmit(true), null);
+		initTableColumn(columns, config.getColumnSearches(), null, column -> { table.getSearchColumns().add(column); table.setHasSearches(true); }, null);
+
 		if (table.isHasRemove()) {
 			Class<?> javaType = programLang.getJavaType(table.getRemoveColumn());
 			if (!Integer.class.equals(javaType) && !Boolean.class.equals(javaType) && !String.class.equals(javaType)) {
@@ -326,7 +347,21 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 	private void matchColumn(List<TableColumn> columns, String[] columnNames, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
 		for (String columnName : columnNames) {
-			Stream<TableColumn> stream = columns.stream().filter(c -> c.getName().equalsIgnoreCase(columnName));
+			Stream<TableColumn> stream = columns.stream().filter(c -> {
+				boolean startWith = columnName.endsWith("*");
+				boolean endWith = columnName.startsWith("*");
+				String name = columnName.replaceAll("^\\*|\\*$", "");
+				if (startWith && endWith) {
+					return c.getName().toLowerCase().contains(name.toLowerCase());
+				}
+				if (startWith) {
+					return c.getName().toLowerCase().startsWith(name.toLowerCase());
+				}
+				if (endWith) {
+					return c.getName().toLowerCase().endsWith(name.toLowerCase());
+				}
+				return c.getName().equalsIgnoreCase(columnName);
+			});
 			if (get != null) {
 				stream.findFirst().ifPresent(column -> {
 					success.onAction(true);

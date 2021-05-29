@@ -1,6 +1,6 @@
 package ${packageName}.model.api
 
-import ${packageName}.model.Model
+import ${packageName}.constant.ResultCode
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 
@@ -12,22 +12,34 @@ import io.swagger.annotations.ApiModelProperty
 @Suppress("unused")
 @ApiModel(description = "通用返回格式")
 class ApiResult<T>(
-        @ApiModelProperty("接口返回实体")
-        var result: T? = null,
         @ApiModelProperty("返回代码：200-成功 401-未登录 400-客户端错误 500-服务端错误")
         var code: Int = 200,
+        @ApiModelProperty("接口返回实体")
+        var result: T? = null,
         @ApiModelProperty("失败原因")
-        var reason: String? = "调用成功") : Model() {
+        var reason: String? = "调用成功") {
 
     companion object {
-        fun <TT> success(result: TT?): ApiResult<TT> {
-            return ApiResult(result, 200)
+        fun <T> success(result: T?): ApiResult<T> {
+            return ApiResult<T>(ResultCode.OK.code, result, "")
         }
-        fun fail400(reason: String?): ApiResult<String> {
-            return ApiResult(null, 400, reason)
+        fun <T> success(result: T, message: String): ApiResult<T> {
+            return ApiResult<T>(ResultCode.OK.code, result, message)
         }
-        fun fail500(reason: String?): ApiResult<String> {
-            return ApiResult(null, 500, reason)
+        fun <T> message(message: String): ApiResult<T> {
+            return ApiResult(ResultCode.OK.code, null, message)
+        }
+        fun <T> fail(code: ResultCode): ApiResult<T> {
+            return ApiResult(code.code, null, code.msg)
+        }
+        fun <T> fail(code: Int, message: String): ApiResult<T> {
+            return ApiResult(code, null, message)
+        }
+        fun <T> failClient(message: String): ApiResult<T> {
+            return ApiResult(ResultCode.BadRequest.code, null, message)
+        }
+        fun <T> failServer(message: String): ApiResult<T> {
+            return ApiResult(ResultCode.ServerError.code, null, message)
         }
     }
 }

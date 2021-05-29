@@ -31,7 +31,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
     protected Map<String, ConditionTask> conditionTaskMap;
     protected Set<ConditionTask> overwriteConditionTask;
 
-    private static final Pattern condition = Pattern.compile("\\$if\\{([^=]+)=([^}]+)}");
+    private static final Pattern condition = Pattern.compile("\\$if\\{(.+?)}");
 
     private static final Logger logger = LoggerFactory.getLogger(Engine.class);
 
@@ -143,9 +143,9 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         nameTemplate.process(root, writer);
         String path = writer.getBuffer().toString();
         boolean isFtlFile = false;
-        if (path.endsWith(".ftl")) {
+        if (!path.replaceAll("\\.ftl[xh]?$", "").equals(path)) {
             isFtlFile = true;
-            path = path.substring(0, path.length() - 4);
+            path = path.replaceAll("\\.ftl[xh]?$", "");
         } else if (path.contains(".ftl.")) {
             isFtlFile = true;
             path = path.replace(".ftl.", ".");
@@ -153,6 +153,18 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
 
         //判断已经生成的目标文件集合中是否已经含有即将生成的文件
         if (!set.contains(path)) {
+            Map<String, String> condition = new LinkedHashMap<>();
+            if (!condition(path, condition)) {
+                logger.info("条件不符 : " + path);
+                return;
+            }
+
+            if (!condition.isEmpty()) {
+                for (Map.Entry<String, String> entry : condition.entrySet()) {
+                    path = path.replace(entry.getKey(), entry.getValue());
+                }
+            }
+
             File file = new File(path);
             if (!file.exists() || task.forceOverWrite()) {
                 if (FileUtil.isTextFile(task.getTemplateFile()) && (isFtlFile || config.isTemplateProcessAll())) {
@@ -195,23 +207,23 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         return file;
     }
 
-    /**
-     * 模版文件条件选择
-     * @param file 模版文件或者文件夹
-     * @return true 文件达到条件 false 文件不符合条件
-     */
-    private boolean conditionForTemplateFile(File file) {
-        Matcher matcher = condition.matcher(file.getName());
-        if (matcher.find()) {
-            String key = matcher.group(1);
-            String value = matcher.group(2);
+    private boolean condition(String path, Map<String, String> conditionMap) {
+        Matcher matcher = condition.matcher(path);
+        while (matcher.find()) {
             try {
-                Template nameTemplate = getTemplate("${"+key+"}");
+                String group = matcher.group();
+                String magic = matcher.group(1)
+                        .replaceAll("\\b=\\b", "==")
+                        .replaceAll("==(\\w+)$", "=='$1'");
+                Template nameTemplate = getTemplate("${(" + magic + ")?c}");
                 StringWriter writer = new StringWriter();
                 nameTemplate.process(rootModel, writer);
-                String modelValue = writer.getBuffer().toString();
-
-                return modelValue.equals(value);
+                String value = writer.getBuffer().toString();
+                if (value.equals("true")) {
+                    conditionMap.put(group, "");
+                } else {
+                    return false;
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -221,26 +233,37 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
 
     @Override
     public Task build(File file, File templates, File target) {
-        Matcher matcher = condition.matcher(file.getPath());
-        Map<String, String> condition = new LinkedHashMap<>();
-        while (matcher.find()) {
-            String key = matcher.group(1);
-            String value = matcher.group(2);
-            try {
-                Template nameTemplate = getTemplate("${"+key+(("true".equals(value) || "false".equals(value))?"?c}":"}"));
-                StringWriter writer = new StringWriter();
-                nameTemplate.process(rootModel, writer);
-                String modelValue = writer.getBuffer().toString();
-                if (modelValue.equals(value)) {
-                    condition.put(key, value);
-                } else {
-                    logger.info("排除默认条件模板：" + file.getPath());
-                    return null;
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        DefaultTask defaultTask = new DefaultTask(file, templates, target, config, rootModel);
+        if (rootModel.isModelTask(defaultTask)) {
+            return defaultTask;
         }
+        Map<String, String> condition = new LinkedHashMap<>();
+        if (!condition(file.getPath(), condition)) {
+            logger.info("排除默认条件模板：" + file.getPath());
+            return null;
+        }
+//        Matcher matcher = condition.matcher(file.getPath());
+//        Map<String, String> condition = new LinkedHashMap<>();
+//        while (matcher.find()) {
+//            try {
+//                String group = matcher.group();
+//                String magic = matcher.group(1)
+//                        .replaceAll("\\b=\\b", "==")
+//                        .replaceAll("==(\\w+)$", "=='$1'");
+//                Template nameTemplate = getTemplate("${(" + magic + ")?c}");
+//                StringWriter writer = new StringWriter();
+//                nameTemplate.process(rootModel, writer);
+//                String value = writer.getBuffer().toString();
+//                if (value.equals("true")) {
+//                    condition.put(group, "");
+//                } else {
+//                    logger.info("排除默认条件模板：" + file.getPath());
+//                    return null;
+//                }
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         if (!condition.isEmpty()) {
             ConditionTask task = new ConditionTask(file, templates, target, condition, config, rootModel);
             String templateKey = task.getTargetFile().getAbsolutePath();
@@ -259,13 +282,11 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
             }
             return task;
         }
-        return new DefaultTask(file, templates, target, config, rootModel);
+        return defaultTask;
     }
 
     private static class ConditionTask extends DefaultTask {
 
-//        public final String key;
-//        public final String value;
         public final File targetFile;
         public final Map<String, String> condition;
 
@@ -278,7 +299,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         private File buildTargetFile() {
             String path = super.getTargetFile().getAbsolutePath();
             for (Map.Entry<String, String> entity : this.condition.entrySet()) {
-                path = path.replace("$if{" + entity.getKey() + "=" + entity.getValue() + "}", "");
+                path = path.replace(entity.getKey(), entity.getValue());
             }
             return new File(path);
         }
@@ -288,11 +309,6 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
             return this.targetFile;
         }
 
-//        public ConditionTask(File templates, File target, String key, String value) {
-//            super(templates, target);
-//            this.key = key;
-//            this.value = value;
-//        }
     }
 
 }

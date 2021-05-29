@@ -14,6 +14,7 @@ public class ProjectConfigFactory {
 
         config.setTemplateLang(properties.getProperty("code.man.template.lang",config.getTemplateLang()));
 
+        config.setTargetFeatures(properties.getProperty("code.man.target.features",config.getTargetFeatures()));
         config.setTargetProjectName(properties.getProperty("code.man.target.project.name",config.getTargetProjectName()));
         config.setTargetProjectAuthor(properties.getProperty("code.man.target.project.author",config.getTargetProjectAuthor()));
         config.setTargetProjectPackage(properties.getProperty("code.man.target.project.package",config.getTargetProjectPackage()));
@@ -39,6 +40,7 @@ public class ProjectConfigFactory {
         config.setColumnPassword(properties.getProperty("code.man.database.column.password",config.getColumnPassword()));
         config.setColumnUsername(properties.getProperty("code.man.database.column.username",config.getColumnUsername()));
         config.setColumnCreator(properties.getProperty("code.man.database.column.creator",config.getColumnCreator()));
+        config.setColumnSearches(properties.getProperty("code.man.database.column.searches",config.getColumnSearches()));
         config.setColumnHideForClient(properties.getProperty("code.man.database.column.hide-for-client",config.getColumnHideForClient()));
         config.setColumnHideForSubmit(properties.getProperty("code.man.database.column.hide-for-submit",config.getColumnHideForSubmit()));
         config.setColumnHideForClient(properties.getProperty("code.man.database.column.hideForClient",config.getColumnHideForClient()));

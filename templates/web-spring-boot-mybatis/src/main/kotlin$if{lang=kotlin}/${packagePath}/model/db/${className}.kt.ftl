@@ -45,7 +45,7 @@ open class ${className} {
 	@ApiModelProperty(value = "${column.remark}"<@compress single_line=true>
 		<#if column.nullable != true>, required = true</#if>
 		<#if column.hiddenForClient>, hidden = true</#if>
-		<#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"</#if>
+		<#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"<#elseif column.defValue?length != 0>, example = "${column.defValue?trim}"<#elseif column.intType>, example = "0"</#if>
 		<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>
 	</@compress>)
 	<#if column == table.idColumn>
