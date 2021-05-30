@@ -3,10 +3,7 @@ package com.code.smither.project.base.model;
 import com.code.smither.engine.api.Model;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,57 +14,57 @@ import java.util.List;
  * Created by SCWANG on 2016/8/18.
  */
 @Data
-@ToString(exclude = {"exportedTables","exportedKeys","importedKeys"})
 @SuppressWarnings("unused")
 public class Table implements Model, MetaDataTable {
 
-    private String name;// 原表名称
-    private String nameSql;// SQL语句中使用的名称
-    private String nameSqlInStr;// SQL语句中使用的名称（在字符串拼接中使用）
-    private String remark;// 字段注释
-    private String description;//详细描述（分析得到）
-    private String comment;//原始备注（remark+description）
-    private String remarkName;//备注名称（与remark的区别时不已'表'结尾）
+    private String name;                    // 原表名称
+    private String nameSql;                 // SQL语句中使用的名称
+    private String nameSqlInStr;            // SQL语句中使用的名称（在字符串拼接中使用）
+    private String remark;                  // 字段注释
+    private String description;             //详细描述（分析得到）
+    private String comment;                 //原始备注（remark+description）
+    private String remarkName;              //备注名称（与remark的区别时不已'表'结尾）
 
-    private String urlPathName;// 对应的 url 路劲名称
+    private String urlPathName;                     // 对应的 url 路劲名称
 
-    private String className;// 原类名称（首字母大写）
-    private String classNameCamel;// 骆驼峰类名（首字母小写）
-    private String classNameUpper;// 类名全大写
-    private String classNameLower;// 类名全小写
+    private String className;                       // 原类名称（首字母大写）
+    private String classNameCamel;                  // 骆驼峰类名（首字母小写）
+    private String classNameUpper;                  // 类名全大写
+    private String classNameLower;                  // 类名全小写
 
-    private TableColumn idColumn;           // ID列
-    private TableColumn orgColumn;          // 机构列
-    private TableColumn codeColumn;         // 编号构列
-    private TableColumn genderColumn;       // 性别列
-    private TableColumn createColumn;       // 创建日志列
-    private TableColumn updateColumn;       // 更新日志列
-    private TableColumn removeColumn;       // 删除列
-    private TableColumn creatorColumn;      // 创建者列
-    private TableColumn usernameColumn;     // 账户列
-    private TableColumn passwordColumn;     // 密码列
+    private TableColumn idColumn;                   // ID列
+    private TableColumn orgColumn;                  // 机构列
+    private TableColumn codeColumn;                 // 编号构列
+    private TableColumn genderColumn;               // 性别列
+    private TableColumn createColumn;               // 创建日志列
+    private TableColumn updateColumn;               // 更新日志列
+    private TableColumn removeColumn;               // 删除列
+    private TableColumn creatorColumn;              // 创建者列
+    private TableColumn usernameColumn;             // 账户列
+    private TableColumn passwordColumn;             // 密码列
 
-    private boolean hasId = false;          // 是否有ID列
-    private boolean hasOrgan = false;       // 是否有机构列
-    private boolean hasCode = false;        // 是否有编号构列
-    private boolean hasCreate = false;      // 是否有创建日志列
-    private boolean hasUpdate = false;      // 是否有更新日志列
-    private boolean hasGender = false;      // 是否有性别列
-    private boolean hasRemove = false;      // 是否有删除列
-    private boolean hasCreator = false;     // 是否有创建者列
-    private boolean hasUsername = false;    // 是否有账户列
-    private boolean hasPassword = false;    // 是否有密码列
-    private boolean hasSearches = false;    // 收费有搜索列
-    private boolean isRelateTable = false;  // 是否是关联表
+    private boolean hasId = false;                  // 是否有ID列
+    private boolean hasOrgan = false;               // 是否有机构列
+    private boolean hasCode = false;                // 是否有编号构列
+    private boolean hasCreate = false;              // 是否有创建日志列
+    private boolean hasUpdate = false;              // 是否有更新日志列
+    private boolean hasGender = false;              // 是否有性别列
+    private boolean hasRemove = false;              // 是否有删除列
+    private boolean hasCreator = false;             // 是否有创建者列
+    private boolean hasUsername = false;            // 是否有账户列
+    private boolean hasPassword = false;            // 是否有密码列
+    private boolean hasSearches = false;            // 收费有搜索列
+    private boolean relateTable = false;            // 是否是关联表
 
-    private List<TableColumn> columns;      // 表字段
-    private List<ForeignKey> exportedKeys;  // 外键（导出）
-    private List<ForeignKey> importedKeys;  // 外键（导入）
-
-    private List<TableColumn> searchColumns = new ArrayList<>();// 搜索列
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> columns;              // 表字段
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportedKeys;          // 外键（导出）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importedKeys;          // 外键（导入）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportCascadeKeys;     // 外键（导出，级联，一对多）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importCascadeKeys;     // 外键（导入，级联，一对一）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<RelatedKey> relateCascadeKeys;     // 外键（关联，级联，多对多）
 
     @Setter(AccessLevel.PROTECTED)
-    private List<Table> exportedTables = new ArrayList<>();//  引用键值对（与外键相反）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> searchColumns = new ArrayList<>();// 搜索列
 
     private List<String> descriptions;      // 多行详细描述
 
@@ -146,8 +143,20 @@ public class Table implements Model, MetaDataTable {
         this.passwordColumn = passwordColumn;
     }
 
-    public void pushExportedTable(Table table) {
-        exportedTables.add(table);
+    public boolean isHasCascadeKey() {
+        return isHasExportCascadeKey() || isHasImportCascadeKey() || isHasRelatedCascadeKey();
+    }
+
+    public boolean isHasRelatedCascadeKey() {
+        return relateCascadeKeys != null && relateCascadeKeys.size() > 0;
+    }
+
+    public boolean isHasExportCascadeKey() {
+        return exportCascadeKeys != null && exportCascadeKeys.size() > 0;
+    }
+
+    public boolean isHasImportCascadeKey() {
+        return importCascadeKeys != null && importCascadeKeys.size() > 0;
     }
 
 }

@@ -44,7 +44,7 @@
 		<property name="password">123456</property>
 <!--		<property name="password">z123456</property>-->
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
-		<property name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/midaier</property>
+		<property name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/traveler</property>
 <!--		<property name="jdbcUrl">jdbc:mysql://192.168.0.205:3306/midaier</property>-->
 	</named-config>
 </c3p0-config>

@@ -8,7 +8,7 @@ package ${packageName}.service.auto;
 	</#if>
 </#list>
 
-<#if table.hasOrgan || table == loginTable>
+<#if (table.hasOrgan && hasLogin) || table == loginTable>
 import ${packageName}.exception.ClientException;
 </#if>
 <#if hasSearch>
@@ -32,7 +32,7 @@ import ${packageName}.util.CommonUtil;
 <#if !table.idColumn.autoIncrement && table.idColumn.stringType>
 import ${packageName}.util.ID22;
 </#if>
-<#if table.hasOrgan || table == loginTable || (table == organTable  && hasLogin) || (hasLogin && table.hasCreator)>
+<#if table == loginTable || (table.hasOrgan && hasLogin) || (table == organTable  && hasLogin) || (hasLogin && table.hasCreator)>
 import ${packageName}.util.JwtUtils;
 </#if>
 
@@ -108,18 +108,18 @@ public class ${className}Service {
 			model.set${table.idColumn.fieldNameUpper}(ID22.random());
 		}
 </#if>
-<#if table.hasOrgan>
+<#if table.hasOrgan && hasLogin>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
 </#if>
 <#if table.hasCode>
-	<#if table.hasOrgan>
+	<#if table.hasOrgan && hasLogin>
 		int code = commonMapper.maxCodeByTableAndOrg(Tables.${table.className}.name, ${table.orgColumn.fieldName});
 	<#else>
 		int code = commonMapper.maxCodeByTable(Tables.${table.className}.name);
 	</#if>
 		model.set${table.codeColumn.fieldNameUpper}(CommonUtil.formatCode(code));
 </#if>
-<#if table.hasOrgan>
+<#if table.hasOrgan && hasLogin>
 		model.set${table.orgColumn.fieldNameUpper}(${table.orgColumn.fieldName});
 </#if>
 <#if table.hasCreator && hasLogin>
@@ -173,12 +173,12 @@ public class ${className}Service {
 	 × @return 数据实体对象
 	 */
     public ${className} findById(Object id) {
-	<#if table.hasOrgan>
+	<#if table.hasOrgan && hasLogin>
 		${className} model = mapper.findById(id);
 		if (model == null) {
 			throw new ClientException("无效的${table.remarkName}Id");
 		}
-		<#if hasLogin && loginTable.orgColumn.nullable>
+		<#if loginTable.orgColumn.nullable>
 		if (JwtUtils.currentBearer().${table.orgColumn.fieldName} == null || !JwtUtils.currentBearer().${table.orgColumn.fieldName}.equals(model.get${table.orgColumn.fieldNameUpper}())) {
 		<#elseif table.orgColumn.stringType>
 		if (model.get${table.orgColumn.fieldNameUpper}() == null || !model.get${table.orgColumn.fieldNameUpper}().equals(JwtUtils.currentBearer().${table.orgColumn.fieldName})) {

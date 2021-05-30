@@ -3,6 +3,7 @@ package com.code.smither.project.base.model;
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.constant.Database;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -168,4 +169,7 @@ public class TableColumn implements MetaDataColumn {
 		this.fieldCSharpType = fieldCSharpType;
 	}
 
+	public boolean isNotNull() {
+		return !this.nullable;
+	}
 }

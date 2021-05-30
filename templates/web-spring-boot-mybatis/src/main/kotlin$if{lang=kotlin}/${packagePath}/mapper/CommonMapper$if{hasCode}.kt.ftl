@@ -17,7 +17,7 @@ interface CommonMapper {
 	 * @param table 表名
 	 * @return 最大编号
 	 */
-	@Select("SELECT COALESCE(MAX(${codeColumn.nameSqlInStr}),'0') FROM ${r"$"}{table}")
+	@Select("SELECT COALESCE(MAX(${codeColumn.nameSqlInStr}),'0') FROM \${r"$"}{table}")
 	fun maxCodeByTable(@Param("table") table: String): Int
 
 <#if hasOrgan>
@@ -27,7 +27,7 @@ interface CommonMapper {
 	 * @param ${orgColumn.fieldName} ${organTable.remarkName}Id
 	 * @return 最大编号
 	 */
-	@Select("SELECT COALESCE(MAX(code),'0') FROM ${r"$"}{table} WHERE ${orgColumn.nameSqlInStr} = ${r"#"}{${orgColumn.fieldName}}")
+	@Select("SELECT COALESCE(MAX(code),'0') FROM \${r"$"}{table} WHERE ${orgColumn.nameSqlInStr} = ${r"#"}{${orgColumn.fieldName}}")
 	fun maxCodeByTableAndOrg(@Param("table") table: String, @Param("${orgColumn.fieldName}") ${orgColumn.fieldName}: ${orgColumn.fieldTypeObject}): Int
 </#if>
 

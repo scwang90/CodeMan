@@ -14,178 +14,22 @@
         <result column="${column.name}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
     </#if>
 </#list>
-  </resultMap>
+    </resultMap>
+<#if table.hasCascadeKey>
 
-    <sql id="sql_where_item_II">
-        <choose>
-            <when test="whereII.value != null">
-                <choose>
-                    <when test="whereII.op == 'IN'">
-                        ${r"$"}{whereII.column} IN
-                        <foreach collection="whereII.value" item="item" open="(" close=")" separator=",">
-                            ${r"#"}{item}
-                        </foreach>
-                    </when>
-                    <otherwise>
-                        ${r"$"}{whereII.column} ${r"$"}{whereII.op} ${r"#"}{whereII.value}
-                    </otherwise>
-                </choose>
-            </when>
-            <otherwise>
-                ${r"$"}{whereII.column} ${r"$"}{whereII.op}
-            </otherwise>
-        </choose>
-    </sql>
-
-    <sql id="sql_where_II">
-        <choose>
-            <when test="whereI.op == 'OR'">
-                <foreach collection="whereI.wheres" item="whereII" open="(" close=")" separator="OR">
-                    <include refid="sql_where_item_II" />
-                </foreach>
-            </when>
-            <otherwise>
-                <foreach collection="whereI.wheres" item="whereII" open="(" close=")" separator="AND">
-                    <include refid="sql_where_item_II" />
-                </foreach>
-            </otherwise>
-        </choose>
-    </sql>
-
-  <sql id="sql_where_item_I">
-      <choose>
-          <when test="whereI.wheres != null">
-              <include refid="sql_where_II"/>
-          </when>
-          <otherwise>
-              <choose>
-                  <when test="whereI.value != null">
-                      <choose>
-                          <when test="whereI.op == 'IN'">
-                              ${r"$"}{whereI.column} IN
-                              <foreach collection="whereI.value" item="item" open="(" close=")" separator=",">
-                                  ${r"#"}{item}
-                              </foreach>
-                          </when>
-                          <otherwise>
-                              ${r"$"}{whereI.column} ${r"$"}{whereI.op} ${r"#"}{whereI.value}
-                          </otherwise>
-                      </choose>
-                  </when>
-                  <otherwise>
-                      ${r"$"}{whereI.column} ${r"$"}{whereI.op}
-                  </otherwise>
-              </choose>
-          </otherwise>
-      </choose>
-  </sql>
-
-  <sql id="sql_where_I">
-      <choose>
-          <when test="where.op == 'OR'">
-              <foreach collection="where.wheres" item="whereI" open="(" close=")" separator="OR">
-                  <include refid="sql_where_item_I" />
-              </foreach>
-          </when>
-          <otherwise>
-              <foreach collection="where.wheres" item="whereI" open="(" close=")" separator="AND">
-                  <include refid="sql_where_item_I" />
-              </foreach>
-          </otherwise>
-      </choose>
-  </sql>
-
-    <sql id="sql_where_item">
-        <choose>
-            <when test="where.wheres != null">
-                <include refid="sql_where_I"/>
-            </when>
-            <otherwise>
-                <choose>
-                    <when test="where.value != null">
-                        <choose>
-                            <when test="where.op == 'IN'">
-                                ${r"$"}{where.column} IN
-                                <foreach collection="where.value" item="item" open="(" close=")" separator=",">
-                                    ${r"#"}{item}
-                                </foreach>
-                            </when>
-                            <otherwise>
-                                ${r"$"}{where.column} ${r"$"}{where.op} ${r"#"}{where.value}
-                            </otherwise>
-                        </choose>
-                    </when>
-                    <otherwise>
-                        ${r"$"}{where.column} ${r"$"}{where.op}
-                    </otherwise>
-                </choose>
-            </otherwise>
-        </choose>
-    </sql>
-
-    <sql id="sql_where_internal">
-        <choose>
-            <when test="column != null">
-                <choose>
-                    <when test="value != null">
-                        <choose>
-                            <when test="op == 'IN'">
-                                ${r"$"}{column} IN
-                                <foreach collection="value" item="item" open="(" close=")" separator=",">
-                                    ${r"#"}{item}
-                                </foreach>
-                            </when>
-                            <otherwise>
-                                ${r"$"}{column} ${r"$"}{op} ${r"#"}{value}
-                            </otherwise>
-                        </choose>
-                    </when>
-                    <otherwise>
-                        ${r"$"}{column} ${r"$"}{op}
-                    </otherwise>
-                </choose>
-            </when>
-            <when test="wheres != null">
-                <choose>
-                    <when test="op == 'OR'">
-                        <foreach collection="wheres" item="where" separator=" OR ">
-                            <include refid="sql_where_item" />
-                        </foreach>
-                    </when>
-                    <otherwise>
-                        <foreach collection="wheres" item="where" separator=" AND ">
-                            <include refid="sql_where_item" />
-                        </foreach>
-                    </otherwise>
-                </choose>
-            </when>
-        </choose>
-    </sql>
-
-    <sql id="sql_where">
-        <where>
-            <include refid="sql_where_internal"/>
-        </where>
-    </sql>
-
-    <sql id="sql_order">
-        <choose>
-            <when test="orders != null and orders.size > 0">
-                ORDER BY
-                <foreach collection="orders" item="order" separator=" , ">
-                    ${r"$"}{order.column}
-                    <if test="order.desc">
-                        DESC
-                    </if>
-                </foreach>
-            </when>
-            <otherwise>
-                <#if table.hasCode>
-                ORDER BY ${table.codeColumn.nameSql}
-                </#if>
-            </otherwise>
-        </choose>
-    </sql>
+    <!-- 数据映射（包含外键）-->
+    <resultMap id="MAP-INFO" type="${packageName}.model.db.${className}Bean" extends="MAP">
+    <#list table.importCascadeKeys as key>
+        <association column="{${key.pkColumn.fieldName}=${key.fkColumn.name}}" property="${tools.idToModel(key.fkColumn.fieldName)}" select="${packageName}.mapper.auto.${key.pkTable.className}AutoMapper.findById" />
+    </#list>
+    <#list table.exportCascadeKeys as key>
+        <collection column="{${key.fkColumn.fieldName}=${key.pkColumn.fieldName}}" property="${tools.toPlural(key.fkTable.classNameCamel)}" select="${packageName}.mapper.auto.${key.fkTable.className}AutoMapper.selectBy${key.fkColumn.fieldNameUpper}"/>
+    </#list>
+    <#list table.relateCascadeKeys as key>
+        <collection column="{${key.relateLocalColumn.fieldName}=${key.localColumn.fieldName}}" property="related${tools.toPlural(key.targetTable.className)}" select="${packageName}.mapper.auto.${key.targetTable.className}AutoMapper.selectByRelate${key.relateLocalColumn.fieldNameUpper}"/>
+    </#list>
+    </resultMap>
+</#if>
 
     <!-- 插入新数据（非空插入，不支持批量插入）-->
     <insert id="insert" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
@@ -220,7 +64,7 @@
         )
     </insert>
 
-  <!-- 插入新数据（全插入，支持批量插入）-->
+    <!-- 插入新数据（全插入，支持批量插入）-->
 <#if (dbType!"")=="oracle">
     <insert id="insertFull" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
         INSERT ALL
@@ -243,7 +87,7 @@
     </insert>
 </#if>
 
-  <!-- 更新一条数据（非空更新）-->
+    <!-- 更新一条数据（非空更新）-->
     <update id="update" parameterType="${packageName}.model.db.${className}">
         UPDATE ${table.nameSql}
         <set>
@@ -258,7 +102,7 @@
         WHERE ${table.idColumn.nameSql}=${r"#"}{${table.idColumn.fieldName}}
     </update>
 
-  <!-- 更新一条数据（全更新）-->
+    <!-- 更新一条数据（全更新）-->
     <update id="updateFull" parameterType="${packageName}.model.db.${className}">
         UPDATE ${table.nameSql}
         <set>
@@ -271,7 +115,7 @@
         WHERE ${table.idColumn.nameSql}=${r"#"}{${table.idColumn.fieldName}}
     </update>
 
-  <!-- 更新数据（灵活构建查询条件，修改多条）-->
+    <!-- 更新数据（灵活构建查询条件，修改多条）-->
     <update id="updateSetter">
         <if test="column != null or wheres != null">
           UPDATE ${table.nameSql}
@@ -281,12 +125,12 @@
               </foreach>
           </set>
           WHERE
-          <include refid="sql_where_internal"/>
+          <include refid="include.sql_where_internal"/>
         </if>
     </update>
 
 <#if table.hasId>
-  <!-- 根据ID删除（支持批量删除）-->
+    <!-- 根据ID删除（支持批量删除）-->
     <delete id="deleteById">
         DELETE FROM ${table.nameSql} WHERE ${table.idColumn.nameSql} IN
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
@@ -295,43 +139,88 @@
     </delete>
 
 </#if>
-  <!-- 根据条件删除（灵活构建查询条件） -->
+    <!-- 根据条件删除（灵活构建查询条件） -->
     <delete id="deleteWhere">
         DELETE FROM ${table.nameSql} WHERE
-        <include refid="sql_where_internal"/>
+        <include refid="include.sql_where_internal"/>
     </delete>
 
-  <!-- 统计数据数量（全部） -->
+    <!-- 统计数据数量（全部） -->
     <select id="countAll" resultType="java.lang.Integer">
         SELECT COUNT(0) FROM ${table.nameSql}
     </select>
 
-  <!-- 根据条件统计数据数量（灵活构建查询条件） -->
+    <!-- 根据条件统计数据数量（灵活构建查询条件） -->
     <select id="countWhere" resultType="java.lang.Integer">
         SELECT COUNT(0) FROM ${table.nameSql}
-        <include refid="sql_where"/>
+        <include refid="include.sql_where"/>
     </select>
 
 <#if table.hasId>
-  <!-- 根据ID获取 -->
+    <!-- 根据ID获取 -->
     <select id="findById" resultMap="MAP">
         SELECT * FROM ${table.nameSql} WHERE ${table.idColumn.nameSql}=${r"#"}{id}
     </select>
 
 </#if>
-  <!-- 单条查询（灵活构建查询条件） -->
+    <!-- 单条查询（灵活构建查询条件） -->
     <select id="selectOneWhere" resultMap="MAP">
         SELECT * FROM ${table.nameSql}
-        <include refid="sql_where"/>
-        <include refid="sql_order"/>
+        <include refid="include.sql_where"/>
+        <include refid="include.sql_order">
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
+        </include>
     </select>
 
-  <!-- 批量查询（灵活构建查询条件） -->
+    <!-- 批量查询（灵活构建查询条件） -->
     <select id="selectWhere" resultMap="MAP">
         SELECT * FROM ${table.nameSql}
-        <include refid="sql_where"/>
-        <include refid="sql_order"/>
+        <include refid="include.sql_where"/>
+        <include refid="include.sql_order">
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
+        </include>
     </select>
+<#if table.hasCascadeKey>
+    <#if table.hasId>
+
+    <!-- 根据ID获取（包含外键） -->
+    <select id="findBeanById" resultMap="MAP-INFO">
+        SELECT * FROM ${table.nameSql} WHERE ${table.idColumn.nameSql}=${r"#"}{id}
+    </select>
+    </#if>
+
+    <!-- 单条查询（包含外键，灵活构建查询条件） -->
+    <select id="selectBeanOneWhere" resultMap="MAP-INFO">
+        SELECT * FROM ${table.nameSql}
+        <include refid="include.sql_where"/>
+        <include refid="include.sql_order">
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
+        </include>
+    </select>
+
+    <!-- 批量查询（包含外键，灵活构建查询条件） -->
+    <select id="selectBeanWhere" resultMap="MAP-INFO">
+        SELECT * FROM ${table.nameSql}
+        <include refid="include.sql_where"/>
+        <include refid="include.sql_order">
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
+        </include>
+    </select>
+</#if>
+<#list table.importedKeys as key>
+
+    <!-- 批量查询（根据${key.pkTable.remarkName}）-->
+    <select id="selectBy${key.fkColumn.fieldNameUpper}" resultMap="MAP">
+        SELECT * FROM ${table.nameSql} WHERE ${key.fkColumn.nameSql}=${r"#"}{${key.fkColumn.fieldName}}<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} </#if>
+    </select>
+</#list>
+<#list table.relateCascadeKeys as key>
+
+    <!-- 级联查询（根据${key.targetTable.remarkName}${key.targetColumn.remarkName}）-->
+    <select id="selectByRelate${key.relateTargetColumn.fieldNameUpper}" resultMap="MAP">
+        SELECT * FROM ${table.nameSql} WHERE ${key.localColumn.nameSql} IN (SELECT ${key.relateLocalColumn.nameSql} FROM ${key.relateTable.nameSql} WHERE ${key.relateTargetColumn.nameSql}=${r"#"}{${key.relateTargetColumn.fieldName}})
+    </select>
+</#list>
 
 </mapper>
 

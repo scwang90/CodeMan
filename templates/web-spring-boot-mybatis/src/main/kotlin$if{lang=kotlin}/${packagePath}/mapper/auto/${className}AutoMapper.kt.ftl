@@ -4,6 +4,9 @@ import ${packageName}.mapper.intent.api.Query
 import ${packageName}.mapper.intent.api.WhereQuery
 import ${packageName}.mapper.intent.tables.${table.classNameUpper}
 import ${packageName}.model.db.${className}
+<#if table.hasCascadeKey>
+import ${packageName}.model.db.${className}Bean
+</#if>
 
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
@@ -111,7 +114,7 @@ interface ${className}AutoMapper {
 	/**
 	 * 批量查询（灵活构建查询条件）
 	 * @param where 查询条件
-	 * @return null 或者 匹配条件的数据
+	 * @return empty 或者 匹配条件的数据
 	 */
 	fun selectWhere(where: Query<${table.className}>?): List<${className}>
 
@@ -119,9 +122,59 @@ interface ${className}AutoMapper {
 	 * 批量查询（灵活构建查询条件，分页）
 	 * @param where 查询条件
  	 * @param rows 分页参数
-	 * @return null 或者 匹配条件的数据
+	 * @return empty 或者 匹配条件的数据
 	 */
 	fun selectWhere(where: Query<${table.className}>?, rows: RowBounds): List<${className}>
+<#if table.hasCascadeKey>
+    <#if table.hasId>
+
+	/**
+	 * 根据ID获取（包含外键）
+	 * @param id 主键ID
+	 * @return null 或者 主键等于id的数据
+	 */
+	fun findBeanById(@Param("id") id: Any?): ${className}Bean?
+    </#if>
+    
+	/**
+	 * 单条查询（包含外键，灵活构建查询条件）
+	 * @param where 查询条件
+	 * @return null 或者 匹配条件的数据
+	 */
+	fun selectBeanOneWhere(where: Query<${table.className}>): ${className}Bean?
+	
+	/**
+	 * 批量查询（包含外键，灵活构建查询条件）
+	 * @param where 查询条件
+	 * @return empty 或者 匹配条件的数据
+	 */
+	fun selectBeanWhere(where: Query<${table.className}>?): List<${className}Bean>
+
+	/**
+	 * 批量查询（包含外键，灵活构建查询条件，分页）
+	 * @param where 查询条件
+ 	 * @param rows 分页参数
+	 * @return empty 或者 匹配条件的数据
+	 */
+	fun selectBeanWhere(where: Query<${table.className}>?, rows: RowBounds): List<${className}Bean>
+</#if>
+<#list table.importCascadeKeys as key>
+
+	/**
+	 * 批量查询（根据${key.pkTable.remarkName}）
+	 * @param ${key.fkColumn.fieldName} 关联条件
+	 * @return empty 或者 匹配条件的数据
+	 */
+	fun selectBy${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}): List<${table.className}>
+
+	/**
+	 * 批量查询（根据${key.pkTable.remarkName}，分页）
+	 * @param ${key.fkColumn.fieldName} 关联条件
+ 	 * @param rows 分页参数
+	 * @return empty 或者 匹配条件的数据
+	 */
+	fun selectBy${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, rows: RowBounds): List<${table.className}>
+</#list>
 
 <#if table.idColumn.autoIncrement>
 	/**

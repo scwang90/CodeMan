@@ -3,10 +3,12 @@ package com.code.smither.engine;
 import com.code.smither.engine.api.FileFilter;
 import com.code.smither.engine.api.*;
 import com.code.smither.engine.impl.DefaultTask;
+import com.code.smither.engine.tools.Tools;
 import com.code.smither.engine.util.FileUtil;
 import com.code.smither.engine.util.LoggerUtil;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.beans.StringModel;
+import freemarker.template.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -186,7 +188,18 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
 
     protected void processTemplate(RootModel root, File templateFile, File file) throws IOException, TemplateException {
         try(Writer out = getFileWriter(file)) {
-            getTemplate(templateFile).process(root, out);
+            Template template = getTemplate(templateFile);
+            ObjectWrapper wrapper = template.getObjectWrapper();
+            template.process(new StringModel(root, (BeansWrapper) wrapper) {
+                @Override
+                public TemplateModel get(String key) throws TemplateModelException {
+                    TemplateModel model = super.get(key);
+                    if (model == null && "tools".equals(key)) {
+                        return new StringModel(new Tools(), wrapper);
+                    }
+                    return model;
+                }
+            }, out);
         }
     }
 

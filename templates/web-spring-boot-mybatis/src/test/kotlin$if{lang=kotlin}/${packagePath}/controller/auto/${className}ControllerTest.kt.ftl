@@ -30,10 +30,10 @@ class ${className}ManagerControllerTest : BaseControllerTests() {
 	@DisplayName("列表测试方法")
 	fun list() {
 		mockMvc.perform(get("/api/v1/${table.urlPathName}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(*getLoginCookie()))
+				.cookie(*getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print())
@@ -44,10 +44,10 @@ class ${className}ManagerControllerTest : BaseControllerTests() {
 	@DisplayName("插入测试方法")
 	fun insert() {
 		mockMvc.perform(post("/api/v1/${table.urlPathName}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(*getLoginCookie()))
+				.cookie(*getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print())
@@ -58,10 +58,10 @@ class ${className}ManagerControllerTest : BaseControllerTests() {
 	@DisplayName("更新测试方法")
 	fun update() {
 		mockMvc.perform(put("/api/v1/${table.urlPathName}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(*getLoginCookie()))
+				.cookie(*getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print())
@@ -72,10 +72,10 @@ class ${className}ManagerControllerTest : BaseControllerTests() {
 	@DisplayName("获取测试方法")
 	fun get() {
 		mockMvc.perform(get("/api/v1/${table.urlPathName}/{id}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(*getLoginCookie()))
+				.cookie(*getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print())
@@ -86,10 +86,10 @@ class ${className}ManagerControllerTest : BaseControllerTests() {
 	@DisplayName("删除测试方法")
 	fun delete() {
 		mockMvc.perform(delete("/api/v1/${table.urlPathName}/{id}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(*getLoginCookie()))
+				.cookie(*getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print())

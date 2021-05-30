@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="include">
+    <!-- Mapper 公共实现 -->
+
+    <sql id="sql_where_item_II">
+        <choose>
+            <when test="whereII.value != null">
+                <choose>
+                    <when test="whereII.op == 'IN'">
+                        ${whereII.column} IN
+                        <foreach collection="whereII.value" item="item" open="(" close=")" separator=",">
+                            #{item}
+                        </foreach>
+                    </when>
+                    <otherwise>
+                        ${whereII.column} ${whereII.op} #{whereII.value}
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                ${whereII.column} ${whereII.op}
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="sql_where_II">
+        <choose>
+            <when test="whereI.op == 'OR'">
+                <foreach collection="whereI.wheres" item="whereII" open="(" close=")" separator="OR">
+                    <include refid="include.sql_where_item_II" />
+                </foreach>
+            </when>
+            <otherwise>
+                <foreach collection="whereI.wheres" item="whereII" open="(" close=")" separator="AND">
+                    <include refid="include.sql_where_item_II" />
+                </foreach>
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="sql_where_item_I">
+        <choose>
+            <when test="whereI.wheres != null">
+                <include refid="include.sql_where_II"/>
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="whereI.value != null">
+                        <choose>
+                            <when test="whereI.op == 'IN'">
+                                ${whereI.column} IN
+                                <foreach collection="whereI.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <otherwise>
+                                ${whereI.column} ${whereI.op} #{whereI.value}
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        ${whereI.column} ${whereI.op}
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="sql_where_I">
+        <choose>
+            <when test="where.op == 'OR'">
+                <foreach collection="where.wheres" item="whereI" open="(" close=")" separator="OR">
+                    <include refid="include.sql_where_item_I" />
+                </foreach>
+            </when>
+            <otherwise>
+                <foreach collection="where.wheres" item="whereI" open="(" close=")" separator="AND">
+                    <include refid="include.sql_where_item_I" />
+                </foreach>
+          </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="sql_where_item">
+        <choose>
+            <when test="where.wheres != null">
+                <include refid="include.sql_where_I"/>
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="where.value != null">
+                        <choose>
+                            <when test="where.op == 'IN'">
+                                ${where.column} IN
+                                <foreach collection="where.value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <otherwise>
+                                ${where.column} ${where.op} #{where.value}
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        ${where.column} ${where.op}
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="sql_where_internal">
+        <choose>
+            <when test="column != null">
+                <choose>
+                    <when test="value != null">
+                        <choose>
+                            <when test="op == 'IN'">
+                                ${column} IN
+                                <foreach collection="value" item="item" open="(" close=")" separator=",">
+                                    #{item}
+                                </foreach>
+                            </when>
+                            <otherwise>
+                                ${column} ${op} #{value}
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        ${column} ${op}
+                    </otherwise>
+                </choose>
+            </when>
+            <when test="wheres != null">
+                <choose>
+                    <when test="op == 'OR'">
+                        <foreach collection="wheres" item="where" separator=" OR ">
+                            <include refid="include.sql_where_item" />
+                        </foreach>
+                    </when>
+                    <otherwise>
+                        <foreach collection="wheres" item="where" separator=" AND ">
+                            <include refid="include.sql_where_item" />
+                        </foreach>
+                    </otherwise>
+                </choose>
+            </when>
+        </choose>
+    </sql>
+
+    <sql id="sql_where">
+        <where>
+            <include refid="include.sql_where_internal"/>
+        </where>
+    </sql>
+
+    <sql id="sql_order">
+        <choose>
+            <when test="orders != null and orders.size > 0">
+                ORDER BY
+                <foreach collection="orders" item="order" separator=" , ">
+                    ${order.column}
+                    <if test="order.desc">
+                        DESC
+                    </if>
+                </foreach>
+            </when>
+            <otherwise>
+                ${defaultOrder}
+            </otherwise>
+        </choose>
+    </sql>
+
+</mapper>
+

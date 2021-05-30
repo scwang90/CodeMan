@@ -25,6 +25,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String tableDivision = "";
     protected String tableOrgan = "company,organ,hospital,school";        //机构表
     protected String tableLogin = "login,user,admin,account";             //登录表
+    protected String tableNoCascade = "*log,*msg,*message,*order,*file";  //不级联查询的表
 
     protected String columnPrefix = "";
     protected String columnSuffix = "";

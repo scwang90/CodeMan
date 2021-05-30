@@ -7,9 +7,11 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean
 </#if>
 import org.junit.jupiter.api.Disabled
 import org.springframework.test.web.servlet.MockMvc
+<#if hasLogin>
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
+</#if>
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 <#if hasLogin>
@@ -48,9 +50,9 @@ class BaseControllerTests : ${projectName?cap_first}ApplicationTests() {
     }
 <#else >
 
-    protected mockMvc: MockMvc
+    protected lateinit var mockMvc: MockMvc
 
-    fun before() {
+    override fun before() {
         super.before()
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build()
     }

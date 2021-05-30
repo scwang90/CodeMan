@@ -17,6 +17,7 @@
 [#-- @ftlvariable name="tables" type="java.util.List<com.code.smither.project.base.model.Table>" --]
 [#-- @ftlvariable name="loginTables" type="java.util.List<com.code.smither.project.base.model.Table>" --]
 [#-- @ftlvariable name="features" type="com.code.smither.project.base.model.Features" --]
+[#-- @ftlvariable name="tools" type="com.code.smither.engine.tools.Tools" --]
 [#-- @ftlvariable name="hasLogin" type="boolean" --]
 [#-- @ftlvariable name="hasOrgan" type="boolean" --]
 [#-- @ftlvariable name="hasCode" type="boolean" --]

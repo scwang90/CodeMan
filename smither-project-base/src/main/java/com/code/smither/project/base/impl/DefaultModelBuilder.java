@@ -71,33 +71,63 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn) && model.isHasLogin());
 		//项目总特性中 是否包含机构，需要同时含有登录、并且登录表中含有机构Id 才算
 		model.setHasOrgan(model.isHasOrgan() && model.isHasLogin() && model.getLoginTable().isHasOrgan());
-		checkForeginKey(tables);
+		checkForeginKey(model, config, tables);
 		return model;
 	}
 
-	private static void checkForeginKey(List<Table> tables) {
+	private static void checkForeginKey(SourceModel model, ProjectConfig config, List<Table> tables) {
 		for (Table table : tables) {
-			for (ForeignKey key : table.getImportedKeys()) {
-				key.setPkTable(table);
-				tables.stream().filter(t->t.getName().equals(key.getFkName())).findFirst().ifPresent(key::setFkTable);
-			}
-			for (ForeignKey key : table.getExportedKeys()) {
-				key.setPkTable(table);
-				tables.stream().filter(t->t.getName().equals(key.getFkName())).findFirst().ifPresent(pkTable -> {
+			table.setImportCascadeKeys(table.getImportedKeys().stream().filter(key->{
+				key.setFkTable(table);
+				table.getColumns().stream().filter(c->c.getName().equals(key.getFkColumnName())).findFirst().ifPresent(key::setFkColumn);
+				tables.stream().filter(t->t.getName().equals(key.getPkTableName())).findFirst().ifPresent(pkTable -> {
 					key.setPkTable(pkTable);
-					if (key.getDeleteRule() == DatabaseMetaData.importedKeyNoAction
-							|| key.getDeleteRule() == DatabaseMetaData.importedKeyRestrict) {
-						table.pushExportedTable(pkTable);
+					pkTable.getColumns().stream().filter(c->c.getName().equals(key.getPkColumnName())).findFirst().ifPresent(key::setPkColumn);
+					if (key.getPkColumn().isPrimaryKey() && Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(table.getName(), k))) {
+						key.setCascade(pkTable != model.getOrganTable() && Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(pkTable.getName(), k)));
 					}
 				});
-			}
+				return key.isCascade();
+			}).collect(Collectors.toList()));
+			table.setExportCascadeKeys(table.getExportedKeys().stream().filter(key->{
+				key.setPkTable(table);
+				table.getColumns().stream().filter(c->c.getName().equals(key.getPkColumnName())).findFirst().ifPresent(key::setPkColumn);
+				tables.stream().filter(t->t.getName().equals(key.getFkTableName())).findFirst().ifPresent(fkTable -> {
+					key.setFkTable(fkTable);
+					fkTable.getColumns().stream().filter(c->c.getName().equals(key.getFkColumnName())).findFirst().ifPresent(key::setFkColumn);
+					if (key.getDeleteRule() != DatabaseMetaData.importedKeySetDefault
+							|| key.getDeleteRule() != DatabaseMetaData.importedKeySetNull) {
+						if (Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(table.getName(), k))) {
+							key.setCascade(!fkTable.isRelateTable() && table != model.getOrganTable() && Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(fkTable.getName(), k)));
+						}
+					}
+				});
+				return key.isCascade();
+			}).collect(Collectors.toList()));
+		}
+		for (Table table : tables) {
+			table.setRelateCascadeKeys(table.getExportedKeys().stream().filter(key->key.getFkTable().isRelateTable()).map(key->{
+				RelatedKey relatedKey = new RelatedKey();
+				relatedKey.setLocalKey(key);
+				relatedKey.setLocalTable(table);
+				relatedKey.setLocalColumn(key.getPkColumn());
+				relatedKey.setRelateTable(key.getFkTable());
+				relatedKey.setRelateLocalColumn(key.getFkColumn());
+				key.getFkTable().getImportedKeys().stream().filter(k -> k.getPkTable() != table).findFirst().ifPresent(k-> {
+					relatedKey.setTargetKey(k);
+					relatedKey.setTargetTable(k.getPkTable());
+					relatedKey.setTargetColumn(k.getPkColumn());
+					relatedKey.setRelateTargetColumn(k.getFkColumn());
+				});
+				return relatedKey;
+			}).filter(k->k.getRelateTable()!=null).collect(Collectors.toList()));
 		}
 	}
 
 	private static Table findTable(List<Table> tables, String tableKey, Action<Boolean> success) {
 		Stream<String> keys = Arrays.stream(tableKey.split(","));
 		Optional<Table> find = keys.map(key -> {
-			return tables.stream().filter(t -> t.getName().equalsIgnoreCase(key)).findFirst().orElse(null);
+			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
 		}).filter(Objects::nonNull).findFirst();
 		if (find.isPresent()) {
 			success.onAction(true);
@@ -115,12 +145,11 @@ public class DefaultModelBuilder implements ModelBuilder {
 	}
 
 	private static List<Table> findTables(List<Table> tables, String tableKey, Action<Integer> success) {
-		Stream<String> keys = Arrays.stream(tableKey.split(","));
-		List<Table> find = keys.map(key -> {
-			return tables.stream().filter(t -> t.getName().equalsIgnoreCase(key)).findFirst().orElse(null);
+		List<Table> find = Arrays.stream(tableKey.split(",")).map(key -> {
+			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 		if (find.isEmpty()) {
-			find = keys.map(key -> {
+			find = Arrays.stream(tableKey.split(",")).map(key -> {
 				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
 			}).filter(Objects::nonNull).collect(Collectors.toList());
 		}
@@ -328,7 +357,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 				columns.add(column);
 			}
 		}
-		return columns.size() == 0 && table.getImportedKeys().size() >= 2;
+		return columns.size() == 0 && table.getImportedKeys().size() == 2;
 	}
 
 	private void initTableColumn(List<TableColumn> columns, String keys, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
@@ -345,23 +374,25 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 	}
 
-	private void matchColumn(List<TableColumn> columns, String[] columnNames, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
+	private static boolean matchNames(String name, String pattern) {
+		boolean startWith = pattern.endsWith("*");
+		boolean endWith = pattern.startsWith("*");
+		pattern = pattern.replaceAll("^\\*|\\*$", "");
+		if (startWith && endWith) {
+			return name.toLowerCase().contains(pattern.toLowerCase());
+		}
+		if (startWith) {
+			return name.toLowerCase().startsWith(pattern.toLowerCase());
+		}
+		if (endWith) {
+			return name.toLowerCase().endsWith(pattern.toLowerCase());
+		}
+		return name.equalsIgnoreCase(pattern);
+	}
+
+	private static void matchColumn(List<TableColumn> columns, String[] columnNames, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
 		for (String columnName : columnNames) {
-			Stream<TableColumn> stream = columns.stream().filter(c -> {
-				boolean startWith = columnName.endsWith("*");
-				boolean endWith = columnName.startsWith("*");
-				String name = columnName.replaceAll("^\\*|\\*$", "");
-				if (startWith && endWith) {
-					return c.getName().toLowerCase().contains(name.toLowerCase());
-				}
-				if (startWith) {
-					return c.getName().toLowerCase().startsWith(name.toLowerCase());
-				}
-				if (endWith) {
-					return c.getName().toLowerCase().endsWith(name.toLowerCase());
-				}
-				return c.getName().equalsIgnoreCase(columnName);
-			});
+			Stream<TableColumn> stream = columns.stream().filter(c ->  matchNames(c.getName(), columnName));
 			if (get != null) {
 				stream.findFirst().ifPresent(column -> {
 					success.onAction(true);
