@@ -1,5 +1,12 @@
 package ${packageName}.service.auto
+<#assign beans = ['']/>
+<#if table.hasCascadeKey>
+	<#assign beans = ['', 'Bean']/>
+</#if>
 
+<#if table == organTable && hasLogin>
+import ${packageName}.exception.AccessException
+</#if>
 <#if (table.hasOrgan && hasOrgan) || table == loginTable>
 import ${packageName}.exception.ClientException
 </#if>
@@ -10,6 +17,14 @@ import ${packageName}.mapper.CommonMapper
 import ${packageName}.mapper.intent.Tables
 </#if>
 import ${packageName}.mapper.auto.${className}AutoMapper
+<#list beans as bean>
+<#list table.importCascadeKeys as key>
+import ${packageName}.mapper.auto.extensions.select${bean}By${key.fkColumn.fieldNameUpper}
+</#list>
+</#list>
+<#if table.hasRemove>
+import ${packageName}.mapper.auto.extensions.update
+</#if>
 import ${packageName}.model.api.Paged
 import ${packageName}.model.api.Paging
 import ${packageName}.model.db.${className}
@@ -29,10 +44,6 @@ import ${packageName}.util.JwtUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-<#assign beans = ['']/>
-<#if table.hasCascadeKey>
-	<#assign beans = ['', 'Bean']/>
-</#if>
 /**
  * ${table.remark} 的 Service 层实现
 <#list table.descriptions as description>
@@ -63,23 +74,55 @@ class ${className}AutoService {
 	<#if table.hasSearches || (hasOrgan && table.hasOrgan)>
         return Tables.${table.className}.run {
 			var where = where(<#if hasOrgan && table.hasOrgan && !loginTable.orgColumn.nullable>${table.orgColumn.fieldNameUpper}.eq(JwtUtils.currentBearer().${table.orgColumn.fieldName})<#else></#if>)
-			<#if hasOrgan && table.hasOrgan && loginTable.orgColumn.nullable>
+		<#if hasOrgan && table.hasOrgan && loginTable.orgColumn.nullable>
 			val ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName}
 			if (${table.orgColumn.fieldName} != null) {
 				where = where.and(${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName}))
 			}
+		</#if>
+		<#if table.hasRemove>
+			<#if table.removeColumn.boolType>
+			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.eq(false)))
+			<#elseif table.removeColumn.intType>
+			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.eq(0)));
+			<#else>
+			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.ne("removed")));
 			</#if>
-			<#if table.hasSearches>
+		</#if>
+		<#if table.hasSearches>
 			if (!key.isNullOrBlank()) {
-				where = where.and(<#list table.searchColumns as column><#if column_index gt 0>.or(</#if>${column.fieldNameUpper}.like("%$key%")<#if column_index gt 0>)</#if></#list>)
+				where = where.and(<#list table.searchColumns as column><#if column_index gt 0>.or(</#if>${column.fieldNameUpper}.contains(key)<#if column_index gt 0>)</#if></#list>)
 			}
-			</#if>
+		</#if>
 			Paged(paging, mapper.select${bean}Where(where, paging.toRowBounds()))
 		}
 	<#else >
 		return Paged(paging, mapper.select${bean}Where(null, paging.toRowBounds()))
 	</#if>
     }
+	<#list table.importCascadeKeys as key>
+
+	/**
+	 * 根据${key.pkTable.remarkName}获取${table.remarkName}列表<#if bean?length gt 0>（包括外键）</#if>
+	 * @param paging 分页对象
+	 <#if table.hasSearches>
+	 * @param key 搜索关键字
+	 </#if>
+	 */
+	fun list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, paging: Paging<#if table.hasSearches>, key: String?</#if>): Paged<${className}${bean}> {
+		<#if table.hasSearches>
+		return Tables.${table.className}.run {
+			var where = where()
+			if (!key.isNullOrBlank()) {
+				where = where.and(<#list table.searchColumns as column><#if column_index gt 0>.or(</#if>${column.fieldNameUpper}.contains(key)<#if column_index gt 0>)</#if></#list>)
+			}
+			Paged(paging, mapper.select${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}, paging.toRowBounds()) { where } )
+		}
+		<#else>
+		return Paged(paging, mapper.select${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}, paging.toRowBounds()))
+		</#if>
+	}
+	</#list>
 </#list>
 
 	/**
@@ -130,6 +173,16 @@ class ${className}AutoService {
 	 × @return 返回数据修改的行数
 	 */
     fun update(model: ${className}): Int {
+	<#if organTable == table && hasOrgan>
+		val ${orgColumn.fieldName} = JwtUtils.currentBearer().${orgColumn.fieldName}
+		<#if hasLogin && loginTable.orgColumn.nullable>
+		if (${orgColumn.fieldName} != null && ${orgColumn.fieldName} != model.${table.idColumn.fieldName}) {
+		<#else>
+		if (model.${table.idColumn.fieldName} != ${orgColumn.fieldName}) {
+		</#if>
+			throw AccessException("权限不足")
+		}
+	</#if>
 	<#list table.columns as column>
 		<#if column == table.updateColumn>
 			<#if column.fieldType == 'Long'>
@@ -141,7 +194,6 @@ class ${className}AutoService {
 	</#list>
 		return mapper.update(model)
 	}
-
 	<#list beans as bean>
 
 	/**
@@ -174,7 +226,7 @@ class ${className}AutoService {
 	 × @return 返回数据修改的行数
 	 */
     fun deleteById(ids: String): Int {
-	<#if table.hasOrgan || table == loginTable>
+	<#if (table.hasOrgan && hasOrgan) || table == loginTable>
 		if (!ids.contains(",")) {
 		<#if table == loginTable>
 			val model = this.findById(ids) ?: throw ClientException("无效的${table.remarkName}Id")
@@ -194,7 +246,18 @@ class ${className}AutoService {
 		</#if>
 		}
 	</#if>
+	<#if table.hasRemove>
+		val list = ids.split(",")<#if table.idColumn.intType>.map { it.toInt() }</#if>.toList()
+		<#if table.removeColumn.boolType>
+		return mapper.update { set${table.removeColumn.fieldNameUpper}(true).where(${table.idColumn.fieldNameUpper}.inList(list)) }
+		<#elseif table.removeColumn.intType>
+		return mapper.update { set${table.removeColumn.fieldNameUpper}(1).where(${table.idColumn.fieldNameUpper}.inList(list)) }
+		<#else>
+		return mapper.update { set${table.removeColumn.fieldNameUpper}("removed").where(${table.idColumn.fieldNameUpper}.inList(list)) }
+		</#if>
+	<#else>
 		return mapper.deleteById(*ids.split(",").toTypedArray())
+	</#if>
 	}
 
 </#if>

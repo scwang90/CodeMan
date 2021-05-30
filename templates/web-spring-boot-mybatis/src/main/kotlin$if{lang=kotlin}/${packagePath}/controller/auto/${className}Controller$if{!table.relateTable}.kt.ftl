@@ -46,11 +46,27 @@ class ${className}Controller {
 </#if>
 <#list beans as bean>
 
+	<#assign value = '${table.remarkName}列表'/>
+	<#if bean?length gt 0>
+		<#assign value = value + '（包括外键）'/>
+	</#if>
+	<#assign notes = '分页参数支持两种形式，page 页数，skip 起始数据，两个传一个即可'/>
+	<#if table.hasSearches>
+		<#assign keys = '可以通过'/>
+		<#list table.searchColumns as column>
+			<#assign keys = keys + '[${column.remarkName}]'/>
+			<#if column_has_next>
+				<#assign keys = keys + '、'/>
+			</#if>
+		</#list>
+		<#assign keys = keys + '等关键字搜索'/>
+		<#assign notes = keys + '\\n' + notes/>
+	</#if>
 	@GetMapping<#if bean?length gt 0>("${bean?lower_case}")</#if>
-	@ApiOperation(value = "${table.remarkName}列表<#if bean?length gt 0>（包括外键）</#if>", notes = "<#if bean?length gt 0>包括外键，</#if>分页参数支持两种形式，page 页数，skip 起始数据，两个传一个即可")
+	@ApiOperation(value = "${value}", notes = "${notes}")
 	@ApiImplicitParams(
 	<#if table.hasSearches>
-		ApiImplicitParam(paramType = "query", name = "key", value = "索索关键字"),
+		ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字"),
 	</#if>
 		ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
 		ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
@@ -64,6 +80,38 @@ class ${className}Controller {
 		return ApiResult.success(Paged(paging, list))
 	</#if>
     }
+	<#list table.importCascadeKeys as key>
+
+	@GetMapping("${bean?lower_case}/by/${key.fkColumn.fieldName}")
+	@ApiOperation(value = "根据${key.pkTable.remarkName}获取${value}", notes = "${notes}")
+	@ApiImplicitParams(
+		ApiImplicitParam(paramType = "query", name = "${key.fkColumn.fieldName}", value = "${key.pkTable.remarkName}关联", required = true),
+		<#if table.hasSearches>
+		ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字"),
+		</#if>
+		ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
+		ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
+		ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
+	)
+	fun list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, @ApiIgnore paging: Paging<#if table.hasSearches>, key: String?</#if>): ApiResult<Paged<${className}${bean}>> {
+		return ApiResult.success(service.list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}, paging<#if table.hasSearches>, key</#if>))
+	}
+	</#list>
+	<#list table.relateCascadeKeys as key>
+
+	@GetMapping("${bean?lower_case}/relate/${key.relateTargetColumn.fieldName}")
+	@ApiOperation(value = "根据${key.targetTable.remarkName}级联查询${value}", notes = "${notes}")
+	@ApiImplicitParams(
+		ApiImplicitParam(paramType = "query", name = "${key.relateTargetColumn.fieldName}", value = "${key.relateTargetColumn.remarkName}关联", required = true),
+		ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
+		ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
+		ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
+	)
+	fun list${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldName}: ${key.relateTargetColumn.fieldType}, @ApiIgnore paging: Paging): ApiResult<Paged<${className}${bean}>> {
+		val list = mapper.select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldName}, paging.toRowBounds())
+		return ApiResult.success(Paged(paging, list))
+	}
+	</#list>
 </#list>
 
     @PostMapping
@@ -106,7 +154,7 @@ class ${className}Controller {
 
 	@GetMapping("${bean?lower_case}/{id}")
 	@ApiOperation(value = "获取${table.remarkName}<#if bean?length gt 0>（包括外键）</#if>")
-    fun find${bean}ById(@PathVariable @ApiParam("${table.remark}Id") id: String): ApiResult<${className}> {
+    fun find${bean}ById(@PathVariable @ApiParam("${table.remark}Id") id: String): ApiResult<${className}${bean}> {
 		<#if table.hasOrgan>
 		return ApiResult.success(service.find${bean}ById(id))
 		<#else>

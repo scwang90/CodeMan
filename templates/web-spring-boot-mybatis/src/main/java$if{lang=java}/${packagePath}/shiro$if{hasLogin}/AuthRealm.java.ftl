@@ -14,7 +14,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import ${packageName}.exception.ClientException;
-import ${packageName}.mapper.auto.${loginTable.className}Mapper;
+import ${packageName}.mapper.auto.${loginTable.className}AutoMapper;
 <#if hasUsernameColumn && hasOrgan>
 import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.mapper.intent.Tables;
@@ -46,11 +46,11 @@ import java.util.Arrays;
 public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
 
     private final Algorithm jwtAlgorithm;
-    private final ${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper;
+    private final ${loginTable.className}AutoMapper ${loginTable.classNameCamel}Mapper;
     private final CredentialsMatcher matcher;
     private final AuthConfig authConfig;
 
-    public AuthRealm(${loginTable.className}Mapper ${loginTable.classNameCamel}Mapper, Algorithm jwtAlgorithm, AuthConfig authConfig) {
+    public AuthRealm(${loginTable.className}AutoMapper ${loginTable.classNameCamel}Mapper, Algorithm jwtAlgorithm, AuthConfig authConfig) {
         this.${loginTable.classNameCamel}Mapper = ${loginTable.classNameCamel}Mapper;
         this.authConfig = authConfig;
         this.jwtAlgorithm = jwtAlgorithm;

@@ -1,31 +1,26 @@
 package ${packageName}.service.auto;
-<#assign hasSearch=false/>
-<#list table.columns as column>
-	<#if column.name?lower_case?contains('name') || column.name?lower_case?contains('title') >
-		<#assign searchColumn=column/>
-		<#assign hasSearch=true/>
-		<#break />
-	</#if>
-</#list>
 
-<#if (table.hasOrgan && hasLogin) || table == loginTable>
-import ${packageName}.exception.ClientException;
-</#if>
-<#if hasSearch>
+<#if table.hasSearches>
 import com.github.pagehelper.util.StringUtil;
 </#if>
 <#if table == organTable && hasLogin>
-import com.traveler.server.exception.AccessException;
+import ${packageName}.exception.AccessException;
+</#if>
+<#if (table.hasOrgan && hasLogin) || table == loginTable>
+import ${packageName}.exception.ClientException;
 </#if>
 <#if table.hasCode>
 import ${packageName}.mapper.CommonMapper;
 </#if>
 import ${packageName}.mapper.intent.Tables;
-import ${packageName}.mapper.auto.${className}Mapper;
+import ${packageName}.mapper.auto.${className}AutoMapper;
 import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
 import ${packageName}.model.db.${className};
+<#if table.hasCascadeKey>
+import ${packageName}.model.db.${className}Bean;
+</#if>
 <#if table.hasCode>
 import ${packageName}.util.CommonUtil;
 </#if>
@@ -47,7 +42,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 </#if>
 
-
+<#assign beans = ['']/>
+<#if table.hasCascadeKey>
+	<#assign beans = ['', 'Bean']/>
+</#if>
 /**
  * ${table.remark} 的 Service 层实现
 <#list table.descriptions as description>
@@ -58,44 +56,76 @@ import java.util.stream.Collectors;
  */
 @AllArgsConstructor
 @Service("auto${className}Service")
-public class ${className}Service {
+public class ${className}AutoService {
 
 <#if table.hasCode>
 	private final CommonMapper commonMapper;
 </#if>
-	private final ${className}Mapper mapper;
+	private final ${className}AutoMapper mapper;
+<#list beans as bean>
 
 	/**
-	 * ${table.remarkName}列表
+	 * ${table.remarkName}列表<#if bean?length gt 0>（包括外键）</#if>
 	 * @param paging 分页对象
-<#if hasSearch>
+	<#if table.hasSearches>
 	 * @param key 搜索关键字
-</#if>
+	</#if>
 	 */
-    public Paged<${className}> list(Paging paging<#if hasSearch>, String key</#if>) {
-<#if table.hasOrgan>
+    public Paged<${className}${bean}> list${bean}(Paging paging<#if table.hasSearches>, String key</#if>) {
+	<#if table.hasOrgan && hasOrgan>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
 		WhereQuery<${className}> where = Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName});
-<#else>
-		WhereQuery<${className}> where = Tables.${table.className}.where();
-</#if>
-<#if table.hasRemove>
-	<#if table.removeColumn.boolType>
-		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(Boolean.FALSE)));
-	<#elseif table.removeColumn.intType>
-		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(0)));
 	<#else>
-		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.ne("removed")));
+		WhereQuery<${className}> where = Tables.${table.className}.where();
 	</#if>
-</#if>
-	<#if hasSearch>
+	<#if table.hasRemove>
+		<#if table.removeColumn.boolType>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(Boolean.FALSE)));
+		<#elseif table.removeColumn.intType>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(0)));
+		<#else>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.ne("removed")));
+		</#if>
+	</#if>
+	<#if table.hasSearches>
 		if (StringUtil.isNotEmpty(key)) {
-			where = where.and(Tables.${table.className}.${searchColumn.fieldNameUpper}.contains(key));
+			where = where.and(<#list table.searchColumns as column><#if column_index gt 0>.or(</#if>Tables.${table.className}.${column.fieldNameUpper}.contains(key)<#if column_index gt 0>)</#if></#list>);
 		}
 	</#if>
-		List<${className}> list = mapper.selectWhere(where, paging.toRowBounds());
+		List<${className}${bean}> list = mapper.select${bean}Where(where, paging.toRowBounds());
 		return new Paged<>(paging, list);
     }
+
+	<#list table.importCascadeKeys as key>
+
+	/**
+	 * 根据${key.pkTable.remarkName}获取${table.remarkName}列表<#if bean?length gt 0>（包括外键）</#if>
+	 * @param paging 分页对象
+	 <#if table.hasSearches>
+	 * @param key 搜索关键字
+	 </#if>
+	 */
+	public Paged<${className}${bean}> list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldType} ${key.fkColumn.fieldName}, Paging paging<#if table.hasSearches>, String key</#if>) {
+		WhereQuery<${className}> where = Tables.${table.className}.${key.fkColumn.fieldNameUpper}.eq(${key.fkColumn.fieldName});
+	<#if table.hasRemove>
+		<#if table.removeColumn.boolType>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(Boolean.FALSE)));
+		<#elseif table.removeColumn.intType>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.eq(0)));
+		<#else>
+		where = where.and(Tables.${className}.${table.removeColumn.fieldNameUpper}.isNull().or(Tables.${className}.${table.removeColumn.fieldNameUpper}.ne("removed")));
+		</#if>
+	</#if>
+	<#if table.hasSearches>
+		if (StringUtil.isNotEmpty(key)) {
+			where = where.and(<#list table.searchColumns as column><#if column_index gt 0>.or(</#if>Tables.${table.className}.${column.fieldNameUpper}.contains(key)<#if column_index gt 0>)</#if></#list>);
+		}
+	</#if>
+		List<${className}${bean}> list = mapper.select${bean}Where(where, paging.toRowBounds());
+		return new Paged<>(paging, list);
+	}
+	</#list>
+</#list>
 
 	/**
 	 * 添加${table.remarkName}
@@ -145,36 +175,37 @@ public class ${className}Service {
 	 × @return 返回数据修改的行数
 	 */
     public int update(${className} model) {
-<#if organTable == table && hasLogin>
+	<#if organTable == table && hasOrgan>
 		${orgColumn.fieldTypeObject} ${orgColumn.fieldName} = JwtUtils.currentBearer().${orgColumn.fieldName};
-	<#if hasLogin && loginTable.orgColumn.nullable>
+		<#if hasLogin && loginTable.orgColumn.nullable>
 		if (${orgColumn.fieldName} != null && !${orgColumn.fieldName}.equals(model.get${table.idColumn.fieldNameUpper}())) {
-	<#else>
+		<#else>
 		if (!model.get${table.idColumn.fieldNameUpper}().equals(${orgColumn.fieldName})) {
-	</#if>
+		</#if>
 			throw new AccessException("权限不足");
 		}
-</#if>
-<#list table.columns as column>
-	<#if column == table.updateColumn>
-		<#if column.fieldType == 'long'>
-		model.set${column.fieldNameUpper}(System.currentTimeMillis());
-		<#elseif column.fieldType == 'java.util.Date'>
-		model.set${column.fieldNameUpper}(new java.util.Date());
-		</#if>
 	</#if>
-</#list>
+	<#list table.columns as column>
+		<#if column == table.updateColumn>
+			<#if column.fieldType == 'long'>
+		model.set${column.fieldNameUpper}(System.currentTimeMillis());
+			<#elseif column.fieldType == 'java.util.Date'>
+		model.set${column.fieldNameUpper}(new java.util.Date());
+			</#if>
+		</#if>
+	</#list>
 		return mapper.update(model);
 	}
+	<#list beans as bean>
 
 	/**
-	 * 获取${table.remarkName}
+	 * 获取${table.remarkName}<#if bean?length gt 0>（包括外键）</#if>
 	 * @param id 数据主键
 	 × @return 数据实体对象
 	 */
-    public ${className} findById(Object id) {
-	<#if table.hasOrgan && hasLogin>
-		${className} model = mapper.findById(id);
+    public ${className}${bean} find${bean}ById(Object id) {
+	<#if table.hasOrgan && hasOrgan>
+		${className}${bean} model = mapper.find${bean}ById(id);
 		if (model == null) {
 			throw new ClientException("无效的${table.remarkName}Id");
 		}
@@ -189,9 +220,10 @@ public class ${className}Service {
 		}
 		return model;
 	<#else>
-		return mapper.findById(id);
+		return mapper.find${bean}ById(id);
 	</#if>
 	}
+	</#list>
 
 	/**
 	 * 获取${table.remarkName}
@@ -199,7 +231,7 @@ public class ${className}Service {
 	 × @return 返回数据修改的行数
 	 */
     public int deleteById(String ids) {
-	<#if table.hasOrgan || table == loginTable>
+	<#if (table.hasOrgan && hasOrgan) || table == loginTable>
 		if (!ids.contains(",")) {
 		<#if table == loginTable>
 			${className} model = this.findById(ids);
@@ -223,22 +255,22 @@ public class ${className}Service {
 		</#if>
 		}
 	</#if>
-<#if table.hasRemove>
-	<#if table.idColumn.stringType>
+	<#if table.hasRemove>
+		<#if table.idColumn.stringType>
 		List<String> list = Arrays.asList(ids.split(","));
-	<#else>
+		<#else>
 		List<Integer> list = Arrays.stream(ids.split(",")).map(Integer::parseInt).collect(Collectors.toList());
-	</#if>
-	<#if table.removeColumn.boolType>
+		</#if>
+		<#if table.removeColumn.boolType>
 		return mapper.updateSetter(Tables.${className}.set${table.removeColumn.fieldNameUpper}(Boolean.TRUE).where(Tables.${className}.${table.idColumn.fieldNameUpper}.in(list)));
-	<#elseif table.removeColumn.intType>
+		<#elseif table.removeColumn.intType>
 		return mapper.updateSetter(Tables.${className}.set${table.removeColumn.fieldNameUpper}(1).where(Tables.${className}.${table.idColumn.fieldNameUpper}.in(list)));
-	<#else>
+		<#else>
 		return mapper.updateSetter(Tables.${className}.set${table.removeColumn.fieldNameUpper}("removed").where(Tables.${className}.${table.idColumn.fieldNameUpper}.in(list)));
-	</#if>
-<#else>
+		</#if>
+	<#else>
 		return mapper.deleteById((Object[]) ids.split(","));
-</#if>
+	</#if>
 	}
 
 </#if>

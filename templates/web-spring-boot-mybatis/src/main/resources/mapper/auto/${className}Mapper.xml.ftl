@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${packageName}.mapper.auto.${className}AutoMapper">
+<#assign beans = ['']/>
+<#if table.hasCascadeKey>
+    <#assign beans = ['', 'Bean']/>
+</#if>
     <!--${table.remark} 的 Mapper 实现 -->
-    <#list table.descriptions as description>
+<#list table.descriptions as description>
     <!--${description} -->
-    </#list>
+</#list>
     <resultMap id="MAP" type="${packageName}.model.db.${className}">
         <!--${table.idColumn.remark}-->
         <id column="${table.idColumn.name}" jdbcType="${table.idColumn.typeJdbc}" property="${table.idColumn.fieldName}" />
@@ -155,16 +159,17 @@
         SELECT COUNT(0) FROM ${table.nameSql}
         <include refid="include.sql_where"/>
     </select>
-
+<#list beans as bean>
 <#if table.hasId>
-    <!-- 根据ID获取 -->
-    <select id="findById" resultMap="MAP">
+
+    <!-- 根据ID获取<#if bean?length gt 0>（包括外键）</#if> -->
+    <select id="find${bean}ById" resultMap="MAP<#if bean?length gt 0>-INFO</#if>">
         SELECT * FROM ${table.nameSql} WHERE ${table.idColumn.nameSql}=${r"#"}{id}
     </select>
-
 </#if>
-    <!-- 单条查询（灵活构建查询条件） -->
-    <select id="selectOneWhere" resultMap="MAP">
+
+    <!-- 单条查询（<#if bean?length gt 0>包括外键，</#if>灵活构建查询条件） -->
+    <select id="select${bean}OneWhere" resultMap="MAP<#if bean?length gt 0>-INFO</#if>">
         SELECT * FROM ${table.nameSql}
         <include refid="include.sql_where"/>
         <include refid="include.sql_order">
@@ -172,54 +177,52 @@
         </include>
     </select>
 
-    <!-- 批量查询（灵活构建查询条件） -->
-    <select id="selectWhere" resultMap="MAP">
+    <!-- 批量查询（<#if bean?length gt 0>包括外键，</#if>灵活构建查询条件） -->
+    <select id="select${bean}Where" resultMap="MAP<#if bean?length gt 0>-INFO</#if>">
         SELECT * FROM ${table.nameSql}
         <include refid="include.sql_where"/>
         <include refid="include.sql_order">
             <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
         </include>
     </select>
-<#if table.hasCascadeKey>
-    <#if table.hasId>
-
-    <!-- 根据ID获取（包含外键） -->
-    <select id="findBeanById" resultMap="MAP-INFO">
-        SELECT * FROM ${table.nameSql} WHERE ${table.idColumn.nameSql}=${r"#"}{id}
-    </select>
+    <#assign deleteWhere = ''/>
+    <#if table.hasRemove>
+        <#if table.removeColumn.stringType>
+            <#assign deleteWhere = "${table.removeColumn.nameSql} <![CDATA[ <> ]]> 'removed'"/>
+        <#else>
+            <#assign deleteWhere = '${table.removeColumn.nameSql} = 0'/>
+        </#if>
+        <#if table.removeColumn.nullable>
+            <#assign deleteWhere = '(${deleteWhere} OR ${table.removeColumn.nameSql} IS NULL)'/>
+        </#if>
+        <#assign deleteWhere =  '${deleteWhere} AND '/>
     </#if>
+    <#list table.importCascadeKeys as key>
 
-    <!-- 单条查询（包含外键，灵活构建查询条件） -->
-    <select id="selectBeanOneWhere" resultMap="MAP-INFO">
-        SELECT * FROM ${table.nameSql}
-        <include refid="include.sql_where"/>
-        <include refid="include.sql_order">
-            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
-        </include>
+    <!-- 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}）-->
+    <select id="select${bean}By${key.fkColumn.fieldNameUpper}" resultMap="MAP<#if bean?length gt 0>-INFO</#if>">
+        SELECT * FROM ${table.nameSql} WHERE ${deleteWhere}${key.fkColumn.nameSql}=${r"#"}{${key.fkColumn.fieldName}}<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} </#if>
     </select>
+    </#list>
+    <#list table.relateCascadeKeys as key>
 
-    <!-- 批量查询（包含外键，灵活构建查询条件） -->
-    <select id="selectBeanWhere" resultMap="MAP-INFO">
-        SELECT * FROM ${table.nameSql}
-        <include refid="include.sql_where"/>
-        <include refid="include.sql_order">
-            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
-        </include>
+        <#assign relateDeleteWhere = ''/>
+        <#if key.relateTable.hasRemove>
+            <#if key.relateTable.removeColumn.stringType>
+                <#assign relateDeleteWhere = "${key.relateTable.removeColumn.nameSql} <![CDATA[ <> ]]> 'removed'"/>
+            <#else>
+                <#assign relateDeleteWhere = '${key.relateTable.removeColumn.nameSql} = 0'/>
+            </#if>
+            <#if key.relateTable.removeColumn.nullable>
+                <#assign relateDeleteWhere = '(${relateDeleteWhere} OR ${key.relateTable.removeColumn.nameSql} IS NULL)'/>
+            </#if>
+            <#assign relateDeleteWhere =  '${relateDeleteWhere} AND '/>
+        </#if>
+    <!-- 级联查询（<#if bean?length gt 0>包括外键，</#if>根据${key.targetTable.remarkName}${key.targetColumn.remarkName}）-->
+    <select id="select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}" resultMap="MAP<#if bean?length gt 0>-INFO</#if>">
+        SELECT * FROM ${table.nameSql} WHERE ${deleteWhere}${key.localColumn.nameSql} IN (SELECT ${key.relateLocalColumn.nameSql} FROM ${key.relateTable.nameSql} WHERE ${relateDeleteWhere}${key.relateTargetColumn.nameSql}=${r"#"}{${key.relateTargetColumn.fieldName}})<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} </#if>
     </select>
-</#if>
-<#list table.importedKeys as key>
-
-    <!-- 批量查询（根据${key.pkTable.remarkName}）-->
-    <select id="selectBy${key.fkColumn.fieldNameUpper}" resultMap="MAP">
-        SELECT * FROM ${table.nameSql} WHERE ${key.fkColumn.nameSql}=${r"#"}{${key.fkColumn.fieldName}}<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} </#if>
-    </select>
-</#list>
-<#list table.relateCascadeKeys as key>
-
-    <!-- 级联查询（根据${key.targetTable.remarkName}${key.targetColumn.remarkName}）-->
-    <select id="selectByRelate${key.relateTargetColumn.fieldNameUpper}" resultMap="MAP">
-        SELECT * FROM ${table.nameSql} WHERE ${key.localColumn.nameSql} IN (SELECT ${key.relateLocalColumn.nameSql} FROM ${key.relateTable.nameSql} WHERE ${key.relateTargetColumn.nameSql}=${r"#"}{${key.relateTargetColumn.fieldName}})
-    </select>
+    </#list>
 </#list>
 
 </mapper>

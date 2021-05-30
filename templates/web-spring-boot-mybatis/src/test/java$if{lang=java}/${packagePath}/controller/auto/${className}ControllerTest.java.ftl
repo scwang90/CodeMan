@@ -1,4 +1,4 @@
-package ${packageName}.controller.manager;
+package ${packageName}.controller.auto;
 
 import ${packageName}.controller.BaseControllerTests;
 

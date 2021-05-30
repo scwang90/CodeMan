@@ -14,6 +14,10 @@ import org.apache.ibatis.annotations.Update
 import org.apache.ibatis.session.RowBounds
 import org.springframework.stereotype.Component
 
+<#assign beans = ['']/>
+<#if table.hasCascadeKey>
+	<#assign beans = ['', 'Bean']/>
+</#if>
 /**
  * ${table.remark} 的 mapper 接口
 <#list table.descriptions as description>
@@ -67,13 +71,15 @@ interface ${className}AutoMapper {
 	 * @return 改变的行数
 	 */
 	fun updateSetter(setter: ${table.classNameUpper}.SetterQuery): Int
-	
+<#if table.hasId>
+
 	/**
 	 * 根据ID删除（支持批量删除）
 	 * @param ids 数据的主键ID
 	 * @return 改变的行数
 	 */
 	fun deleteById(@Param("ids") vararg ids: Any): Int
+</#if>
 
 	/**
 	 * 根据查询条件删除（灵活构建查询条件）
@@ -94,94 +100,80 @@ interface ${className}AutoMapper {
 	 * @return 统计行数
 	 */
 	fun countWhere(where: WhereQuery<${table.className}>): Int
+<#list beans as bean>
+	<#if table.hasId>
 
-<#if table.hasId>
 	/**
-	 * 根据ID获取
+	 * 根据ID获取<#if bean?length gt 0>（包括外键）</#if>
 	 * @param id 主键ID
 	 * @return null 或者 主键等于id的数据
 	 */
-	fun findById(@Param("id") id: Any?): ${className}?
+	fun find${bean}ById(@Param("id") id: Any?): ${className}${bean}?
+	</#if>
 
-</#if>
 	/**
-	 * 单条查询（灵活构建查询条件）
+	 * 单条查询（灵活构建查询条件<#if bean?length gt 0>，包括外键</#if>）
 	 * @param where 查询条件
 	 * @return null 或者 匹配条件的数据
 	 */
-	fun selectOneWhere(where: Query<${table.className}>): ${className}?
+	fun select${bean}OneWhere(where: Query<${table.className}>): ${className}${bean}?
 	
 	/**
-	 * 批量查询（灵活构建查询条件）
+	 * 批量查询（灵活构建查询条件<#if bean?length gt 0>，包括外键</#if>）
 	 * @param where 查询条件
 	 * @return empty 或者 匹配条件的数据
 	 */
-	fun selectWhere(where: Query<${table.className}>?): List<${className}>
+	fun select${bean}Where(where: Query<${table.className}>?): List<${className}${bean}>
 
 	/**
-	 * 批量查询（灵活构建查询条件，分页）
+	 * 批量查询（灵活构建查询条件<#if bean?length gt 0>，包括外键</#if>，分页）
 	 * @param where 查询条件
  	 * @param rows 分页参数
 	 * @return empty 或者 匹配条件的数据
 	 */
-	fun selectWhere(where: Query<${table.className}>?, rows: RowBounds): List<${className}>
-<#if table.hasCascadeKey>
-    <#if table.hasId>
+	fun select${bean}Where(where: Query<${table.className}>?, rows: RowBounds): List<${className}${bean}>
+	<#list table.importCascadeKeys as key>
 
 	/**
-	 * 根据ID获取（包含外键）
-	 * @param id 主键ID
-	 * @return null 或者 主键等于id的数据
-	 */
-	fun findBeanById(@Param("id") id: Any?): ${className}Bean?
-    </#if>
-    
-	/**
-	 * 单条查询（包含外键，灵活构建查询条件）
-	 * @param where 查询条件
-	 * @return null 或者 匹配条件的数据
-	 */
-	fun selectBeanOneWhere(where: Query<${table.className}>): ${className}Bean?
-	
-	/**
-	 * 批量查询（包含外键，灵活构建查询条件）
-	 * @param where 查询条件
-	 * @return empty 或者 匹配条件的数据
-	 */
-	fun selectBeanWhere(where: Query<${table.className}>?): List<${className}Bean>
-
-	/**
-	 * 批量查询（包含外键，灵活构建查询条件，分页）
-	 * @param where 查询条件
- 	 * @param rows 分页参数
-	 * @return empty 或者 匹配条件的数据
-	 */
-	fun selectBeanWhere(where: Query<${table.className}>?, rows: RowBounds): List<${className}Bean>
-</#if>
-<#list table.importCascadeKeys as key>
-
-	/**
-	 * 批量查询（根据${key.pkTable.remarkName}）
+	 * 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}）
 	 * @param ${key.fkColumn.fieldName} 关联条件
 	 * @return empty 或者 匹配条件的数据
 	 */
-	fun selectBy${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}): List<${table.className}>
+	fun select${bean}By${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}): List<${table.className}${bean}>
 
 	/**
-	 * 批量查询（根据${key.pkTable.remarkName}，分页）
+	 * 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}，分页）
 	 * @param ${key.fkColumn.fieldName} 关联条件
  	 * @param rows 分页参数
 	 * @return empty 或者 匹配条件的数据
 	 */
-	fun selectBy${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, rows: RowBounds): List<${table.className}>
+	fun select${bean}By${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, rows: RowBounds): List<${table.className}${bean}>
+	</#list>
+	<#list table.relateCascadeKeys as key>
+
+	/**
+	 * 级联查询（<#if bean?length gt 0>包括外键，</#if>根据${key.targetTable.remarkName}${key.targetColumn.remarkName}）
+	 * @param ${key.relateTargetColumn.fieldName} 关联条件
+	 * @return empty 或者 匹配条件的数据
+	 */
+	fun select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(@Param("${key.relateTargetColumn.fieldName}") ${key.relateTargetColumn.fieldName}: ${key.relateTargetColumn.fieldType}): List<${table.className}${bean}>
+
+	/**
+	 * 级联查询（<#if bean?length gt 0>包括外键，</#if>根据${key.targetTable.remarkName}${key.targetColumn.remarkName}，分页）
+	 * @param ${key.relateTargetColumn.fieldName} 关联条件
+	 * @param rows 分页参数
+	 * @return empty 或者 匹配条件的数据
+	 */
+	fun select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(@Param("${key.relateTargetColumn.fieldName}") ${key.relateTargetColumn.fieldName}: ${key.relateTargetColumn.fieldType}, rows: RowBounds): List<${table.className}${bean}>
+	</#list>
 </#list>
-
 <#if table.idColumn.autoIncrement>
+
 	/**
 	 * 重置表自增编号
 	 */
 	@Update("alter table ${table.nameSql} auto_increment = 0")
 	fun resetAutoIncrement()
-
 </#if>
+
 }

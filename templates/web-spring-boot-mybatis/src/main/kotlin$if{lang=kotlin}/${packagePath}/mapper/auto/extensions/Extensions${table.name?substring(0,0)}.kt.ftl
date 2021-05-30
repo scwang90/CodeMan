@@ -17,7 +17,11 @@ import ${packageName}.model.db.${table.className}Bean
 </#list>
 import org.apache.ibatis.session.RowBounds
 <#list tables as table>
-    
+    <#assign beans = ['']/>
+    <#if table.hasCascadeKey>
+        <#assign beans = ['', 'Bean']/>
+    </#if>
+
 fun ${table.className}AutoMapper.count(where: ${table.classNameUpper}.()-> WhereQuery<${table.className}>): Int {
     return this.countWhere(where.invoke(Tables.${table.className}))
 }
@@ -29,38 +33,47 @@ fun ${table.className}AutoMapper.delete(where: ${table.classNameUpper}.()-> Wher
 fun ${table.className}AutoMapper.update(setter: ${table.classNameUpper}.()-> ${table.classNameUpper}.SetterQuery): Int {
     return this.updateSetter(setter.invoke(Tables.${table.className}))
 }
+    <#list beans as bean>
 
-fun ${table.className}AutoMapper.selectAll(): List<${table.className}> {
-    return this.selectWhere(null)
+fun ${table.className}AutoMapper.select${bean}All(): List<${table.className}${bean}> {
+    return this.select${bean}Where(null)
 }
 
-fun ${table.className}AutoMapper.select(where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}> {
-    return this.selectWhere(where.invoke(Tables.${table.className}))
+fun ${table.className}AutoMapper.select${bean}(where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}${bean}> {
+    return this.select${bean}Where(where.invoke(Tables.${table.className}))
 }
 
-fun ${table.className}AutoMapper.select(rows: RowBounds, where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}> {
-    return this.selectWhere(where.invoke(Tables.${table.className}), rows)
+fun ${table.className}AutoMapper.select${bean}(rows: RowBounds, where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}${bean}> {
+    return this.select${bean}Where(where.invoke(Tables.${table.className}), rows)
 }
 
-fun ${table.className}AutoMapper.selectOne(where: ${table.classNameUpper}.()-> Query<${table.className}>): ${table.className}? {
-    return this.selectOneWhere(where.invoke(Tables.${table.className}))
+fun ${table.className}AutoMapper.select${bean}One(where: ${table.classNameUpper}.()-> Query<${table.className}>): ${table.className}${bean}? {
+    return this.select${bean}OneWhere(where.invoke(Tables.${table.className}))
 }
-<#if table.hasCascadeKey>
+        <#list table.importCascadeKeys as key>
 
-fun ${table.className}AutoMapper.selectBeanAll(): List<${table.className}Bean> {
-    return this.selectBeanWhere(null)
+            <#assign removeWhere = ''/>
+            <#if table.hasRemove>
+                <#if table.removeColumn.boolType>
+                    <#assign removeWhere = '${table.removeColumn.fieldNameUpper}.eq(false)'/>
+                <#elseif table.removeColumn.intType>
+                    <#assign removeWhere = '${table.removeColumn.fieldNameUpper}.eq(0)'/>
+                <#else>
+                    <#assign removeWhere = '${table.removeColumn.fieldNameUpper}.ne("removed")'/>
+                </#if>
+                <#if table.removeColumn.nullable>
+                    <#assign removeWhere = '${removeWhere}.or(${table.removeColumn.fieldNameUpper}.isNull)'/>
+                </#if>
+                <#assign removeWhere = '.and(${removeWhere})'/>
+            </#if>
+fun ${table.className}AutoMapper.select${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}${bean}> {
+    return this.select${bean}Where(Tables.${table.className}.run { ${key.fkColumn.fieldNameUpper}.eq(${key.fkColumn.fieldName})${removeWhere}.and(where.invoke(this) as WhereQuery<${table.className}>) })
 }
 
-fun ${table.className}AutoMapper.selectBean(where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}Bean> {
-    return this.selectBeanWhere(where.invoke(Tables.${table.className}))
+fun ${table.className}AutoMapper.select${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, rows: RowBounds, where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}${bean}> {
+    return this.select${bean}Where(Tables.${table.className}.run { ${key.fkColumn.fieldNameUpper}.eq(${key.fkColumn.fieldName})${removeWhere}.and(where.invoke(this) as WhereQuery<${table.className}>) }, rows)
 }
+        </#list>
+    </#list>
 
-fun ${table.className}AutoMapper.selectBean(rows: RowBounds, where: ${table.classNameUpper}.()-> Query<${table.className}>): List<${table.className}Bean> {
-    return this.selectBeanWhere(where.invoke(Tables.${table.className}), rows)
-}
-
-fun ${table.className}AutoMapper.selectBeanOne(where: ${table.classNameUpper}.()-> Query<${table.className}>): ${table.className}Bean? {
-    return this.selectBeanOneWhere(where.invoke(Tables.${table.className}))
-}
-</#if>
 </#list>

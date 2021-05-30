@@ -4,6 +4,9 @@ import ${packageName}.mapper.intent.api.Query;
 import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.mapper.intent.tables.${table.classNameUpper};
 import ${packageName}.model.db.${className};
+<#if table.hasCascadeKey>
+import ${packageName}.model.db.${className}Bean;
+</#if>
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +16,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+<#assign beans = ['']/>
+<#if table.hasCascadeKey>
+	<#assign beans = ['', 'Bean']/>
+</#if>
 /**
  * ${table.remark} 的 mapper 接口
 <#list table.descriptions as description>
@@ -22,8 +29,8 @@ import java.util.List;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Mapper
-@Component("auto${className}Mapper")
-public interface ${className}Mapper {
+@Component
+public interface ${className}AutoMapper {
 
 	/**
 	 * 插入新数据（非空插入，不支持批量插入）
@@ -66,16 +73,16 @@ public interface ${className}Mapper {
 	 * @return 改变的行数
 	 */
 	int updateSetter(${table.classNameUpper}.SetterQuery setter);
-
 <#if table.hasId>
+
 	/**
 	 * 根据ID删除（支持批量删除）
 	 * @param ids 数据的主键ID
 	 * @return 改变的行数
 	 */
 	int deleteById(@Param("ids") Object... ids);
-
 </#if>
+
 	/**
 	 * 根据查询条件删除（灵活构建查询条件）
 	 * @param where 查询条件
@@ -95,44 +102,80 @@ public interface ${className}Mapper {
 	 * @return 统计行数
 	 */
 	int countWhere(WhereQuery<${table.className}> where);
+<#list beans as bean>
+	<#if table.hasId>
 
-<#if table.hasId>
 	/**
-	 * 根据ID获取
+	 * 根据ID获取<#if bean?length gt 0>（包括外键）</#if>
 	 * @param id 主键ID
 	 * @return null 或者 主键等于id的数据
 	 */
-	${className} findById(@Param("id") Object id);
+	${className}${bean} find${bean}ById(@Param("id") Object id);
+	</#if>
 
-</#if>
 	/**
-	 * 单条查询（灵活构建查询条件）
+	 * 单条查询（灵活构建查询条件<#if bean?length gt 0>，包括外键</#if>）
 	 * @param where 查询条件
 	 * @return null 或者 匹配条件的数据
 	 */
-	${className} selectOneWhere(Query<${table.className}> where);
+	${className}${bean} select${bean}OneWhere(Query<${table.className}> where);
 
 	/**
-	 * 批量查询（灵活构建查询条件）
+	 * 批量查询（灵活构建查询条件<#if bean?length gt 0>，包括外键</#if>）
 	 * @param where 查询条件
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<${className}> selectWhere(Query<${table.className}> where);
+	List<${className}${bean}> select${bean}Where(Query<${table.className}> where);
 
 	/**
-	 * 批量查询（灵活构建查询条件，分页）
+	 * 批量查询（灵活构建查询条件<#if bean?length gt 0>，包括外键</#if>，分页）
 	 * @param where 查询条件
 	 * @param rows 分页参数
 	 * @return null 或者 匹配条件的数据
 	 */
-	List<${className}> selectWhere(Query<${table.className}> where, RowBounds rows);
+	List<${className}${bean}> select${bean}Where(Query<${table.className}> where, RowBounds rows);
+	<#list table.importCascadeKeys as key>
 
+	/**
+	 * 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}）
+	 * @param ${key.fkColumn.fieldName} 关联条件
+	 * @return empty 或者 匹配条件的数据
+	 */
+	List<${table.className}${bean}> select${bean}By${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldType} ${key.fkColumn.fieldName});
+
+	/**
+	 * 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}，分页）
+	 * @param ${key.fkColumn.fieldName} 关联条件
+ 	 * @param rows 分页参数
+	 * @return empty 或者 匹配条件的数据
+	 */
+	List<${table.className}${bean}> select${bean}By${key.fkColumn.fieldNameUpper}(@Param("${key.fkColumn.fieldName}") ${key.fkColumn.fieldType} ${key.fkColumn.fieldName}, RowBounds rows);
+	</#list>
+	<#list table.relateCascadeKeys as key>
+
+	/**
+	 * 级联查询（<#if bean?length gt 0>包括外键，</#if>根据${key.targetTable.remarkName}${key.targetColumn.remarkName}）
+	 * @param ${key.relateTargetColumn.fieldName} 关联条件
+	 * @return empty 或者 匹配条件的数据
+	 */
+	List<${table.className}${bean}> select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(@Param("${key.relateTargetColumn.fieldName}") ${key.relateTargetColumn.fieldType} ${key.relateTargetColumn.fieldName});
+
+	/**
+	 * 级联查询（<#if bean?length gt 0>包括外键，</#if>根据${key.targetTable.remarkName}${key.targetColumn.remarkName}，分页）
+	 * @param ${key.relateTargetColumn.fieldName} 关联条件
+	 * @param rows 分页参数
+	 * @return empty 或者 匹配条件的数据
+	 */
+	List<${table.className}${bean}> select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(@Param("${key.relateTargetColumn.fieldName}") ${key.relateTargetColumn.fieldType} ${key.relateTargetColumn.fieldName}, RowBounds rows);
+	</#list>
+</#list>
 <#if table.idColumn.autoIncrement>
+
 	/**
 	 * 重置表自增编号
 	 */
 	@Update("alter table ${table.nameSql} auto_increment = 0")
 	void resetAutoIncrement();
-
 </#if>
+
 }

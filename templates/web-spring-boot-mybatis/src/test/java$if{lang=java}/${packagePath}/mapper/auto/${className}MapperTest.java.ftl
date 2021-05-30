@@ -47,7 +47,7 @@ import java.util.List;
 public class ${className}MapperTest extends BaseMapperTests<${className}> {
 
     @Autowired
-    protected ${className}Mapper mapper;
+    protected ${className}AutoMapper mapper;
 
 	private ${className} newModel(int index) {
 		${className} model = new ${className}();

@@ -93,14 +93,14 @@ public class AuthController {
     @RequestMapping("failed")
     @ApiOperation(value = "请先登录", hidden = true)
     public ApiResult<Object> failed() {
-        return new ApiResult<>(null, ResultCode.C401.code, ResultCode.C401.remark);
+        return new ApiResult<>(null, ResultCode.Unauthorized.code, ResultCode.Unauthorized.remark);
     }
 
     @ApiIgnore
     @RequestMapping("expired")
     @ApiOperation(value = "凭证过期", hidden = true)
     public ApiResult<Object> expired() {
-        return new ApiResult<>(null, ResultCode.C401.code, ResultCode.C401.remark);
+        return new ApiResult<>(null, ResultCode.Unauthorized.code, ResultCode.Unauthorized.remark);
     }
 
 }
