@@ -50,7 +50,7 @@ public class BaseControllerTests extends ${projectName?cap_first}ApplicationTest
 
     protected MockMvc mockMvc;
 
-    public void before() throws Exception {
+    public void before() {
         super.before();
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }

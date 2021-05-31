@@ -30,10 +30,10 @@ public class ${className}ControllerTest extends BaseControllerTests {
 	@DisplayName("列表测试方法")
     public void list() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/${table.urlPathName}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(getLoginCookie()))
+				.cookie(getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print());
@@ -44,10 +44,10 @@ public class ${className}ControllerTest extends BaseControllerTests {
 	@DisplayName("插入测试方法")
     public void insert() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/${table.urlPathName}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(getLoginCookie()))
+				.cookie(getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print());
@@ -58,10 +58,10 @@ public class ${className}ControllerTest extends BaseControllerTests {
 	@DisplayName("更新测试方法")
     public void update() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/${table.urlPathName}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(getLoginCookie()))
+				.cookie(getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print());
@@ -72,10 +72,10 @@ public class ${className}ControllerTest extends BaseControllerTests {
 	@DisplayName("获取测试方法")
     public void get() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/${table.urlPathName}/{id}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(getLoginCookie()))
+				.cookie(getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print());
@@ -86,10 +86,10 @@ public class ${className}ControllerTest extends BaseControllerTests {
 	@DisplayName("删除测试方法")
     public void delete() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/${table.urlPathName}/{id}")
-				.accept(APPLICATION_JSON)
 <#if hasLogin>
-				.cookie(getLoginCookie()))
+				.cookie(getLoginCookie())
 </#if>
+				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print());
