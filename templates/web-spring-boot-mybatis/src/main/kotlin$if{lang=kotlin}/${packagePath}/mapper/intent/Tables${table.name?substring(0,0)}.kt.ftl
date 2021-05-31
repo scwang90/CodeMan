@@ -1,9 +1,6 @@
 package ${packageName}.mapper.intent
 
-<#list tables as table>
-import ${packageName}.mapper.intent.tables.${table.classNameUpper}
-</#list>
-
+import ${packageName}.mapper.intent.tables.*
 
 /**
  * Convenience access to all tables in

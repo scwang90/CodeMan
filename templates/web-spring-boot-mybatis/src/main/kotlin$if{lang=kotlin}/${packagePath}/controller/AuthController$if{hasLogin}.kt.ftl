@@ -103,6 +103,9 @@ class AuthController {
     @ApiOperation(value = "登录状态")
     fun status(): ApiResult<Any> {
         val subject = SecurityUtils.getSubject()
+        if (!subject.isAuthenticated) {
+            return ApiResult.success(arrayOf("未登录"))
+        }
         return ApiResult.success(
             arrayOf(
                 subject.principals.oneByType(JwtBearer::class.java),

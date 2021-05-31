@@ -21,7 +21,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
-
+import springfox.documentation.annotations.ApiIgnore;
 import java.sql.SQLTransientConnectionException;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +41,7 @@ import javax.validation.ValidationException;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Slf4j
+@ApiIgnore
 @RestControllerAdvice
 public class ErrorController extends BasicErrorController {
     

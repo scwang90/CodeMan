@@ -79,7 +79,12 @@ public class AuthController {
     @ApiOperation(value = "登录状态")
     public ApiResult<Object> status() {
         Subject subject = SecurityUtils.getSubject();
-        return ApiResult.success(Arrays.asList(subject.getPrincipals().oneByType(JwtBearer.class),subject.getPrincipals().oneByType(DecodedJWT.class)));
+        if (!subject.isAuthenticated()) {
+            return ApiResult.fail(ResultCode.Unauthorized.code, ResultCode.Unauthorized.remark);
+        }
+        JwtBearer bearer = subject.getPrincipals().oneByType(JwtBearer.class);
+        DecodedJWT decoded = subject.getPrincipals().oneByType(DecodedJWT.class);
+        return ApiResult.success(Arrays.asList(bearer,decoded));
     }
 
     @PostMapping("logout")
@@ -93,14 +98,14 @@ public class AuthController {
     @RequestMapping("failed")
     @ApiOperation(value = "请先登录", hidden = true)
     public ApiResult<Object> failed() {
-        return new ApiResult<>(null, ResultCode.Unauthorized.code, ResultCode.Unauthorized.remark);
+        return ApiResult.fail(ResultCode.Unauthorized.code, ResultCode.Unauthorized.remark);
     }
 
     @ApiIgnore
     @RequestMapping("expired")
     @ApiOperation(value = "凭证过期", hidden = true)
     public ApiResult<Object> expired() {
-        return new ApiResult<>(null, ResultCode.Unauthorized.code, ResultCode.Unauthorized.remark);
+        return ApiResult.fail(ResultCode.Unauthorized.code, ResultCode.Unauthorized.remark);
     }
 
 }

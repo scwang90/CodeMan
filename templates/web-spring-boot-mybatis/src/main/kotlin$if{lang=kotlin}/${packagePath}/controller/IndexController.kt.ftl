@@ -3,6 +3,7 @@ package ${packageName}.controller
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ResponseBody
 import springfox.documentation.annotations.ApiIgnore
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -24,6 +25,12 @@ class IndexController {
 	@GetMapping("document")
 	fun document(request: HttpServletRequest, response: HttpServletResponse) {
 		request.getRequestDispatcher("/swagger-ui.html").forward(request, response)
+	}
+
+	@ResponseBody
+	@GetMapping("version")
+	fun version(): String {
+		return IndexController::class.java.getPackage().implementationVersion ?: "调试版本"
 	}
 
 	@GetMapping("admin")

@@ -8,7 +8,7 @@ import ${packageName}.model.db.${className}
 <#if table.hasCascadeKey>
 import ${packageName}.model.db.${className}Bean
 </#if>
-<#if table.hasSearches || table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
+<#if table.hasSearches || table.hasImportCascadeKey || table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 import ${packageName}.service.auto.${className}AutoService
 </#if>
 import ${packageName}.util.RequestUtil
@@ -40,7 +40,7 @@ class ${className}Controller {
 	@Autowired
 	private lateinit var mapper: ${className}AutoMapper
 <#--</#if>-->
-<#if table.hasSearches || table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
+<#if table.hasSearches || table.hasImportCascadeKey || table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 	@Autowired
 	private lateinit var service: ${className}AutoService
 </#if>

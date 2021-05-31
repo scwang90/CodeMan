@@ -1,20 +1,11 @@
 package ${packageName}.mapper.auto.extensions
 
-<#list tables as table>
-import ${packageName}.mapper.auto.${table.className}AutoMapper
-</#list>
+import ${packageName}.mapper.auto.*
 import ${packageName}.mapper.intent.Tables
 import ${packageName}.mapper.intent.api.Query
 import ${packageName}.mapper.intent.api.WhereQuery
-<#list tables as table>
-import ${packageName}.mapper.intent.tables.${table.classNameUpper}
-</#list>
-<#list tables as table>
-import ${packageName}.model.db.${table.className}
-<#if table.hasCascadeKey>
-import ${packageName}.model.db.${table.className}Bean
-</#if>
-</#list>
+import ${packageName}.mapper.intent.tables.*
+import ${packageName}.model.db.*
 import org.apache.ibatis.session.RowBounds
 <#list tables as table>
     <#assign beans = ['']/>

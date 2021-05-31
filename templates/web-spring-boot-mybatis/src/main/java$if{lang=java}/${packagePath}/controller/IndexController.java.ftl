@@ -2,14 +2,13 @@ package ${packageName}.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
 * url 映射
@@ -28,6 +27,13 @@ public class IndexController {
 	@GetMapping("back")
 	public String admin() {
 		return "redirect:/admin";
+	}
+
+	@ResponseBody
+	@GetMapping("version")
+	public String version() {
+		String version = IndexController.class.getPackage().getImplementationVersion();
+		return version != null ? version : "调试版本";
 	}
 
 	@GetMapping("document")
