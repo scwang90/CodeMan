@@ -6,5 +6,9 @@ package ${packageName}.constant;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 public enum UserType implements ShortEnum {
-    User, Admin
+<#if hasMultiLogin>
+    <#list loginTables as table>${table.className}<#if table_has_next>, </#if></#list>
+<#else >
+    Admin, User
+</#if>
 }

@@ -42,6 +42,7 @@ public class ProjectConfigFactory {
         config.setColumnUsername(properties.getProperty("code.man.database.column.username",config.getColumnUsername()));
         config.setColumnCreator(properties.getProperty("code.man.database.column.creator",config.getColumnCreator()));
         config.setColumnSearches(properties.getProperty("code.man.database.column.searches",config.getColumnSearches()));
+        config.setColumnGender(properties.getProperty("code.man.database.column.gender",config.getColumnGender()));
         config.setColumnHideForClient(properties.getProperty("code.man.database.column.hide-for-client",config.getColumnHideForClient()));
         config.setColumnHideForSubmit(properties.getProperty("code.man.database.column.hide-for-submit",config.getColumnHideForSubmit()));
         config.setColumnHideForClient(properties.getProperty("code.man.database.column.hideForClient",config.getColumnHideForClient()));

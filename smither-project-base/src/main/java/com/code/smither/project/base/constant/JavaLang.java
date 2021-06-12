@@ -68,8 +68,10 @@ public class JavaLang extends AbstractProgramLang {
         Class<?> clazz = super.getJavaType(column);
         if (java.sql.Timestamp.class.equals(clazz)) {
             clazz = java.util.Date.class;
-        } if (java.sql.Time.class.equals(clazz)) {
-            clazz = java.util.Date.class;
+//        } if (java.sql.Time.class.equals(clazz)) {
+//            clazz = java.util.Date.class;
+//        } if (java.sql.Date.class.equals(clazz)) {
+//            clazz = java.util.Date.class;
         } if (java.sql.Clob.class.equals(clazz)) {
             clazz = java.lang.String.class;
         } if (java.sql.Blob.class.equals(clazz)) {
@@ -78,6 +80,10 @@ public class JavaLang extends AbstractProgramLang {
             clazz = java.lang.String.class;
         } if (java.sql.SQLXML.class.equals(clazz)) {
             clazz = java.lang.String.class;
+        } if (Byte.class.equals(clazz)) {
+            clazz = java.lang.Integer.class;
+        } if (Short.class.equals(clazz)) {
+            clazz = java.lang.Integer.class;
         } if (BigInteger.class.equals(clazz)) {
             clazz = java.lang.Long.class;
         } if (BigDecimal.class.equals(clazz)) {

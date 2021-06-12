@@ -17,10 +17,10 @@ public enum ResultCode {
     ServerError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器错误");
 
     public final int code;
-    public final String remark;
+    public final String message;
 
-    ResultCode(int code, String remark) {
+    ResultCode(int code, String message) {
         this.code = code;
-        this.remark = remark;
+        this.message = message;
     }
 }

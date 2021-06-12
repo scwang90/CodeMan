@@ -1,16 +1,13 @@
 package com.generator.poetry.drawable2svg;
 
-import com.code.smither.engine.api.RootModel;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.model.SourceModel;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
-import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.model.DbModelBuilder;
 import com.code.smither.project.database.model.DbSourceModel;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,8 +46,8 @@ public class ReplaceBuilder extends DbModelBuilder {
         assert database != null;
         SourceModel model = build(new DbSourceModel(database.name()), config, buildTables());
         model.getJdbc().setUrl(factory.getJdbcUrl());
-        model.getJdbc().setDriver(factory.getDriverClass());
-        model.getJdbc().setUsername(factory.getUser());
+        model.getJdbc().setDriver(factory.getDriver());
+        model.getJdbc().setUsername(factory.getUsername());
         model.getJdbc().setPassword(factory.getPassword());
 
         for (Table table : model.getTables()) {

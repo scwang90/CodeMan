@@ -35,9 +35,9 @@ public class JwtUtils {
 
     public static JwtBearer loadBearer(DecodedJWT jwt) {
 <#if loginTable.idColumn.stringType>
-        return new JwtBearer(jwt.getClaim("userId").asString()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asString()</#if>);
+        return new JwtBearer(jwt.getClaim("type").asString(), jwt.getClaim("userId").asString()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asString()</#if>);
 <#else >
-        return new JwtBearer(jwt.getClaim("userId").asInt()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asInt()</#if>);
+        return new JwtBearer(jwt.getClaim("type").asString(), jwt.getClaim("userId").asInt()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asInt()</#if>);
 </#if>
     }
 

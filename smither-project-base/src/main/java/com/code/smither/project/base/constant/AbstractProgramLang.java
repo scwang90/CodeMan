@@ -33,9 +33,9 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.NCLOB:
                 return NClob.class;
             case Types.TINYINT:
-//                return Byte.class;
+                return Byte.class;
             case Types.SMALLINT:
-//                return Short.class;
+                return Short.class;
             case Types.INTEGER:
                 return Integer.class;
             case Types.BIGINT:
@@ -68,7 +68,7 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.TIME:
                 return Time.class;
             case Types.DATE:
-                return java.util.Date.class;
+                return java.sql.Date.class;
             case Types.TIMESTAMP:
                 return java.sql.Timestamp.class;
             case Types.OTHER:
@@ -95,7 +95,9 @@ public abstract class AbstractProgramLang implements ProgramLang {
                     }
                 }
             case Types.STRUCT:
+                return Struct.class;
             case Types.REF:
+                return Ref.class;
             case Types.DISTINCT:
             case Types.NULL:
             default:

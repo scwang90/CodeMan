@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
  */
 @ApiIgnore
 @Controller
-class HostController {
+class HostController(config: AppConfig) {
 
     companion object {
 
@@ -25,8 +25,8 @@ class HostController {
          * @param request 请求对象
          * @return url 协议/主机/端口
          */
-        fun urlSchemeHostPort(request: HttpServletRequest): String? {
-            var url = if (CONFIG != null) CONFIG.visitHost else null
+        fun urlSchemeHostPort(request: HttpServletRequest): String {
+            var url = CONFIG?.client?.visitHost
             if (url.isNullOrBlank()) {
                 url = String.format("%s://%s:%d", request.scheme, request.serverName, request.serverPort)
             } else if (!url.contains("://")) {

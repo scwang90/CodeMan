@@ -16,6 +16,7 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc
+import java.util.function.Predicate
 
 /**
  * Swagger文档配置
@@ -44,7 +45,7 @@ class SwaggerConfigurer(private val config: AppConfig) {
     @Bean
     fun createApi(): Docket {
         val all = RequestHandlerSelectors.basePackage("com.fecred.midaier.controller")
-        val app = RequestHandlerSelectors.basePackage("com.fecred.midaier.controller.app")
+        val auto = RequestHandlerSelectors.basePackage("com.fecred.midaier.controller.auto")
         val docket = Docket(DocumentationType.SWAGGER_2).groupName("1.api")
             .apiInfo(ApiInfoBuilder()
                 .version("1.0") //版本号
@@ -75,7 +76,7 @@ class SwaggerConfigurer(private val config: AppConfig) {
             .globalResponseMessage(RequestMethod.GET, ResultCode.values().map { ResponseMessage(it.code, it.msg, ModelRef("void"), emptyList(), emptyMap(), emptyList()) })
             .globalResponseMessage(RequestMethod.DELETE, ResultCode.values().map { ResponseMessage(it.code, it.msg, ModelRef("void"), emptyList(), emptyMap(), emptyList()) })
             .select()
-            .apis(app.or(all))
+            .apis(all.and(Predicate.not(auto)))
             .paths(PathSelectors.any())
             .build()
 
@@ -91,7 +92,7 @@ class SwaggerConfigurer(private val config: AppConfig) {
      */
     @Bean
     fun createAutoApi(): Docket {
-        val pack = RequestHandlerSelectors.basePackage("${packageName}.controller.manager")
+        val pack = RequestHandlerSelectors.basePackage("${packageName}.controller.auto")
         val docket = Docket(DocumentationType.SWAGGER_2).groupName("2.auto")
             .apiInfo(ApiInfoBuilder()
                 .version("1.0") //版本号

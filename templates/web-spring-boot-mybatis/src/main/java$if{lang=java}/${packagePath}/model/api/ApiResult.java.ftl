@@ -1,5 +1,6 @@
 package ${packageName}.model.api;
 
+import ${packageName}.constant.ResultCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -36,20 +37,24 @@ public class ApiResult<T> {
         this.errors = errors;
     }
 
-    public static <T> ApiResult<T> msg(String msg) {
-        return new ApiResult<>(null, 200, msg);
+    public static <T> ApiResult<T> message(String message) {
+        return new ApiResult<>(null, 200, message);
     }
 
     public static <T> ApiResult<T> success(T result) {
         return new ApiResult<>(result, 200);
     }
 
-    public static <T> ApiResult<T> success(T result, String msg) {
-        return new ApiResult<>(result, 200, msg);
+    public static <T> ApiResult<T> success(T result, String message) {
+        return new ApiResult<>(result, 200, message);
     }
 
-    public static <T> ApiResult<T> fail(int code, String msg) {
-        return new ApiResult<>(null, code, msg);
+    public static <T> ApiResult<T> fail(ResultCode code) {
+        return new ApiResult<>(null, code.code, code.message);
+    }
+
+    public static <T> ApiResult<T> fail(int code, String message) {
+        return new ApiResult<>(null, code, message);
     }
 
     public static <T> ApiResult<T> failClient(String message) {

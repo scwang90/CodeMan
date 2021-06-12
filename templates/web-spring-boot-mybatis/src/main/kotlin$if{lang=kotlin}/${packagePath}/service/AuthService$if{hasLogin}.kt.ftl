@@ -55,10 +55,7 @@ class AuthService {
     @Transactional(rollbackFor = [Throwable::class])
     fun login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}: ${loginTable.orgColumn.fieldType}, </#if>username: String, password: String): LoginInfo {
         val subject = SecurityUtils.getSubject().apply { login(LoginToken(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password)) }
-        val ${loginTable.classNameCamel} = subject.principals.oneByType(${loginTable.className}::class.java)
-    <#if loginTable.hasPassword>
-        ${loginTable.classNameCamel}.${loginTable.passwordColumn.fieldName} = ""
-    </#if>
+        val ${loginTable.classNameCamel} = subject.principals.oneByType(${loginTable.className}::class.java)<#if loginTable.hasPassword>.apply { this.${loginTable.passwordColumn.fieldName} = "" }</#if>
         return LoginInfo(buildToken(${loginTable.classNameCamel}), ${loginTable.classNameCamel})
     }
 

@@ -19,7 +19,6 @@ import ${packageName}.model.db.${table.className}
 import ${packageName}.model.db.${loginTable.className}
 </#if>
 import ${packageName}.model.conf.AuthConfig
-import ${packageName}.shiro.model.JwtToken
 <#if hasMultiLogin>
     <#list loginTables as table>
 import ${packageName}.shiro.model.${table.className}Token
@@ -27,11 +26,14 @@ import ${packageName}.shiro.model.${table.className}Token
 <#else >
 import ${packageName}.shiro.model.LoginToken
 </#if>
+import ${packageName}.shiro.model.JwtToken
+import ${packageName}.shiro.model.JwtBearer
 import ${packageName}.util.JwtUtils
 import org.apache.shiro.authc.*
 import org.apache.shiro.authc.credential.CredentialsMatcher
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher
 import org.apache.shiro.authz.AuthorizationInfo
+import org.apache.shiro.authz.SimpleAuthorizationInfo
 import org.apache.shiro.realm.AuthorizingRealm
 import org.apache.shiro.subject.PrincipalCollection
 import org.apache.shiro.util.ByteSource
@@ -89,7 +91,10 @@ class AuthRealm(private val authConfig: AuthConfig) : AuthorizingRealm(), Creden
     }
 
     override fun doGetAuthorizationInfo(principalCollection: PrincipalCollection): AuthorizationInfo? {
-        return null
+        val bearer = principalCollection.oneByType(JwtBearer::class.java)
+        val info = SimpleAuthorizationInfo()
+        info.addRole(bearer.type)
+        return info
     }
 
     override fun doGetAuthenticationInfo(authenticationToken: AuthenticationToken): AuthenticationInfo? {
@@ -139,7 +144,7 @@ class AuthRealm(private val authConfig: AuthConfig) : AuthorizingRealm(), Creden
         </#if>
         if (${table.classNameCamel} == null) {
             if (token.username == "admin" && token.password == "654321") {
-                //项目刚刚生成，数据库可能没有yoghurt数据，本代码可以提前体登录成功，并体验其他接口
+                //项目刚刚生成，数据库可能没有${table.remarkName}数据，本代码可以提前体登录成功，并体验其他接口
                 val salt = ByteSource.Util.bytes(authConfig.password.salt)
                 return SimpleAuthenticationInfo(${table.className}(), authConfig.passwordHash(token.password), salt, "authRealm")
             }

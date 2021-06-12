@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.function.Predicate;
 
 /**
@@ -58,8 +58,8 @@ public class SwaggerConfigurer {
                         .version("1.0")//版本号
                         .description("${projectName} 管理后台 API")//描述
                         .build())
-                .produces(new HashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)))
-                .consumes(new HashSet<>(Arrays.asList(MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE)))
+                .produces(new LinkedHashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)))
+                .consumes(new LinkedHashSet<>(Arrays.asList(MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE)))
                 .select()
                 .apis(manager)
                 .paths(PathSelectors.any())
@@ -85,8 +85,8 @@ public class SwaggerConfigurer {
                     .version("1.0")//版本号
                     .description("${projectName} 接口文档 API")//描述
                     .build())
-                .produces(new HashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)))
-                .consumes(new HashSet<>(Arrays.asList(MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE)))
+                .produces(new LinkedHashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)))
+                .consumes(new LinkedHashSet<>(Arrays.asList(MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE)))
                 .select()
                 .apis(pack.and(val))
                 .paths(PathSelectors.any())

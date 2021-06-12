@@ -75,7 +75,7 @@ class AuthController {
     }
 
     </#list>
-    <#else >
+<#else >
     @PostMapping("login")
     @ApiOperation(value = "用户登录", notes = "大部分接口都需要先登录后调用")
     @ApiImplicitParams(

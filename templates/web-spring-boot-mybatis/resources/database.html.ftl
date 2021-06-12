@@ -1,12 +1,14 @@
 <!doctype html>
-<html>
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>数据字典 ${projectName}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container"><h1 style="text-align:center;">数据字典 ${projectName}</h1>
+<div class="container">
+
+    <h1 style="text-align:center;">数据字典 ${projectName}</h1>
 
     <#list tables as table>
         <h3><b>表</b> : <span>${table.name}</span> = ${table.remark}</h3>

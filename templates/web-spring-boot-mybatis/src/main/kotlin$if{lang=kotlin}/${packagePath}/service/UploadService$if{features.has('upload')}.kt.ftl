@@ -4,12 +4,13 @@ import ${packageName}.constant.UploadType
 import ${packageName}.exception.ServiceException
 import ${packageName}.mapper.UploadMapper
 import ${packageName}.model.api.Upload
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
 import java.io.File
 import java.io.IOException
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -51,8 +52,8 @@ class UploadService {
      * @param id 图片 id
      * @return file or null
      */
-    fun findFileById(id: String?): File? {
-        val upload: Upload = mapper.findById(id)
+    fun findFileById(id: String): File? {
+        val upload = mapper.findById(id)
         if (upload != null) {
             return getFileByUpload(upload)
         } else {
@@ -67,7 +68,7 @@ class UploadService {
      * @return file
      */
     fun getFileByUpload(upload: Upload): File {
-        return File(File("upload", upload.getPath()), upload.getId()).getAbsoluteFile()
+        return File(File("upload", upload.path), upload.id).getAbsoluteFile()
     }
 
     /**
@@ -77,9 +78,9 @@ class UploadService {
      * @return path
      */
     fun pathWith(account: String?, type: UploadType): String? {
-        return if (type.ordinal() > UploadType.image.ordinal() && account != null) {
-            String.format("%s/%s/%s", type.name(), account, dateFormat.format(Date()))
-        } else String.format("%s/%s", type.name(), dateFormat.format(Date()))
+        return if (type.ordinal > UploadType.Image.ordinal && account != null) {
+            String.format("%s/%s/%s", type.name, account, dateFormat.format(Date()))
+        } else String.format("%s/%s", type.name, dateFormat.format(Date()))
     }
 
     /**
@@ -89,9 +90,9 @@ class UploadService {
      */
     fun saveFile(part: MultipartFile, upload: Upload) {
         val file = getFileByUpload(upload)
-        val parent = file.getParentFile()
+        val parent = file.parentFile
         if (!parent.exists() && !parent.mkdirs()) {
-            log.error("创建目录失败:" + parent.getAbsolutePath())
+            log.error("创建目录失败:" + parent.absolutePath)
             throw ServiceException("上传失败")
         }
         try {

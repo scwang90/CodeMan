@@ -23,6 +23,10 @@ public class DbConfigFactory {
 
 	public static void loadConfig(Properties properties, DataBaseConfig config) {
 		ProjectConfigFactory.loadConfig(properties, config);
+		config.setDbUrl(properties.getProperty("code.man.database.url", config.getDbUrl()));
+		config.setDbDriver(properties.getProperty("code.man.database.driver", config.getDbDriver()));
+		config.setDbUsername(properties.getProperty("code.man.database.username", config.getDbUsername()));
+		config.setDbPassword(properties.getProperty("code.man.database.password", config.getDbPassword()));
 		config.setDbConfigName(properties.getProperty("code.man.database.config.name", config.getDbConfigName()));
 	}
 

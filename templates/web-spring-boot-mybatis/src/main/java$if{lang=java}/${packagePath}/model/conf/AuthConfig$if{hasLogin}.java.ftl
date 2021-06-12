@@ -27,7 +27,7 @@ public class AuthConfig {
         return token.refresh * 1000L;
     }
 
-    public String hash(String pwd) {
+    public String passwordHash(String pwd) {
         return new Md5Hash(pwd, password.salt, password.iterations).toHex();
     }
 

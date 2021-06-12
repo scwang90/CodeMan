@@ -61,17 +61,17 @@ public class OracleTableSource extends DbTableSource implements Database {
 
     @Override
     protected ResultSet queryTables(DatabaseMetaData metaData) throws SQLException {
-        return metaData.getTables(null, dbFactory.getUser(), "%", new String[] { "TABLE" });
+        return metaData.getTables(null, dbFactory.getUsername(), "%", new String[] { "TABLE" });
     }
 
     @Override
     protected ResultSet queryColumns(DatabaseMetaData metaData, String tableName) throws SQLException {
-        return metaData.getColumns(null, dbFactory.getUser(), tableName, "%");
+        return metaData.getColumns(null, dbFactory.getUsername(), tableName, "%");
     }
 
     @Override
     protected ResultSet queryPrimaryKeys(DatabaseMetaData metaData, String tableName) throws SQLException {
-        return metaData.getPrimaryKeys(null, dbFactory.getUser(), tableName);
+        return metaData.getPrimaryKeys(null, dbFactory.getUsername(), tableName);
     }
 
     @Override

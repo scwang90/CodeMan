@@ -23,8 +23,8 @@ public class DbModelBuilder extends DefaultModelBuilder {
     public RootModel build() throws Exception {
         SourceModel model = build(new DbSourceModel(database.name()), config, buildTables());
         model.getJdbc().setUrl(factory.getJdbcUrl());
-        model.getJdbc().setDriver(factory.getDriverClass());
-        model.getJdbc().setUsername(factory.getUser());
+        model.getJdbc().setDriver(factory.getDriver());
+        model.getJdbc().setUsername(factory.getUsername());
         model.getJdbc().setPassword(factory.getPassword());
         return model;
     }

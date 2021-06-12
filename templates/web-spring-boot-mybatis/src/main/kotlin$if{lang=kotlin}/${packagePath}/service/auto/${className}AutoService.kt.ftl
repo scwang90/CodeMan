@@ -84,9 +84,9 @@ class ${className}AutoService {
 			<#if table.removeColumn.boolType>
 			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.eq(false)))
 			<#elseif table.removeColumn.intType>
-			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.eq(0)));
+			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.eq(0)))
 			<#else>
-			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.ne("removed")));
+			where = where.and(${table.removeColumn.fieldNameUpper}.isNull.or(${table.removeColumn.fieldNameUpper}.ne("removed")))
 			</#if>
 		</#if>
 		<#if table.hasSearches>
@@ -221,7 +221,7 @@ class ${className}AutoService {
 	</#list>
 
 	/**
-	 * 获取${table.remarkName}
+	 * 删除${table.remarkName}
 	 * @param ids 数据主键
 	 × @return 返回数据修改的行数
 	 */

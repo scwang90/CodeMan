@@ -53,7 +53,7 @@ class FilterConfiguration {
 
         private class JsonParamHttpRequest(request: HttpServletRequest,val stream: ServletInputStream,val node: JsonNode) : HttpServletRequestWrapper(request) {
 
-            private var names: Enumeration<String>? = null
+            private var names: List<String>? = null
             private var map: Map<String, Array<String>?>? = null
 
             override fun getInputStream(): ServletInputStream {
@@ -68,25 +68,22 @@ class FilterConfiguration {
             }
 
             override fun getParameterNames(): Enumeration<String>? {
-                this.names?.also { return it }
-                this.node.fieldNames()?.asSequence()?.toMutableList()?.run {
+                this.names?.run { return Collections.enumeration(this) }
+                treefieldNames(this.node).toMutableList().run {
                     super.getParameterNames()?.let { addAll(it.toList()) }
-                    return Collections.enumeration(this).apply { names = this }
+                    return Collections.enumeration(this.apply { names = this })
                 }
-                return super.getParameterNames()
             }
 
             override fun getParameter(name: String): String? {
-                node.get(name)?.run {
-                    return getParameterValues(name).let { array->
-                        if (array != null && array.isNotEmpty()) array.joinToString(",") else null
-                    }
+                treeNodeValue(node, name)?.run {
+                    return valueFromNode(this)
                 }
                 return super.getParameter(name)
             }
 
             override fun getParameterValues(name: String): Array<String>? {
-                node.get(name)?.run {
+                treeNodeValue(node, name)?.run {
                     return if (isArray) { map { valueFromNode(it) }.toTypedArray() } else arrayOf(valueFromNode(this))
                 }
                 return super.getParameterValues(name)
@@ -99,6 +96,30 @@ class FilterConfiguration {
                     value.isArray -> value.joinToString(",") { valueFromNode(it) }
                     else ->  value.toPrettyString()
                 }
+            }
+
+            fun treefieldNames(node: JsonNode, current: String? = null): Sequence<String>  {
+                return node.fieldNames()?.asSequence()?.flatMap {
+                    return@flatMap node[it].run {
+                        val key = if(current == null) it else "$current.$it"
+                        if (this.isObject) {
+                            return@run treefieldNames(this, key)
+                        }
+                        return@run arrayOf(key).asSequence()
+                    }
+                } ?: emptySequence()
+            }
+
+            fun treeNodeValue(node: JsonNode, path: String): JsonNode? {
+                node.get(path)?.run { return this }
+                path.indexOf('.').also { dot->
+                    if (dot > 0) {
+                        node[path.substring(0, dot)]?.run {
+                            return treeNodeValue(this, path.substring(dot + 1))
+                        }
+                    }
+                }
+                return null
             }
 
         }

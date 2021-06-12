@@ -3,7 +3,7 @@
 	<named-config name="DemoSqLite">
 		<property name="driverClass">org.sqlite.JDBC</property>
 		<property name="jdbcUrl">jdbc:sqlite:sqlite.db</property>
-		<!--<property name="jdbcUrl">jdbc:sqlite:[文件路劲]/property>-->
+		<!--<property name="jdbcUrl">jdbc:sqlite:[文件路劲]</property>-->
 	</named-config>
 	<named-config name="DemoMysql">
 		<property name="user">builder</property>

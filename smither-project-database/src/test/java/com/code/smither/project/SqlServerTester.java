@@ -121,8 +121,7 @@ public class SqlServerTester {
 
 
         DbFactory instance = C3P0Factory.getInstance("SqlServer-Worker");
-        DataSource dataSource = instance.getDataSource();
-        Connection connection = dataSource.getConnection();
+        Connection connection = instance.getConnection();
 
         for (TestItem item : items) {
             String sql = "insert into worker_TestItem (Id,ActivityId,Name,IsEnable,UserId) values(?,?,?,?,?)";

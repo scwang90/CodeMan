@@ -19,12 +19,12 @@ import org.springframework.stereotype.Component
 interface UploadMapper {
 
     @Insert("INSERT INTO upload_file (id, name, size, type, path, mime_type, time) VALUES (${r"#"}{id}, ${r"#"}{name}, ${r"#"}{size}, ${r"#"}{type}, ${r"#"}{path}, ${r"#"}{mimeType}, ${r"#"}{time})")
-    fun insert(Upload file): Int
+    fun insert(file: Upload): Int
 
     @Select("SELECT * FROM upload_file WHERE id=${r"#"}{id} LIMIT 1")
-    fun findById(@Param("id") String id): Upload?
+    fun findById(@Param("id") id: String): Upload?
 
     @Delete("DELETE FROM upload_file WHERE id=${r"#"}{id}")
-    fun deleteById(@Param("id") String id): Int
+    fun deleteById(@Param("id") id: String): Int
 
 }

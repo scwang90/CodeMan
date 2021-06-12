@@ -1,5 +1,6 @@
 package com.code.smither.project.database.impl;
 
+import com.code.smither.engine.Engine;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.constant.Database;
@@ -7,9 +8,12 @@ import com.code.smither.project.base.model.ForeignKey;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.database.api.DbFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -24,6 +28,8 @@ public class DbTableSource implements TableSource {
 	protected DbFactory dbFactory;
 	protected Connection connection = null;
 	protected DatabaseMetaData databaseMetaData = null;
+
+	private static final Logger logger = LoggerFactory.getLogger(DbTableSource.class);
 
 	public DbTableSource(ProjectConfig config, DbFactory dbFactory) {
 		this(config, dbFactory, false);
@@ -110,6 +116,11 @@ public class DbTableSource implements TableSource {
 				keys.add(foreginFromResultSet(result));
 			}
 		}
+		List<ForeignKey> list = keys.stream().distinct().collect(Collectors.toList());
+		if (list.size() != keys.size()) {
+			logger.warn("表【" + table.getName() + "】导入外键出现重复，已经排重：" + keys.size() + "->" + list.size());
+			return list;
+		}
 		return keys;
 	}
 
@@ -120,6 +131,11 @@ public class DbTableSource implements TableSource {
 			while (result.next()) {
 				keys.add(foreginFromResultSet(result));
 			}
+		}
+		List<ForeignKey> list = keys.stream().distinct().collect(Collectors.toList());
+		if (list.size() != keys.size()) {
+			logger.warn("表【" + table.getName() + "】导出外键出现重复，已经排重：" + keys.size() + "->" + list.size());
+			return list;
 		}
 		return keys;
 	}
