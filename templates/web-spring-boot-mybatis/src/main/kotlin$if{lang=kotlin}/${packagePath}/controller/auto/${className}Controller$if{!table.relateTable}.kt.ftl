@@ -40,7 +40,7 @@ class ${className}Controller {
 	@Autowired
 	private lateinit var mapper: ${className}AutoMapper
 <#--</#if>-->
-<#if table.hasSearches || table.hasImportCascadeKey || table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
+<#if table.hasSearches || table.hasImportCascadeKey || table.hasRemove || table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || table == loginTable || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
 	@Autowired
 	private lateinit var service: ${className}AutoService
 </#if>
@@ -73,7 +73,7 @@ class ${className}Controller {
 		ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
 	)
     fun list${bean}(@ApiIgnore paging: Paging<#if table.hasSearches>, key: String?</#if>): ApiResult<Paged<${className}${bean}>> {
-	<#if table.hasOrgan || table.hasSearches>
+	<#if (table.hasOrgan && hasOrgan) || table.hasSearches || table.hasRemove>
 		return ApiResult.success(service.list${bean}(paging<#if table.hasSearches>, key</#if>))
 	<#else >
 		val list = mapper.select${bean}Where(null, paging.toRowBounds())

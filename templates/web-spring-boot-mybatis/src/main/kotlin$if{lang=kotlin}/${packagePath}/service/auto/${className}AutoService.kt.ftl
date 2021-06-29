@@ -13,14 +13,16 @@ import ${packageName}.exception.ClientException
 <#if table.hasCode>
 import ${packageName}.mapper.CommonMapper
 </#if>
-<#if table.hasOrgan || table.hasCode || table.hasSearches>
+<#if (table.hasOrgan && table.hasOrgan) || table.hasRemove || table.hasCode || table.hasSearches>
 import ${packageName}.mapper.intent.Tables
 </#if>
 import ${packageName}.mapper.auto.${className}AutoMapper
 <#list beans as bean>
-<#list table.importCascadeKeys as key>
+<#if table.hasSearches>
+	<#list table.importCascadeKeys as key>
 import ${packageName}.mapper.auto.extensions.select${bean}By${key.fkColumn.fieldNameUpper}
-</#list>
+	</#list>
+</#if>
 </#list>
 <#if table.hasRemove>
 import ${packageName}.mapper.auto.extensions.update
@@ -71,7 +73,7 @@ class ${className}AutoService {
 	</#if>
 	 */
     fun list${bean}(paging: Paging<#if table.hasSearches>, key: String?</#if>): Paged<${className}${bean}> {
-	<#if table.hasSearches || (hasOrgan && table.hasOrgan)>
+	<#if table.hasSearches || table.hasRemove || (hasOrgan && table.hasOrgan)>
         return Tables.${table.className}.run {
 			var where = where(<#if hasOrgan && table.hasOrgan && !loginTable.orgColumn.nullable>${table.orgColumn.fieldNameUpper}.eq(JwtUtils.currentBearer().${table.orgColumn.fieldName})<#else></#if>)
 		<#if hasOrgan && table.hasOrgan && loginTable.orgColumn.nullable>

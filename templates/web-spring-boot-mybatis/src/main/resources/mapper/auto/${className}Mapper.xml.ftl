@@ -173,7 +173,7 @@
         SELECT * FROM ${table.nameSql}
         <include refid="include.sql_where"/>
         <include refid="include.sql_order">
-            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSqlInStr}<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSqlInStr} DESC</#if>"/>
         </include>
     </select>
 
@@ -182,7 +182,7 @@
         SELECT * FROM ${table.nameSql}
         <include refid="include.sql_where"/>
         <include refid="include.sql_order">
-            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSql}</#if>"/>
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSqlInStr}<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSqlInStr}</#if>"/>
         </include>
     </select>
     <#assign deleteWhere = ''/>

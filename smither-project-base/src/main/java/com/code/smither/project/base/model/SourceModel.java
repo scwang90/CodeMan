@@ -42,7 +42,7 @@ public class SourceModel implements LangRootModel {
     private Date now = new Date();
     private Features features;          //特性列表（可以指定使用模板中的某种特性功能或代码）
     private boolean hasCode;            //是否有编码
-    private boolean hasOrgan;           //是否有机构
+    private boolean hasOrgan;           //是否有机构 需要同时含有登录、并且登录表中含有机构Id 才算
     private boolean hasLogin;           //是否有登录功能
     private boolean hasMultiLogin;      //是否有多表登录功能
     private boolean hasStringId;        //是否含有字符串Id

@@ -127,9 +127,9 @@
                             </otherwise>
                         </choose>
                     </when>
-                    <otherwise>
+                    <when test="op != null">
                         ${column} ${op}
-                    </otherwise>
+                    </when>
                 </choose>
             </when>
             <when test="wheres != null">
