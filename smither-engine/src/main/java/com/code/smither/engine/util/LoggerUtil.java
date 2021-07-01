@@ -13,6 +13,9 @@ public class LoggerUtil {
 
     public static void loadLoggingConfig() {
         File file = new File("../resources/logging.properties");
+        if (!file.exists()) {
+            file = new File("resources/logging.properties");
+        }
         try(FileInputStream fis = new FileInputStream(file)) {
             LogManager manager = LogManager.getLogManager();
             manager.readConfiguration(fis);

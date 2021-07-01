@@ -165,11 +165,11 @@
 		</dependency>
 		</#if>
 
-		<!-- 代码辅助 -->
+		<!-- 对象拷贝 -->
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
 		</dependency>
 
 		<#if lang=="kotlin">
@@ -181,6 +181,13 @@
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-reflect</artifactId>
+		</dependency>
+		<#else >
+		<!-- 代码辅助 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 		</#if>
 	</dependencies>

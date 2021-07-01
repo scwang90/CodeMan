@@ -36,12 +36,20 @@
 			<groupId>com.code.smither</groupId>
 			<artifactId>smither-project-base</artifactId>
 		</dependency>
-		<!-- MySql -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<groupId>com.code.smither</groupId>
+			<artifactId>smither-project-database</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.code.smither</groupId>
+			<artifactId>smither-project-htmltable</artifactId>
+		</dependency>
+		<!-- MySql -->
+<!--		<dependency>-->
+<!--			<groupId>mysql</groupId>-->
+<!--			<artifactId>mysql-connector-java</artifactId>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
 
 	</dependencies>
 

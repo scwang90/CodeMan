@@ -43,9 +43,9 @@ open class ${className} {
 	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
 	</#if>
 	@ApiModelProperty(value = "${column.remark}"<@compress single_line=true>
-		<#if column.nullable != true>, required = true</#if>
+		<#if column.nullable != true && (!column.hiddenForSubmit || column == table.idColumn)>, required = true</#if>
 		<#if column.hiddenForClient>, hidden = true</#if>
-		<#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"<#elseif column.defValue?length != 0>, example = "${column.defValue?trim}"<#elseif column.intType && !column.primaryKey>, example = "0"</#if>
+		<#if !column.hiddenForSubmit><#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"<#elseif column.defValue?length != 0>, example = "${column.defValue?trim}"<#elseif column.intType && !column.primaryKey>, example = "0"</#if></#if>
 		<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>
 	</@compress>)
 	<#if column == table.idColumn>
