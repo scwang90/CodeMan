@@ -1,5 +1,6 @@
 package ${packageName};
 
+<#assign columnAdded=false>
 <#list table.columns as column>
 <#if column.name!=column.fieldName>
 <#if (columnAdded!false)==false>

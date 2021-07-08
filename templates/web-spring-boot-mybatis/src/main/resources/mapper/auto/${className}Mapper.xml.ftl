@@ -5,16 +5,16 @@
 <#if table.hasCascadeKey>
     <#assign beans = ['', 'Bean']/>
 </#if>
-    <!--${table.remark} 的 Mapper 实现 -->
+    <!-- ${table.remark} 的 Mapper 实现 -->
 <#list table.descriptions as description>
-    <!--${description} -->
+    <!-- ${description} -->
 </#list>
     <resultMap id="MAP" type="${packageName}.model.db.${className}">
-        <!--${table.idColumn.remark}-->
+        <!-- ${table.idColumn.remark} -->
         <id column="${table.idColumn.name}" jdbcType="${table.idColumn.typeJdbc}" property="${table.idColumn.fieldName}" />
 <#list table.columns as column>
     <#if column != table.idColumn>
-        <!--${column.remark?replace("-","~")}-->
+        <!-- ${column.remark?replace("-","~")} -->
         <result column="${column.name}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
     </#if>
 </#list>
@@ -44,6 +44,8 @@
             <if test="${column.fieldName} != 0">
                 ${column.nameSql},
             </if>
+            <#elseif column == table.createColumn || column == table.updateColumn>
+                ${column.nameSql},
             <#else >
             <if test="${column.fieldName} != null">
                 ${column.nameSql},
@@ -58,6 +60,15 @@
             <if test="${column.fieldName} != 0">
                 ${r"#"}{${column.fieldName}},
             </if>
+            <#elseif column == table.createColumn || column == table.updateColumn>
+            <choose>
+                <when test="${column.fieldName} != null">
+                    ${r"#"}{${column.fieldName}},
+                </when>
+                <otherwise>
+                    NOW(),
+                </otherwise>
+            </choose>
             <#else >
             <if test="${column.fieldName} != null">
                 ${r"#"}{${column.fieldName}},
@@ -83,7 +94,7 @@
 <#else >
     <insert id="insertFull" parameterType="${packageName}.model.db.${className}" <#if table.idColumn.autoIncrement>useGeneratedKeys="true" keyProperty="${table.idColumn.fieldName}"</#if>>
         INSERT INTO ${table.nameSql}
-        (<#list table.columns as column>${column.nameSql}<#if column_has_next>,</#if></#list>)
+            (<#list table.columns as column>${column.nameSql}<#if column_has_next>,</#if></#list>)
         VALUES
         <foreach item="model" collection="models" separator=",">
             (<#list table.columns as column>${r"#"}{model.${column.fieldName}}<#if column_has_next>,</#if></#list>)
@@ -97,9 +108,20 @@
         <set>
         <#list table.columns as column>
             <#if column != table.idColumn && column != table.orgColumn>
+                <#if column == table.updateColumn>
+            <choose>
+                <when test="${column.fieldName} != null">
+                    ${column.nameSql}=${r"#"}{${column.fieldName}},
+                </when>
+                <otherwise>
+                    ${column.nameSql}=NOW(),
+                </otherwise>
+            </choose>
+                <#else >
             <if test="${column.fieldName} != null">
                 ${column.nameSql}=${r"#"}{${column.fieldName}},
             </if>
+                </#if>
             </#if>
         </#list>
         </set>
@@ -124,6 +146,11 @@
         <if test="column != null or wheres != null">
           UPDATE ${table.nameSql}
           <set>
+      <#list table.columns as column>
+          <#if column == table.updateColumn>
+              ${column.nameSql}=NOW(),
+          </#if>
+      </#list>
               <foreach collection="setmap" index="key" item="value" separator=",">
                   ${r"$"}{key} = ${r"#"}{value}
               </foreach>
