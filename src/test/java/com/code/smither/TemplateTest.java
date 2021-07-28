@@ -1,6 +1,6 @@
-package com.code.smither.engine;
+package com.code.smither;
 
-import com.code.smither.project.base.model.Table;
+//import com.code.smither.project.base.model.Table;
 import org.junit.Test;
 
 /**
@@ -13,12 +13,12 @@ public class TemplateTest {
     public void testHashCode() {
         System.out.println("\"\".hashCode() = " + "".hashCode());
         System.out.println("\"\".hashCode() = " + "".hashCode());
-        System.out.println("new Object().hashCode()) = " + new Object().toString());
+        System.out.println("new Object().hashCode()) = " + new Object().hashCode());
         System.out.println("new Object().hashCode()) = " + new Object().hashCode());
     }
 
-    @Test
-    public void testTableModel() {
-        System.out.println(new Table());
-    }
+//    @Test
+//    public void testTableModel() {
+//        System.out.println(new Table());
+//    }
 }

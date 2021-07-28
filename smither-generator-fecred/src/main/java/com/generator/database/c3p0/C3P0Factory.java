@@ -13,19 +13,17 @@ import java.util.HashMap;
  */
 public class C3P0Factory {
 
-    private static HashMap<String, C3P0Factory> instances = new HashMap<>();
+    private static final HashMap<String, C3P0Factory> instances = new HashMap<>();
 
     private ComboPooledDataSource dataSource = null;
     // 使用ThreadLocal存储当前线程中的Connection对象
-    private ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
+    private final ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 
     protected C3P0Factory(String name) {
         if (name == null || name.trim().length() == 0 || "null".equals(name) || "[null]".equals(name)) {
             dataSource = null;
-        } else if (name.trim().length() > 0) {
-            dataSource = new ComboPooledDataSource(name);
         } else {
-            dataSource = new ComboPooledDataSource();
+            dataSource = new ComboPooledDataSource(name);
         }
     }
 
@@ -40,22 +38,30 @@ public class C3P0Factory {
     }
 
     public String getJdbcUrl() {
-        if (dataSource == null) return "";
+        if (dataSource == null) {
+            return "";
+        }
         return dataSource.getJdbcUrl();
     }
 
     public String getDriverClass() {
-        if (dataSource == null) return "";
+        if (dataSource == null) {
+            return "";
+        }
         return dataSource.getDriverClass();
     }
 
     public String getPassword() {
-        if (dataSource == null) return "";
+        if (dataSource == null) {
+            return "";
+        }
         return dataSource.getPassword();
     }
 
     public String getUser() {
-        if (dataSource == null) return "";
+        if (dataSource == null) {
+            return "";
+        }
         return dataSource.getUser();
     }
 
