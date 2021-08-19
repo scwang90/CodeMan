@@ -16,6 +16,9 @@ Vue.use(Logger);
 import Directive from './plugins/directive'
 Vue.use(Directive);
 
+import Bus from './plugins/bus'
+Vue.use(Bus);
+
 import VueResource from "vue-resource"
 Vue.use(VueResource);
 

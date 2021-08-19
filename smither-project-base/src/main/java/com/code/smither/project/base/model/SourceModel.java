@@ -36,6 +36,7 @@ public class SourceModel implements LangRootModel {
     private String packageName;
     private String packagePath;
     private String projectName;
+    private String projectRemark;
     private String charset;
     private String dbType;
     private String lang;                //程序设计语言
@@ -145,6 +146,13 @@ public class SourceModel implements LangRootModel {
             }
         }
         return hasIntegerId;
+    }
+
+    public String getProjectRemark() {
+        if (projectRemark.trim().length() == 0) {
+            return projectName;
+        }
+        return projectRemark;
     }
 
     //</editor-fold>

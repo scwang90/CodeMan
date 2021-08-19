@@ -27,5 +27,5 @@ module.exports = {
     ROUTER_MODE: routerMode,
     ROUTER_BASE: routerBase,
     SETTING_API_BASE: apiBase,
-    SETTING_WEB_NAME: `"${config.name}"`,
+    SETTING_WEB_NAME: `"${config.description}"`,
 }

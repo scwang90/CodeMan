@@ -57,6 +57,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setCharset(config.getTargetCharset());
 		model.setPackageName(config.getTargetProjectPackage());
 		model.setProjectName(config.getTargetProjectName());
+		model.setProjectRemark(config.getTargetProjectRemark());
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
@@ -333,6 +334,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		initTableColumn(columns, config.getColumnPassword(), table::getPasswordColumn, table::setPasswordColumn, table::setHasPassword);
 		initTableColumn(columns, config.getColumnUsername(), table::getUsernameColumn, table::setUsernameColumn, table::setHasUsername);
 
+		initTableColumn(columns, config.getColumnHideForTables(), null, column -> column.setHiddenForTables(true), null);
 		initTableColumn(columns, config.getColumnHideForClient(), null, column -> column.setHiddenForClient(true), null);
 		initTableColumn(columns, config.getColumnHideForSubmit(), null, column -> column.setHiddenForSubmit(true), null);
 		initTableColumn(columns, config.getColumnSearches(), null, column -> { table.getSearchColumns().add(column); table.setHasSearches(true); }, null);

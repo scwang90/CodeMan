@@ -1,7 +1,7 @@
 {
   "name": "${projectName}",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "${projectRemark}",
   "author": "${author}",
   "private": true,
   "scripts": {

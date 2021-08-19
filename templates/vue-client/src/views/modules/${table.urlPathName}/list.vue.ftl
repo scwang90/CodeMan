@@ -18,7 +18,7 @@
             <el-table-column fixed="left" type="selection" width="45"> </el-table-column>
             <el-table-column fixed="left" type="index" label="序号" width="50"> </el-table-column>
             <#list table.columns as column>
-            <#if !column.hiddenForClient && !column.name?lower_case?ends_with("id")>
+            <#if !column.hiddenForClient && !column.hiddenForTables && !column.name?lower_case?ends_with("id")>
             <el-table-column prop="${column.fieldName}" label="${column.remarkName}" ><#-- width="${min(max(column.length*180/32, 80), 400)}" -->
                 <#if column == table.genderColumn>
                 <template #default="scope">

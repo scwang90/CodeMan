@@ -16,6 +16,7 @@ public class ProjectConfigFactory {
 
         config.setTargetFeatures(properties.getProperty("code.man.target.features",config.getTargetFeatures()));
         config.setTargetProjectName(properties.getProperty("code.man.target.project.name",config.getTargetProjectName()));
+        config.setTargetProjectRemark(properties.getProperty("code.man.target.project.remark",config.getTargetProjectRemark()));
         config.setTargetProjectAuthor(properties.getProperty("code.man.target.project.author",config.getTargetProjectAuthor()));
         config.setTargetProjectPackage(properties.getProperty("code.man.target.project.package",config.getTargetProjectPackage()));
 
@@ -45,8 +46,10 @@ public class ProjectConfigFactory {
         config.setColumnGender(properties.getProperty("code.man.database.column.gender",config.getColumnGender()));
         config.setColumnHideForClient(properties.getProperty("code.man.database.column.hide-for-client",config.getColumnHideForClient()));
         config.setColumnHideForSubmit(properties.getProperty("code.man.database.column.hide-for-submit",config.getColumnHideForSubmit()));
+        config.setColumnHideForTables(properties.getProperty("code.man.database.column.hide-for-tables",config.getColumnHideForTables()));
         config.setColumnHideForClient(properties.getProperty("code.man.database.column.hideForClient",config.getColumnHideForClient()));
         config.setColumnHideForSubmit(properties.getProperty("code.man.database.column.hideForSubmit",config.getColumnHideForSubmit()));
+        config.setColumnHideForTables(properties.getProperty("code.man.database.column.hideForTables",config.getColumnHideForTables()));
 
         config.setWordBreakDictPath(properties.getProperty("code.man.word.break.dict.path", config.getWordBreakDictPath()));
         config.setWordReplaceDictPath(properties.getProperty("code.man.word.replace.dict.path", config.getWordReplaceDictPath()));

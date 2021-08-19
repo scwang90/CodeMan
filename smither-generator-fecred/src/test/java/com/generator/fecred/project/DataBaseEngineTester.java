@@ -95,4 +95,15 @@ public class DataBaseEngineTester {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void DataBaseParkClient() {
+        try {
+            DataBaseConfig config = DbConfigFactory.loadConfig("park-client.properties");
+            DataBaseEngine engine = new DataBaseEngine(config);
+            engine.launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

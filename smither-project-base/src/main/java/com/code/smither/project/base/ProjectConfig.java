@@ -40,6 +40,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnPassword = "password,pwd";
     protected String columnUsername = "account,username,phone*,name";
     protected String columnSearches = "*name,*type,title,remark,code,account,username,phone*";
+    protected String columnHideForTables = "*avatar";
     protected String columnHideForClient = "";
     protected String columnHideForSubmit = "";
 
@@ -54,6 +55,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String targetPath = "../target/project";
     protected String targetCharset = "UTF-8";
     protected String targetProjectName = "TargetProject";
+    protected String targetProjectRemark = "";
     protected String targetProjectAuthor = "unset";
     protected String targetProjectPackage = "com.code.smither.target";
 
