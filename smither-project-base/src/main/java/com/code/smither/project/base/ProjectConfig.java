@@ -40,7 +40,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnPassword = "password,pwd";
     protected String columnUsername = "account,username,phone*,name";
     protected String columnSearches = "*name,*type,title,remark,code,account,username,phone*";
-    protected String columnHideForTables = "*avatar";
+    protected String columnHideForTables = "*avatar,*headUrl,content,description,address,update_time,update_date,update_at,updated_at,create_time,create_date,create_at,created_at";
     protected String columnHideForClient = "";
     protected String columnHideForSubmit = "";
 

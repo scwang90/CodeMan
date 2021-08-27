@@ -46,6 +46,7 @@ public class TableColumn implements MetaDataColumn {
 	private boolean primaryKey;//是否是 PrimaryKey
 	private boolean stringType;//是否是 string类型
 	private boolean dateType;//是否是 Date类型
+	private boolean timeType;//是否是 时间类型
 	private boolean boolType;//是否是 Bool类型
 	private boolean intType;//是否是 Int 类型
 	private boolean hiddenForSubmit;//是否对提交需要隐藏

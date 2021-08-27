@@ -434,7 +434,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 		Class<?> javaType = programLang.getJavaType(column);
 		column.setStringType(String.class.equals(javaType));//(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
-		column.setDateType(Date.class.equals(javaType));//(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
+		column.setDateType(Date.class.isAssignableFrom(javaType));//(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
 		column.setBoolType(Boolean.class.equals(javaType));
 		column.setIntType(Integer.class.equals(javaType));
 
@@ -463,6 +463,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 				column.setRemark(column.getName());
 			}
 		}
+
+		column.setTimeType(column.isDateType()&&(column.getName().toLowerCase().contains("time")
+				||column.getRemarkName().toLowerCase().contains("time")
+				||column.getRemarkName().toLowerCase().contains("时间")));
 		return column;
 	}
 

@@ -15,6 +15,11 @@ import javax.validation.constraints.Size;
         <#assign hasStringType=true>
 	</#if>
 </#list>
+<#list table.columns as column>
+	<#if column.dateType || column.timeType>
+import org.springframework.format.annotation.DateTimeFormat;
+	</#if>
+</#list>
 
 /**
  * ${table.remark}
@@ -41,6 +46,11 @@ public class ${className} {
 	 */
 	<#if column.hiddenForClient>
 	@JsonIgnore
+	</#if>
+	<#if column.timeType>
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	<#elseif column.dateType>
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	</#if>
 	<#if column.stringType>
 	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
