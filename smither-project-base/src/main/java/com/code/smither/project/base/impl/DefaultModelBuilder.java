@@ -437,6 +437,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setDateType(Date.class.isAssignableFrom(javaType));//(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
 		column.setBoolType(Boolean.class.equals(javaType));
 		column.setIntType(Integer.class.equals(javaType));
+		column.setLongType(Long.class.equals(javaType));
 
 		if (column.getDefValue() != null) {
 			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));

@@ -37,7 +37,13 @@ import ${packageName}.model.db.${className}Bean
 import ${packageName}.util.CommonUtil
 </#if>
 <#if !table.idColumn.autoIncrement && table.idColumn.stringType>
+</#if>
+<#if table.hasId && !table.idColumn.autoIncrement>
+	<#if table.idColumn.stringType>
 import ${packageName}.util.ID22
+	<#elseif table.idColumn.longType>
+import ${packageName}.util.SnowUtil
+	</#if>
 </#if>
 <#if table == loginTable || (table.hasOrgan && hasLogin) || (table == organTable  && hasLogin) || (hasLogin && table.hasCreator)>
 import ${packageName}.util.JwtUtils
@@ -133,10 +139,16 @@ class ${className}AutoService {
 	 × @return 返回新数据的Id
 	 */
 	fun insert(model: ${className}): ${table.idColumn.fieldType} {
-<#if table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType>
+<#if table.hasId && !table.idColumn.autoIncrement>
+<#if table.idColumn.stringType>
 		if(model.${table.idColumn.fieldName} == null) {
 			model.${table.idColumn.fieldName} = ID22.random()
 		}
+<#elseif table.idColumn.longType>
+		if(model.${table.idColumn.fieldName} == 0L) {
+			model.${table.idColumn.fieldName} = SnowUtil.nextId()
+		}
+</#if>
 </#if>
 <#if table.hasOrgan && hasOrgan>
 		val ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName} ?: throw ClientException("必须指定${table.orgColumn.fieldName}")

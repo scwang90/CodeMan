@@ -22,8 +22,9 @@
 [#-- @ftlvariable name="hasLogin" type="boolean" --]
 [#-- @ftlvariable name="hasOrgan" type="boolean" --]
 [#-- @ftlvariable name="hasCode" type="boolean" --]
+[#-- @ftlvariable name="hasLongId" type="boolean" --]
 [#-- @ftlvariable name="hasStringId" type="boolean" --]
-[#-- @ftlvariable name="hasIntegerId" type="boolean" --]
+[#-- @ftlvariable name="isHasAutoIncrementId" type="boolean" --]
 [#-- @ftlvariable name="hasMultiLogin" type="boolean" --]
 
 

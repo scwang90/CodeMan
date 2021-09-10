@@ -46,8 +46,9 @@ public class SourceModel implements LangRootModel {
     private boolean hasOrgan;           //是否有机构 需要同时含有登录、并且登录表中含有机构Id 才算
     private boolean hasLogin;           //是否有登录功能
     private boolean hasMultiLogin;      //是否有多表登录功能
+    private boolean hasLongId;          //时候含有整形Long Id
     private boolean hasStringId;        //是否含有字符串Id
-    private boolean hasIntegerId;       //时候含有整形Id
+    private boolean hasAutoIncrementId; //时候含有整形自增 Id
 
     public SourceModel() {
     }
@@ -130,13 +131,22 @@ public class SourceModel implements LangRootModel {
 //        return path.contains("${className}") || path.contains("${tableName}") || path.matches(".*\\$\\{table\\.\\S+?}.*");
     }
 
-    public boolean isHasIntegerId() {
+    public boolean isHasAutoIncrementId() {
         for (Table table : tables) {
             if (table.isHasId() && table.getIdColumn().isAutoIncrement()) {
                 return true;
             }
         }
-        return hasStringId;
+        return hasAutoIncrementId;
+    }
+
+    public boolean isHasLongId() {
+        for (Table table : tables) {
+            if (table.isHasId() && table.getIdColumn().isLongType() && !table.getIdColumn().isAutoIncrement()) {
+                return true;
+            }
+        }
+        return hasLongId;
     }
 
     public boolean isHasStringId() {
@@ -145,7 +155,7 @@ public class SourceModel implements LangRootModel {
                 return true;
             }
         }
-        return hasIntegerId;
+        return hasStringId;
     }
 
     public String getProjectRemark() {
