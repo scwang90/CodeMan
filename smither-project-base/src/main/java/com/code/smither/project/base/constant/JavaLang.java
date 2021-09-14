@@ -60,6 +60,7 @@ public class JavaLang extends AbstractProgramLang {
             put("java.lang.Long","long");
             put("java.lang.Float","float");
             put("java.lang.Double","double");
+            put("Byte[]","byte[]");
         }
     } ;
 
@@ -88,6 +89,9 @@ public class JavaLang extends AbstractProgramLang {
             clazz = java.lang.Long.class;
         } if (BigDecimal.class.equals(clazz)) {
             clazz = java.lang.Double.class;
+        }
+        if (clazz.isArray()) {
+            return clazz.getComponentType().getName().replaceAll("java.lang.","")+"[]";
         }
         return clazz.getName().replaceAll("java.lang.","");
     }

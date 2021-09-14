@@ -22,6 +22,7 @@ public abstract class AbstractProgramLang implements ProgramLang {
         return Lang.Java.lang;
     }
 
+    @Override
     public Class<?> getJavaType(TableColumn column) {
         switch (column.getTypeInt()) {
             case Types.ARRAY:
@@ -53,7 +54,7 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.BINARY:
             case Types.VARBINARY:
             case Types.LONGVARBINARY:
-                return byte[].class;
+                return Byte[].class;
             case Types.CHAR:
             case Types.NCHAR:
             case Types.VARCHAR:

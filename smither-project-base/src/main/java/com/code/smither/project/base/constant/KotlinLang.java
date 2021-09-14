@@ -1,12 +1,8 @@
 package com.code.smither.project.base.constant;
 
-import com.code.smither.project.base.api.ClassConverter;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,16 +139,10 @@ public class KotlinLang extends JavaLang {
 //        return "";
 //    }
 
-    protected static Map<String,String> baseTypeMap = new HashMap<String,String>() {
+    protected static Map<String,String> baseTypeMap = new HashMap<>() {
         {
             put("Integer","Int");
-            put("java.lang.Boolean","Boolean");
-            put("java.lang.Byte","Byte");
-            put("java.lang.Short","Short");
-            put("java.lang.Integer","Int");
-            put("java.lang.Long","Long");
-            put("java.lang.Float","Float");
-            put("java.lang.Double","Double");
+            put("Byte[]","Array<Byte>");
         }
     } ;
 

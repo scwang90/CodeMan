@@ -17,6 +17,7 @@ public abstract class LangClassConverter implements ClassConverter {
 		this.lang = lang;
 	}
 
+	@Override
 	public String converterClassName(String tableName) {
 		String classname = lang.converterClassName(tableName);
 		if (lang.isKeyword(classname)) {
@@ -25,6 +26,7 @@ public abstract class LangClassConverter implements ClassConverter {
 		return classname;
 	}
 
+	@Override
 	public String converterFieldName(String columnName) {
 		String fieldName = lang.converterFieldName(columnName);
 		if (lang.isKeyword(fieldName)) {

@@ -25,6 +25,7 @@ public class ConfigClassConverter extends LangClassConverter {
         this.config = config;
     }
 
+    @Override
     public String converterClassName(String tableName) {
         if (config.getTablePrefix() != null) {
             if (tableName.startsWith(config.getTablePrefix())) {
@@ -42,6 +43,7 @@ public class ConfigClassConverter extends LangClassConverter {
         return super.converterClassName(tableName);
     }
 
+    @Override
     public String converterFieldName(String columnName) {
         if (config.getColumnPrefix() != null) {
             if (columnName.startsWith(config.getColumnPrefix())) {
