@@ -19,7 +19,7 @@ export default {
             menus:[
 <#list tables as table>
     <#if table.relateTable == false>
-                {name:'${table.remarkName}管理', path:'${table.urlPathName}', icon:'s-menu'},
+                {name:'${table.remarkName}管理', path:'${table.urlPathName}', icon:'menu'},
     </#if>
 </#list>
             ]

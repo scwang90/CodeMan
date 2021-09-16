@@ -1,6 +1,7 @@
 {
   "name": "${projectName}",
   "version": "1.0.0",
+  "title": "${projectRemark}",
   "description": "${projectRemark}",
   "author": "${author}",
   "private": true,
