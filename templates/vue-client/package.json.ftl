@@ -12,7 +12,8 @@
     "build-p": "npm run build-path",
     "build-s": "npm run build-spring",
     "build-path": "node build/build.js --publicPath",
-    "build-spring": "node build/build.js --spring --history --publicPath=admin"
+    "build-spring": "node build/build.js --spring --history --publicPath=admin",
+    "build-nginx": "node build/build.js --history --publicPath=${projectName} --apiBase=${projectName}"
   },
   "dependencies": {
     "element-ui": "^2.12.0",
