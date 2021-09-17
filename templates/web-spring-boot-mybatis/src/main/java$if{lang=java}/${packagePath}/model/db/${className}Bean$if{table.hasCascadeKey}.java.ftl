@@ -27,7 +27,7 @@ public class ${className}Bean extends ${className} {
 	 * ${key.fkTable.remarkName}列表
 	 */
 	@ApiModelProperty(value = "${key.fkTable.remarkName}列表", notes = "一对多关联")
-	private List<${key.fkTable.className}> ${tools.toPlural(key.fkTable.classNameCamel)};
+	private List<${key.fkTable.className}> ${tools.makeOneManyFiled(key)};
 </#list>
 <#list table.relateCascadeKeys as key>
 
@@ -49,12 +49,12 @@ public class ${className}Bean extends ${className} {
 </#list>
 <#list table.exportCascadeKeys as key>
 
-	public List<${key.fkTable.className}> get${tools.toPlural(key.fkTable.className)}() {
-		return this.${tools.toPlural(key.fkTable.classNameCamel)};
+	public List<${key.fkTable.className}> get${tools.makeOneManyFiled(key)?cap_first}() {
+		return this.${tools.makeOneManyFiled(key)};
 	}
 
-	public void set${tools.toPlural(key.fkTable.className)}(List<${key.fkTable.className}> ${tools.toPlural(key.fkTable.classNameCamel)}) {
-		this.${tools.toPlural(key.fkTable.classNameCamel)} = ${tools.toPlural(key.fkTable.classNameCamel)};
+	public void set${tools.makeOneManyFiled(key)?cap_first}(List<${key.fkTable.className}> ${tools.makeOneManyFiled(key)}) {
+		this.${tools.makeOneManyFiled(key)} = ${tools.makeOneManyFiled(key)};
 	}
 </#list>
 <#list table.relateCascadeKeys as key>

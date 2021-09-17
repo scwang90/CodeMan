@@ -27,7 +27,7 @@
         <association column="{${key.pkColumn.fieldName}=${key.fkColumn.name}}" property="${tools.idToModel(key.fkColumn.fieldName)}" select="${packageName}.mapper.auto.${key.pkTable.className}AutoMapper.findById" />
     </#list>
     <#list table.exportCascadeKeys as key>
-        <collection column="{${key.fkColumn.fieldName}=${key.pkColumn.fieldName}}" property="${tools.toPlural(key.fkTable.classNameCamel)}" select="${packageName}.mapper.auto.${key.fkTable.className}AutoMapper.selectBy${key.fkColumn.fieldNameUpper}"/>
+        <collection column="{${key.fkColumn.fieldName}=${key.pkColumn.fieldName}}" property="${tools.makeOneManyFiled(key)}" select="${packageName}.mapper.auto.${key.fkTable.className}AutoMapper.selectBy${key.fkColumn.fieldNameUpper}"/>
     </#list>
     <#list table.relateCascadeKeys as key>
         <collection column="{${key.relateLocalColumn.fieldName}=${key.localColumn.fieldName}}" property="related${tools.toPlural(key.targetTable.className)}" select="${packageName}.mapper.auto.${key.targetTable.className}AutoMapper.selectByRelate${key.relateLocalColumn.fieldNameUpper}"/>

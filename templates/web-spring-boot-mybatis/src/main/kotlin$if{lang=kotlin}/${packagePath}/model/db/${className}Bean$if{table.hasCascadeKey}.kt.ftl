@@ -25,7 +25,7 @@ open class ${className}Bean : ${className}() {
 	 * ${key.fkTable.remarkName}列表
 	 */
 	@ApiModelProperty(value = "${key.fkTable.remarkName}列表", notes = "一对多关联")
-	var ${tools.toPlural(key.fkTable.classNameCamel)}: List<${key.fkTable.className}> = listOf()
+	var ${tools.makeOneManyFiled(key)}: List<${key.fkTable.className}> = listOf()
 	</#list>
 	<#list table.relateCascadeKeys as key>
 

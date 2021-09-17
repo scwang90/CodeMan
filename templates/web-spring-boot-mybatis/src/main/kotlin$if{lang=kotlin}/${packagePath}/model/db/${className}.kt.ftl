@@ -17,6 +17,7 @@ import javax.validation.constraints.Size
 </#list>
 
 /**
+ * 数据库表【${table.name}】
  * ${table.remark}
 <#list table.descriptions as description>
  * ${description}

@@ -195,12 +195,16 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                 public TemplateModel get(String key) throws TemplateModelException {
                     TemplateModel model = super.get(key);
                     if (model == null && "tools".equals(key)) {
-                        return new StringModel(new Tools(), wrapper);
+                        return new StringModel(getTools(), wrapper);
                     }
                     return model;
                 }
             }, out);
         }
+    }
+
+    protected Tools getTools() {
+        return new Tools();
     }
 
     private Writer getFileWriter(File file) throws IOException{

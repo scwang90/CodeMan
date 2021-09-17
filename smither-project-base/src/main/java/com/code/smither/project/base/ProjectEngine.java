@@ -2,8 +2,10 @@ package com.code.smither.project.base;
 
 import com.code.smither.engine.Engine;
 import com.code.smither.engine.EngineConfig;
+import com.code.smither.engine.tools.Tools;
 import com.code.smither.project.base.api.TableSource;
 import com.code.smither.project.base.impl.DefaultModelBuilder;
+import com.code.smither.project.base.util.BaseTools;
 
 import java.util.Properties;
 
@@ -19,5 +21,10 @@ public class ProjectEngine<T extends ProjectConfig> extends Engine<T> {
 
     public void launch(TableSource tableSource) throws Exception {
         launch(new DefaultModelBuilder(config,tableSource));
+    }
+
+    @Override
+    protected Tools getTools() {
+        return new BaseTools();
     }
 }
