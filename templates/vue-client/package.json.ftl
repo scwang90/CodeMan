@@ -11,6 +11,7 @@
     "build": "node build/build.js",
     "build-p": "npm run build-path",
     "build-s": "npm run build-spring",
+    "build-n": "npm run build-nginx",
     "build-path": "node build/build.js --publicPath",
     "build-spring": "node build/build.js --spring --history --publicPath=admin",
     "build-nginx": "node build/build.js --history --publicPath=${projectName} --apiBase=${projectName}"
