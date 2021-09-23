@@ -14,7 +14,7 @@
     "build-n": "npm run build-nginx",
     "build-path": "node build/build.js --publicPath",
     "build-spring": "node build/build.js --spring --history --publicPath=admin",
-    "build-nginx": "node build/build.js --history --publicPath=${projectName} --apiBase=${projectName}"
+    "build-nginx": "node build/build.js --scp=[user/password@host:path] --history --publicPath=${projectName} --apiBase=${projectName}"
   },
   "dependencies": {
     "element-ui": "^2.12.0",
@@ -50,6 +50,7 @@
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
     "rimraf": "^2.6.0",
+    "scp2": "^0.5.0",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",

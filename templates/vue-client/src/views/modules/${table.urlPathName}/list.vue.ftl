@@ -176,6 +176,7 @@ export default {
                         await api.insert(this.model);
                     }
                     this.showDialog = false;
+                    this.$message.success('保存成功');
                     this.loadList(this.page);
                 } catch (error) {
                     this.$message.error(error)
@@ -188,6 +189,7 @@ export default {
                     const ids = item.length ? item.map(i=>i.id).join(',') : item.id
                     this.loadingList = true;
                     await api.remove(ids);
+                    this.$message.success('删除成功');
                     this.loadList(this.page);
                 } catch (error) {
                     this.$message.error(error);
