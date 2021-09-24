@@ -17,7 +17,9 @@
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "vuex-class": "^0.3.2",
+    "vuex-persist": "^3.1.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
