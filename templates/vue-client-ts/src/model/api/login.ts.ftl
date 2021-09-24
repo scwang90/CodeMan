@@ -3,7 +3,9 @@ export interface LoginInfo {
     name?: string
     avatar?: string
     userId?: string
-    companyId?: string
+<#if hasLogin>
+    ${orgColumn.fieldName}?: string
+</#if>
 }
 
 export interface LoginResult {

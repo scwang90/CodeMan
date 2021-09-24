@@ -1,0 +1,2 @@
+SETTING_API_BASE=/
+SETTING_WEB_NAME=${projectRemark}

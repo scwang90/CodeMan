@@ -3,11 +3,11 @@
         <div class="center">
             <div class="left">
                 <div class="header">
-                    <!-- <img  class="logo" src="/static/images/common/logo.svg" alt=""> -->
+                    <!-- <img  class="logo" src="../../public/images/common/logo.svg" alt=""> -->
                     <i class="logo el-icon-eleme"></i>
                     <span class="title">{{webName}}</span>
                 </div>
-                <img class="post" src="../../static/images/login/image-post.png" alt="" srcset="">
+                <img class="post" src="../../public/images/login/image-post.png" alt="" srcset="">
             </div>
             <div class="right">
                 <span class="title">欢迎登录</span>
@@ -40,66 +40,74 @@
         </div>
     </div>
 </template>
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import Vuex from 'vuex'
+import Component from 'vue-class-component';
+import { namespace } from 'vuex-class';
+import { Prop } from 'vue-property-decorator';
 
-export default {
-    data() {
-        const checkUsername = (rule, value, callback) => {
-            if (value.length < 5 || value.length > 24) {
-                return callback(new Error("请输入正确的用户名"));
-            } else {
-                callback();
-            }
-        };
-        const checkPassword = (rule, value, callback) => {
-            if (value.length < 6 || value.length > 24) {
-                return callback(new Error("请输入正确的密码"));
-            } else {
-                callback();
-            }
-        };
-        return {
-            logging: false,
-            model: {
-                username: 'admin',
-                password: 'admin'
-            },
-            rules: {
-                username: [{ validator: checkUsername, trigger: "blur" }],
-                password: [{ validator: checkPassword, trigger: "blur" }],
-            }
-        }
-    },
-    computed: {
-        ...Vuex.mapState('setting',['webName']),
-    },
-    methods: {
-        ...Vuex.mapActions("user", ["login"]),
+const user = namespace('user');
+const setting = namespace('setting');
 
-        onLoginClick() {
-            this.$refs.form.validate(async (v) => {
-                if (v) {
-                    try {
-                        this.logging = true;
-                        await this.login(this.model);
-                        sessionStorage.setItem("token", 'true');
-                        this.$router.push({path:'/index'});
-                    } catch (error) {
-                        this.$message.error(error);
-                    } finally {
-                        this.logging = false;
-                    }
-                } else {
-                    this.$message({
-                        type: "error",
-                        message: "请正确填写登录信息",
-                        showClose: true,
-                    });
-                    return false;
+const checkUsername = (rule: any, value: string, callback: (err?:any)=>void) => {
+    if (value.length < 5 || value.length > 24) {
+        return callback(new Error("请输入正确的用户名"));
+    } else {
+        callback();
+    }
+};
+const checkPassword = (rule: any, value: string, callback: (err?:any)=>void) => {
+    if (value.length < 6 || value.length > 24) {
+        return callback(new Error("请输入正确的密码"));
+    } else {
+        callback();
+    }
+};
+
+const rules = {
+    username: [{ validator: checkUsername, trigger: "blur" }],
+    password: [{ validator: checkPassword, trigger: "blur" }],
+};
+
+@Component({})
+export default class LoginModule extends Vue {
+    
+    private rules = rules
+    private logging: boolean = false;
+    private model = {
+        username: 'admin',
+        password: 'admin'
+    }
+    @user.Action("login") login: any
+    @setting.State("webName") webName: any
+
+    $refs! : {
+        form: HTMLFormElement
+    }
+
+    onLoginClick() {
+        this.$refs.form.validate(async (v:boolean) => {
+            if (v) {
+                try {
+                    this.logging = true;
+                    await this.login(this.model);
+                    sessionStorage.setItem("token", 'true');
+                    this.$router.push({path:'/index'});
+                } catch (error) {
+                    this.$message.error(error);
+                } finally {
+                    this.logging = false;
                 }
-            });
-        }
+            } else {
+                this.$message({
+                    type: "error",
+                    message: "请正确填写登录信息",
+                    showClose: true,
+                });
+                return false;
+            }
+        });
     }
 }
 </script>
@@ -172,3 +180,4 @@ export default {
     width: 100%;
 }
 </style>
+

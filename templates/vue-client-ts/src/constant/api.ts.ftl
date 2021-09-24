@@ -1,3 +1,4 @@
+export type HTTP_METHOD = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export interface Page {
     size:number

@@ -1,7 +1,19 @@
 
 import apiAuth from '@/api/auth'
+import Vuex, { Module } from 'vuex';
+import { RootState } from "./types";
 
-export default {
+export interface UserState {
+    token: string
+    userInfo: {
+        name?: string
+        avatar?: string
+        userId?: string
+        companyId?: string
+    }
+}
+
+const store: Module<UserState, RootState> =  {
     namespaced: true,
     state: {
         token: "",
@@ -9,32 +21,19 @@ export default {
             name: "",
             avatar: "",
             userId: "",
-<#if hasOrgan>
             companyId: "",
-</#if>
         },
     },
     mutations: {
-        push(state, {store, field, value}) {
-            if (field) {
-                if (state[store]) {
-                    state[store][field] = value;
-                } else {
-                    state[store] = {[field]:value};
-                }
-            } else {
-                state[store] = value;
-            }
-        },
-        setUserInfo(state, userInfo) {
+        setUserInfo(state: UserState, userInfo: any) {
             // 这里的 `state` 对象是模块的局部状态
             state.userInfo = userInfo;
         },
-        setToken(state, token) {
+        setToken(state: UserState, token: string) {
             // 这里的 `state` 对象是模块的局部状态
             state.token = token;
         },
-        logout(state) {
+        logout(state: UserState) {
             state.token = "";
             state.userInfo = {};
             sessionStorage.clear();
@@ -42,7 +41,7 @@ export default {
         },
     },
     actions: {
-        async login({ commit }, loginInfo) {
+        async login({ commit }, loginInfo: {username:string,password:string}) {
             const res = await apiAuth.login(loginInfo)
             commit('setToken', res.token);
             commit('setUserInfo', res.user);
@@ -54,11 +53,13 @@ export default {
         }
     },
     getters: {
-        userInfo(state) {
+        userInfo(state: UserState) {
             return state.userInfo
         },
-        token(state) {
+        token(state: UserState) {
             return state.token
         },
     }
 }
+
+export default store;

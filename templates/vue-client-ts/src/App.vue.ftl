@@ -6,8 +6,8 @@
   html,body {
     height: 100%;
     margin: 0;
-    /* background-image: url('/static/ui/ui-login.png'); */
-    /* background-image: url('/static/ui/ui-index.png'); */
+    /* background-image: url('/public/ui/ui-login.png'); */
+    /* background-image: url('/public/ui/ui-index.png'); */
     background-size: 100% auto;
     font-size: 16px;
   }

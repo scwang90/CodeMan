@@ -27,7 +27,7 @@
 <#if hasLogin>
                     <template #title>
                         <img class="avatar" v-if="userInfo.avatar" :src="userInfo.avatar" alt="" srcset="">
-                        <img class="avatar" v-else src="../../static/images/common/image-avatar.jpg" alt="" srcset="">
+                        <img class="avatar" v-else src="../../public/images/common/image-avatar.jpg" alt="" srcset="">
                         <div class="content">
                             <span class="name">{{userInfo.name}}</span>
                             <span class="role">{{userInfo.type}}</span>
@@ -38,7 +38,7 @@
                     <el-menu-item @click="onLogoutClick"><i class="el-icon-s-opportunity"></i><span>注销登录</span></el-menu-item>
 <#else >
                     <template #title>
-                        <img class="avatar" src="/static/images/common/image-avatar.jpg" alt="" srcset="">
+                        <img class="avatar" src="/public/images/common/image-avatar.jpg" alt="" srcset="">
                         <div class="content">
                             <span class="name">${author}</span>
                             <span class="role">超级管理员</span>
