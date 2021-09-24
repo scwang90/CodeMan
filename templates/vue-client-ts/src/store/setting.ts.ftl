@@ -15,7 +15,7 @@ const store: Module<SettingState, RootState> =  {
     state: {
         baseApi: apiBase,
         baseUrl: baseUrl + '/api/v1',
-        webName: process.env.SETTING_WEB_NAME,
+        webName: process.env.VUE_APP_NAME,
     },
     mutations: {
     },

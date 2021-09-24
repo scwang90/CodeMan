@@ -7,7 +7,7 @@ import User from './user';
 import Setting from './setting';
 import { RootState } from "./types";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 <#if hasLogin>
 
 const vuexLocal = new VuexPersistence({
