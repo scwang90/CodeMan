@@ -95,9 +95,12 @@
     </el-card>
 </ViewFrame>
 </template>
-<script>
-import api from '@/api/auto/${table.urlPathName}'
-import ViewFrame from '@/components/ViewFrame'
+<script lang="ts">
+import api from '@/api/auto/${table.urlPathName}';
+import ${className} from '@/model/auto/${table.urlPathName}';
+import ViewFrame from '@/components/ViewFrame.vue';
+import { Route } from 'vue-router';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 
 const rules = {
 <#list table.columns as column>
@@ -114,147 +117,145 @@ const rules = {
 </#list>
 };
 
-export default {
-    components: { ViewFrame },
-    data() {
-        return {
-            page: 1,
-            pageSize: 8,
-            pageTotal: 0,
+@Component${r"<"}${className}Module${r">"}({
+    components: { ViewFrame }
+})
+export default class ${className}Module extends Vue {
+    $refs!: {
+        form: HTMLFormElement
+    }
 
-            searchKey: '',
-            showDialog: false,
-            loadingList: false,
-            loadingModel: false,
+    private page: number = 1
+    private pageSize: number = 1
+    private pageTotal: number = 0
 
-            model: {},
-            items: [],
-            selections: [],
-            rules: rules
-        };
-    },
+    private searchKey: string = ''
+    private showDialog: boolean = false
+    private loadingList: boolean = false
+    private loadingModel: boolean = false
+
+    private rules = rules
+    private model: ${className} = {}
+    private items: Array<${className}> = []
+    private selections: Array<${className}> = []
+
+    @Watch("$route")
+    watchRoute(to: Route, from: Route) {
+        if (to.params.page) {
+            this.page = Number(to.params.page);
+        }
+        this.init();
+    }
+
     created() {
         this.init();
-    },
-    watch: {
-        $route(to, from) {
-            if (to.params.page) {
-                this.page = Number(to.params.page);
+    }
+    init() {
+        this.items = [];
+        this.loadList(this.page = this.$route.params.page ? Number(this.$route.params.page) : 1);//默认加载第一页
+    }
+    async loadList(index: number) {
+        const params = {
+            page: index - 1,
+            size: this.pageSize,
+            key: this.searchKey,
+        };
+        try {
+            this.loadingList = true;
+            const result = await api.list(params);
+            this.items = result.list;
+            this.pageTotal = result.totalRecord;
+        } catch (error) {
+            this.$message.error(error);
+        } finally {
+            this.loadingList = false;
+        }
+    }
+    async postSubmit() {
+        try {
+            this.loadingModel = true;
+            if (this.model.id) {
+                await api.update(this.model);
+            } else {
+                await api.insert(this.model);
             }
-            this.init();
-        },
-    },
-    methods: {
-        init() {
-            this.items = [];
-            this.loadList(this.page = this.$route.params.page ? Number(this.$route.params.page) : 1);//默认加载第一页
-        },
-        ...Object.assign({
-            async loadList(index) {
-                const params = {
-                    page: index - 1,
-                    size: this.pageSize,
-                    key: this.searchKey,
-                };
-                try {
-                    this.loadingList = true;
-                    const result = await api.list(params);
-                    this.items = result.list;
-                    this.pageTotal = result.totalRecord;
-                } catch (error) {
-                    this.$message.error(error);
-                } finally {
-                    this.loadingList = false;
-                }
-            },
-            async postSubmit() {
-                try {
-                    this.loadingModel = true;
-                    if (this.model.id) {
-                        await api.update(this.model);
-                    } else {
-                        await api.insert(this.model);
-                    }
-                    this.showDialog = false;
-                    this.$message.success('保存成功');
-                    this.loadList(this.page);
-                } catch (error) {
-                    this.$message.error(error)
-                } finally {
-                    this.loadingModel = false;
-                }
-            },
-            async requestRemove(item) {
-                try {
-                    const ids = item.length ? item.map(i=>i.id).join(',') : item.id
-                    this.loadingList = true;
-                    await api.remove(ids);
-                    this.$message.success('删除成功');
-                    this.loadList(this.page);
-                } catch (error) {
-                    this.$message.error(error);
-                } finally {
-                    this.loadingList = false;
-                }
+            this.showDialog = false;
+            this.$message.success('保存成功');
+            this.loadList(this.page);
+        } catch (error) {
+            this.$message.error(error)
+        } finally {
+            this.loadingModel = false;
+        }
+    }
+    async requestRemove(item: ${className} | Array<${className}>) {
+        try {
+            const ids = (item instanceof Array) ? item.map(i=>i.${table.idColumn.fieldName}).join(',') : ${r"`${item.id}`"}
+            this.loadingList = true;
+            await api.remove(ids);
+            this.$message.success('删除成功');
+            this.loadList(this.page);
+        } catch (error) {
+            this.$message.error(error);
+        } finally {
+            this.loadingList = false;
+        }
+    }
+
+    onPageIndex(page: number) {
+        this.$router.push({
+            params: {inner: 'true', page: ${r"`${page}`"}},
+            query: this.$route.query,
+            name: this.$route.name?.replace(/(-page)?$/,'-page')
+        });
+    }
+    onSelectionChange(selections: Array<${className}>) {
+        this.selections = selections;
+    }
+    onSearchClick() {
+        this.loadList(this.page);
+    }
+    onAddClick() {
+        this.model = {};
+        this.showDialog = true;
+    }
+    onRemoveClick() {
+        if (!this.selections || !this.selections.length) {
+            this.$message.info('请先在列表左边勾选需要删除到行!');
+        } else {
+            this.$confirm('此操作将永久删除多条数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.requestRemove(this.selections);
+            }).catch(() => {
+                this.$message({ type: 'info', message: '已取消删除'});
+            });
+        }
+    }
+    onItemEditClick(item: ${className}) {
+        this.model = {...item};
+        this.showDialog = true;
+    }
+    onItemRemoveClick(item: ${className}) {
+        this.$confirm('此操作将永久删除该, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            this.requestRemove(item);
+        }).catch(() => {
+            this.$message({ type: 'info', message: '已取消删除'});
+        });
+    }
+    onSubmitClick() {
+        this.$refs.form.validate((valid: boolean) => {
+            if (valid) {
+                this.postSubmit();
             }
-        }),
-        ...Object.assign({
-            onPageIndex(page) {
-                this.$router.push({
-                    params: {inner: true, page},
-                    query: this.$route.query,
-                    name: this.$route.name.replace(/(-page)?$/,'-page'),
-                });
-            },
-            onSelectionChange(selections) {
-                this.selections = selections;
-            },
-            onSearchClick() {
-                this.loadList(this.page);
-            },
-            onAddClick() {
-                this.model = {};
-                this.showDialog = true;
-            },
-            onRemoveClick() {
-                if (!this.selections || !this.selections.length) {
-                    this.$message.info('请先在列表左边勾选需要删除到行!');
-                } else {
-                    this.$confirm('此操作将永久删除多条数据, 是否继续?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        this.requestRemove(this.selections);
-                    }).catch(() => {
-                        this.$message({ type: 'info', message: '已取消删除'});
-                    });
-                }
-            },
-            onItemEditClick(item) {
-                this.model = {...item};
-                this.showDialog = true;
-            },
-            onItemRemoveClick(item) {
-                this.$confirm('此操作将永久删除该, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.requestRemove(item);
-                }).catch(() => {
-                    this.$message({ type: 'info', message: '已取消删除'});
-                });
-            },
-            onSubmitClick() {
-                this.$refs.form.validate((valid) => {
-                    if (valid) {
-                        this.postSubmit();
-                    }
-                    return valid;
-                });
-            }
-        }),
+            return valid;
+        });
     }
 };
 </script>
