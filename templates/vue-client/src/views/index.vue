@@ -64,7 +64,7 @@ export default {
                         type: 'warning'
                     }).then(() => {
                         this.auth401Showing = false;
-                        this.requestLogin(this.selections);
+                        this.requestLogin();
                     }).catch(() => {
                         this.auth401Showing = false;
                         this.$message({ type: 'info', message: '已取消登录'});

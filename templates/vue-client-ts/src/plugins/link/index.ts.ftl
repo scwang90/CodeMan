@@ -1,12 +1,15 @@
-import Link from './Link'
+import Vue from 'vue'
+import Link from './link.vue'
 import {Base64} from 'js-base64'
+
+export type VueType = typeof Vue;
 
 const $link = {
     /**
      * 安装 $Link 插件 到 Vue 中
      * @param {*} Vue 
      */
-    install(Vue) {
+    install(Vue: VueType) {
         Vue.component(Link.name, Link);
         Vue.prototype.$link = $link;
     },
@@ -14,7 +17,7 @@ const $link = {
      * 获取Base64解密后的查询参数对象Query
      * @param {Route} $route 路由对象
      */
-    getRouteQuery($route) {
+    getRouteQuery($route: { query: { [x:string]:string } }) {
         let query = {};
         Object.keys($route.query || {}).forEach(key => {
             try {
@@ -35,7 +38,7 @@ const $link = {
      * @param {Object} query 加密钱的查询参数对象
      * @return {Object} 路由Query对象
      */
-    getEncodedQuery(query) {
+    getEncodedQuery(query: string) {
         query = query || "";
         query = Object.prototype.toString.apply(query) === '[object String]' ? query : JSON.stringify(query);
         query = encodeURIComponent(query);
@@ -45,4 +48,4 @@ const $link = {
     }
 };
 
-export default $link
+export default $link;

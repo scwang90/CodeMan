@@ -51,12 +51,13 @@
         </div>
     </nav>
 </template>
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import Vuex from 'vuex'
-export default {
+export default Vue.extend({
     data() {
         return {
-            index: null,
+            index: '',
         }
     },
 <#if hasLogin>
@@ -78,9 +79,9 @@ export default {
     methods: {
 
 </#if>
-        onMenuSelected(index, indexPath) {
+        onMenuSelected(index: string, indexPath: string) {
             if (index) {
-                if (this.$router.history.current.path != index) {
+                if (this.$router.currentRoute.path != index) {
                     this.$router.push({ path:index });
                 }
                 this.index = '';
@@ -90,7 +91,7 @@ export default {
         onMenuToggleClick() {
         },
     }
-}
+});
 </script>
 <style>
 .navbar .el-submenu__title i, .el-menu--horizontal .el-menu-item i {

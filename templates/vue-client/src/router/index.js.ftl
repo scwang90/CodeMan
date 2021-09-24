@@ -58,7 +58,6 @@ const router = new Router({
 
 const routerIndex = '/index';
 const routerLogin = '/login';
-const routerBase = process.env.ROUTER_BASE;
 router.beforeEach((to, from, next) => {
     // 判断该路由是否需要登录权限
     if (to.matched.length && !to.matched.every(r=>r.meta.ignoreAuth)) {

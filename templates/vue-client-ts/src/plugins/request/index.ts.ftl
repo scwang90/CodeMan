@@ -1,80 +1,56 @@
 import Vue from "Vue"
-import VueResource from "vue-resource"
-Vue.use(VueResource);
+import * as Api from '@/constant/api'
 
-Vue.http.options.emulateJSON = true
-// Vue.http.options.root = process.env.SETTING_API_BASE;
-Vue.http.options.xhr = { withCredentials: true };
-Vue.http.interceptors.push(function(request, next) {
-
-    request.withCredentials = true;
-    // modify method
-    // request.method = 'POST';
-
-    // modify headers
-    // request.headers.set('X-CSRF-TOKEN', 'TOKEN');
-    // request.headers.set('Authorization', 'Bearer TOKEN');
-    
-    // console.log('start', request);
-    if (Vue.http.options.hookResponse) {
-        next(response => {
-            Vue.http.options.hookResponse(response)
-        })
-    }
-});
-
-const request = (method, path, data) => {
-    return new Promise((resolve, reject) => {
-        Vue.http[method].call(Vue.http, path, data)
-        .then(res => {
-            if (res.ok) {
-                if (res.body.code == 200) {
-                    resolve(res.body.result);
-                } else {
-                    console.warn(res.body.message);
-                    reject(res.body.message);
-                }
+function request<T>(method: Api.HTTP_METHOD, url: string, data?: any): Promise<T> {
+    let headers: HeadersInit = {};
+    let body: any = data;
+    if (method == 'GET' && data && !(data instanceof String)) {
+        Object.keys(data).forEach(key=>{
+            if (url.indexOf('?')) {
+                url = ${r"`${url}&${key}=${data[key]}`"};
             } else {
-                console.error(res);
-                reject(JSON.stringify(res));
-            }
-        }, res => {
-            console.error(res);
-            if (res.status == 0) {
-                reject('网络连接失败!');
-            } else {
-                reject(JSON.stringify(res));
+                url = ${r"`${url}?${key}=${data[key]}`"};
             }
         });
+        body = undefined;
+    } else if (body && !(body instanceof String) && !(body instanceof FormData)) {
+        body = JSON.stringify(body);
+        headers['Content-Type'] = 'application/json;charset=UTF-8';
+    }
+    return fetch(url, {
+        method,
+        headers,
+        body
+    }).then(res=>{ return res.json()});
+}
+
+function requestLogic<T>(method: Api.HTTP_METHOD, url: string, data?: any): Promise<T> {
+    return request<Api.Result<T>>(method, url, data).then(res=>{
+        if (res.code != 0 && res.code != 200) {
+            throw new Error(res.message);
+        }
+        return res.result;
     });
 }
 
+export type VueType = typeof Vue;
+
 export default {
-    get(path, data) {
-        return request('get', path, {params: data});
+    get<T>(path: string, data?: any): Promise<T> {
+        return requestLogic<T>('GET', path, {params: data});
     },
-    post(path, data) {
-        return request('post', path, data);
+    post<T>(path: string, data?: any): Promise<T> {
+        return request<T>('POST', path, data);
     },
-    put(path, data) {
-        return request('put', path, data);
+    put<T>(path: string, data?: any): Promise<T> {
+        return request<T>('PUT', path, data);
     },
-    delete(path, data) {
-        return request('delete', path, {params: data});
+    delete<T>(path: string, data?: any): Promise<T> {
+        return request<T>('DELETE', path, {params: data});
     },
-    url(path) {
-        return Vue.http.options.root.replace(/\/$/,'') + '/' + path;
-    },
-    install(Vue, op = {}) {
+    install(Vue: VueType) {
         if (Vue && Vue.prototype) {
-            Vue.request = this;
             Vue.prototype.$request = this;
-            if (op.root && op.root != '/') {
-                Vue.http.options.root = op.root;
-            }
-            if (op.hookResponse instanceof Function) {
-                Vue.http.options.hookResponse = op.hookResponse;
-            }
         }
     }
 }

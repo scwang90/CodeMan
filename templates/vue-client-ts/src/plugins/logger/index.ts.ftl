@@ -1,24 +1,28 @@
+import Vue from 'vue'
+export type VueType = typeof Vue;
 
 const isDebug = process.env.NODE_ENV == 'development';
 
+const $log:(...data: any[])=>void = console.log.bind(console);
+const $warn:(...data: any[])=>void = console.warn.bind(console);
+const $error:(...data: any[])=>void = console.error.bind(console);
+const $info:(...data: any[])=>void = console.info.bind(console);
+
 const $logger = {
-    prefix: null,//'logger',
-    install(Vue) {
+    prefix: '',//'logger',
+    install(Vue: VueType) {
         Vue.prototype.$logger = $logger;
-        console.$log = console.log.bind(console);
-        console.$warn = console.warn.bind(console);
-        console.$error = console.error.bind(console);
-        console.$info = console.info.bind(console);
+
         console.log = this.log.bind(this);
         console.warn = this.warn.bind(this);
         console.error = this.error.bind(this);
         console.info = this.info.bind(this);
         console.debug = console.log;
     },
-    logger(logger, name, _arguments, color, margin) {
+    logger(logger: null | ((...data: any[])=>void), name: string, _arguments: IArguments, color: string, margin?: string) {
         if (logger) {
             margin = margin || '';
-            const args = [].slice.apply(_arguments);
+            const args: string[] = [].slice.apply(_arguments);
             if (this.prefix) {
                 name = this.prefix + name;
             }
@@ -47,23 +51,21 @@ const $logger = {
             } else {
                 args.unshift(this.prefix);
             }
-
-            //logger(args);
             logger(...args);
         }
     },
     log() {
-        this.logger(isDebug?console.$log:null, '调试', arguments, '#1F6FB5', 'margin-left:10px;');
+        this.logger(isDebug?$log:null, '调试', arguments, '#1F6FB5', 'margin-left:10px;');
     },
     info() {
-        this.logger(isDebug?console.$info:null, '信息', arguments, '#41b883', 'margin-left:10px;');
+        this.logger(isDebug?$info:null, '信息', arguments, '#41b883', 'margin-left:10px;');
     },
     warn() {
-        this.logger(console.$warn, '警告', arguments, '#F29F3F')
+        this.logger($warn, '警告', arguments, '#F29F3F');
     },
     error() {
-        this.logger(console.$error, '错误', arguments, '#F01B2D')
+        this.logger($error, '错误', arguments, '#F01B2D');
     }
 };
 
-export default $logger
+export default $logger;

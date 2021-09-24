@@ -13,8 +13,9 @@
         </el-main>
     </el-container>
 </template>
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
     props: {
         title: {
             type: String,
@@ -26,7 +27,7 @@ export default {
             this.$router.go(-1);
         }
     }
-}
+});
 </script>
 <style>
 .container .header .el-page-header {

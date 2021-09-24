@@ -8,10 +8,10 @@
         </el-menu>
     </section>
 </template>
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import Vuex from 'vuex'
-
-export default {
+export default Vue.extend({
     props:{
     },
     data() {
@@ -29,13 +29,13 @@ export default {
         ...Vuex.mapState('user', ['userInfo']),
     },
     methods: {
-        onMenuSelected(index) {
+        onMenuSelected(index: string) {
             if (index) {
                 this.$router.push({path:index});
             }
         }
     }
-}
+});
 </script>
 <style>
 .sidebar .el-menu-item i {
