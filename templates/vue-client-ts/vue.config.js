@@ -8,7 +8,7 @@ module.exports = {
         host: '0.0.0.0',
         port: 8000,
         https: false,
-        proxy: null, // 设置代理
+        proxy: 'http://localhost:8080', // 设置代理
     },
     // 第三方插件配置
     pluginOptions: {

@@ -1,6 +1,8 @@
 package ${packageName}
 
 import ${packageName}.config.EnumConverterFactory
+import ${packageName}.model.conf.AppConfig
+
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
@@ -19,6 +21,21 @@ import java.util.*
 @SpringBootApplication
 class ${projectName?cap_first}Application : WebMvcConfigurer {
 
+    @Autowired
+    private lateinit var config: AppConfig
+
+    /**
+     * 添加跨域列表
+     */
+    override fun addCorsMappings(registry: CorsRegistry) {
+        val conf = config.cors
+        registry.addMapping("/api/**")
+            .allowedMethods("*")
+            .allowCredentials(true)
+            .exposedHeaders("x-auth-token","Content-Type")
+            .allowedOriginPatterns(*conf.allowedOriginPatterns.split(";").toTypedArray())
+    }
+
     /**
      * 所有产生随机数到地方都使用同一个随机数生成器，优化生成器的随机性
      */
@@ -32,16 +49,6 @@ class ${projectName?cap_first}Application : WebMvcConfigurer {
      */
     override fun addFormatters(registry: FormatterRegistry) {
         registry.addConverterFactory(EnumConverterFactory())
-    }
-
-    /**
-     * 添加跨域列表
-     */
-    override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/api/**")
-            .allowedMethods("*")
-            .allowCredentials(true)
-            .allowedOriginPatterns("*www.example.com*", "*localhost*", "*127.0.0.1*", "*0.0.0.0*")
     }
 
 }

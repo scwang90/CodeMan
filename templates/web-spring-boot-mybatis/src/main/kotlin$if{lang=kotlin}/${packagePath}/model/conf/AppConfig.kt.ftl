@@ -15,6 +15,7 @@ class AppConfig {
     var error: Error = Error()
     var client: Client = Client()
     var swagger: Swagger = Swagger()
+    var cors: CorsConfig = CorsConfig()
 
     class Swagger {
         /* 代理主机地址 */
@@ -32,4 +33,10 @@ class AppConfig {
         var original: Boolean = false
     )
 
+    class CorsConfig {
+        var mappging:String = "/api/**"
+        var allowedMethods:String = "*"
+        var allowCredentials:Boolean = true
+        var allowedOriginPatterns:String = "*localhost*;*127.0.0.1*;*0.0.0.0*"
+    }
 }

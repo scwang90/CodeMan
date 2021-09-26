@@ -35,6 +35,9 @@ public class SourceModel implements LangRootModel {
     private String author;
     private String packageName;
     private String packagePath;
+    private String appName;
+    private String appTitle;
+    private String appDetail;
     private String projectName;
     private String projectRemark;
     private String charset;
@@ -87,6 +90,18 @@ public class SourceModel implements LangRootModel {
         this.packageName = packageName;
         this.packagePath = packageName.replace(".", File.separatorChar + "");
 //        this.packagePath = packagePath.replace("::", File.separatorChar + "");
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public String getAppTitle() {
+        return appTitle;
+    }
+
+    public String getAppDetail() {
+        return appDetail;
     }
 
     //<editor-fold desc="接口实现">

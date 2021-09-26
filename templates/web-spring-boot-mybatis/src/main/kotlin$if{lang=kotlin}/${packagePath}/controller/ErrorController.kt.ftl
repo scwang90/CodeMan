@@ -141,7 +141,7 @@ class ErrorController(
             }
         }
         try {
-            val result = ApiResult(status, message, null)
+            val result = ApiResult(status, null, message)
 
             val mutable = mutableMapOf<String, Any?>()
             val map = mapper.readValue(mapper.writeValueAsString(result), MutableMap::class.java)

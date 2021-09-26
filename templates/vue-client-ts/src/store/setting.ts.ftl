@@ -7,7 +7,9 @@ const baseUrl = apiBase.replace(/\/$/,'')
 export interface SettingState {
     baseApi: string
     baseUrl: string
-    webName: string
+    appName: string
+    appTitle: string
+    appDetail: string
 }
 
 const store: Module<SettingState, RootState> =  {
@@ -15,7 +17,9 @@ const store: Module<SettingState, RootState> =  {
     state: {
         baseApi: apiBase,
         baseUrl: baseUrl + '/api/v1',
-        webName: process.env.VUE_APP_NAME,
+        appName: process.env.VUE_APP_NAME,
+        appTitle: process.env.VUE_APP_TITLE,
+        appDetail: process.env.VUE_APP_DETAIL,
     },
     mutations: {
     },

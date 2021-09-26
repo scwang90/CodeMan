@@ -17,7 +17,10 @@ class ApiResult<T>(
         @ApiModelProperty("接口返回实体")
         var result: T? = null,
         @ApiModelProperty("失败原因")
-        var reason: String? = "调用成功") {
+        var message: String? = "调用成功") {
+
+    @ApiModelProperty("是否成功")
+    var success: Boolean = code == ResultCode.OK.code
 
     companion object {
         fun <T> success(result: T?): ApiResult<T> {

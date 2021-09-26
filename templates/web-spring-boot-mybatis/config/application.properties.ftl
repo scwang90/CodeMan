@@ -16,3 +16,4 @@ spring.datasource.url = ${jdbc.url}?serverTimezone=Asia/Shanghai
 spring.datasource.username = ${jdbc.username}
 spring.datasource.password = ${jdbc.password}
 
+app.cors.allowedOriginPatterns = *

@@ -126,7 +126,7 @@ export default class ${className}Module extends Vue {
     }
 
     private page: number = 1
-    private pageSize: number = 1
+    private pageSize: number = 12
     private pageTotal: number = 0
 
     private searchKey: string = ''
@@ -174,7 +174,7 @@ export default class ${className}Module extends Vue {
     async postSubmit() {
         try {
             this.loadingModel = true;
-            if (this.model.id) {
+            if (this.model.${table.idColumn.fieldName}) {
                 await api.update(this.model);
             } else {
                 await api.insert(this.model);
@@ -190,7 +190,7 @@ export default class ${className}Module extends Vue {
     }
     async requestRemove(item: ${className} | Array<${className}>) {
         try {
-            const ids = (item instanceof Array) ? item.map(i=>i.${table.idColumn.fieldName}).join(',') : ${r"`${item.id}`"}
+            const ids = (item instanceof Array) ? item.map(i=>i.${table.idColumn.fieldName}).join(',') : ${r"`${item."}${table.idColumn.fieldName}${r"}`"}
             this.loadingList = true;
             await api.remove(ids);
             this.$message.success('删除成功');

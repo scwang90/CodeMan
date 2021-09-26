@@ -5,7 +5,7 @@
                 <div class="header">
                     <!-- <img  class="logo" src="../../public/images/common/logo.svg" alt=""> -->
                     <i class="logo el-icon-eleme"></i>
-                    <span class="title">{{webName}}</span>
+                    <span class="title">{{appTitle}}</span>
                 </div>
                 <img class="post" src="../../public/images/login/image-post.png" alt="" srcset="">
             </div>
@@ -80,7 +80,7 @@ export default class LoginModule extends Vue {
         password: 'admin'
     }
     @user.Action("login") login: any
-    @setting.State("webName") webName: any
+    @setting.State("appTitle") appTitle: any
 
     $refs! : {
         form: HTMLFormElement

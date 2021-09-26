@@ -1,5 +1,6 @@
 package ${packageName};
 
+import ${packageName}.model.conf.AppConfig;
 import ${packageName}.util.EnumConverterFactory;
 
 import org.springframework.boot.SpringApplication;
@@ -18,13 +19,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 public class ${projectName?cap_first}Application implements WebMvcConfigurer {
 
-    /**
-     * 绑定枚举类型参数
-     */
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverterFactory(new EnumConverterFactory());
-    }
+    @Autowired
+    private AppConfig config;
 
     /**
      * 添加跨域列表
@@ -32,10 +28,18 @@ public class ${projectName?cap_first}Application implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-            .allowCredentials(true)
             .allowedMethods("*")
-            .allowedOrigins("*");
-<#--            .allowedOriginPatterns("*www.example.com*", "*localhost*", "*127.0.0.1*", "*0.0.0.0*");-->
+            .allowCredentials(true)
+            .exposedHeaders("x-auth-token","Content-Type")
+            .allowedOriginPatterns(config.cors.allowedOriginPatterns.split(";"));
+    }
+
+    /**
+     * 绑定枚举类型参数
+     */
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new EnumConverterFactory());
     }
 
     public static void main(String[] args) {

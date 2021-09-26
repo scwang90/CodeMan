@@ -17,6 +17,7 @@ public class AppConfig {
     private Error error = new Error();
     private Client client = new Client();
     private Swagger swagger = new Swagger();
+    private CorsConfig cors = CorsConfig();
 
     public String getVisitHost() {
         return client.visitHost;
@@ -52,5 +53,15 @@ public class AppConfig {
          * 是否启用代理
          */
         private boolean enabled = false;
+    }
+
+    @Data
+    public static class CorsConfig {
+
+        private String mappging = "/api/**";
+        private String allowedMethods = "*";
+        private boolean allowCredentials = true;
+        private String allowedOriginPatterns = "*localhost*;*127.0.0.1*;*0.0.0.0*";
+
     }
 }

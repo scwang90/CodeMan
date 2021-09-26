@@ -63,13 +63,11 @@ class AuthController {
     )
     fun login${table.className}(<#if table.hasOrgan>${table.orgColumn.fieldName}: ${table.orgColumn.fieldType}, </#if>@NotBlank username: String, @NotBlank password: String, request: HttpServletRequest, response: HttpServletResponse): ApiResult<LoginInfo<${table.className}>> {
         return try {
-                val info = service.login${table.className}(<#if table.hasOrgan>${table.orgColumn.fieldName}, </#if>username, password)
-                JwtUtils.writeToHeader(info.token, request, response)
-               return ApiResult.success(info)
-            } catch (e: AuthenticationException) {
-                e.cause?.also {
-                throw it
-            }
+            val info = service.login${table.className}(<#if table.hasOrgan>${table.orgColumn.fieldName}, </#if>username, password)
+            JwtUtils.writeToHeader(info.token, request, response)
+            return ApiResult.success(info)
+        } catch (e: AuthenticationException) {
+            e.cause?.also { throw it }
             ApiResult.failClient("登录失败")
         }
     }
@@ -91,9 +89,7 @@ class AuthController {
             JwtUtils.writeToHeader(info.token, request, response)
             return ApiResult.success(info)
         } catch (e: AuthenticationException) {
-            e.cause?.also {
-                throw it
-            }
+            e.cause?.also { throw it }
             ApiResult.failClient("登录失败")
         }
     }
@@ -109,7 +105,7 @@ class AuthController {
         return ApiResult.success(
             arrayOf(
                 subject.principals.oneByType(JwtBearer::class.java),
-                subject.principals.oneByType( DecodedJWT::class.java)
+                subject.principals.oneByType(DecodedJWT::class.java)
             )
         )
     }

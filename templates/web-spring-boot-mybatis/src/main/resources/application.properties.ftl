@@ -24,6 +24,9 @@ spring.web.resources.static-locations=./static/,classpath:/META-INF/resources/,c
 mybatis.configuration.map-underscore-to-camel-case = true
 mybatis.mapper-locations = classpath:/mapper/*.xml,classpath:/mapper/**/*.xml
 
+#跨域访问过滤设置
+app.cors.allowedOriginPatterns = *localhost*;*127.0.0.1*;*0.0.0.0*
+
 #文档框架测试访问主机（负债均衡/内网穿透并且时需要配置，未配置时使用）
 app.swagger.host =
 app.swagger.enabled = false

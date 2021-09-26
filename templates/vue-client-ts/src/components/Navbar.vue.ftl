@@ -2,12 +2,12 @@
     <nav class="navbar">
         <div class="left">
             <i class="logo el-icon-eleme"></i>
-            <span class="title">简写</span>
+            <span class="title">{{appName}}</span>
             <i class="icon el-icon-menu" @click="onMenuToggleClick"></i>
         </div>
         <div class="middle">
-            <span class="title">PYJX</span>
-            <span class="detail">${projectName}</span>
+            <span class="title">{{appTitle}}</span>
+            <span class="detail">{{appDetail}}</span>
         </div>
         <div class="right">
             <el-menu class="menu" mode="horizontal"
@@ -54,6 +54,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Vuex from 'vuex'
+
 export default Vue.extend({
     data() {
         return {
@@ -63,6 +64,7 @@ export default Vue.extend({
 <#if hasLogin>
     computed: {
         ...Vuex.mapState('user', ['userInfo']),
+        ...Vuex.mapState('setting', ['appName','appTitle','appDetail']),
     },
     methods: {
         ...Vuex.mapActions('user', ['logout']),
