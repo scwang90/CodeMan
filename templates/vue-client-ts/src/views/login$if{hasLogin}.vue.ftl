@@ -76,6 +76,9 @@ export default class LoginModule extends Vue {
     private rules = rules
     private logging: boolean = false;
     private model = {
+    <#if hasOrgan>
+        ${orgColumn.fieldName}: <#if orgColumn.stringType>''<#else>1</#if>,
+    </#if>
         username: 'admin',
         password: 'admin'
     }

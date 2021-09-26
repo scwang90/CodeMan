@@ -58,6 +58,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setPackageName(config.getTargetProjectPackage());
 		model.setProjectName(config.getTargetProjectName());
 		model.setProjectRemark(config.getTargetProjectRemark());
+		model.setProjectDetail(config.getTargetProjectDetail());
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);

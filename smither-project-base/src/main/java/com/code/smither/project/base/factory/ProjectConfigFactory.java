@@ -17,6 +17,7 @@ public class ProjectConfigFactory {
         config.setTargetFeatures(properties.getProperty("code.man.target.features",config.getTargetFeatures()));
         config.setTargetProjectName(properties.getProperty("code.man.target.project.name",config.getTargetProjectName()));
         config.setTargetProjectRemark(properties.getProperty("code.man.target.project.remark",config.getTargetProjectRemark()));
+        config.setTargetProjectDetail(properties.getProperty("code.man.target.project.detail",config.getTargetProjectDetail()));
         config.setTargetProjectAuthor(properties.getProperty("code.man.target.project.author",config.getTargetProjectAuthor()));
         config.setTargetProjectPackage(properties.getProperty("code.man.target.project.package",config.getTargetProjectPackage()));
 

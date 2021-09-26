@@ -59,6 +59,7 @@ public class AuthController {
     }
 <#if hasMultiLogin>
     <#list loginTables as table>
+
     @PostMapping("login/${table.urlPathName}")
     @ApiOperation(value = "${table.remarkName}登录", notes = "针对${table.remark}的登录接口")
     @ApiImplicitParams({
@@ -92,7 +93,7 @@ public class AuthController {
         @ApiImplicitParam(paramType = "form", name = "${loginTable.orgColumn.fieldName}", value = "${table.orgColumn.remarkName}", required = true),
     </#if>
     })
-    public ApiResult<LoginInfo<${table.className}>> login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldType} ${loginTable.orgColumn.fieldName}, </#if>String username, String password, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    public ApiResult<LoginInfo> login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldType} ${loginTable.orgColumn.fieldName}, </#if>String username, String password, HttpServletRequest request, HttpServletResponse response) throws Throwable {
         try {
             LoginInfo info = service.login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password);
             JwtUtils.writeToHeader(info.token, request, response);

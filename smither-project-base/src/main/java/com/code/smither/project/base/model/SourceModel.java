@@ -11,8 +11,10 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 模板根 Model
@@ -40,6 +42,7 @@ public class SourceModel implements LangRootModel {
     private String appDetail;
     private String projectName;
     private String projectRemark;
+    private String projectDetail;
     private String charset;
     private String dbType;
     private String lang;                //程序设计语言
@@ -93,15 +96,35 @@ public class SourceModel implements LangRootModel {
     }
 
     public String getAppName() {
-        return appName;
+        if (!StringUtil.isNullOrBlank(projectRemark)) {
+            String name = projectRemark;
+            name = name.replaceAll("后台管理系统$", "");
+            name = name.replaceAll("管理系统$", "");
+            name = name.replaceAll("系统$", "");
+            name = name.replaceAll("管理平台$", "");
+            name = name.replaceAll("平台$", "");
+            name = name.replaceAll("后台管理$", "");
+            return name;
+        }
+        String[] names = projectRemark.replaceAll("([a-z])([A-Z])","$1-$2").split("-| ");
+        return Arrays.stream(names).filter(n->n.length()>0).map(n->""+n.charAt(0)).collect(Collectors.joining()).toUpperCase();
     }
 
     public String getAppTitle() {
-        return appTitle;
+        if (!StringUtil.isNullOrBlank(projectRemark)) {
+            return projectRemark;
+        }
+        return projectName;
     }
 
     public String getAppDetail() {
-        return appDetail;
+        if (!StringUtil.isNullOrBlank(projectDetail)) {
+            return projectDetail;
+        }
+        if (!StringUtil.isNullOrBlank(projectRemark)) {
+            return projectRemark;
+        }
+        return projectName;
     }
 
     //<editor-fold desc="接口实现">

@@ -17,7 +17,7 @@ public class AppConfig {
     private Error error = new Error();
     private Client client = new Client();
     private Swagger swagger = new Swagger();
-    private CorsConfig cors = CorsConfig();
+    private CorsConfig cors = new CorsConfig();
 
     public String getVisitHost() {
         return client.visitHost;

@@ -9,7 +9,7 @@ import ${packageName}.model.conf.AuthConfig;
 import ${packageName}.model.db.${table.className};
     </#list>
 <#else >
-import ${packageName}.model.db.${loginTable.className}
+import ${packageName}.model.db.${loginTable.className};
 </#if>
 import ${packageName}.shiro.model.JwtBearer;
 <#if hasMultiLogin>

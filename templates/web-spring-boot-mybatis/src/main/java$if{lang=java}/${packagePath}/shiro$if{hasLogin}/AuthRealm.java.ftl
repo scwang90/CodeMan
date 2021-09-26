@@ -210,9 +210,9 @@ public class AuthRealm extends AuthorizingRealm implements CredentialsMatcher {
     </#if>
         if (${loginTable.classNameCamel} == null) {
             if ("admin".equals(token.getUsername()) && "654321".equals(token.getPassword())) {
-                //项目刚刚生成，数据库可能没有${table.remarkName}数据，本代码可以提前体登录成功，并体验其他接口
+                //项目刚刚生成，数据库可能没有${loginTable.remarkName}数据，本代码可以提前体登录成功，并体验其他接口
                 ByteSource salt = ByteSource.Util.bytes(authConfig.getPassword().getSalt());
-                return new SimpleAuthenticationInfo(new ${table.className}(), authConfig.passwordHash(token.password), salt, "authRealm");
+                return new SimpleAuthenticationInfo(new ${loginTable.className}(), authConfig.passwordHash(token.getPassword()), salt, "authRealm");
             }
             throw new ClientException("用户名或密码错误");
         }

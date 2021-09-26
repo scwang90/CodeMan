@@ -56,6 +56,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String targetCharset = "UTF-8";
     protected String targetProjectName = "TargetProject";
     protected String targetProjectRemark = "";
+    protected String targetProjectDetail = "";
     protected String targetProjectAuthor = "unset";
     protected String targetProjectPackage = "com.code.smither.target";
 

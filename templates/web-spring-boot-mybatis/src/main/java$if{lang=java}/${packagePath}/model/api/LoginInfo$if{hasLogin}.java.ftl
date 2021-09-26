@@ -5,8 +5,6 @@ import ${packageName}.model.db.${loginTable.className};
 </#if>
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 /**
  * 登录信息
  * token 和 详细信息

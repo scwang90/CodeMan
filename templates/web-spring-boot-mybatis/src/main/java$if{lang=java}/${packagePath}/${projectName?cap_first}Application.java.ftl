@@ -3,6 +3,7 @@ package ${packageName};
 import ${packageName}.model.conf.AppConfig;
 import ${packageName}.util.EnumConverterFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 public class ${projectName?cap_first}Application implements WebMvcConfigurer {
 
-    @Autowired
-    private AppConfig config;
+    private final AppConfig config;
+
+    public TravelerServerApplication(AppConfig config) {
+        this.config = config;
+    }
 
     /**
      * 添加跨域列表
@@ -31,7 +35,7 @@ public class ${projectName?cap_first}Application implements WebMvcConfigurer {
             .allowedMethods("*")
             .allowCredentials(true)
             .exposedHeaders("x-auth-token","Content-Type")
-            .allowedOriginPatterns(config.cors.allowedOriginPatterns.split(";"));
+            .allowedOriginPatterns(config.getCors().getAllowedOriginPatterns().split(";"));
     }
 
     /**

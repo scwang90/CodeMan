@@ -89,7 +89,7 @@ public class ${className}AutoService {
 	</#if>
 	<#if table.hasSearches>
 		if (StringUtil.isNotEmpty(key)) {
-			where = where.and(<#list table.searchColumns as column><#if column_index gt 0>.or(</#if>Tables.${table.className}.${column.fieldNameUpper}.contains(key)<#if column_index gt 0>)</#if></#list>);
+			where = where.and(<#list table.searchColumns as column><#if column_index gt 0>.or(</#if>Tables.${table.className}.${column.fieldNameUpper}.contains(<#if column.stringType>key<#else>${column.fieldTypeObject}.valueOf(key)</#if>)<#if column_index gt 0>)</#if></#list>);
 		}
 	</#if>
 		List<${className}${bean}> list = mapper.select${bean}Where(where, paging.toRowBounds());
