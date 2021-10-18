@@ -8,17 +8,19 @@ export const list = (data) => {
     return request.get('${table.urlPathName}', data)
 }
 
+<#assign isMore=false/>
 // @Summary 添加${table.remarkName}
 // @Produce  application/json
-// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn>${column.fieldName}: "${column.fieldType}"<#if column_has_next>,</#if></#if></#list>}
+// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn><#if isMore>,</#if>${column.fieldName}: "${column.fieldTypeObject}"<#assign isMore=true/></#if></#list>}
 // @Router '${table.urlPathName}' [post]
 export const insert = (data) => {
     return request.post('${table.urlPathName}', data)
 }
 
+<#assign isMore=false/>
 // @Summary 更新${table.remarkName}
 // @Produce  application/json
-// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn>${column.fieldName}: "${column.fieldType}"<#if column_has_next>,</#if></#if></#list>}
+// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn><#if isMore>,</#if>${column.fieldName}: "${column.fieldTypeObject}"<#assign isMore=true/></#if></#list>}
 // @Router '${table.urlPathName}' [put]
 export const update = (data) => {
     return request.put('${table.urlPathName}', data)

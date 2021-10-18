@@ -10,17 +10,19 @@ export const list = (data: Api.Page): Promise<Api.Paged<${className}>> => {
     return request.get<Api.Paged<${className}>>('/api/v1/${table.urlPathName}', data)
 }
 
+<#assign isMore=false/>
 // @Summary 添加${table.remarkName}
 // @Produce  application/json
-// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn>${column.fieldName}: "${column.fieldType}"<#if column_has_next>,</#if></#if></#list>}
+// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn><#if isMore>,</#if>${column.fieldName}: "${column.fieldTypeObject}"<#assign isMore=true/></#if></#list>}
 // @Router '${table.urlPathName}' [post]
 export const insert = (data: ${className}): Promise<number> => {
     return request.post<number>('/api/v1/${table.urlPathName}', data)
 }
 
+<#assign isMore=false/>
 // @Summary 更新${table.remarkName}
 // @Produce  application/json
-// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn>${column.fieldName}: "${column.fieldType}"<#if column_has_next>,</#if></#if></#list>}
+// @Param form {<#list table.columns as column><#if column != table.idColumn && column != table.updateColumn && column != table.createColumn><#if isMore>,</#if>${column.fieldName}: "${column.fieldTypeObject}"<#assign isMore=true/></#if></#list>}
 // @Router '${table.urlPathName}' [put]
 export const update = (data: ${className}): Promise<number> => {
     return request.put<number>('/api/v1/${table.urlPathName}', data)
