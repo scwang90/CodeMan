@@ -37,6 +37,7 @@ public class ProjectConfigFactory {
 
         config.setColumnOrg(properties.getProperty("code.man.database.column.org",config.getColumnOrg()));
         config.setColumnCode(properties.getProperty("code.man.database.column.code",config.getColumnCode()));
+        config.setColumnName(properties.getProperty("code.man.database.column.name",config.getColumnName()));
         config.setColumnCreate(properties.getProperty("code.man.database.column.create",config.getColumnCreate()));
         config.setColumnUpdate(properties.getProperty("code.man.database.column.update",config.getColumnUpdate()));
         config.setColumnRemove(properties.getProperty("code.man.database.column.remove",config.getColumnRemove()));

@@ -340,6 +340,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 		initTableColumn(columns, config.getColumnHideForSubmit(), null, column -> column.setHiddenForSubmit(true), null);
 		initTableColumn(columns, config.getColumnSearches(), null, column -> { table.getSearchColumns().add(column); table.setHasSearches(true); }, null);
 
+		//初始化名称列表
+		initTableColumn(columns, config.getColumnName(), table::getNameColumn, table::setNameColumn, value -> {});
+		if ((table.getNameColumn() == null || table.getNameColumn().getName() == null) && columns.size() > 0) {
+			table.setNameColumn(columns.get(columns.size()-1));
+		}
+
 		if (table.isHasRemove()) {
 			Class<?> javaType = programLang.getJavaType(table.getRemoveColumn());
 			if (!Integer.class.equals(javaType) && !Boolean.class.equals(javaType) && !String.class.equals(javaType)) {

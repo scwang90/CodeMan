@@ -32,6 +32,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnDivision = "";
     protected String columnOrg = "company_id,org_id";
     protected String columnCode = "code,no";
+    protected String columnName = "name,*name,title,*title";
     protected String columnCreate = "create_time,create_date,create_at,created_at";
     protected String columnUpdate = "update_time,update_date,update_at,updated_at";
     protected String columnGender = "sex,gender";

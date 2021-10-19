@@ -40,8 +40,9 @@ public class Table implements Model, MetaDataTable {
     private TableColumn updateColumn;               // 更新日志列
     private TableColumn removeColumn;               // 删除列
     private TableColumn creatorColumn;              // 创建者列
-    private TableColumn usernameColumn;             // 账户列
-    private TableColumn passwordColumn;             // 密码列
+    private TableColumn usernameColumn;             // 账户列（登录表）
+    private TableColumn passwordColumn;             // 密码列（登录表）
+    private TableColumn nameColumn;                 // 名称列
 
     private boolean hasId = false;                  // 是否有ID列
     private boolean hasOrgan = false;               // 是否有机构列
@@ -51,23 +52,24 @@ public class Table implements Model, MetaDataTable {
     private boolean hasGender = false;              // 是否有性别列
     private boolean hasRemove = false;              // 是否有删除列
     private boolean hasCreator = false;             // 是否有创建者列
-    private boolean hasUsername = false;            // 是否有账户列
-    private boolean hasPassword = false;            // 是否有密码列
+    private boolean hasUsername = false;            // 是否有账户列（登录表）
+    private boolean hasPassword = false;            // 是否有密码列（登录表）
     private boolean hasSearches = false;            // 收费有搜索列
     private boolean relateTable = false;            // 是否是关联表
 
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> columns;              // 表字段
-    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportedKeys;          // 外键（导出）
-    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importedKeys;          // 外键（导入）
-    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportCascadeKeys;     // 外键（导出，级联，一对多）
-    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importCascadeKeys;     // 外键（导入，级联，一对一）
-    @ToString.Exclude @EqualsAndHashCode.Exclude private List<RelatedKey> relateCascadeKeys;     // 外键（关联，级联，多对多）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportedKeys;          // 外键（导出，数据库原始）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importedKeys;          // 外键（导入，数据库原始）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportCascadeKeys;     // 外键（导出，级联，一对多，配置过滤过的）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importCascadeKeys;     // 外键（导入，级联，一对一，配置过滤过的）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<RelatedKey> relateCascadeKeys;     // 外键（关联，级联，多对多，配置过滤过的）
 
     @Setter(AccessLevel.PROTECTED)
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> searchColumns = new ArrayList<>();// 搜索列
 
     private List<String> descriptions;      // 多行详细描述
 
+    @Override
     public String getName() {
         return name;
     }

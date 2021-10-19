@@ -49,6 +49,20 @@
         <el-dialog :title="`${r"$"}{model.${table.idColumn.fieldName}?'修改':'添加'}${table.remarkName}信息`" :visible.sync="showDialog" v-loading="loadingModel" :close-on-click-modal="false">
             <el-form :model="model" :rules="rules" ref="form" label-position="right" label-width="100px">
                 <el-row>
+<#list table.importCascadeKeys as key>
+                    <el-col :span="10" :offset="1">
+                        <el-form-item label="${key.pkTable.remarkName}" prop="name">
+                            <el-select v-model="model.${key.fkColumn.fieldName}" filterable placeholder="请选择">
+                                <el-option
+                                        v-for="item in modal${tools.toPlural(tools.toPlural(tools.idToModel(key.fkColumn.fieldName)))?cap_first}"
+                                        :key="item.${key.pkTable.idColumn.fieldName}"
+                                        :label="item.${key.pkTable.nameColumn.fieldName}"
+                                        :value="item.${key.pkTable.idColumn.fieldName}">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+</#list>
 <#list table.columns as column>
     <#if !column.hiddenForClient && !column.name?lower_case?ends_with("id")>
         <#if column == table.passwordColumn>
@@ -97,6 +111,9 @@
 </template>
 <script>
 import api from '@/api/auto/${table.urlPathName}'
+<#list table.importCascadeKeys as key>
+import api${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} from '@/api/auto/${key.pkTable.urlPathName}'
+</#list>
 import ViewFrame from '@/components/ViewFrame'
 
 const rules = {
@@ -126,6 +143,11 @@ export default {
             showDialog: false,
             loadingList: false,
             loadingModel: false,
+<#list table.importCascadeKeys as key>
+
+            modal${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}: [],
+            loading${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}: false,
+</#list>
 
             model: {},
             items: [],
@@ -135,6 +157,9 @@ export default {
     },
     created() {
         this.init();
+<#list table.importCascadeKeys as key>
+        this.load${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}();
+</#list>
     },
     watch: {
         $route(to, from) {
@@ -150,6 +175,20 @@ export default {
             this.loadList(this.page = this.$route.params.page ? Number(this.$route.params.page) : 1);//默认加载第一页
         },
         ...Object.assign({
+<#list table.importCascadeKeys as key>
+            async load${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}() {
+                const params = { page: 0, size: 100, key: '' };
+                try {
+                    this.loading${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} = true;
+                    const result = await api${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}.list(params);
+                    this.modal${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} = result.list;
+                } catch (error) {
+                    this.$message.error(error);
+                } finally {
+                    this.loading${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} = false;
+                }
+            },
+</#list>
             async loadList(index) {
                 const params = {
                     page: index - 1,
@@ -292,5 +331,7 @@ export default {
     width: 250px;
     margin: 0 10px;
 }
-
+.el-select {
+    width: 100%;
+}
 </style>
