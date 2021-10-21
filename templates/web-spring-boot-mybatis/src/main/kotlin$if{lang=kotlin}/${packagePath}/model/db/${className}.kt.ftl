@@ -7,6 +7,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 		<#assign hasJsonIgnore=true>
 	</#if>
 </#list>
+<#assign hasLong2String=false>
+<#list table.columns as column>
+	<#if hasLong2String==false && column.longType>
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
+		<#assign hasLong2String=true>
+	</#if>
+</#list>
 import io.swagger.annotations.ApiModelProperty
 <#assign hasStringType=false>
 <#list table.columns as column>
@@ -39,6 +47,9 @@ open class ${className} {
 	 */
 	<#if column.hiddenForClient>
 	@JsonIgnore
+	</#if>
+	<#if column.longType>
+	@JsonSerialize(using = ToStringSerializer::class)// Long返回前端JS，与 number 精度不匹配，会导致信息丢失，需要序列化为String
 	</#if>
 	<#if column.stringType>
 	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")

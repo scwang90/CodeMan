@@ -28,7 +28,7 @@
                     </el-form-item>
                     <el-form-item>
                         <div class="btns">
-                            <el-checkbox label="记住密码"></el-checkbox>
+                            <el-checkbox label="记住密码" v-model="remember"></el-checkbox>
                             <!-- <v-link to="/">忘记密码</v-link> -->
                             <el-button type="text">忘记密码</el-button>
                         </div>
@@ -49,6 +49,10 @@ import { Prop } from 'vue-property-decorator';
 
 const user = namespace('user');
 const setting = namespace('setting');
+
+const KEY_USERNAME = 'login.username';
+const KEY_PASSWORD = 'login.password';
+const KEY_REMEMBER = 'login.remember';
 
 const checkUsername = (rule: any, value: string, callback: (err?:any)=>void) => {
     if (value.length < 5 || value.length > 24) {
@@ -75,6 +79,7 @@ export default class LoginModule extends Vue {
     
     private rules = rules
     private logging: boolean = false;
+    private remember: boolean = false;
     private model = {
     <#if hasOrgan>
         ${orgColumn.fieldName}: <#if orgColumn.stringType>''<#else>1</#if>,
@@ -89,6 +94,12 @@ export default class LoginModule extends Vue {
         form: HTMLFormElement
     }
 
+    created() {
+        this.model.username = localStorage.getItem(KEY_USERNAME);
+        this.model.password = localStorage.getItem(KEY_PASSWORD);
+        this.remember = localStorage.getItem(KEY_REMEMBER) == 'true';
+    }
+
     onLoginClick() {
         this.$refs.form.validate(async (v:boolean) => {
             if (v) {
@@ -96,6 +107,14 @@ export default class LoginModule extends Vue {
                     this.logging = true;
                     await this.login(this.model);
                     sessionStorage.setItem("token", 'true');
+                    localStorage.setItem(KEY_REMEMBER, this.remember);
+                    if (this.remember) {
+                        localStorage.setItem(KEY_USERNAME, this.model.username);
+                        localStorage.setItem(KEY_PASSWORD, this.model.password);
+                    } else {
+                        localStorage.setItem(KEY_USERNAME, '');
+                        localStorage.setItem(KEY_PASSWORD, '');
+                    }
                     this.$router.push({path:'/index'});
                 } catch (error) {
                     this.$message.error(error);

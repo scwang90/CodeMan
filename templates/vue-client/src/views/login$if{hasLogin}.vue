@@ -43,6 +43,10 @@
 <script>
 import Vuex from 'vuex'
 
+const KEY_USERNAME = 'login.username';
+const KEY_PASSWORD = 'login.password';
+const KEY_REMEMBER = 'login.remember';
+
 export default {
     data() {
         const checkUsername = (rule, value, callback) => {
@@ -61,15 +65,21 @@ export default {
         };
         return {
             logging: false,
+            remember: false,
             model: {
                 username: 'admin',
-                password: 'admin'
+                password: '123456'
             },
             rules: {
                 username: [{ validator: checkUsername, trigger: "blur" }],
                 password: [{ validator: checkPassword, trigger: "blur" }],
             }
         }
+    },
+    created() {
+        this.model.username = localStorage.getItem(KEY_USERNAME);
+        this.model.password = localStorage.getItem(KEY_PASSWORD);
+        this.remember = localStorage.getItem(KEY_REMEMBER) == 'true';
     },
     computed: {
         ...Vuex.mapState('setting',['webName']),
@@ -84,6 +94,14 @@ export default {
                         this.logging = true;
                         await this.login(this.model);
                         sessionStorage.setItem("token", 'true');
+                        localStorage.setItem(KEY_REMEMBER, this.remember);
+                        if (this.remember) {
+                            localStorage.setItem(KEY_USERNAME, this.model.username);
+                            localStorage.setItem(KEY_PASSWORD, this.model.password);
+                        } else {
+                            localStorage.setItem(KEY_USERNAME, '');
+                            localStorage.setItem(KEY_PASSWORD, '');
+                        }
                         this.$router.push({path:'/index'});
                     } catch (error) {
                         this.$message.error(error);
