@@ -8,18 +8,18 @@
             <when test="whereII.value != null">
                 <choose>
                     <when test="whereII.op == 'IN'">
-                        ${whereII.column} IN
+                        ${masterTable}${whereII.column} IN
                         <foreach collection="whereII.value" item="item" open="(" close=")" separator=",">
                             #{item}
                         </foreach>
                     </when>
                     <otherwise>
-                        ${whereII.column} ${whereII.op} #{whereII.value}
+                        ${masterTable}${whereII.column} ${whereII.op} #{whereII.value}
                     </otherwise>
                 </choose>
             </when>
             <otherwise>
-                ${whereII.column} ${whereII.op}
+                ${masterTable}${whereII.column} ${whereII.op}
             </otherwise>
         </choose>
     </sql>
@@ -49,18 +49,18 @@
                     <when test="whereI.value != null">
                         <choose>
                             <when test="whereI.op == 'IN'">
-                                ${whereI.column} IN
+                                ${masterTable}${whereI.column} IN
                                 <foreach collection="whereI.value" item="item" open="(" close=")" separator=",">
                                     #{item}
                                 </foreach>
                             </when>
                             <otherwise>
-                                ${whereI.column} ${whereI.op} #{whereI.value}
+                                ${masterTable}${whereI.column} ${whereI.op} #{whereI.value}
                             </otherwise>
                         </choose>
                     </when>
                     <otherwise>
-                        ${whereI.column} ${whereI.op}
+                        ${masterTable}${whereI.column} ${whereI.op}
                     </otherwise>
                 </choose>
             </otherwise>
@@ -78,7 +78,7 @@
                 <foreach collection="where.wheres" item="whereI" open="(" close=")" separator="AND">
                     <include refid="include.sql_where_item_I" />
                 </foreach>
-          </otherwise>
+            </otherwise>
         </choose>
     </sql>
 
@@ -92,18 +92,18 @@
                     <when test="where.value != null">
                         <choose>
                             <when test="where.op == 'IN'">
-                                ${where.column} IN
+                                ${masterTable}${where.column} IN
                                 <foreach collection="where.value" item="item" open="(" close=")" separator=",">
                                     #{item}
                                 </foreach>
                             </when>
                             <otherwise>
-                                ${where.column} ${where.op} #{where.value}
+                                ${masterTable}${where.column} ${where.op} #{where.value}
                             </otherwise>
                         </choose>
                     </when>
                     <otherwise>
-                        ${where.column} ${where.op}
+                        ${masterTable}${where.column} ${where.op}
                     </otherwise>
                 </choose>
             </otherwise>
@@ -117,18 +117,18 @@
                     <when test="value != null">
                         <choose>
                             <when test="op == 'IN'">
-                                ${column} IN
+                                ${masterTable}${column} IN
                                 <foreach collection="value" item="item" open="(" close=")" separator=",">
                                     #{item}
                                 </foreach>
                             </when>
                             <otherwise>
-                                ${column} ${op} #{value}
+                                ${masterTable}${column} ${op} #{value}
                             </otherwise>
                         </choose>
                     </when>
                     <when test="op != null">
-                        ${column} ${op}
+                        ${masterTable}${column} ${op}
                     </when>
                 </choose>
             </when>
@@ -155,12 +155,12 @@
         </where>
     </sql>
 
-    <sql id="sql_order">
+    <sql id="sql_order" >
         <choose>
             <when test="orders != null and orders.size > 0">
                 ORDER BY
                 <foreach collection="orders" item="order" separator=" , ">
-                    ${order.column}
+                    ${masterTable}${order.column}
                     <if test="order.desc">
                         DESC
                     </if>
