@@ -2,6 +2,10 @@ server.port = 8080
 server.address = 0.0.0.0
 server.servlet.context-path = /
 
+server.servlet.encoding.charset = UTF-8
+server.servlet.encoding.force = true
+server.servlet.encoding.enabled = true
+
 logging.level.root = info
 logging.level.${packageName}.mapper = info
 logging.level.${packageName}.controller = info
