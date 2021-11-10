@@ -13,6 +13,7 @@ target/
 
 src/test/resources/*.properties
 */src/test/resources/*.properties
+*/src/test/***/*
 
 /templates/web-spring-boot-wd/
 /templates/web-spring-boot-traveler/
