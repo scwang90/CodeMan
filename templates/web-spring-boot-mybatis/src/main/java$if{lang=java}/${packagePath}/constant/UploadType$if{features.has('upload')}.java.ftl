@@ -17,4 +17,12 @@ public enum UploadType implements ShortEnum {
         }
         return UploadType.file;
     }
+
+    public static UploadType from(int type) {
+        UploadType[] values = UploadType.values();
+        if (values.length > type) {
+            return values[type];
+        }
+        return UploadType.file;
+    }
 }

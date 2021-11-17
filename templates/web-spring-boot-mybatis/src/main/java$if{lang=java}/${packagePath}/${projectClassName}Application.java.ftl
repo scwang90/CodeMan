@@ -18,11 +18,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @SpringBootApplication
-public class ${projectName?cap_first}Application implements WebMvcConfigurer {
+public class ${projectClassName}Application implements WebMvcConfigurer {
 
     private final AppConfig config;
 
-    public TravelerServerApplication(AppConfig config) {
+    public ${projectClassName}Application(AppConfig config) {
         this.config = config;
     }
 
@@ -47,7 +47,7 @@ public class ${projectName?cap_first}Application implements WebMvcConfigurer {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(${projectName?cap_first}Application.class, args);
+        SpringApplication.run(${projectClassName}Application.class, args);
     }
 
 }

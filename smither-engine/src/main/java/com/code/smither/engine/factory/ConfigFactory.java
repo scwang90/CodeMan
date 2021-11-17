@@ -41,8 +41,8 @@ public class ConfigFactory {
 
         config.setIncludeFile(properties.getProperty("code.man.template.include.file",config.getIncludeFile()));
         config.setIncludePath(properties.getProperty("code.man.template.include.path",config.getIncludePath()));
-        config.setFilterFile(properties.getProperty("code.man.template.filter.file",config.getFilterFile()));
-        config.setFilterPath(properties.getProperty("code.man.template.filter.path",config.getFilterPath()));
+        config.setFilterFile(properties.getProperty("code.man.template.exclude.file",config.getFilterFile()));
+        config.setFilterPath(properties.getProperty("code.man.template.exclude.path",config.getFilterPath()));
 
         return config;
     }

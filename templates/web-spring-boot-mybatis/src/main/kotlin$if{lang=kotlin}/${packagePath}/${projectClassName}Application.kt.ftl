@@ -19,7 +19,7 @@ import java.util.*
  */
 @Configuration
 @SpringBootApplication
-class ${projectName?cap_first}Application : WebMvcConfigurer {
+class ${projectClassName}Application : WebMvcConfigurer {
 
     @Autowired
     private lateinit var config: AppConfig
@@ -54,5 +54,5 @@ class ${projectName?cap_first}Application : WebMvcConfigurer {
 }
 
 fun main(args: Array<String>) {
-    runApplication<${projectName?cap_first}Application>(*args)
+    runApplication<${projectClassName}Application>(*args)
 }

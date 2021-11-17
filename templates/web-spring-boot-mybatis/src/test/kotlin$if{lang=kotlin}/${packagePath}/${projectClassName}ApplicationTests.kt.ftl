@@ -15,7 +15,7 @@ import org.springframework.web.context.WebApplicationContext
  */
 @Disabled
 @SpringBootTest
-class ${projectName?cap_first}ApplicationTests {
+class ${projectClassName}ApplicationTests {
 
     @Autowired
     protected lateinit var context: WebApplicationContext

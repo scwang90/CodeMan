@@ -22,14 +22,25 @@ public class ApiResult<T> {
     public Object errors = "";
 
     public ApiResult(T result, int code) {
-        this.result = result;
         this.code = code;
+        this.result = result;
+    }
+
+    public ApiResult(T result, ResultCode code) {
+        this.code = code.code;
+        this.message = code.message;
+        this.result = result;
     }
 
     public ApiResult(T result, int code, String message) {
-        this.result = result;
-        this.code = code;
+        this(result, code);
         this.message = message;
+    }
+
+    public ApiResult(T result, ResultCode code, String message) {
+        this.code = code.code;
+        this.message = message;
+        this.result = result;
     }
 
     public ApiResult(T result, int code, String message, Object errors) {
@@ -38,19 +49,19 @@ public class ApiResult<T> {
     }
 
     public static <T> ApiResult<T> message(String message) {
-        return new ApiResult<>(null, 200, message);
+        return new ApiResult<>(null, ResultCode.OK, message);
     }
 
     public static <T> ApiResult<T> success(T result) {
-        return new ApiResult<>(result, 200);
+        return new ApiResult<>(result, ResultCode.OK);
     }
 
     public static <T> ApiResult<T> success(T result, String message) {
-        return new ApiResult<>(result, 200, message);
+        return new ApiResult<>(result, ResultCode.OK, message);
     }
 
     public static <T> ApiResult<T> fail(ResultCode code) {
-        return new ApiResult<>(null, code.code, code.message);
+        return new ApiResult<>(null, code);
     }
 
     public static <T> ApiResult<T> fail(int code, String message) {
@@ -58,10 +69,11 @@ public class ApiResult<T> {
     }
 
     public static <T> ApiResult<T> failClient(String message) {
-        return new ApiResult<>(null, 400, message);
+        return new ApiResult<>(null, ResultCode.BadRequest, message);
     }
 
     public static <T> ApiResult<T> failServer(String message) {
-        return new ApiResult<>(null, 500, message);
+        return new ApiResult<>(null, ResultCode.ServerError, message);
     }
+
 }

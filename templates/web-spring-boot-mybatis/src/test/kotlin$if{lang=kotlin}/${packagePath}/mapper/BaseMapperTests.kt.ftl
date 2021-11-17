@@ -1,7 +1,7 @@
 package ${packageName}.mapper
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import ${packageName}.${projectName?cap_first}ApplicationTests
+import ${packageName}.${projectClassName}ApplicationTests
 
 import org.junit.jupiter.api.Disabled
 
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Disabled
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Disabled
-class BaseMapperTests<T> : ${projectName?cap_first}ApplicationTests() {
+class BaseMapperTests<T> : ${projectClassName}ApplicationTests() {
 
     protected val json: ObjectMapper = ObjectMapper()
 

@@ -15,4 +15,7 @@ public class DatabaseJdbc {
     private String username;
     private String password;
 
+    public void setUrl(String url) {
+        this.url = url.replaceAll("[?|&]\\w+=\\w+","");
+    }
 }

@@ -1,6 +1,6 @@
 package ${packageName}.mapper;
 
-import ${packageName}.${projectName?cap_first}ApplicationTests;
+import ${packageName}.${projectClassName}ApplicationTests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;
 
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Disabled;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Disabled
-public class BaseMapperTests<T> extends ${projectName?cap_first}ApplicationTests {
+public class BaseMapperTests<T> extends ${projectClassName}ApplicationTests {
 
     protected final ObjectMapper json = new ObjectMapper();
 

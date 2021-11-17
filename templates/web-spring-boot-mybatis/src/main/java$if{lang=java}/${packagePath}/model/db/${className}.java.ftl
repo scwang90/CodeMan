@@ -7,6 +7,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 		<#assign hasJsonIgnore=true>
 	</#if>
 </#list>
+<#assign hasLong2String=false>
+<#list table.columns as column>
+	<#if hasLong2String==false && column.longType>
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+		<#assign hasLong2String=true>
+	</#if>
+</#list>
 import io.swagger.annotations.ApiModelProperty;
 <#assign hasStringType=false>
 <#list table.columns as column>
@@ -15,9 +23,11 @@ import javax.validation.constraints.Size;
         <#assign hasStringType=true>
 	</#if>
 </#list>
+<#assign hasDateTimeType=false>
 <#list table.columns as column>
-	<#if column.dateType || column.timeType>
+	<#if (column.dateType || column.timeType) && hasDateTimeType==false>
 import org.springframework.format.annotation.DateTimeFormat;
+		<#assign hasDateTimeType=true>
 	</#if>
 </#list>
 
@@ -54,6 +64,9 @@ public class ${className} {
 	</#if>
 	<#if column.stringType>
 	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
+	</#if>
+	<#if column.longType>
+	@JsonSerialize(using = ToStringSerializer.class)// Long返回前端JS，与 number 精度不匹配，会导致信息丢失，需要序列化为String
 	</#if>
 	@ApiModelProperty(value = "${column.remark}"<@compress single_line=true>
 		<#if column.nullable != true>, required = true</#if>

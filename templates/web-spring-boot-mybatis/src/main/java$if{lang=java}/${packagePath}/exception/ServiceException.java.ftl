@@ -1,5 +1,6 @@
 package ${packageName}.exception;
 
+import ${packageName}.constant.ResultCode;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -32,6 +33,10 @@ public class ServiceException extends CodeException {
     public ServiceException(Throwable throwable) {
         super(throwable);
         setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    }
+
+    public ServiceException(ResultCode resultCode) {
+        super(resultCode);
     }
 
 }

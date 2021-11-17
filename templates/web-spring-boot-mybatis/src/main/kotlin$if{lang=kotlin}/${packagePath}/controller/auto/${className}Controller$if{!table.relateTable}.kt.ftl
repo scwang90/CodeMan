@@ -32,7 +32,7 @@ import springfox.documentation.annotations.ApiIgnore
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Api(tags = ["${table.remark}"])
-@RequestMapping("/api/v1/${table.urlPathName}")
+@RequestMapping("/api/auto/${table.urlPathName}")
 @RestController("auto${className}Controller")
 class ${className}Controller {
 

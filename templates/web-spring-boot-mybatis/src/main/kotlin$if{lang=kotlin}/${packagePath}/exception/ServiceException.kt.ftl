@@ -1,5 +1,7 @@
 package ${packageName}.exception
 
+import ${packageName}.constant.ResultCode
+
 import org.springframework.http.HttpStatus
 
 /**
@@ -29,4 +31,5 @@ class ServiceException : CodeException {
         this.code = HttpStatus.INTERNAL_SERVER_ERROR.value()
     }
 
+    constructor(status: ResultCode): super(status)
 }

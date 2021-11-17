@@ -20,6 +20,8 @@
 
 	<properties>
         <java.version>1.8</java.version>
+		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+		<org.projectlombok.version>1.18.20</org.projectlombok.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -167,11 +169,10 @@
 
 		<!-- 对象拷贝 -->
 		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.3</version>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${r'${org.mapstruct.version}'}</version>
 		</dependency>
-
 		<#if lang=="kotlin">
 		<!--kotlin 语言-->
 		<dependency>
@@ -190,6 +191,7 @@
 			<optional>true</optional>
 		</dependency>
 		</#if>
+
 	</dependencies>
 
 	<build>
@@ -229,6 +231,18 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${r'${org.projectlombok.version}'}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${r'${org.mapstruct.version}'}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 			</#if>

@@ -1,5 +1,6 @@
 package ${packageName}.exception;
 
+import ${packageName}.constant.ResultCode;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -32,6 +33,10 @@ public class ClientException extends CodeException {
     public ClientException(Throwable throwable) {
         super(throwable);
         setCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    public ClientException(ResultCode resultCode) {
+        super(resultCode);
     }
 }
 

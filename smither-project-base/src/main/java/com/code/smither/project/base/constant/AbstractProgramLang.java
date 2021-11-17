@@ -67,7 +67,7 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.SQLXML:
                 return SQLXML.class;
             case Types.TIME:
-                return Time.class;
+                return java.sql.Time.class;
             case Types.DATE:
                 return java.sql.Date.class;
             case Types.TIMESTAMP:

@@ -43,6 +43,7 @@ public class SourceModel implements LangRootModel {
     private String projectName;
     private String projectRemark;
     private String projectDetail;
+    private String projectClassName;
     private String charset;
     private String dbType;
     private String lang;                //程序设计语言

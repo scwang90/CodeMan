@@ -1,5 +1,7 @@
 package ${packageName}.exception
 
+import ${packageName}.constant.ResultCode
+
 /**
  * 自定义异常 - 错误码
  * @author ${author}
@@ -14,5 +16,8 @@ abstract class CodeException : RuntimeException {
     constructor(message: String) : super(message) {}
     constructor(message: String, throwable: Throwable) : super(message, throwable) {}
     constructor(throwable: Throwable) : super(throwable) {}
+    constructor(resultCode: ResultCode): super(resultCode.msg) {
+        code = resultCode.code
+    }
 
 }

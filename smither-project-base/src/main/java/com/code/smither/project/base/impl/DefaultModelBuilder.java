@@ -57,6 +57,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setCharset(config.getTargetCharset());
 		model.setPackageName(config.getTargetProjectPackage());
 		model.setProjectName(config.getTargetProjectName());
+		model.setProjectClassName(StringUtil.camel(config.getTargetProjectName(),"-|_"));
 		model.setProjectRemark(config.getTargetProjectRemark());
 		model.setProjectDetail(config.getTargetProjectDetail());
 		model.setJdbc(new DatabaseJdbc());

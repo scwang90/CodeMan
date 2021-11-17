@@ -67,13 +67,14 @@ public class JavaLang extends AbstractProgramLang {
     @Override
     public String getType(TableColumn column) {
         Class<?> clazz = super.getJavaType(column);
-        if (java.sql.Timestamp.class.equals(clazz)) {
-            clazz = java.util.Date.class;
+//        if (java.sql.Timestamp.class.equals(clazz)) {
+//            clazz = java.util.Date.class;
 //        } if (java.sql.Time.class.equals(clazz)) {
 //            clazz = java.util.Date.class;
 //        } if (java.sql.Date.class.equals(clazz)) {
 //            clazz = java.util.Date.class;
-        } if (java.sql.Clob.class.equals(clazz)) {
+//        }
+        if (java.sql.Clob.class.equals(clazz)) {
             clazz = java.lang.String.class;
         } if (java.sql.Blob.class.equals(clazz)) {
             clazz = java.lang.Object.class;

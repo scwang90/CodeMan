@@ -21,10 +21,10 @@ public class BeanUtils {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
-    public static <T> T copyProperties(Object source, T dest) throws JsonProcessingException, InvocationTargetException, IllegalAccessException {
-        Map<?,?> map = mapper.readValue(mapper.writeValueAsString(source), Map.class);
-        org.apache.commons.beanutils.BeanUtils.copyProperties(dest, map);
-        return dest;
-    }
+    //public static <T> T copyProperties(Object source, T dest) throws JsonProcessingException, InvocationTargetException, IllegalAccessException {
+    //    Map<?,?> map = mapper.readValue(mapper.writeValueAsString(source), Map.class);
+    //    org.apache.commons.beanutils.BeanUtils.copyProperties(dest, map);
+    //    return dest;
+    //}
 
 }

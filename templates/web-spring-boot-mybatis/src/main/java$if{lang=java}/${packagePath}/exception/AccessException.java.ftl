@@ -1,5 +1,6 @@
 package ${packageName}.exception;
 
+import ${packageName}.constant.ResultCode;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -31,5 +32,9 @@ public class AccessException extends CodeException {
     public AccessException(Throwable throwable) {
         super(throwable);
         setCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    public AccessException(ResultCode resultCode) {
+        super(resultCode);
     }
 }

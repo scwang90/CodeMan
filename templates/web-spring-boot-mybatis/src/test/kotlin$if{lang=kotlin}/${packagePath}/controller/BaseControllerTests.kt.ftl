@@ -1,6 +1,6 @@
 package ${packageName}.controller
 
-import ${packageName}.${projectName?cap_first}ApplicationTests
+import ${packageName}.${projectClassName}ApplicationTests
 
 <#if hasLogin>
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean
@@ -25,7 +25,7 @@ import javax.servlet.http.Cookie
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Disabled
-class BaseControllerTests : ${projectName?cap_first}ApplicationTests() {
+class BaseControllerTests : ${projectClassName}ApplicationTests() {
 <#if hasLogin>
 
     protected lateinit var mockMvc: MockMvc

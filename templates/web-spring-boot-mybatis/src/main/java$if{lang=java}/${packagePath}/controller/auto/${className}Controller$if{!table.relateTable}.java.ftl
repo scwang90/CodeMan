@@ -32,7 +32,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @Api(tags = "${table.remarkName}")
-@RequestMapping("/api/v1/${table.urlPathName}")
+@RequestMapping("/api/auto/${table.urlPathName}")
 @RestController("auto${className}Controller")
 public class ${className}Controller {
 

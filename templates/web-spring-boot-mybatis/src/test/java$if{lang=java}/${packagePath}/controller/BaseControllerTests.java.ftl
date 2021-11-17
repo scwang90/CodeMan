@@ -1,6 +1,6 @@
 package ${packageName}.controller;
 
-import ${packageName}.${projectName?cap_first}ApplicationTests;
+import ${packageName}.${projectClassName}ApplicationTests;
 
 <#if hasLogin>
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Disabled
-public class BaseControllerTests extends ${projectName?cap_first}ApplicationTests {
+public class BaseControllerTests extends ${projectClassName}ApplicationTests {
 <#if hasLogin>
 
     protected MockMvc mockMvc;

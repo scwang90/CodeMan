@@ -16,7 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @Disabled
 @SpringBootTest
-public class ${projectName?cap_first}ApplicationTests {
+public class ${projectClassName}ApplicationTests {
 
     @Autowired
     protected WebApplicationContext context;

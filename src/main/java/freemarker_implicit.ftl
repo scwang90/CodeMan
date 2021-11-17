@@ -3,6 +3,7 @@
 [#-- @ftlroot --]
 [#-- @ftlvariable name="now" type="java.util.Date" --]
 [#-- @ftlvariable name="projectName" type="String" --]
+[#-- @ftlvariable name="projectClassName" type="String" --]
 [#-- @ftlvariable name="projectRemark" type="String" --]
 [#-- @ftlvariable name="jdbc" type="com.code.smither.project.base.model.DatabaseJdbc"  --]
 [#-- @ftlvariable name="table" type="com.code.smither.project.base.model.Table" --]

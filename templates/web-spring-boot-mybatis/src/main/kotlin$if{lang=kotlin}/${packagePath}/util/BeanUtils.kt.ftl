@@ -14,10 +14,10 @@ object BeanUtils {
 
     private val mapper = ObjectMapper().apply { setSerializationInclusion(JsonInclude.Include.NON_NULL) }
 
-    fun <T> copyProperties(source: Any, dest: T): T {
-        val json = mapper.writeValueAsString(source)
-        val map = mapper.readValue(json, java.util.Map::class.java)
-        BeanUtils.copyProperties(dest, map)
-        return dest
-    }
+    //fun <T> copyProperties(source: Any, dest: T): T {
+    //    val json = mapper.writeValueAsString(source)
+    //    val map = mapper.readValue(json, java.util.Map::class.java)
+    //    BeanUtils.copyProperties(dest, map)
+    //    return dest
+    //}
 }

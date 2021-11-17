@@ -15,7 +15,7 @@ CREATE TABLE ${table.nameSql}
             <#assign tempType = tempType + (column.length?c)?length + '()'?length/>
         </#if>
         <#if column.defValue?length gt 0>
-            <#if column.stringType>
+            <#if column.stringType || column.dateType || column.timeType>
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT ""'?length/>
             <#else >
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT '?length/>
@@ -39,7 +39,7 @@ CREATE TABLE ${table.nameSql}
             <#assign tempType = tempType + (column.length?c)?length + '()'?length/>
         </#if>
         <#if column.defValue?length gt 0>
-            <#if column.stringType>
+            <#if column.stringType || column.dateType || column.timeType>
                 <#assign type = type + " DEFAULT '${column.defValue}'"/>
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT ""'?length/>
             <#else >
@@ -49,9 +49,9 @@ CREATE TABLE ${table.nameSql}
         </#if>
         <#assign end = ''/>
         <#if column.primaryKey>
-            <#if hasNonNullble && hasNullble>
-                <#assign end = end + '    '/>
-            </#if>
+<#--            <#if hasNonNullble && hasNullble>-->
+<#--                <#assign end = end + '    '/>-->
+<#--            </#if>-->
             <#if column.autoIncrement>
                 <#assign end = '${end} AUTO_INCREMENT'/>
             </#if>

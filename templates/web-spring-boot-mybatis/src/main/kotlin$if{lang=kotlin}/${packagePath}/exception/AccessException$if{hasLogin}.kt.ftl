@@ -1,5 +1,7 @@
 package ${packageName}.exception
 
+import ${packageName}.constant.ResultCode
+
 import org.springframework.http.HttpStatus
 
 /**
@@ -28,5 +30,7 @@ class AccessException : ClientException {
     constructor(throwable: Throwable) : super(throwable) {
         this.code = HttpStatus.FORBIDDEN.value()
     }
+
+    constructor(status: ResultCode): super(status)
 
 }
