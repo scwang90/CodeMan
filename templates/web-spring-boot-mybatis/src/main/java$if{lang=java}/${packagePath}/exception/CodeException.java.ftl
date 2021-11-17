@@ -31,6 +31,11 @@ public abstract class CodeException extends RuntimeException {
         this.code = resultCode.code;
     }
 
+    public CodeException(ResultCode resultCode, Throwable throwable) {
+        super(resultCode.message, throwable);
+        this.code = resultCode.code;
+    }
+
     public int getCode() {
         return code;
     }

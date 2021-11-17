@@ -57,7 +57,7 @@ public class UploadController {
 	 */
 	@ApiOperation(value = "文件预览")
 	@GetMapping(preview/{id})
-	public ResponseEntity<FileSystemResource> preview(@PathVariable String id, HttpServletRequest request)  {
+	public ResponseEntity<FileSystemResource> preview(@PathVariable String id)  {
 		Upload upload = mapper.findById(id);
 		if (upload == null) {
 			throw new ServiceException("找不到对应文件信息");
@@ -80,8 +80,8 @@ public class UploadController {
 	*/
 	@ApiOperation(value = "文件下载")
 	@GetMapping("download/{id}")
-	public ResponseEntity<FileSystemResource> download(@PathVariable String id, HttpServletRequest request) {
-		ResponseEntity<FileSystemResource> entity = preview(id, request);
+	public ResponseEntity<FileSystemResource> download(@PathVariable String id) {
+		ResponseEntity<FileSystemResource> entity = preview(id);
 		HttpHeaders headers = new HttpHeaders(entity.getHeaders());
 		String name = entity.getHeaders().getContentDisposition().getFilename() + "";
 		headers.setContentDisposition(ContentDisposition.attachment().filename(name).build());
