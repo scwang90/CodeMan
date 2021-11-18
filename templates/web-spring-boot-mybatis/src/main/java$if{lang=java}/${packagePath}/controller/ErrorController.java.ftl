@@ -70,7 +70,7 @@ public class ErrorController extends BasicErrorController {
     @ExceptionHandler(BindException.class)
     public ApiResult<Object> handler(BindException ex) {
         log.debug(ex.getMessage());
-        String message = ex.getMessage();
+        String message = "参数验证错误";
         List<String> messages = new LinkedList<>();
         if (ex.hasGlobalErrors()) {
             for (ObjectError error : ex.getGlobalErrors()) {
@@ -82,6 +82,9 @@ public class ErrorController extends BasicErrorController {
                 messages.add(String.format("%s:%s:%s", error.getObjectName(), error.getField(), error.getDefaultMessage()));
             }
         }
+        if (messages.size() == 1) {
+            message = messages.get(0);
+        }
         return new ApiResult<>(null, HttpStatus.BAD_REQUEST.value(), message, messages);
     }
 
@@ -90,9 +93,13 @@ public class ErrorController extends BasicErrorController {
         log.debug(ex.getMessage());
         String message = ex.getMessage();
         if (ex instanceof ConstraintViolationException) {
+            message = "参数验证错误";
             List<String> messages = new LinkedList<>();
             for (ConstraintViolation<?> constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
                 messages.add(constraint.getPropertyPath() + ":" + constraint.getMessageTemplate());
+            }
+            if (messages.size() == 1) {
+                message = messages.get(0);
             }
             return new ApiResult<>(null, HttpStatus.BAD_REQUEST.value(), message, messages);
         }
