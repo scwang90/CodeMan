@@ -1,1 +1,1 @@
-package ${packageName}.mapper.intent.api;/** * 设置器 * 数据库 Update 语句 Set 辅助类接口 * @author ${author} * @since ${now?string("yyyy-MM-dd zzzz")} */public interface Setter<T> {    T set(String column, Object object);}
+package ${packageName}.mapper.intent.api;/** * 设置器 * 数据库 Update 语句 Set 辅助类接口 * @author ${author} * @since ${now?string("yyyy-MM-dd zzzz")} */public interface Setter<T> {    default T set(String column, Object object) {        return null;    }}

@@ -16,7 +16,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+<#if !table.hasOrgan && !table.hasSearches>
 import java.util.List;
+</#if>
 
 <#assign beans = ['']/>
 <#if table.hasCascadeKey>

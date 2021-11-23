@@ -38,7 +38,9 @@ app.swagger.enabled = false
 #客户端访问链接（负债均衡/内网穿透并且使用到框架中的上传时需要）
 app.client.visit-host =
 
+<#if hasLogin>
 #凭证有效时间 (秒钟)
 app.auth.token.expiry = 36000
 #凭证刷新间隔 (秒钟)
 app.auth.token.refresh = 30
+</#if>

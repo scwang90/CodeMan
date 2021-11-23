@@ -12,18 +12,18 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
 /**
- * 自定义验证注解 - 手机号码
+ * 自定义验证注解 - 中文姓名
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {PhoneValue.ValueValidator.class})
+@Constraint(validatedBy = {ChineseNameValue.ValueValidator.class})
 @Target({ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
-public @interface PhoneValue {
+public @interface ChineseNameValue {
 
     // 默认错误消息
-    String message() default "无效的手机号码";
+    String message() default "无效中文姓名";
 
     boolean required() default false;
 
@@ -35,12 +35,12 @@ public @interface PhoneValue {
 
     Class<? extends Enum> value() default Enum.class;
 
-    class ValueValidator implements ConstraintValidator<PhoneValue, String> {
+    class ValueValidator implements ConstraintValidator<ChineseNameValue, String> {
 
         private boolean required;
         //这个方法做一些初始化校验
         @Override
-        public void initialize(PhoneValue constraintAnnotation) {
+        public void initialize(ChineseNameValue constraintAnnotation) {
             required = constraintAnnotation.required();
         }
 
@@ -50,7 +50,7 @@ public @interface PhoneValue {
                 return false;
             }
             if (value != null) {
-                return value.matches("^1\\d{10}$");
+                return value.matches("^[\\u4E00-\\u9FA5][\\u4E00-\\u9FA5|·]*[\\u4E00-\\u9FA5]$");
             }
             return true;
         }

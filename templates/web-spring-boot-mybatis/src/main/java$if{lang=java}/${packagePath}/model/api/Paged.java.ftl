@@ -13,10 +13,9 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public class Paged<T> {
 
-    public int pageSize = 0;
-    public int currentPage = 0;
-    public int totalPage = 0;
-    public int totalRecord = 0;
+    public int size = 0;
+    public int current = 0;
+    public int total = 0;
 
     public List<T> list = new ArrayList<>();
 
@@ -25,28 +24,20 @@ public class Paged<T> {
     }
 
     public Paged(Paging paging, List<T> list) {
-        this.list = list;
-        this.pageSize = paging.count();
-        this.currentPage = paging.index();
+        this.records = records;
+        this.size = paging.count();
+        this.current = paging.index();
 
-        if (list instanceof Page) {
-            this.totalRecord = Math.max(list.size(), (int)((Page<?>) list).getTotal());
-            this.totalPage = this.totalRecord / this.pageSize;
-            if (this.totalRecord % this.pageSize > 0) {
-                this.totalPage++;
-            }
+        if (records instanceof Page) {
+            this.total = Math.max(records.size(), (int)((Page<?>) records).getTotal());
         }
     }
 
-    public Paged(Paging paging, List<T> list, int count) {
-        this.list = list;
-        this.pageSize = paging.count();
-        this.currentPage = paging.index();
-        this.totalRecord = Math.max(list.size(), count);
-        this.totalPage = this.totalRecord / this.pageSize;
-        if (this.totalRecord % this.pageSize > 0) {
-            this.totalPage++;
-        }
+    public Paged(Paging paging, List<T> records, int count) {
+        this.records = records;
+        this.size = paging.count();
+        this.current = paging.index();
+        this.total = Math.max(records.size(), count);
     }
 
 }

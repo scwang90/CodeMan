@@ -1,1 +1,1 @@
-package ${packageName}.mapper.intent.api;@SuppressWarnings("unchecked")public interface OrderQuery<T> extends Query<T> {    OrderQuery<T> orderBy(OrderQuery<T> ... orders);}
+package ${packageName}.mapper.intent.api;@SuppressWarnings("unchecked")public interface OrderQuery<T> extends Query<T> {    OrderQuery<T> orderBy(OrderQuery<T> order);    OrderQuery<T> orderBy(OrderQuery<T> order1, OrderQuery<T> order2);    OrderQuery<T> orderBy(OrderQuery<T> order1, OrderQuery<T> order2, OrderQuery<T> order3, OrderQuery<T> ... orders);}

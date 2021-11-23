@@ -11,36 +11,27 @@ import kotlin.math.max
 @Suppress("MemberVisibilityCanBePrivate")
 class Paged<T> {
 
-    var pageSize = 0
-    var currentPage = 0
-    var totalPage = 0
-    var totalRecord = 0
+    var size = 0
+    var current = 0
+    var total = 0
     var list: List<T> = ArrayList()
 
     constructor()
 
     constructor(paging: Paging, list: List<T>) {
         this.list = list
-        pageSize = paging.count
-        currentPage = paging.index
+        size = paging.count
+        current = paging.index
         if (list is Page<*>) {
-            totalRecord = max(list.size, (list as Page<*>).total.toInt())
-            totalPage = totalRecord / pageSize
-            if (totalRecord % pageSize > 0) {
-                totalPage++
-            }
+            total = max(list.size, (list as Page<*>).total.toInt())
         }
     }
 
     constructor(paging: Paging, list: List<T>, count: Int) {
         this.list = list
-        pageSize = paging.count
-        currentPage = paging.index
-        totalRecord = max(list.size, count)
-        totalPage = totalRecord / pageSize
-        if (totalRecord % pageSize > 0) {
-            totalPage++
-        }
+        size = paging.count
+        current = paging.index
+        total = max(list.size, count)
     }
 
 }

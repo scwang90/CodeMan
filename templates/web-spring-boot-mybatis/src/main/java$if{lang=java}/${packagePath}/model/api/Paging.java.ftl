@@ -1,6 +1,7 @@
 package ${packageName}.model.api;
 
 import com.github.pagehelper.PageRowBounds;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.ibatis.session.RowBounds;
 
 /**
@@ -10,9 +11,12 @@ import org.apache.ibatis.session.RowBounds;
  */
 public class Paging {
 
+    @ApiModelProperty(value = "分页开始", notes = "0开始，如果使用 page 可不传", example = "0")
     public int skip = 0;
+    @ApiModelProperty(value = "分页页码", notes = "0开始，如果使用 skip 可不传", example = "0")
     public int page = 0;
-    public int size = Integer.MAX_VALUE;
+    @ApiModelProperty(value = "分页大小", notes = "配合 page 或 skip 组合使用", example = "20", required = true)
+    public int size = 100;
 
     public int count() { return size; }
     public int start() { return (page > 0) ? size * page : skip; }
