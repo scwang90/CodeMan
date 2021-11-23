@@ -50,6 +50,7 @@ public class TableColumn implements MetaDataColumn {
 	private boolean boolType;//是否是 Bool类型
 	private boolean intType;//是否是 Int 类型
 	private boolean longType;//是否是 Long 类型
+	private boolean forceUseLong;//是否对前端强制使用Long型
 	private boolean hiddenForSubmit;//是否对提交需要隐藏
 	private boolean hiddenForClient;//是否对前端需要隐藏
 	private boolean hiddenForTables;//是否对前端需要隐藏 - 表格

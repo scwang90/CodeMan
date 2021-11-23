@@ -65,7 +65,7 @@ public class ${className} {
 	<#if column.stringType>
 	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
 	</#if>
-	<#if column.longType>
+	<#if column.longType && !column.forceUseLong>
 	@JsonSerialize(using = ToStringSerializer.class)// Long返回前端JS，与 number 精度不匹配，会导致信息丢失，需要序列化为String
 	</#if>
 	@ApiModelProperty(value = "${column.remark}"<@compress single_line=true>

@@ -336,6 +336,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		initTableColumn(columns, config.getColumnPassword(), table::getPasswordColumn, table::setPasswordColumn, table::setHasPassword);
 		initTableColumn(columns, config.getColumnUsername(), table::getUsernameColumn, table::setUsernameColumn, table::setHasUsername);
 
+		initTableColumn(columns, config.getColumnForceUseLong(), null, column -> column.setForceUseLong(true), null);
 		initTableColumn(columns, config.getColumnHideForTables(), null, column -> column.setHiddenForTables(true), null);
 		initTableColumn(columns, config.getColumnHideForClient(), null, column -> column.setHiddenForClient(true), null);
 		initTableColumn(columns, config.getColumnHideForSubmit(), null, column -> column.setHiddenForSubmit(true), null);

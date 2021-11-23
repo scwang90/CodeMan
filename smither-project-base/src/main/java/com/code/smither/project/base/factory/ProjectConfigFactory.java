@@ -41,11 +41,13 @@ public class ProjectConfigFactory {
         config.setColumnCreate(properties.getProperty("code.man.database.column.create",config.getColumnCreate()));
         config.setColumnUpdate(properties.getProperty("code.man.database.column.update",config.getColumnUpdate()));
         config.setColumnRemove(properties.getProperty("code.man.database.column.remove",config.getColumnRemove()));
-        config.setColumnPassword(properties.getProperty("code.man.database.column.password",config.getColumnPassword()));
+        config.setColumnPassword(properties.getProperty("code.man.database.column.password", config.getColumnPassword()));
         config.setColumnUsername(properties.getProperty("code.man.database.column.username",config.getColumnUsername()));
         config.setColumnCreator(properties.getProperty("code.man.database.column.creator",config.getColumnCreator()));
         config.setColumnSearches(properties.getProperty("code.man.database.column.searches",config.getColumnSearches()));
         config.setColumnGender(properties.getProperty("code.man.database.column.gender",config.getColumnGender()));
+        config.setColumnForceUseLong(properties.getProperty("code.man.database.column.uselong", config.getColumnForceUseLong()));
+        config.setColumnForceUseLong(properties.getProperty("code.man.database.column.forceUseLong", config.getColumnForceUseLong()));
         config.setColumnHideForClient(properties.getProperty("code.man.database.column.hide-for-client",config.getColumnHideForClient()));
         config.setColumnHideForSubmit(properties.getProperty("code.man.database.column.hide-for-submit",config.getColumnHideForSubmit()));
         config.setColumnHideForTables(properties.getProperty("code.man.database.column.hide-for-tables",config.getColumnHideForTables()));

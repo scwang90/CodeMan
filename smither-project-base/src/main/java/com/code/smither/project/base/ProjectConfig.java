@@ -44,6 +44,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnHideForTables = "*avatar,*headUrl,content,description,address,update_time,update_date,update_at,updated_at,create_time,create_date,create_at,created_at";
     protected String columnHideForClient = "";
     protected String columnHideForSubmit = "";
+    protected String columnForceUseLong = "*time";
 
     protected String templateLang = ProgramLang.Lang.Java.value;
     protected String templatePath = "../templates/web-spring-boot-mybatis";

@@ -48,7 +48,7 @@ open class ${className} {
 	<#if column.hiddenForClient>
 	@JsonIgnore
 	</#if>
-	<#if column.longType>
+	<#if column.longType && !column.forceUseLong>
 	@JsonSerialize(using = ToStringSerializer::class)// Long返回前端JS，与 number 精度不匹配，会导致信息丢失，需要序列化为String
 	</#if>
 	<#if column.stringType>
