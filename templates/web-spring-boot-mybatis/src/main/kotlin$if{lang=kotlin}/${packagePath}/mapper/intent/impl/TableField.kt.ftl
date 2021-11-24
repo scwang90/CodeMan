@@ -47,6 +47,22 @@ class TableField<Table, Type : Any>(val name: String) {
         return QueryWhere(name, "LIKE", "%$value")
     }
 
+    fun notLike(value: Type): WhereQuery<Table>? {
+        return QueryWhere(name, "NOT LIKE", value)
+    }
+
+    fun notContains(value: Type): WhereQuery<Table>? {
+        return QueryWhere(name, "NOT LIKE", "%$value%")
+    }
+
+    fun notStartsWith(value: Type): WhereQuery<Table>? {
+        return QueryWhere(name, "NOT LIKE", "$value%")
+    }
+
+    fun notEndsWith(value: Type): WhereQuery<Table>? {
+        return QueryWhere(name, "NOT LIKE", "%$value")
+    }
+
     fun lt(value: Type): WhereQuery<Table> {
         return lessThan(value)
     }

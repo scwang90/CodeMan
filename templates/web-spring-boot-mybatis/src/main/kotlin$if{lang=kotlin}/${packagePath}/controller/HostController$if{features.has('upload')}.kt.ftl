@@ -18,7 +18,7 @@ class HostController(config: AppConfig) {
 
     companion object {
 
-        private var CONFIG: AppConfig? = null
+        private var CONFIG: AppConfig = AppConfig()
 
         /**
          * 获取服务器链接前缀
@@ -27,7 +27,7 @@ class HostController(config: AppConfig) {
          */
         fun urlSchemeHostPort(request: HttpServletRequest): String {
             var url = CONFIG?.client?.visitHost
-            if (url.isNullOrBlank()) {
+            if (url.isBlank()) {
                 url = String.format("%s://%s:%d", request.scheme, request.serverName, request.serverPort)
             } else if (!url.contains("://")) {
                 url = String.format("%s://%s", request.scheme, url)
