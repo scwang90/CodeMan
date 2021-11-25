@@ -99,6 +99,10 @@ class TableField<Table, Type : Any>(val name: String) {
         return QueryWhere(name, "IN", value)
     }
 
+    fun inArray(vararg value: Type): WhereQuery<Table> {
+       return QueryWhere(name, "IN", listOf(value))
+    }
+
     val isNull: WhereQuery<Table>
         get() = QueryWhere(name, "IS NULL", null)
     val isNotNull: WhereQuery<Table>

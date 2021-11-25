@@ -102,9 +102,9 @@ public class Table implements Model, MetaDataTable {
     }
 
     public void setIdColumn(TableColumn idColumn) {
-        if (idColumn.getName().toLowerCase().endsWith("id")) {
-            idColumn.setHiddenForSubmit(true);
-        }
+//        if (idColumn.getName().toLowerCase().endsWith("id")) {
+//            idColumn.setHiddenForSubmit(true);
+//        }
         this.idColumn = idColumn;
     }
 

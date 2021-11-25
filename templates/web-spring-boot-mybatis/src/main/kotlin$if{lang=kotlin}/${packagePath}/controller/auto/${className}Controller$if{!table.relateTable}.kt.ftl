@@ -143,7 +143,7 @@ class ${className}Controller {
 
 	@GetMapping("${bean?lower_case}/{id}")
 	@ApiOperation(value = "获取${table.remarkName}<#if bean?length gt 0>（包括外键）</#if>")
-    fun find${bean}ById(@PathVariable @ApiParam(value = "${table.remark}Id", required = true) id: String): ApiResult<${className}${bean}> {
+    fun find${bean}ById(@PathVariable @ApiParam(value = "${table.remarkName}Id", required = true) id: String): ApiResult<${className}${bean}> {
 		<#if table.hasOrgan>
 		return ApiResult.success(service.find${bean}ById(id))
 		<#else>
@@ -154,7 +154,7 @@ class ${className}Controller {
 
 	@DeleteMapping("/{ids}")
 	@ApiOperation(value = "删除${table.remarkName}")
-    fun deleteById(@PathVariable @ApiParam(value = "${table.remark}Ids", required = true) ids: String): ApiResult<Int> {
+    fun deleteById(@PathVariable @ApiParam(value = "${table.remarkName}Ids", required = true) ids: String): ApiResult<Int> {
 	<#if table.hasOrgan || table == loginTable>
 		return ApiResult.success(service.deleteById(ids))
 	<#else>

@@ -62,7 +62,7 @@ class ErrorController(
             }
             logger.error(ex.message, ex)
         }
-        return ApiResult.fail(ex.code, message)
+        return ApiResult.fail(ex, message)
     }
 
 

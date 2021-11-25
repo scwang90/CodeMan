@@ -1,6 +1,8 @@
 package ${packageName}.model.api;
 
 import ${packageName}.constant.ResultCode;
+import ${packageName}.exception.ClientException;
+import ${packageName}.exception.CodeException;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -30,6 +32,12 @@ public class ApiResult<T> {
         this.code = code.code;
         this.message = code.message;
         this.result = result;
+    }
+
+    public ApiResult(CodeException code, String message) {
+        this.payload = null;
+        this.code = code.getCode();
+        this.message = message == null ? code.getMessage() : message;
     }
 
     public ApiResult(T result, int code, String message) {
@@ -62,6 +70,10 @@ public class ApiResult<T> {
 
     public static <T> ApiResult<T> fail(ResultCode code) {
         return new ApiResult<>(null, code);
+    }
+
+    public static <T> ApiResult<T> fail(CodeException code, String message) {
+        return new ApiResult<>(code, message);
     }
 
     public static <T> ApiResult<T> fail(int code, String message) {

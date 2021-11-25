@@ -62,9 +62,12 @@ public class ErrorController extends BasicErrorController {
         if (ex instanceof ClientException) {
             log.debug(ex.getMessage());
         } else {
+            if (!config.isOriginalError()) {
+                message = "服务器内部错误";
+            }
             log.error(ex.getMessage(), ex);
         }
-        return ApiResult.fail(ex.getCode(), message);
+        return ApiResult.fail(ex, message);
     }
 
     @ExceptionHandler(BindException.class)

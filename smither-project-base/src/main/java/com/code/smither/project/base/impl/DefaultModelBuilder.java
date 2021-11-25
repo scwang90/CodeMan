@@ -340,7 +340,14 @@ public class DefaultModelBuilder implements ModelBuilder {
 		initTableColumn(columns, config.getColumnHideForTables(), null, column -> column.setHiddenForTables(true), null);
 		initTableColumn(columns, config.getColumnHideForClient(), null, column -> column.setHiddenForClient(true), null);
 		initTableColumn(columns, config.getColumnHideForSubmit(), null, column -> column.setHiddenForSubmit(true), null);
-		initTableColumn(columns, config.getColumnSearches(), null, column -> { table.getSearchColumns().add(column); table.setHasSearches(true); }, null);
+		initTableColumn(columns, config.getColumnSearch(), null, column -> {
+			if (column.isStringType()) {
+				table.getSearchColumns().add(column);
+				table.setHasSearches(true);
+			} else {
+				logger.warn("【" + table.getRemarkName() + "表】【" + column.getRemarkName() + "列】不是字符串类型，不能成为搜索列");
+			}
+		}, null);
 
 		//初始化名称列表
 		initTableColumn(columns, config.getColumnName(), table::getNameColumn, table::setNameColumn, value -> {});
