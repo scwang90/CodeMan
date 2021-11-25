@@ -74,18 +74,18 @@ public class ${className} {
 		<#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"<#elseif column.defValue?length != 0>, example = "${column.defValue?trim}"<#elseif column.intType && !column.primaryKey>, example = "0"</#if>
 		<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>
 	</@compress>)
-	private ${column.fieldType} ${column.fieldName};
+	private <#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> ${column.fieldName};
 	</#list>
 
 	public ${className}() {
 	}
 	<#list table.columns as column>
 
-	public ${column.fieldType} get${column.fieldNameUpper}() {
+	public <#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> get${column.fieldNameUpper}() {
 		return this.${column.fieldName};
 	}
 
-	public void set${column.fieldNameUpper}(${column.fieldType} ${column.fieldName}) {
+	public void set${column.fieldNameUpper}(<#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> ${column.fieldName}) {
 		this.${column.fieldName} = ${column.fieldName};
 	}
 	</#list>

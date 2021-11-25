@@ -64,14 +64,9 @@ public class ${className}Controller {
 	</#if>
 	@GetMapping<#if bean?length gt 0>("${bean?lower_case}")</#if>
 	@ApiOperation(value = "${value}", notes = "${notes}")
-	@ApiImplicitParams({
 	<#if table.hasSearches>
-		@ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字"),
+	@ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字")})
 	</#if>
-		@ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
-		@ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
-		@ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
-	})
     public ApiResult<Paged<${className}${bean}>> list${bean}(@ApiIgnore Paging paging<#if table.hasSearches>, String key</#if>) {
 	<#if table.hasOrgan || table.hasSearches>
 		return ApiResult.success(service.list${bean}(paging<#if table.hasSearches>, key</#if>));
@@ -87,11 +82,8 @@ public class ${className}Controller {
 	@ApiImplicitParams({
 		@ApiImplicitParam(paramType = "query", name = "${key.fkColumn.fieldName}", value = "${key.pkTable.remarkName}关联", required = true),
 		<#if table.hasSearches>
-		@ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字"),
+		@ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字")
 		</#if>
-		@ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
-		@ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
-		@ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
 	})
 	public ApiResult<Paged<${className}${bean}>> list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldType} ${key.fkColumn.fieldName}, @ApiIgnore Paging paging<#if table.hasSearches>, String key</#if>) {
 		return ApiResult.success(service.list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}, paging<#if table.hasSearches>, key</#if>));
@@ -102,10 +94,7 @@ public class ${className}Controller {
 	@GetMapping("${bean?lower_case}/relate/${key.relateTargetColumn.fieldName}")
 	@ApiOperation(value = "根据${key.targetTable.remarkName}级联查询${value}", notes = "${notes}")
 	@ApiImplicitParams({
-		@ApiImplicitParam(paramType = "query", name = "${key.relateTargetColumn.fieldName}", value = "${key.relateTargetColumn.remarkName}关联", required = true),
-		@ApiImplicitParam(paramType = "query", name = "size", value = "分页大小（配合 page 或 skip 组合使用）", required = true, defaultValue = "20"),
-		@ApiImplicitParam(paramType = "query", name = "page", value = "分页页码（0开始，如果使用 skip 可不传）", defaultValue = "0"),
-		@ApiImplicitParam(paramType = "query", name = "skip", value = "分页开始（0开始，如果使用 page 可不传）", defaultValue = "0")
+		@ApiImplicitParam(paramType = "query", name = "${key.relateTargetColumn.fieldName}", value = "${key.relateTargetColumn.remarkName}关联", required = true)
 	})
 	public ApiResult<Paged<${className}${bean}>> list${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldType} ${key.relateTargetColumn.fieldName}, @ApiIgnore Paging paging) {
 		List<${className}${bean}> list = mapper.select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldName}, paging.toRowBounds());
