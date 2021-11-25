@@ -250,6 +250,14 @@ public class HtmlTableSource implements TableSource {
         public String getName() {
             return metaData.getTableName(element);
         }
+
+        @Override
+        public void setName(String string) {
+        }
+
+        @Override
+        public void setComment(String string) {
+        }
     }
 
     protected class ColumnMetaData extends TableMetaData implements MetaDataColumn {
@@ -264,6 +272,38 @@ public class HtmlTableSource implements TableSource {
         @Override
         public String getName() {
             return metaData.getColumnName(columnMetaData);
+        }
+
+        @Override
+        public void setType(String string) {
+        }
+
+        @Override
+        public void setTypeInt(int int1) {
+        }
+
+        @Override
+        public void setLength(int int1) {
+        }
+
+        @Override
+        public void setDefValue(String string) {
+        }
+
+        @Override
+        public void setNullable(boolean boolean1) {
+        }
+
+        @Override
+        public void setRemark(String string) {
+        }
+
+        @Override
+        public void setDecimalDigits(int int1) {
+        }
+
+        @Override
+        public void setAutoIncrement(boolean b) {
         }
     }
 

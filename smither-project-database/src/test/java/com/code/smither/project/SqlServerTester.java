@@ -4,7 +4,6 @@ import com.code.smither.project.database.api.DbFactory;
 import com.code.smither.project.database.factory.C3P0Factory;
 import org.junit.Test;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;

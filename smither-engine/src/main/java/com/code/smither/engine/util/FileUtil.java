@@ -1,7 +1,6 @@
 package com.code.smither.engine.util;
 
 import java.io.*;
-import java.net.URI;
 import java.nio.file.*;
 import java.util.Locale;
 

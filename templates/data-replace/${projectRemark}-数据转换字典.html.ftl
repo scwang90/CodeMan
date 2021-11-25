@@ -25,11 +25,11 @@
         <#list tables as table>
         <tr>
             <td>${table_index}</td>
-            <td class="<#if table.name != table.nameSql>green</#if>">${table.nameSql}</td>
+            <td class="<#if table.name != table.replaceName>green</#if>">${table.replaceName}</td>
             <td>${table.name}</td>
-            <#-- <td class="green">${table.nameSqlInStr?length > 0}</td>-->
-            <#if (table.nameSqlInStr?length > 0) >
-                <td class="green">${table.nameSqlInStr}</td>
+            <#-- <td class="green">${table.replaceRemark?length > 0}</td>-->
+            <#if (table.replaceRemark?length > 0) >
+                <td class="green">${table.replaceRemark}</td>
             <#else>
                 <td>${table.comment}</td>
             </#if>
@@ -38,7 +38,7 @@
     </table>
     <h1 style="text-align:center;">详细替换 ${projectName}</h1>
     <#list tables as table>
-        <h3><b>表</b> : <span>${table.name}</span> -> <span class="<#if table.name != table.nameSql>green</#if>">${table.nameSql}</span> [${table.comment}]</h3>
+        <h3><b>表</b> : <span>${table.name}</span> -> <span class="<#if table.name != table.replaceName>green</#if>">${table.replaceName}</span> [${table.comment}]</h3>
         <table class="table table-hover table-bordered table-condensed table-striped" name="${table.name}" remark="${table.remark}">
             <thead>
             <tr>
@@ -60,15 +60,15 @@
                 <tr>
                     <td>${column_index}</td>
                     <td>${column.name}</td>
-                    <td class="<#if column.name != column.nameSql>green</#if>">${column.nameSql}</td>
+                    <td class="<#if column.name != column.replaceName>green</#if>">${column.replaceName}</td>
                     <td>${column.type}</td>
 <#--                    <td>${column.length}</td>-->
 <#--                    <td>${column.defValue}</td>-->
 <#--                    <td><#if column.nullable></#if><#if !column.nullable>是</#if></td>-->
 <#--                    <td><#if column.primaryKey>是</#if><#if !column.primaryKey></#if></td>-->
 <#--                    <td><#if column.autoIncrement>自增</#if></td>-->
-                    <#if (column.nameSqlInStr?length > 0) >
-                        <td class="green">${column.nameSqlInStr}</td>
+                    <#if (column.replaceRemark?length > 0) >
+                        <td class="green">${column.replaceRemark}</td>
                     <#else>
                         <td>${column.comment}</td>
                     </#if>

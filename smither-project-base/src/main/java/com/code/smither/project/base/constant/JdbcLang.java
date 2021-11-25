@@ -18,7 +18,6 @@ public class JdbcLang extends AbstractProgramLang {
             ".xml"
     };
 
-    private static final String[] keywords = new String[0];
     private Field[] mFields = null;
 
     @Override

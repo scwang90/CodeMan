@@ -1,7 +1,6 @@
 package com.code.smither.project.base.impl;
 
 import com.code.smither.project.base.api.WordBreaker;
-import com.code.smither.project.base.util.WordFilter;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -3,7 +3,6 @@ package com.code.smither.project.base.impl;
 
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.AbstractProgramLang;
-import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 
 /**

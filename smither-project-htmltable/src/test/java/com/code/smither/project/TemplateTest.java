@@ -14,8 +14,6 @@ import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import java.sql.Types;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

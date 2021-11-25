@@ -1,6 +1,5 @@
 package com.code.smither.project.database.impl;
 
-import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.database.api.DbFactory;
 
@@ -8,17 +7,17 @@ import com.code.smither.project.database.api.DbFactory;
  * Sqlite 数据库 表源
  * Created by SCWANG on 2016/8/1.
  */
-public class SqLiteTableSource extends DbTableSource {
+public class SqLiteTableSource extends DefaultDataSource {
 
 
     private Database database = new SqLiteDatabase();
 
-    public SqLiteTableSource(ProjectConfig config, DbFactory dbFactory) {
-        this(config, dbFactory, false);
+    public SqLiteTableSource(DbFactory dbFactory) {
+        this(dbFactory, false);
     }
 
-    private SqLiteTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
-        super(config, dbFactory, autoclose);
+    private SqLiteTableSource(DbFactory dbFactory, boolean autoclose) {
+        super(dbFactory, autoclose);
     }
 
     @Override

@@ -4,7 +4,6 @@ package com.generator.replace;
 import com.code.smither.project.base.model.SourceModel;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
-import com.code.smither.project.database.DataBaseConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;

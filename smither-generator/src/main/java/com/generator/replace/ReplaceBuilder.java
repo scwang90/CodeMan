@@ -3,16 +3,18 @@ package com.generator.replace;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.model.SourceModel;
 import com.code.smither.project.base.model.Table;
-import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.base.util.StringUtil;
 import com.code.smither.project.database.model.DbModelBuilder;
 import com.code.smither.project.database.model.DbSourceModel;
+import com.generator.replace.model.ReplaceColumn;
+import com.generator.replace.model.ReplaceTable;
 
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ReplaceBuilder extends DbModelBuilder {
 
@@ -50,42 +52,45 @@ public class ReplaceBuilder extends DbModelBuilder {
         model.getJdbc().setUsername(factory.getUsername());
         model.getJdbc().setPassword(factory.getPassword());
 
-        for (Table table : model.getTables()) {
-            table.setNameSql(StringUtil.camelReverse(table.getClassName(), "_"));
+        for (ReplaceTable table : model.getTables().stream().map(t->(ReplaceTable)t).collect(Collectors.toList())) {
+            table.setReplaceName(StringUtil.camelReverse(table.getClassName(), "_"));
             if (replaceConfig.getDictRemark().containsKey(table.getName())) {
-                table.setNameSqlInStr(replaceConfig.getDictRemark().get(table.getName()).value);
-            } else if (StringUtil.isNullOrBlank(table.getComment()) && isContainsChinese(table.getName())) {
-                table.setNameSqlInStr(table.getName()
-                        .replace("农合", "医保")
-                        .replace("门诊处方", "结算"));
+                table.setReplaceRemark(replaceConfig.getDictRemark().get(table.getName()).value);
+            } else if (isContainsChinese(table.getName())) {
+                String remark = table.getName().replace("农合", "医保").replace("门诊处方", "结算");
+                if (StringUtil.isNullOrBlank(table.getComment())) {
+                    table.setReplaceRemark(remark);
+                } else {
+                    table.setReplaceRemark(remark + "(" + table.getComment() + ")");
+                }
             } else {
-                table.setNameSqlInStr(null);
+                table.setReplaceRemark(null);
             }
             Set<String> set = new HashSet<>();
-            for (TableColumn column : table.getColumns()) {
+            for (ReplaceColumn column : table.getColumns().stream().map(c->(ReplaceColumn)c).collect(Collectors.toList())) {
                 if (!isFilterChineseCloumn || !isContainsChinese(column.getName())) {
-                    column.setNameSql(StringUtil.camelReverse(column.getFieldName(), "_")
+                    column.setReplaceName(StringUtil.camelReverse(column.getFieldName(), "_")
                             .replaceAll("(.+)_(BEFORE|NOW|FEE|RESULT|WAY)$", "$2_$1"));
                     set.add(column.getNameSql());
                     if (StringUtil.isNullOrBlank(column.getComment()) && isContainsChinese(column.getName())) {
-                        column.setNameSqlInStr(column.getName().replace("农合", "医保"));
+                        column.setReplaceRemark(column.getName().replace("农合", "医保"));
                     } else {
-                        column.setNameSqlInStr(null);
+                        column.setReplaceRemark(null);
                     }
                 } else {
-                    column.setNameSqlInStr(null);
-                    column.setNameSql(column.getName());
-                    set.add(column.getNameSql());
+                    column.setReplaceRemark(null);
+                    column.setReplaceName(column.getName());
+                    set.add(column.getReplaceName());
                 }
             }
-            for (TableColumn column : table.getColumns()) {
-                String newName = column.getNameSql().replaceAll("^\\w_", "");
-                if (!newName.equals(column.getNameSql())) {
+            for (ReplaceColumn column : table.getColumns().stream().map(c->(ReplaceColumn)c).collect(Collectors.toList())) {
+                String newName = column.getReplaceName().replaceAll("^\\w_", "");
+                if (!newName.equals(column.getReplaceName())) {
                     if (!set.contains(newName)) {
-                        column.setNameSql(newName);
+                        column.setReplaceName(newName);
                         set.add(newName);
                     } else {
-                        System.out.println("发现无法转换的名称：" + column.getNameSql());
+                        System.out.println("发现无法转换的名称：" + column.getReplaceName());
                     }
                 }
             }

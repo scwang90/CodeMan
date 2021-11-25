@@ -5,7 +5,6 @@ import com.code.smither.project.base.factory.ProjectConfigFactory;
 import com.code.smither.project.htmltable.HtmlTableConfig;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 /**

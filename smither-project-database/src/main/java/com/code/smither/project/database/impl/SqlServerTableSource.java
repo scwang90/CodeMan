@@ -1,12 +1,10 @@
 package com.code.smither.project.database.impl;
 
 
-import com.code.smither.project.base.ProjectConfig;
+import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.constant.Database;
-import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.database.api.DbFactory;
 
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,14 +12,14 @@ import java.sql.SQLException;
  * SqlServer 数据库 表源
  * Created by SCWANG on 2016/8/1.
  */
-public class SqlServerTableSource extends DbTableSource implements Database {
+public class SqlServerTableSource extends DefaultDataSource implements Database {
 
-    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory) {
-        this(config, dbFactory, false);
+    public SqlServerTableSource(DbFactory dbFactory) {
+        this(dbFactory, false);
     }
 
-    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
-        super(config, dbFactory, autoclose);
+    public SqlServerTableSource(DbFactory dbFactory, boolean autoclose) {
+        super(dbFactory, autoclose);
     }
 
     @Override
@@ -57,17 +55,25 @@ public class SqlServerTableSource extends DbTableSource implements Database {
 
 
     @Override
-    protected ResultSet queryColumns(DatabaseMetaData metaData, String tableName) throws SQLException {
-        return metaData.getColumns(null, "%", tableName, "%");
+    public ResultSet queryColumns(String tableName) throws SQLException {
+        return ensureMetaData().getColumns(null, "%", tableName, "%");
     }
 
     @Override
-    protected TableColumn columnFromResultSet(ResultSet resultSet) throws SQLException {
-        TableColumn column = super.columnFromResultSet(resultSet);
-
+    public MetaDataColumn columnFromResultSet(ResultSet resultSet, MetaDataColumn column) throws SQLException {
+        column = super.columnFromResultSet(resultSet, column);
         column.setAutoIncrement(!"NO".equals(resultSet.getString("IS_AUTOINCREMENT")));
-
         return column;
     }
+
+    // @Override
+    // protected TableColumn columnFromResultSet(ResultSet resultSet) throws SQLException {
+    //     TableColumn column = super.columnFromResultSet(resultSet);
+
+    //     column.setAutoIncrement(!"NO".equals(resultSet.getString("IS_AUTOINCREMENT")));
+
+    //     return column;
+    // }
+
 }
 

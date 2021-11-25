@@ -1,9 +1,8 @@
 package com.code.smither.project.database.impl;
 
-import com.code.smither.project.base.ProjectConfig;
+import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
-import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.database.api.DbFactory;
 
 import java.sql.ResultSet;
@@ -14,14 +13,14 @@ import java.sql.Statement;
  * MySql 数据库 表源
  * Created by SCWANG on 2016/8/1.
  */
-public class MySqlTableSource extends DbTableSource implements Database {
+public class MySqlTableSource extends DefaultDataSource implements Database {
 
-    public MySqlTableSource(ProjectConfig config, DbFactory dbFactory) {
-        this(config, dbFactory, false);
+    public MySqlTableSource(DbFactory dbFactory) {
+        this(dbFactory, false);
     }
 
-    public MySqlTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
-        super(config, dbFactory, autoclose);
+    public MySqlTableSource(DbFactory dbFactory, boolean autoclose) {
+        super(dbFactory, autoclose);
     }
 
     @Override
@@ -72,13 +71,23 @@ public class MySqlTableSource extends DbTableSource implements Database {
     }
 
     @Override
-    protected TableColumn columnFromResultSet(ResultSet resultSet) throws SQLException {
-        TableColumn column = super.columnFromResultSet(resultSet);
+    public MetaDataColumn columnFromResultSet(ResultSet resultSet, MetaDataColumn column) throws SQLException {
+        column = super.columnFromResultSet(resultSet, column);
 
         Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
         column.setAutoIncrement(Boolean.valueOf(true).equals(is_autoincrement) || "YES".equalsIgnoreCase(is_autoincrement + "") || Integer.valueOf("1").equals(is_autoincrement));
 
         return column;
     }
+
+    // @Override
+    // protected TableColumn columnFromResultSet(ResultSet resultSet) throws SQLException {
+    //     TableColumn column = super.columnFromResultSet(resultSet);
+
+    //     Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
+    //     column.setAutoIncrement(Boolean.valueOf(true).equals(is_autoincrement) || "YES".equalsIgnoreCase(is_autoincrement + "") || Integer.valueOf("1").equals(is_autoincrement));
+
+    //     return column;
+    // }
 }
 
