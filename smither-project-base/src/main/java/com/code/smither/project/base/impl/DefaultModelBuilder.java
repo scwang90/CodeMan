@@ -203,7 +203,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * @throws Exception 数据库读取异常
 	 */
 	protected Table tableCompute(Table table, MetaDataTable tableMate) throws Exception {
-		String name = this.convertIfNeed(table.getName());
+		String name = this.convertTableIfNeed(table.getName());
 		table.setClassName(this.classConverter.converterClassName(name));
 		table.setClassNameUpper(table.getClassName().toUpperCase());
 		table.setClassNameLower(table.getClassName().toLowerCase());
@@ -434,7 +434,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * @throws Exception 数据库读取异常
 	 */
 	protected TableColumn columnCompute(TableColumn column, MetaDataColumn columnMate) throws Exception {
-		String name = this.convertIfNeed(column.getName());
+		String name = this.convertColumnIfNeed(column.getName());
 		column.setTypeJdbc(jdbcLang.getType(column));
 		column.setFieldName(this.classConverter.converterFieldName(name));
 		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
@@ -486,6 +486,14 @@ public class DefaultModelBuilder implements ModelBuilder {
 				||column.getRemarkName().toLowerCase().contains("时间")));
 		return column;
 	}
+
+    protected String convertTableIfNeed(String name) {
+        return convertIfNeed(name);
+    }
+
+    protected String convertColumnIfNeed(String name) {
+        return convertIfNeed(name);   
+    }
 
 	/**
 	 * 转换如果必要

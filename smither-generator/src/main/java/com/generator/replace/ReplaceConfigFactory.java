@@ -22,7 +22,8 @@ public class ReplaceConfigFactory {
 		DbConfigFactory.loadConfig(properties, config);
 		config.setReplaceTableIgnore(properties.getProperty("code.man.replace.table.ignore", config.getReplaceTableIgnore()));
 		config.setReplaceTableRemark(properties.getProperty("code.man.replace.table.remark", config.getReplaceTableRemark()));
-        config.setReplaceTableDisplace(properties.getProperty("code.man.replace.table.replace", config.getReplaceTableDisplace()));
+        config.setReplaceTableName(properties.getProperty("code.man.replace.table.replace", config.getReplaceTableName()));
+        config.setReplaceColumnName(properties.getProperty("code.man.replace.column.replace", config.getReplaceColumnName()));
 	}
 
 }

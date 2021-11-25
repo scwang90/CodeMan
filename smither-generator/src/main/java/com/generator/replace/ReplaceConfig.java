@@ -1,9 +1,11 @@
 package com.generator.replace;
 
 import com.code.smither.engine.EngineConfig;
+import com.code.smither.project.base.api.WordReplacer;
 import com.code.smither.project.base.impl.DefaultWordBreaker;
 import com.code.smither.project.base.impl.DefaultWordReplacer;
 import com.code.smither.project.database.DataBaseConfig;
+import com.code.smither.project.database.factory.TableSourceFactory;
 
 import java.util.Map;
 
@@ -11,19 +13,45 @@ public class ReplaceConfig extends DataBaseConfig {
 
     protected String replaceTableIgnore = "";
     protected String replaceTableRemark = "";
-    protected String replaceTableDisplace = "";
+    protected String replaceTableName = "";
+    protected String replaceColumnName = "";
 
-    private Map<String, String> dictIgnore;
-    private Map<String, DefaultWordReplacer.Replace> dictRemark;
+    private Map<String, String> dictTableIgnore;
+    private Map<String, DefaultWordReplacer.Replace> dictTableName;
+    private Map<String, DefaultWordReplacer.Replace> dictTableRemark;
+    private Map<String, DefaultWordReplacer.Replace> dictColumnName;
+
+
+    private WordReplacer replacerTableRemark;
+    private WordReplacer replacerTableName;
+    private WordReplacer replacerColumnName;
 
     @Override
     public EngineConfig initEmptyFieldsWithDefaultValues() {
         super.initEmptyFieldsWithDefaultValues();
-        if (dictIgnore == null) {
-            dictIgnore = DefaultWordBreaker.loadDictionary(replaceTableIgnore);
+        if (dictColumnName == null) {
+            dictColumnName = DefaultWordReplacer.loadDictionary(replaceColumnName);
         }
-        if (dictRemark == null) {
-            dictRemark = DefaultWordReplacer.loadDictionary(replaceTableRemark);
+        if (dictTableName == null) {
+            dictTableName = DefaultWordReplacer.loadDictionary(replaceTableName);
+        }
+        if (dictTableRemark == null) {
+            dictTableRemark = DefaultWordReplacer.loadDictionary(replaceTableRemark);
+        }
+        if (dictTableIgnore == null) {
+            dictTableIgnore = DefaultWordBreaker.loadDictionary(replaceTableIgnore);
+        }
+        if (replacerColumnName == null) {
+            replacerColumnName = new DefaultWordReplacer(replaceColumnName);
+        }
+        if (replacerTableName == null) {
+            replacerTableName = new DefaultWordReplacer(replaceTableName);
+        }
+        if (replacerTableRemark == null) {
+            replacerTableRemark = new DefaultWordReplacer(replaceTableRemark);
+        }
+        if (!(tableSource instanceof ReplaceTableSource)) {
+            tableSource = new ReplaceTableSource(this, TableSourceFactory.getDataSource(getDbFactory()));
         }
         return this;
     }
@@ -44,27 +72,63 @@ public class ReplaceConfig extends DataBaseConfig {
         this.replaceTableRemark = replaceTableRemark;
     }
 
-    public String getReplaceTableDisplace() {
-        return replaceTableDisplace;
+    public String getReplaceTableName() {
+        return replaceTableName;
     }
 
-    public void setReplaceTableDisplace(String replaceTableDisplace) {
-        this.replaceTableDisplace = replaceTableDisplace;
+    public void setReplaceTableName(String replaceTableName) {
+        this.replaceTableName = replaceTableName;
     }
 
-    public Map<String, String> getDictIgnore() {
-        return dictIgnore;
+    public String getReplaceColumnName() {
+        return replaceColumnName;
     }
 
-    public void setDictIgnore(Map<String, String> dictIgnore) {
-        this.dictIgnore = dictIgnore;
+    public void setReplaceColumnName(String replaceColumnName) {
+        this.replaceColumnName = replaceColumnName;
     }
 
-    public Map<String, DefaultWordReplacer.Replace> getDictRemark() {
-        return dictRemark;
+    public Map<String, String> getDictTableIgnore() {
+        return dictTableIgnore;
     }
 
-    public void setDictRemark(Map<String, DefaultWordReplacer.Replace> dictRemark) {
-        this.dictRemark = dictRemark;
+    public void setDictTableIgnore(Map<String, String> dictTableIgnore) {
+        this.dictTableIgnore = dictTableIgnore;
+    }
+
+    public Map<String, DefaultWordReplacer.Replace> getDictTableRemark() {
+        return dictTableRemark;
+    }
+
+    public void setDictTableRemark(Map<String, DefaultWordReplacer.Replace> dictTableRemark) {
+        this.dictTableRemark = dictTableRemark;
+    }
+
+    public Map<String, DefaultWordReplacer.Replace> getDictTableName() {
+        return dictTableName;
+    }
+
+    public void setDictTableName(Map<String, DefaultWordReplacer.Replace> dictTableName) {
+        this.dictTableName = dictTableName;
+    }
+
+    public Map<String, DefaultWordReplacer.Replace> getDictColumnName() {
+        return dictColumnName;
+    }
+
+    public void setDictColumnName(Map<String, DefaultWordReplacer.Replace> dictColumnName) {
+        this.dictColumnName = dictColumnName;
+    }
+
+    public WordReplacer getReplacerColumnName() {
+        return replacerColumnName;
+    }
+
+    public WordReplacer getReplacerTableName() {
+        return replacerTableName;
+    }
+
+    public WordReplacer getReplacerTableRemark() {
+        return replacerTableRemark;
     }
 }

@@ -21,7 +21,7 @@ public class TableSourceFactory {
         return new DbTableSource(config, getDataSource(factory));
     }
 
-    private static DbDataSource getDataSource(DbFactory factory) {
+    public static DbDataSource getDataSource(DbFactory factory) {
         String jdbcUrl = factory.getJdbcUrl();
         if (jdbcUrl.matches(PATTERN_MYSQL)) {
             return new MySqlTableSource(factory);

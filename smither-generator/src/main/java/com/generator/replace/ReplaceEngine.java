@@ -1,17 +1,17 @@
 package com.generator.replace;
 
-import com.code.smither.engine.Engine;
-import com.code.smither.engine.EngineConfig;
 import com.code.smither.engine.api.ModelBuilder;
+import com.code.smither.project.base.ProjectEngine;
+import com.code.smither.project.database.DataBaseConfig;
+import com.code.smither.project.database.DataBaseEngine;
 
-public class ReplaceEngine extends Engine<EngineConfig> {
+public class ReplaceEngine extends ProjectEngine<ReplaceConfig> {
 
-    public ReplaceEngine(EngineConfig config) {
+    public ReplaceEngine(ReplaceConfig config) {
         super(config);
     }
 
-    @Override
-    public void launch(ModelBuilder modelBuilder) throws Exception {
-        super.launch(modelBuilder);
+    public void launch(boolean isFilterChineseCloumn) throws Exception {
+        super.launch(new ReplaceBuilder(config, isFilterChineseCloumn));
     }
 }

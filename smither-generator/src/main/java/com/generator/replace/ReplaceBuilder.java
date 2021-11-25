@@ -1,6 +1,8 @@
 package com.generator.replace;
 
 import com.code.smither.project.base.api.MetaDataTable;
+import com.code.smither.project.base.api.WordReplacer;
+import com.code.smither.project.base.impl.DefaultWordReplacer;
 import com.code.smither.project.base.model.SourceModel;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.util.StringUtil;
@@ -11,7 +13,9 @@ import com.generator.replace.model.ReplaceTable;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -31,7 +35,7 @@ public class ReplaceBuilder extends DbModelBuilder {
 
     @Override
     protected Table tableCompute(Table table, MetaDataTable tableMate) throws Exception {
-        isIgnoreCurrentTable = replaceConfig.getDictIgnore().containsKey(table.getName());
+        isIgnoreCurrentTable = replaceConfig.getDictTableIgnore().containsKey(table.getName());
         return super.tableCompute(table, tableMate);
     }
 
@@ -44,6 +48,25 @@ public class ReplaceBuilder extends DbModelBuilder {
     }
 
     @Override
+    protected String convertTableIfNeed(String name) {
+        // if (replaceConfig.getDictTableName().containsKey(table.getName())) {
+        //     table.setReplaceName(replaceConfig.getDictTableRemark().get(table.getName()).value);
+        // }
+        return name;
+        // return super.convertTableIfNeed(name);
+    }
+
+    @Override
+    protected String convertColumnIfNeed(String name) {
+        // if (replaceConfig.getDictColumnName().containsKey(column.getName())) {
+        //     replaceConfig.getDictColumnName().get(table.getName()).
+        //     table.setReplaceRemark(replaceConfig.getDictTableRemark().get(table.getName()).value);
+        // }
+        return name;
+        // return super.convertColumnIfNeed(name);
+    }
+
+    @Override
     public SourceModel build() throws Exception {
         assert database != null;
         SourceModel model = build(new DbSourceModel(database.name()), config, buildTables());
@@ -52,10 +75,34 @@ public class ReplaceBuilder extends DbModelBuilder {
         model.getJdbc().setUsername(factory.getUsername());
         model.getJdbc().setPassword(factory.getPassword());
 
+        Map<String, String> dictTableIgnore = replaceConfig.getDictTableIgnore();
+        WordReplacer replacerTableName = replaceConfig.getReplacerTableName();
+        WordReplacer replacerColumnName = replaceConfig.getReplacerColumnName();
+        Map<String, DefaultWordReplacer.Replace> replacerTableRemark = replaceConfig.getDictTableRemark();
         for (ReplaceTable table : model.getTables().stream().map(t->(ReplaceTable)t).collect(Collectors.toList())) {
-            table.setReplaceName(StringUtil.camelReverse(table.getClassName(), "_"));
-            if (replaceConfig.getDictRemark().containsKey(table.getName())) {
-                table.setReplaceRemark(replaceConfig.getDictRemark().get(table.getName()).value);
+            //忽略表过滤
+            if (dictTableIgnore.containsKey(table.getName())) {
+                table.setReplaceName(table.getName());
+                continue;
+            }
+            String newTableName = replacerTableName.replace(table.getName(), config.getTableDivision());
+            newTableName = newTableName.replaceAll("^_+", "");
+            if (!table.getName().equals(newTableName)) {
+                table.setReplaceName(newTableName);
+            } else {
+                //没有被替换
+                newTableName = super.convertIfNeed(table.getName());
+                newTableName = newTableName.replaceAll("^_+", "");
+                if (!table.getName().equals(newTableName)) {
+                    table.setReplaceName(newTableName);
+                } else {
+                    //默认类名反驼峰
+                    table.setReplaceName(StringUtil.camelReverse(table.getClassName(), "_"));
+                }
+            }
+            //表备注 
+            if (replacerTableRemark.containsKey(table.getName())) {
+                table.setReplaceRemark(replacerTableRemark.get(table.getName()).value);
             } else if (isContainsChinese(table.getName())) {
                 String remark = table.getName().replace("农合", "医保").replace("门诊处方", "结算");
                 if (StringUtil.isNullOrBlank(table.getComment())) {
@@ -66,12 +113,28 @@ public class ReplaceBuilder extends DbModelBuilder {
             } else {
                 table.setReplaceRemark(null);
             }
+
             Set<String> set = new HashSet<>();
             for (ReplaceColumn column : table.getColumns().stream().map(c->(ReplaceColumn)c).collect(Collectors.toList())) {
                 if (!isFilterChineseCloumn || !isContainsChinese(column.getName())) {
-                    column.setReplaceName(StringUtil.camelReverse(column.getFieldName(), "_")
-                            .replaceAll("(.+)_(BEFORE|NOW|FEE|RESULT|WAY)$", "$2_$1"));
-                    set.add(column.getNameSql());
+                    String newColumnName = replacerColumnName.replace(column.getName(), config.getColumnDivision());
+                    newColumnName = newColumnName.replaceAll("^_+|_+$", "").replaceAll("__+", "_").toUpperCase();
+                    if (!column.getName().equals(newColumnName)) {
+                        column.setReplaceName(newColumnName);
+                    } else {
+                        //没有被替换
+                        newColumnName = super.convertIfNeed(column.getName());
+                        newColumnName = newColumnName.replaceAll("^_+|_+$", "").replaceAll("__+", "_").toUpperCase();
+                        if (!column.getName().equals(newColumnName)) {
+                            column.setReplaceName(newColumnName);
+                        } else {
+                            //默认类名反驼峰
+                            newColumnName = StringUtil.camelReverse(column.getFieldName(), "_");
+                            newColumnName = newColumnName.replaceAll("(.+)_(BEFORE|NOW|FEE|RESULT|WAY)$", "$2_$1");
+                            column.setReplaceName(newColumnName);
+                        }
+                    }
+                    set.add(column.getReplaceName());
                     if (StringUtil.isNullOrBlank(column.getComment()) && isContainsChinese(column.getName())) {
                         column.setReplaceRemark(column.getName().replace("农合", "医保"));
                     } else {
@@ -95,7 +158,19 @@ public class ReplaceBuilder extends DbModelBuilder {
                 }
             }
         }
-        model.getTables().sort(Comparator.comparing(Table::getNameSql));
+        model.getTables().sort(Comparator.comparing(new Function<Table, String>() {
+            @Override
+            public String apply(Table t) {
+                if (t == null) {
+                    return "";
+                }
+                if (t instanceof ReplaceTable){
+                    ReplaceTable table = (ReplaceTable)t;
+                    return table.getReplaceName() + "";
+                }
+                return t.getName() + "";
+            }
+        }));
         return model;
     }
 
