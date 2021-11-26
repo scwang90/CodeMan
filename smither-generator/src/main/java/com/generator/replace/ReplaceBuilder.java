@@ -105,7 +105,7 @@ public class ReplaceBuilder extends DbModelBuilder {
             }
             //表备注
             if (replacerTableRemark.containsKey(table.getName())) {
-                replacerTableRemark.replace(replacerTableRemark.replace(table.getName()));
+                table.setReplaceRemark(replacerTableRemark.replace(table.getName()));
             } else if (isContainsChinese(table.getName())) {
                 String remark = table.getName().replace("农合", "医保").replace("门诊处方", "结算");
                 if (StringUtil.isNullOrBlank(table.getComment())) {
@@ -141,8 +141,13 @@ public class ReplaceBuilder extends DbModelBuilder {
                     newColumnName = newColumnName.replaceAll("^_+|_+$", "").replaceAll("__+", "_");
                     set.add(newColumnName);
                     column.setReplaceName(newColumnName);
-                    if (StringUtil.isNullOrBlank(column.getComment()) && isContainsChinese(column.getName())) {
-                        column.setReplaceRemark(column.getName().replace("农合", "医保"));
+                    if (isContainsChinese(column.getName())) {
+                        String remark = column.getName().replace("农合", "医保").replace("门诊处方", "结算");
+                        if (StringUtil.isNullOrBlank(column.getComment()) || remark.equals(column.getComment())) {
+                            column.setReplaceRemark(remark);
+                        } else {
+                            column.setReplaceRemark(remark + "(" + column.getComment() + ")");
+                        }
                     } else {
                         column.setReplaceRemark(null);
                     }
