@@ -521,7 +521,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	}
 
 	protected String ifNeedWordBreak(String name, String origin) {
-		if (wordBreaker != null && origin.matches("^[A-Z0-9]{5,}$")) {
+		if (wordBreaker != null && origin.matches("^[_A-Z0-9]{5,}$")) {
 			return wordBreaker.breaks(name, config.getTableDivision());
 		}
 		return name;

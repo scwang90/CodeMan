@@ -38,7 +38,13 @@
     </table>
     <h1 style="text-align:center;">详细替换 ${projectName}</h1>
     <#list tables as table>
-        <h3><b>表</b> : <span>${table.name}</span> -> <span class="<#if table.name != table.replaceName>green</#if>">${table.replaceName}</span> [${table.comment}]</h3>
+        <h3><b>表</b> : <span>${table.name}</span> -> <span class="<#if table.name != table.replaceName>green</#if>">${table.replaceName}</span> [
+        <#if (table.replaceRemark?length > 0) >
+            <span class="green">${table.replaceRemark}</span>
+        <#else>
+            <span>${table.comment}</span>
+        </#if>
+        ]</h3>
         <table class="table table-hover table-bordered table-condensed table-striped" name="${table.name}" remark="${table.remark}">
             <thead>
             <tr>
@@ -58,7 +64,7 @@
 
             <#list table.columns as column>
                 <tr>
-                    <td>${column_index}</td>
+                    <td>${column_index+1}</td>
                     <td>${column.name}</td>
                     <td class="<#if column.name != column.replaceName>green</#if>">${column.replaceName}</td>
                     <td>${column.type}</td>

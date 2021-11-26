@@ -2,7 +2,10 @@ package com.code.smither.project.base.impl;
 
 import com.code.smither.project.base.api.WordReplacer;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +24,7 @@ public class DefaultWordReplacer implements WordReplacer {
         }
     }
 
-    private String dictPath;
+    private final String dictPath;
     private Map<String, Replace> dictionary;
 
     public DefaultWordReplacer(String dictPath) {
@@ -29,14 +32,28 @@ public class DefaultWordReplacer implements WordReplacer {
     }
 
     @Override
-    public String replace(String str, String...divisions) {
-        if (dictionary == null && dictPath != null && dictPath.trim().length() > 0) {
-            dictionary = loadDictionary(dictPath, divisions);
+    public boolean containsKey(String name) {
+        ensureDictionary();
+        if (dictionary != null) {
+            return dictionary.containsKey(name);
         }
-        return replaceInternal(str, dictionary, 0);
+        return false;
     }
 
-    private String replaceInternal(String str, Map<String, Replace> dictionary, int level) {
+    @Override
+    public String replace(String str, String...divisions) {
+        ensureDictionary();
+        String division = (divisions.length > 0) ? divisions[0] : "";
+        return replaceInternal(str, dictionary, division, 0);
+    }
+
+    private void ensureDictionary() {
+        if (dictionary == null && dictPath != null && dictPath.trim().length() > 0) {
+            dictionary = loadDictionary(dictPath);
+        }
+    }
+
+    private String replaceInternal(String str, Map<String, Replace> dictionary, String division, int level) {
         String index = "#$@%&*!^-+=";
         if (dictionary != null && !dictionary.isEmpty()) {
             int i = 0;
@@ -45,29 +62,24 @@ public class DefaultWordReplacer implements WordReplacer {
                 Replace replace = dictionary.get(key);
                 String old = str;
                 if (replace.isRegex) {
-                    str = str.replaceAll(key, replace.value);
+                    str = str.replaceAll(key, division + replace.value);
                 } else {
                     str = str.replaceAll(key, index.charAt(level) + "{" + i + "}");
                 }
                 if (old.equals(str) && !replace.fines.isEmpty()) {
-                    str = replaceInternal(str, replace.fines, level + 1);
+                    str = replaceInternal(str, replace.fines, division, level + 1);
                 }
-//                if (key.startsWith("regex:")) {
-//                    str = str.replaceAll(key.substring(6), dictionary.get(key));
-//                } else {
-//                    str = str.replaceAll(key, "#{" + i + "}");
-//                }
             }
             i = 0;
             for (String key : dictionary.keySet()) {
                 i++;
-                str = str.replace(index.charAt(level) + "{" + i + "}", dictionary.get(key).value);
+                str = str.replaceAll(index.charAt(level) + "\\{" + i + "}", division + dictionary.get(key).value);
             }
         }
         return str;
     }
 
-    public static Map<String, Replace> loadDictionary(String dictPath, String... divisions) {
+    public static Map<String, Replace> loadDictionary(String dictPath) {
         File file = new File(dictPath);
         if (!file.exists()) {
             throw new RuntimeException("找不到文件：" + dictPath);
@@ -78,7 +90,6 @@ public class DefaultWordReplacer implements WordReplacer {
         Map<String, Replace> dictRegex = new LinkedHashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))){
             String line;
-            String division = (divisions.length > 0) ? divisions[0] : "";
             while ((line = reader.readLine()) != null) {
                 String[] split = line.split("-");
                 if (split.length == 2) {
@@ -86,10 +97,10 @@ public class DefaultWordReplacer implements WordReplacer {
                     if (key.startsWith("regex:")) {
                         key = key.substring(6);
                         keySetRegex.add(key);
-                        dictRegex.put(key, new Replace(key, division + split[1], true));
+                        dictRegex.put(key, new Replace(key, split[1], true));
                     } else {
                         keySet.add(key);
-                        dict.put(key, new Replace(key, division + split[1], false));
+                        dict.put(key, new Replace(key, split[1], false));
                     }
                 } else if (split.length == 1 && line.endsWith("-")) {
                     String key = split[0];

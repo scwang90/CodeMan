@@ -75,24 +75,27 @@ public class ReplaceBuilder extends DbModelBuilder {
         model.getJdbc().setUsername(factory.getUsername());
         model.getJdbc().setPassword(factory.getPassword());
 
-        Map<String, String> dictTableIgnore = replaceConfig.getDictTableIgnore();
         WordReplacer replacerTableName = replaceConfig.getReplacerTableName();
         WordReplacer replacerColumnName = replaceConfig.getReplacerColumnName();
-        Map<String, DefaultWordReplacer.Replace> replacerTableRemark = replaceConfig.getDictTableRemark();
+        WordReplacer replacerTableRemark = replaceConfig.getReplacerTableRemark();
+        Map<String, String> dictTableIgnore = replaceConfig.getDictTableIgnore();
         for (ReplaceTable table : model.getTables().stream().map(t->(ReplaceTable)t).collect(Collectors.toList())) {
             //忽略表过滤
             if (dictTableIgnore.containsKey(table.getName())) {
                 table.setReplaceName(table.getName());
+                for (ReplaceColumn column : table.getColumns().stream().map(c->(ReplaceColumn)c).collect(Collectors.toList())) {
+                    column.setReplaceName(column.getName());
+                }
                 continue;
             }
             String newTableName = replacerTableName.replace(table.getName(), config.getTableDivision());
-            newTableName = newTableName.replaceAll("^_+", "");
+            newTableName = newTableName.replaceAll("^_+|_+$", "").replaceAll("__+", "_").toUpperCase();
             if (!table.getName().equals(newTableName)) {
                 table.setReplaceName(newTableName);
             } else {
                 //没有被替换
                 newTableName = super.convertIfNeed(table.getName());
-                newTableName = newTableName.replaceAll("^_+", "");
+                newTableName = newTableName.replaceAll("^_+|_+$", "").replaceAll("__+", "_").toUpperCase();
                 if (!table.getName().equals(newTableName)) {
                     table.setReplaceName(newTableName);
                 } else {
@@ -100,9 +103,9 @@ public class ReplaceBuilder extends DbModelBuilder {
                     table.setReplaceName(StringUtil.camelReverse(table.getClassName(), "_"));
                 }
             }
-            //表备注 
+            //表备注
             if (replacerTableRemark.containsKey(table.getName())) {
-                table.setReplaceRemark(replacerTableRemark.get(table.getName()).value);
+                replacerTableRemark.replace(replacerTableRemark.replace(table.getName()));
             } else if (isContainsChinese(table.getName())) {
                 String remark = table.getName().replace("农合", "医保").replace("门诊处方", "结算");
                 if (StringUtil.isNullOrBlank(table.getComment())) {
@@ -118,23 +121,26 @@ public class ReplaceBuilder extends DbModelBuilder {
             for (ReplaceColumn column : table.getColumns().stream().map(c->(ReplaceColumn)c).collect(Collectors.toList())) {
                 if (!isFilterChineseCloumn || !isContainsChinese(column.getName())) {
                     String newColumnName = replacerColumnName.replace(column.getName(), config.getColumnDivision());
-                    newColumnName = newColumnName.replaceAll("^_+|_+$", "").replaceAll("__+", "_").toUpperCase();
                     if (!column.getName().equals(newColumnName)) {
-                        column.setReplaceName(newColumnName);
+                        newColumnName = super.convertIfNeed(newColumnName);
                     } else {
                         //没有被替换
                         newColumnName = super.convertIfNeed(column.getName());
-                        newColumnName = newColumnName.replaceAll("^_+|_+$", "").replaceAll("__+", "_").toUpperCase();
-                        if (!column.getName().equals(newColumnName)) {
-                            column.setReplaceName(newColumnName);
-                        } else {
+                        if (column.getName().equals(newColumnName)) {
                             //默认类名反驼峰
-                            newColumnName = StringUtil.camelReverse(column.getFieldName(), "_");
+                            newColumnName = StringUtil.camelReverse(column.getFieldName(), config.getColumnDivision());
                             newColumnName = newColumnName.replaceAll("(.+)_(BEFORE|NOW|FEE|RESULT|WAY)$", "$2_$1");
-                            column.setReplaceName(newColumnName);
                         }
                     }
-                    set.add(column.getReplaceName());
+                    if (!StringUtil.isNullOrBlank(config.getColumnDivision())) {
+                        newColumnName = StringUtil.camelReverse(newColumnName, config.getColumnDivision());
+                        if (newColumnName.contains(config.getColumnDivision())) {
+                            newColumnName = newColumnName.toUpperCase();
+                        }
+                    }
+                    newColumnName = newColumnName.replaceAll("^_+|_+$", "").replaceAll("__+", "_");
+                    set.add(newColumnName);
+                    column.setReplaceName(newColumnName);
                     if (StringUtil.isNullOrBlank(column.getComment()) && isContainsChinese(column.getName())) {
                         column.setReplaceRemark(column.getName().replace("农合", "医保"));
                     } else {
@@ -158,18 +164,15 @@ public class ReplaceBuilder extends DbModelBuilder {
                 }
             }
         }
-        model.getTables().sort(Comparator.comparing(new Function<Table, String>() {
-            @Override
-            public String apply(Table t) {
-                if (t == null) {
-                    return "";
-                }
-                if (t instanceof ReplaceTable){
-                    ReplaceTable table = (ReplaceTable)t;
-                    return table.getReplaceName() + "";
-                }
-                return t.getName() + "";
+        model.getTables().sort(Comparator.comparing(t -> {
+            if (t == null) {
+                return "";
             }
+            if (t instanceof ReplaceTable){
+                ReplaceTable table = (ReplaceTable)t;
+                return table.getReplaceName() + "";
+            }
+            return t.getName() + "";
         }));
         return model;
     }

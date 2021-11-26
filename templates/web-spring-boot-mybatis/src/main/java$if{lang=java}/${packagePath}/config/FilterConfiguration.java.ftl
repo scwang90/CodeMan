@@ -1,4 +1,4 @@
-package com.traveler.server.config;
+package ${packageName}.config;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
