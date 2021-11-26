@@ -67,7 +67,7 @@ class ${className}Controller {
 	<#if table.hasSearches>
 	@ApiImplicitParams(ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字"))
 	</#if>
-    fun list${bean}(@ApiIgnore paging: Paging<#if table.hasSearches>, key: String?</#if>): ApiResult<Paged<${className}${bean}>> {
+    fun list${bean}(paging: Paging<#if table.hasSearches>, key: String?</#if>): ApiResult<Paged<${className}${bean}>> {
 	<#if (table.hasOrgan && hasOrgan) || table.hasSearches || table.hasRemove>
 		return ApiResult.success(service.list${bean}(paging<#if table.hasSearches>, key</#if>))
 	<#else >
@@ -85,7 +85,7 @@ class ${className}Controller {
 		ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字")
 		</#if>
 	)
-	fun list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, @ApiIgnore paging: Paging<#if table.hasSearches>, key: String?</#if>): ApiResult<Paged<${className}${bean}>> {
+	fun list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}: ${key.fkColumn.fieldType}, paging: Paging<#if table.hasSearches>, key: String?</#if>): ApiResult<Paged<${className}${bean}>> {
 		return ApiResult.success(service.list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}, paging<#if table.hasSearches>, key</#if>))
 	}
 	</#list>
@@ -96,7 +96,7 @@ class ${className}Controller {
 	@ApiImplicitParams(
 		ApiImplicitParam(paramType = "query", name = "${key.relateTargetColumn.fieldName}", value = "${key.relateTargetColumn.remarkName}关联", required = true)
 	)
-	fun list${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldName}: ${key.relateTargetColumn.fieldType}, @ApiIgnore paging: Paging): ApiResult<Paged<${className}${bean}>> {
+	fun list${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldName}: ${key.relateTargetColumn.fieldType}, paging: Paging): ApiResult<Paged<${className}${bean}>> {
 		val list = mapper.select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldName}, paging.toRowBounds())
 		return ApiResult.success(Paged(paging, list))
 	}

@@ -8,7 +8,7 @@ regex:\bNUM\B-NUM_
 regex:\BNUM\b-NUM
 regex:\bPAY\B-PAY_
 regex:\BPAY\b-PAY
-regex:\BID\b-ID
+regex:(?<!UU)\BID\b-ID
 regex:\BNO\b-NO
 regex:\BLB\b-TYPE
 regex:\bIF\B-IF_
@@ -65,3 +65,5 @@ regex:单$-
 regex:^JIUZHEN-
 
 regex:^WBM$-BASE_WB_CODE
+
+

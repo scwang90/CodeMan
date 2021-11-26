@@ -67,7 +67,7 @@ public class ${className}Controller {
 	<#if table.hasSearches>
 	@ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字")})
 	</#if>
-    public ApiResult<Paged<${className}${bean}>> list${bean}(@ApiIgnore Paging paging<#if table.hasSearches>, String key</#if>) {
+    public ApiResult<Paged<${className}${bean}>> list${bean}(Paging paging<#if table.hasSearches>, String key</#if>) {
 	<#if table.hasOrgan || table.hasSearches>
 		return ApiResult.success(service.list${bean}(paging<#if table.hasSearches>, key</#if>));
 	<#else >
@@ -85,7 +85,7 @@ public class ${className}Controller {
 		@ApiImplicitParam(paramType = "query", name = "key", value = "搜索关键字")
 		</#if>
 	})
-	public ApiResult<Paged<${className}${bean}>> list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldType} ${key.fkColumn.fieldName}, @ApiIgnore Paging paging<#if table.hasSearches>, String key</#if>) {
+	public ApiResult<Paged<${className}${bean}>> list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldType} ${key.fkColumn.fieldName}, Paging paging<#if table.hasSearches>, String key</#if>) {
 		return ApiResult.success(service.list${bean}By${key.fkColumn.fieldNameUpper}(${key.fkColumn.fieldName}, paging<#if table.hasSearches>, key</#if>));
 	}
 	</#list>
@@ -96,7 +96,7 @@ public class ${className}Controller {
 	@ApiImplicitParams({
 		@ApiImplicitParam(paramType = "query", name = "${key.relateTargetColumn.fieldName}", value = "${key.relateTargetColumn.remarkName}关联", required = true)
 	})
-	public ApiResult<Paged<${className}${bean}>> list${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldType} ${key.relateTargetColumn.fieldName}, @ApiIgnore Paging paging) {
+	public ApiResult<Paged<${className}${bean}>> list${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldType} ${key.relateTargetColumn.fieldName}, Paging paging) {
 		List<${className}${bean}> list = mapper.select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(${key.relateTargetColumn.fieldName}, paging.toRowBounds());
 		return ApiResult.success(new Paged(paging, list));
 	}
