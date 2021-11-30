@@ -14,7 +14,13 @@ public enum ResultCode {
     Unauthorized(HttpStatus.UNAUTHORIZED.value(), "请先登录"),
     Forbidden(HttpStatus.FORBIDDEN.value(), "凭证过期"),
     NotFound(HttpStatus.NOT_FOUND.value(), "未找到路径"),
-    ServerError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器错误");
+    ServerError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器错误"),
+
+    FailToMkdirUpload(521, "创建上传目录失败"),
+    FailToWriteUpload(521, "写入上传文件失败"),
+    LostUploadData(522, "上传数据丢失"),
+    LostUploadFile(523, "上传文件丢失"),
+    LostToDeleteFile(524, "文件删除失败");
 
     public final int code;
     public final String message;

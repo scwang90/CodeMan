@@ -1,5 +1,6 @@
 package ${packageName}.service;
 
+import ${packageName}.constant.ResultCode;
 import ${packageName}.constant.UploadType;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
@@ -49,7 +50,7 @@ public class UploadService {
         if (deleted != 1) {
             log.warn("deleteUploadById({})={}", id, deleted);
         }
-}
+    }
 
     /**
      * 根据图片 id 获取文件
@@ -100,13 +101,13 @@ public class UploadService {
         File parent = file.getParentFile();
         if (!parent.exists() && !parent.mkdirs()) {
             log.error("创建目录失败:" + parent.getAbsolutePath());
-            throw new ServiceException("上传失败");
+            throw new ServiceException(ResultCode.FailToMkdirUpload);
         }
         try {
             part.transferTo(file);
         } catch (IOException e) {
             log.error("保存文件失败", e);
-            throw new ServiceException("上传失败");
+            throw new ServiceException(ResultCode.FailToWriteUpload);
         }
         mapper.insert(upload);
     }

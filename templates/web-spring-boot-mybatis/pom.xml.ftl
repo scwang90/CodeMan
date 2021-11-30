@@ -191,6 +191,20 @@
 			<optional>true</optional>
 		</dependency>
 		</#if>
+		<#if features.has('network')>
+
+		<!-- OK HTTP 网络请求-->
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>retrofit</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>converter-jackson</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		</#if>
 
 	</dependencies>
 

@@ -15,6 +15,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,44 +49,30 @@ public class UploadController {
 		Upload upload = new Upload(multipart);
 		upload.setPath(service.pathWith(null, UploadType.from(multipart)));
 		service.saveFile(multipart, upload);
-		upload.setPath(downloadUrlWithToken(request, upload.getId()));
+		upload.setPath(urlWithToken(request, upload.getId()));
 		return ApiResult.success(upload);
 	}
 
-	/**
-	 * 文件预览
-	 */
-	@ApiOperation(value = "文件预览")
-	@GetMapping(preview/{id})
-	public ResponseEntity<FileSystemResource> preview(@PathVariable String id)  {
+	@ApiOperation(value = "文件下载")
+	@GetMapping({"download/{id}","view/{id}"})
+	public ResponseEntity<FileSystemResource> download(@PathVariable String id, HttpServletRequest request)  {
 		Upload upload = mapper.findById(id);
 		if (upload == null) {
-			throw new ServiceException("找不到对应文件信息");
+			throw new ClientException(ResultCode.LostUploadData);
 		}
 
 		File file = service.getFileByUpload(upload);
 		if (!file.exists()) {
-			throw new ServiceException("找不到对应文件");
+			throw new ServiceException(ResultCode.LostUploadFile);
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-		String name = URLEncoder.QUERY.encode(upload.getName(), StandardCharsets.UTF_8);
 		headers.setContentType(MediaType.parseMediaType(upload.getMimeType()));
-		headers.setContentDisposition(ContentDisposition.inline().filename(name).build());
+		if (request.getServletPath().contains("download")) {
+			String name = URLEncoder.QUERY.encode(upload.getName(), StandardCharsets.UTF_8);
+			headers.setContentDispositionFormData("attachment", name);
+		}
 		return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.OK);
-	}
-
-	/**
-	* 文件下载
-	*/
-	@ApiOperation(value = "文件下载")
-	@GetMapping("download/{id}")
-	public ResponseEntity<FileSystemResource> download(@PathVariable String id) {
-		ResponseEntity<FileSystemResource> entity = preview(id);
-		HttpHeaders headers = new HttpHeaders(entity.getHeaders());
-		String name = entity.getHeaders().getContentDisposition().getFilename() + "";
-		headers.setContentDisposition(ContentDisposition.attachment().filename(name).build());
-		return new ResponseEntity<>(entity.getBody(), headers, HttpStatus.OK);
 	}
 
 	/**
@@ -94,24 +81,11 @@ public class UploadController {
 	 * @param token 图片 token
 	 * @return url
 	 */
-	public static String downloadUrlWithToken(HttpServletRequest request, @Nullable String token) {
+	public static String urlWithToken(HttpServletRequest request, @Nullable String token) {
 		if (token == null || token.startsWith("http")) {
 			return token;
 		}
 		return String.format("%s/api/v1/file/download/%s", urlSchemeHostPort(request), token);
-	}
-
-	/**
-	 * 根据图片 token 获取预览链接
-	 * @param request 请求对象
-	 * @param token 图片 token
-	 * @return url
-	 */
-	public static String previewUrlWithToken(HttpServletRequest request, @Nullable String token) {
-		if (token == null || token.startsWith("http")) {
-			return token;
-		}
-		return String.format("%s/api/v1/file/preview/%s", urlSchemeHostPort(request), token);
 	}
 
 	/**
