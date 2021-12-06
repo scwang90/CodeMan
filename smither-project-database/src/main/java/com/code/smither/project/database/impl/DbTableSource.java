@@ -4,6 +4,7 @@ import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.model.ForeignKey;
+import com.code.smither.project.base.model.IndexedKey;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.database.api.DbDataSource;
@@ -133,6 +134,22 @@ public class DbTableSource implements TableSource {
 	}
 
 	@Override
+	public List<? extends MetaDataIndex> queryIndexKeys(MetaDataTable table) throws Exception {
+		List<IndexedKey> keys = new LinkedList<>();
+		try (ResultSet result = this.dataSource.queryImportedKeys(table.getName())) {
+			while (result.next()) {
+				keys.add(indexFromResultSet(result));
+			}
+		}
+		List<IndexedKey> list = keys.stream().distinct().collect(Collectors.toList());
+		if (list.size() != keys.size()) {
+			logger.warn("表【" + table.getName() + "】索引出现重复，已经排重：" + keys.size() + "->" + list.size());
+			return list;
+		}
+		return keys;
+	}
+
+	@Override
 	public List<? extends MetaDataForegin> queryImportedKeys(MetaDataTable table) throws Exception {
 		List<ForeignKey> keys = new LinkedList<>();
 		// try (ResultSet result = queryImportedKeys(databaseMetaData, table.getName())) {
@@ -174,6 +191,20 @@ public class DbTableSource implements TableSource {
 		return keys;
 	}
 
+	private IndexedKey indexFromResultSet(ResultSet result) throws SQLException {
+		IndexedKey index = new IndexedKey();
+//		index.setIndex(result.getInt("KEY_SEQ"));
+//		index.setFkName(result.getString("FK_NAME"));
+//		index.setPkName(result.getString("PK_NAME"));
+//		index.setPkTableName(result.getString("PKTABLE_NAME"));
+//		index.setPkColumnName(result.getString("PKCOLUMN_NAME"));
+//		index.setFkTableName(result.getString("FKTABLE_NAME"));
+//		index.setFkColumnName(result.getString("FKCOLUMN_NAME"));
+//		index.setUpdateRule(result.getInt("UPDATE_RULE"));
+//		index.setDeleteRule(result.getInt("DELETE_RULE"));
+		return index;
+	}
+
 	private ForeignKey foreginFromResultSet(ResultSet result) throws SQLException {
 		ForeignKey foregin = new ForeignKey();
 		foregin.setIndex(result.getInt("KEY_SEQ"));
@@ -200,6 +231,14 @@ public class DbTableSource implements TableSource {
 	public TableColumn buildColumn(MetaDataColumn columnMate) {
 		if (columnMate instanceof TableColumn) {
 			return ((TableColumn) columnMate);
+		}
+		return null;
+	}
+
+	@Override
+	public IndexedKey buildIndexedKey(MetaDataIndex index) {
+		if (index instanceof IndexedKey) {
+			return ((IndexedKey) index);
 		}
 		return null;
 	}

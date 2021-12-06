@@ -268,7 +268,14 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * @throws Exception 数据库读取异常
 	 */
     protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
+
 		Set<String> keys = tableSource.queryPrimaryKeys(tableMate);
+		List<? extends MetaDataIndex> indexedKyes = tableSource.queryIndexKeys(table);
+		List<IndexedKey> indexedKeys = new ArrayList<>(indexedKyes.size());
+		for (MetaDataIndex index : indexedKyes) {
+			indexedKeys.add(tableSource.buildIndexedKey(index));
+		}
+		table.setIndexedKeys(indexedKeys);
 		List<? extends MetaDataForegin> importedKeys = tableSource.queryImportedKeys(tableMate);
 		List<ForeignKey> importedForeignKeys = new ArrayList<>(importedKeys.size());
 		for (MetaDataForegin key : importedKeys) {

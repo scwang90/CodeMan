@@ -68,6 +68,11 @@ public class DefaultDataSource implements DbDataSource {
 	}
 
 	@Override
+	public ResultSet querIndexedKeys(String tableName) throws SQLException {
+		return ensureMetaData().getIndexInfo(connection.getCatalog(), null, tableName, false, false);
+	}
+
+	@Override
     public ResultSet queryImportedKeys(String tableName) throws SQLException {
 		return ensureMetaData().getImportedKeys(connection.getCatalog(), null, tableName);
 	}

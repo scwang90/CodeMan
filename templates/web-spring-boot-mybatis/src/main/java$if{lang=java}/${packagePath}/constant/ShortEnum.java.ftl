@@ -9,7 +9,7 @@ public interface ShortEnum {
 
     default short origin() {
         if (this instanceof Enum) {
-            return (short) ((Enum) this).ordinal();
+            return (short) ((Enum<?>) this).ordinal();
         }
         return 0;
     }

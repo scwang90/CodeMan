@@ -58,6 +58,7 @@ public class Table implements Model, MetaDataTable {
     private boolean relateTable = false;            // 是否是关联表
 
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> columns;              // 表字段
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<IndexedKey> indexedKeys;           // 索引（数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportedKeys;          // 外键（导出，数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importedKeys;          // 外键（导入，数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportCascadeKeys;     // 外键（导出，级联，一对多，配置过滤过的）

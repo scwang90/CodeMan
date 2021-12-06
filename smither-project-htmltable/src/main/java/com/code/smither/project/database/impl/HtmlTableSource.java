@@ -1,11 +1,9 @@
 package com.code.smither.project.database.impl;
 
-import com.code.smither.project.base.api.MetaDataColumn;
-import com.code.smither.project.base.api.MetaDataForegin;
-import com.code.smither.project.base.api.MetaDataTable;
-import com.code.smither.project.base.api.TableSource;
+import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.model.ForeignKey;
+import com.code.smither.project.base.model.IndexedKey;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.htmltable.HtmlTableConfig;
@@ -146,6 +144,11 @@ public class HtmlTableSource implements TableSource {
     }
 
     @Override
+    public IndexedKey buildIndexedKey(MetaDataIndex index) {
+        return null;
+    }
+
+    @Override
     public ForeignKey buildForeginKey(MetaDataForegin foregin) {
         return null;
     }
@@ -194,6 +197,11 @@ public class HtmlTableSource implements TableSource {
             }
         }
         return keys;
+    }
+
+    @Override
+    public List<? extends MetaDataIndex> queryIndexKeys(MetaDataTable table) throws Exception {
+        return Collections.emptyList();
     }
 
     @Override
