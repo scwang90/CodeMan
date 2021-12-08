@@ -98,7 +98,7 @@ public class ErrorController extends BasicErrorController {
         if (ex instanceof ConstraintViolationException) {
             message = "参数验证错误";
             List<String> messages = new LinkedList<>();
-            for (ConstraintViolation<?> constraint : ((ConstraintViolationException) error).getConstraintViolations()) {
+            for (ConstraintViolation<?> constraint : ((ConstraintViolationException) ex).getConstraintViolations()) {
                 messages.add(constraint.getPropertyPath() + ":" + constraint.getMessageTemplate());
             }
             if (messages.size() == 1) {
