@@ -71,6 +71,9 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.DATE:
                 return java.sql.Date.class;
             case Types.TIMESTAMP:
+                if ("DATETIME".equalsIgnoreCase(column.getType())) {
+                    return java.util.Date.class;
+                }
                 return java.sql.Timestamp.class;
             case Types.OTHER:
             case Types.JAVA_OBJECT:
