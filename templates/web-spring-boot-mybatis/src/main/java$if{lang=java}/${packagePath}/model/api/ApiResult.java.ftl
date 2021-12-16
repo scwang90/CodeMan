@@ -35,7 +35,7 @@ public class ApiResult<T> {
     }
 
     public ApiResult(CodeException code, String message) {
-        this.payload = null;
+        this.result = null;
         this.code = code.getCode();
         this.message = message == null ? code.getMessage() : message;
     }
@@ -54,6 +54,21 @@ public class ApiResult<T> {
     public ApiResult(T result, int code, String message, Object errors) {
         this(result, code, message);
         this.errors = errors;
+    }
+
+    public T result() {
+        return result(true, "服务");
+    }
+
+    public T result(boolean verify) {
+        return result(verify, "服务");
+    }
+
+    public T result(boolean verify, String service) {
+        if (verify && code != 200 && code != 0 && code != 200000) {
+            throw new ClientException(code, service + "返回：" + message);
+        }
+        return result;
     }
 
     public static <T> ApiResult<T> message(String message) {

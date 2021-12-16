@@ -20,7 +20,13 @@ public enum ResultCode {
     FailToWriteUpload(521, "写入上传文件失败"),
     LostUploadData(522, "上传数据丢失"),
     LostUploadFile(523, "上传文件丢失"),
-    LostToDeleteFile(524, "文件删除失败");
+    LostToDeleteFile(524, "文件删除失败"),
+<#if features.has('network')>
+
+    RemoteServerFailCode(531, "远程服务器返失败状态吗"),
+    RemoteServerReturnEmpty(532, "远程服务器返回空")
+</#if>
+    ;
 
     public final int code;
     public final String message;

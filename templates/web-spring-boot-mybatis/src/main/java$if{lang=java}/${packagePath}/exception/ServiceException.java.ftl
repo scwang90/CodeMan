@@ -24,5 +24,9 @@ public class ServiceException extends CodeException {
         super(resultCode);
     }
 
+    public ServiceException(ResultCode resultCode, Throwable throwable) {
+        super(resultCode, throwable);
+    }
+
 }
 

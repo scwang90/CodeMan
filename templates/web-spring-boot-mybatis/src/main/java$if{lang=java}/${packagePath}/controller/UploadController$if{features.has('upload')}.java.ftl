@@ -1,6 +1,8 @@
 package ${packageName}.controller;
 
+import ${packageName}.constant.ResultCode;
 import ${packageName}.constant.UploadType;
+import ${packageName}.exception.ClientException;
 import ${packageName}.exception.ServiceException;
 import ${packageName}.mapper.UploadMapper;
 import ${packageName}.model.api.ApiResult;
@@ -15,7 +17,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

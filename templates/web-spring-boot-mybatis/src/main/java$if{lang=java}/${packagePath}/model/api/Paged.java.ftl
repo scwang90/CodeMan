@@ -24,20 +24,20 @@ public class Paged<T> {
     }
 
     public Paged(Paging paging, List<T> list) {
-        this.records = records;
+        this.list = list;
         this.size = paging.count();
         this.current = paging.index();
 
-        if (records instanceof Page) {
-            this.total = Math.max(records.size(), (int)((Page<?>) records).getTotal());
+        if (list instanceof Page) {
+            this.total = Math.max(list.size(), (int)((Page<?>) list).getTotal());
         }
     }
 
-    public Paged(Paging paging, List<T> records, int count) {
-        this.records = records;
+    public Paged(Paging paging, List<T> list, int count) {
+        this.list = list;
         this.size = paging.count();
         this.current = paging.index();
-        this.total = Math.max(records.size(), count);
+        this.total = Math.max(list.size(), count);
     }
 
 }
