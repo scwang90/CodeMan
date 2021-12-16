@@ -30,7 +30,7 @@
 		<module>smither-generator</module>
 <!--		<module>smither-generator-fecred</module>-->
 <!--		<module>smither-generator-meteor</module>-->
-		<!--		<module>smither-generator-yxtech</module>-->
+<!--		<module>smither-generator-yxtech</module>-->
 	</modules>
 
 	<dependencies>

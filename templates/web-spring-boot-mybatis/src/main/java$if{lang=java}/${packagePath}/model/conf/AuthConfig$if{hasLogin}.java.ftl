@@ -1,7 +1,6 @@
 package ${packageName}.model.conf;
 
 import lombok.Data;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,7 @@ public class AuthConfig {
     }
 
     public String passwordHash(String pwd) {
-        return new Md5Hash(pwd, password.salt, password.iterations).toHex();
+        return pwd;
     }
 
     @Data

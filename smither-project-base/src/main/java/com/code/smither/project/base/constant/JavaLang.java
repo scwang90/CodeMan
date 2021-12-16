@@ -87,8 +87,8 @@ public class JavaLang extends AbstractProgramLang {
             clazz = java.lang.Integer.class;
         } if (BigInteger.class.equals(clazz)) {
             clazz = java.lang.Long.class;
-        } if (BigDecimal.class.equals(clazz)) {
-            clazz = java.lang.Double.class;
+//        } if (BigDecimal.class.equals(clazz)) {
+//            clazz = java.lang.Double.class;
         }
         if (clazz.isArray()) {
             return clazz.getComponentType().getName().replaceAll("java.lang.","")+"[]";

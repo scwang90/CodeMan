@@ -41,16 +41,16 @@ public class IndexController {
 		request.getRequestDispatcher("/swagger-ui.html").forward(request, response);
 	}
 
-	@GetMapping("admin")
-	public void admin(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/admin/index.html").forward(request, response);
-	}
-
-	@GetMapping({"admin/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}/{*:[\\w\\-]+}"})
-	public void admin404(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
-		//LoggerFactory.getLogger("admin404").info("path=" + request.servletPath);
-		request.getRequestDispatcher("/admin/index.html").forward(request, response);
-	}
+//	@GetMapping("admin")
+//	public void admin(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
+//		request.getRequestDispatcher("/admin/index.html").forward(request, response);
+//	}
+//
+//	@GetMapping({"admin/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}","admin/{*:[\\w\\-]+}/{*:[\\w\\-]+}/{*:[\\w\\-]+}"})
+//	public void admin404(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException {
+//		//LoggerFactory.getLogger("admin404").info("path=" + request.servletPath);
+//		request.getRequestDispatcher("/admin/index.html").forward(request, response);
+//	}
 
 //	  @GetMapping("admin")
 //    public String home() {

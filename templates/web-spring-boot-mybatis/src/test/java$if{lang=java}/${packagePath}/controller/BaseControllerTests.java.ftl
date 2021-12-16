@@ -3,14 +3,14 @@ package ${packageName}.controller;
 import ${packageName}.${projectClassName}ApplicationTests;
 
 <#if hasLogin>
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+//import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 </#if>
 import org.junit.jupiter.api.Disabled;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 <#if hasLogin>
-import javax.servlet.Filter;
+//import javax.servlet.Filter;
 </#if>
 import javax.servlet.http.Cookie;
 
@@ -27,12 +27,12 @@ public class BaseControllerTests extends ${projectClassName}ApplicationTests {
 <#if hasLogin>
 
     protected MockMvc mockMvc;
-    protected ShiroFilterFactoryBean factory;
+    //protected ShiroFilterFactoryBean factory;
 
     public void before() throws Exception {
         super.before();
-        factory = context.getBean(ShiroFilterFactoryBean.class);
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).addFilters((Filter)factory.getObject()).build();
+        //factory = context.getBean(ShiroFilterFactoryBean.class);
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)/*.addFilters((Filter)factory.getObject())*/.build();
     }
 
     /**

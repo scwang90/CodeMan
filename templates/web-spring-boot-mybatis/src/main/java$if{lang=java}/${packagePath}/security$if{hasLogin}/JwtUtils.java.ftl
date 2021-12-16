@@ -1,11 +1,12 @@
-package ${packageName}.util;
+package ${packageName}.security;
 
+import ${packageName}.constant.ResultCode;
+import ${packageName}.exception.ClientException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import ${packageName}.shiro.model.JwtBearer;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.Cookie;
@@ -42,8 +43,11 @@ public class JwtUtils {
     }
 
     public static JwtBearer currentBearer() {
-        Subject subject = SecurityUtils.getSubject();
-        return subject.getPrincipals().oneByType(JwtBearer.class);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new ClientException(ResultCode.Unauthorized);
+        }
+        return (JwtBearer)authentication.getPrincipal();
     }
 
     public static void writeToHeader(String token, HttpServletRequest request, HttpServletResponse response) {

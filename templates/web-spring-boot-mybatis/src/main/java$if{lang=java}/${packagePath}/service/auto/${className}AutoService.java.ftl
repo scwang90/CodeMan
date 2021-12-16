@@ -24,11 +24,14 @@ import ${packageName}.model.db.${className}Bean;
 <#if table.hasCode>
 import ${packageName}.util.CommonUtil;
 </#if>
-<#if !table.idColumn.autoIncrement && table.idColumn.stringType>
+<#if table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType>
 import ${packageName}.util.ID22;
 </#if>
+<#if table.hasId && !table.idColumn.autoIncrement && table.idColumn.longType>
+import ${packageName}.util.SnowflakeUtil;
+</#if>
 <#if table == loginTable || (table.hasOrgan && hasLogin) || (table == organTable  && hasLogin) || (hasLogin && table.hasCreator)>
-import ${packageName}.util.JwtUtils;
+import ${packageName}.security.JwtUtils;
 </#if>
 
 import lombok.AllArgsConstructor;
@@ -137,6 +140,9 @@ public class ${className}AutoService {
 		if(model.get${table.idColumn.fieldNameUpper}() == null) {
 			model.set${table.idColumn.fieldNameUpper}(ID22.random());
 		}
+</#if>
+<#if table.hasId && !table.idColumn.autoIncrement && table.idColumn.longType>
+		model.set${table.idColumn.fieldNameUpper}(SnowflakeUtil.nextId());
 </#if>
 <#if table.hasOrgan && hasLogin>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};

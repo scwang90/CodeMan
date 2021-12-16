@@ -1,6 +1,5 @@
 package ${packageName}.controller;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import ${packageName}.constant.ResultCode;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.LoginInfo;
@@ -10,19 +9,14 @@ import ${packageName}.model.db.${table.className};
     </#list>
 </#if>
 import ${packageName}.service.AuthService;
-import ${packageName}.shiro.model.JwtBearer;
-import ${packageName}.util.JwtUtils;
+import ${packageName}.security.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.subject.Subject;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +24,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotBlank;
-import java.util.Arrays;
 
 /**
  * 登录认证 API 实现
@@ -48,15 +40,6 @@ public class AuthController {
 
     private final AuthService service;
 
-    @GetMapping("version")
-    @ApiOperation(value = "版本信息", notes = "获取maven打包版本")
-    public ApiResult<String> version() {
-        String version = IndexController.class.getPackage().getImplementationVersion();
-        if (version == null) {
-            return ApiResult.success("调试版本");
-        }
-        return ApiResult.success(version);
-    }
 <#if hasMultiLogin>
     <#list loginTables as table>
 
@@ -70,17 +53,9 @@ public class AuthController {
     </#if>
     })
     public ApiResult<LoginInfo<${table.className}>> login${table.className}(<#if table.hasOrgan>${table.orgColumn.fieldType} ${table.orgColumn.fieldName}, </#if>String username, String password, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        try {
-            LoginInfo<${table.className}> info = service.login${table.className}(<#if table.hasOrgan>${table.orgColumn.fieldName}, </#if>username, password);
-            JwtUtils.writeToHeader(info.token, request, response);
-            return ApiResult.success(info);
-        } catch (AuthenticationException e) {
-            if (e.getCause() != null) {
-                throw e.getCause();
-            }
-            log.error("登录失败", e);
-            return ApiResult.failClient("登录失败");
-        }
+        LoginInfo<${table.className}> info = service.login${table.className}(<#if table.hasOrgan>${table.orgColumn.fieldName}, </#if>username, password);
+        JwtUtils.writeToHeader(info.token, request, response);
+        return ApiResult.success(info);
     }
     </#list>
 <#else >
@@ -94,30 +69,16 @@ public class AuthController {
     </#if>
     })
     public ApiResult<LoginInfo> login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldType} ${loginTable.orgColumn.fieldName}, </#if>String username, String password, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        try {
-            LoginInfo info = service.login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password);
-            JwtUtils.writeToHeader(info.token, request, response);
-            return ApiResult.success(info);
-        } catch (AuthenticationException e) {
-            if (e.getCause() != null) {
-                throw e.getCause();
-            }
-            log.error("登录失败", e);
-            return ApiResult.failClient("登录失败");
-        }
+        LoginInfo info = service.login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password);
+        JwtUtils.writeToHeader(info.token, request, response);
+        return ApiResult.success(info);
     }
 
 </#if>
     @PostMapping("status")
     @ApiOperation(value = "登录状态")
     public ApiResult<Object> status() {
-        Subject subject = SecurityUtils.getSubject();
-        if (!subject.isAuthenticated()) {
-            return ApiResult.fail(ResultCode.Unauthorized);
-        }
-        JwtBearer bearer = subject.getPrincipals().oneByType(JwtBearer.class);
-        DecodedJWT decoded = subject.getPrincipals().oneByType(DecodedJWT.class);
-        return ApiResult.success(Arrays.asList(bearer,decoded));
+        return ApiResult.success(JwtUtils.currentBearer());
     }
 
     @PostMapping("logout")
