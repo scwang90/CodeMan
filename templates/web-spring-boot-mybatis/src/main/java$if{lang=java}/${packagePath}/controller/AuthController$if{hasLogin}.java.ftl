@@ -99,7 +99,7 @@ public class AuthController {
     @RequestMapping("expired")
     @ApiOperation(value = "凭证过期", hidden = true)
     public ApiResult<Object> expired() {
-        return ApiResult.fail(ResultCode.Unauthorized);
+        return ApiResult.fail(ResultCode.Forbidden);
     }
 
 }

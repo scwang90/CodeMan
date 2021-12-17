@@ -142,7 +142,9 @@ public class ${className}AutoService {
 		}
 </#if>
 <#if table.hasId && !table.idColumn.autoIncrement && table.idColumn.longType>
-		model.set${table.idColumn.fieldNameUpper}(SnowflakeUtil.nextId());
+		if(model.get${table.idColumn.fieldNameUpper}() == 0L) {
+			model.set${table.idColumn.fieldNameUpper}(SnowflakeUtil.nextId());
+		}
 </#if>
 <#if table.hasOrgan && hasLogin>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};

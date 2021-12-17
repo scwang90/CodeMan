@@ -60,8 +60,10 @@ public class JwtVerifyFilter extends BasicAuthenticationFilter {
                 }
 
             } catch (TokenExpiredException e) {
-                request.getRequestDispatcher("/api/v1/auth/expired").forward(request, response);
-                return;
+                if (StringUtils.hasText(request.getHeader("Authorization"))) {
+                    request.getRequestDispatcher("/api/v1/auth/expired").forward(request, response);
+                    return;
+                }
             } catch (JWTVerificationException e) {
                 request.getRequestDispatcher("/api/v1/auth/failed").forward(request, response);
                 return;

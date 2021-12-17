@@ -36,7 +36,7 @@ import java.util.List;
 @Api(tags = "${table.remarkName}")
 @RequestMapping("/api/auto/${table.urlPathName}")
 @RestController("auto${className}Controller")
-public class ${className}Controller {
+public class ${className}AutoController {
 
 <#--<#if !table.hasOrgan && !table.hasCode && !table.hasCreate && !table.hasUpdate && table != loginTable && !(table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>-->
 	private final ${className}AutoMapper mapper;
