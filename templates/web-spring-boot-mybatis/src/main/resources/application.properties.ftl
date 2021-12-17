@@ -11,9 +11,9 @@ logging.level.${packageName}.mapper = info
 logging.level.${packageName}.controller = info
 logging.level.org.apache.shiro = error
 
-spring.datasource.url = ${jdbc.url}?serverTimezone=Asia/Shanghai
-spring.datasource.username = ${jdbc.username}
-spring.datasource.password = ${jdbc.password}
+spring.datasource.url = jdbc:mysql://localhost:3306/database?serverTimezone=Asia/Shanghai
+spring.datasource.username = username
+spring.datasource.password = password
 spring.datasource.type = com.zaxxer.hikari.HikariDataSource
 
 spring.jackson.time-zone = GMT+8
