@@ -64,7 +64,7 @@ public class JavaLang extends AbstractProgramLang {
     } ;
 
     @Override
-    public String getType(TableColumn column) {
+    public Class<?> getJavaType(TableColumn column) {
         Class<?> clazz = super.getJavaType(column);
 //        if (java.sql.Timestamp.class.equals(clazz)) {
 //            clazz = java.util.Date.class;
@@ -90,6 +90,12 @@ public class JavaLang extends AbstractProgramLang {
 //        } if (BigDecimal.class.equals(clazz)) {
 //            clazz = java.lang.Double.class;
         }
+        return clazz;
+    }
+
+    @Override
+    public String getType(TableColumn column) {
+        Class<?> clazz = this.getJavaType(column);
         if (clazz.isArray()) {
             return clazz.getComponentType().getName().replaceAll("java.lang.","")+"[]";
         }

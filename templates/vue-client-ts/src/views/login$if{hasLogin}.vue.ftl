@@ -1,5 +1,5 @@
 <template>
-    <div class="body" v-loading="logging">
+    <div class="body">
         <div class="center">
             <div class="left">
                 <div class="header">
@@ -12,15 +12,15 @@
             <div class="right">
                 <span class="title">欢迎登录</span>
                 <el-form class="form" ref="form" :model="model" :rules="rules" @keyup.enter.native="onLoginClick">
-                    <el-form-item class="item">
-                        <el-input class="username" placeholder="请输入账号" v-model="model.username" type="text">
+                    <el-form-item prop="username">
+                        <el-input placeholder="请输入账号" v-model="model.username" type="text">
                             <template #prepend>
                             <i class="icon el-icon-user"></i>
                             </template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item>
-                        <el-input class="password" placeholder="请输入密码" v-model="model.password" type="password">
+                    <el-form-item prop="password">
+                        <el-input placeholder="请输入密码" v-model="model.password" type="password">
                             <template #prepend>
                             <i class="icon el-icon-lock"></i>
                             </template>
@@ -33,7 +33,7 @@
                             <el-button type="text">忘记密码</el-button>
                         </div>
                     </el-form-item>
-                    <el-button class="submit" type="primary" @click="onLoginClick">立即登录</el-button>
+                    <el-button class="submit" type="primary" @click="onLoginClick" :loading="logging">立即登录</el-button>
                 </el-form>
 
             </div>
@@ -95,9 +95,9 @@ export default class LoginModule extends Vue {
     }
 
     created() {
-        this.model.username = localStorage.getItem(KEY_USERNAME);
-        this.model.password = localStorage.getItem(KEY_PASSWORD);
         this.remember = localStorage.getItem(KEY_REMEMBER) == 'true';
+        this.model.username = localStorage.getItem(KEY_USERNAME) || '';
+        this.model.password = localStorage.getItem(KEY_PASSWORD) || '';
     }
 
     onLoginClick() {
@@ -107,7 +107,7 @@ export default class LoginModule extends Vue {
                     this.logging = true;
                     await this.login(this.model);
                     sessionStorage.setItem("token", 'true');
-                    localStorage.setItem(KEY_REMEMBER, this.remember);
+                    localStorage.setItem(KEY_REMEMBER, `${r"${this.remember}"}`);
                     if (this.remember) {
                         localStorage.setItem(KEY_USERNAME, this.model.username);
                         localStorage.setItem(KEY_PASSWORD, this.model.password);
@@ -117,7 +117,7 @@ export default class LoginModule extends Vue {
                     }
                     this.$router.push({path:'/index'});
                 } catch (error) {
-                    this.$message.error(error);
+                    this.$message.error(`${r"${error}"}`);
                 } finally {
                     this.logging = false;
                 }

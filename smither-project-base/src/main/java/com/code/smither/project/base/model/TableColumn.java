@@ -6,7 +6,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 模板Model-table-column
@@ -55,7 +58,8 @@ public class TableColumn implements MetaDataColumn {
 	private boolean hiddenForClient;//是否对前端需要隐藏
 	private boolean hiddenForTables;//是否对前端需要隐藏 - 表格
 
-	private List<String> descriptions;//多行详细描述
+	private List<EnumValue> enums;		//枚举值
+	private List<String> descriptions;	//多行详细描述
 
 	@Override
 	public String getName() {
@@ -130,6 +134,7 @@ public class TableColumn implements MetaDataColumn {
 	public void setDescription(String description) {
 		this.description = description;
 		this.descriptions = Arrays.asList(description.split("\n"));
+		this.enums = findEnums(this.descriptions);
 	}
 
 	public void setFieldName(String fieldName) {
@@ -176,5 +181,25 @@ public class TableColumn implements MetaDataColumn {
 
 	public boolean isNotNull() {
 		return !this.nullable;
+	}
+
+	public boolean isHasEnums() { return isIntType() && this.enums != null && this.enums.size() > 1; }
+
+	private static Pattern enumPattern = Pattern.compile("(\\d+)[ :：]?(\\S+?)\\b");
+	private List<EnumValue> findEnums(List<String> descriptions) {
+		//操作类型(1注册,2登录,3重置密码,4修改手机)
+		List<EnumValue> enums = new LinkedList<>();
+		for (String desc : descriptions) {
+			Matcher matcher = enumPattern.matcher(desc);
+			while (matcher.find()) {
+				enums.add(new EnumValue(Integer.parseInt(matcher.group(1)), matcher.group(2)));
+			}
+			if (enums.size() > 1) {
+				break;
+			} else {
+				enums.clear();
+			}
+		}
+		return enums;
 	}
 }

@@ -35,7 +35,7 @@ public class RetrofitConfiguration {
      */
     @Bean
     public OkHttpClient okHttpClient(@Autowired OkHttpConfig config) throws NoSuchAlgorithmException, KeyManagementException {
-        Logger logger = LoggerFactory.getLogger("com.tianji.contract.ok-http");
+        Logger logger = LoggerFactory.getLogger("${packageName}.ok-http");
         Interceptor interceptor = new HttpLoggingInterceptor(logger::debug){{setLevel(Level.BODY);}};
         X509TrustManager manager = new X509TrustManager() {
             @Override

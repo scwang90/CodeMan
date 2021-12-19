@@ -55,7 +55,7 @@ public class JwtUtils {
         Cookie cookie = new Cookie("Bearer", token);
         cookie.setPath(path.isEmpty() ? "/" : path);
         response.addCookie(cookie);
-        response.addHeader("x-auth-token", token);
+        response.setHeader("x-auth-token", token);
     }
 
     public static String fromHeader(HttpServletRequest request) {

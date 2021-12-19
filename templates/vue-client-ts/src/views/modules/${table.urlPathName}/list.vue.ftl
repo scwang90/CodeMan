@@ -24,6 +24,10 @@
                 <template #default="scope">
                     <span>{{scope.row.${column.fieldName}|gender}}</span>
                 </template>
+                <#elseif column.hasEnums>
+                <template #default="scope">
+                    <span>{{showEnum(scope.row.${column.fieldName}, enums.${column.fieldName})}}</span>
+                </template>
                 <#elseif column.boolType>
                 <template #default="scope">
                     <span v-text="scope.row.${column.fieldName} ? '是' : '否'"></span>
@@ -85,6 +89,16 @@
                                 <el-radio :label="1">男</el-radio>
                                 <el-radio :label="2">女</el-radio>
                             </el-radio-group>
+            <#elseif column.hasEnums>
+                            <el-select v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"</#if> placeholder="请选择">
+                                <template v-for="(item,index) in enums.${column.fieldName}">
+                                    <el-option v-if="!!item"
+                                            :key="index"
+                                            :label="item"
+                                            :value="index">
+                                    </el-option>
+                                </template>
+                            </el-select>
             <#elseif column.boolType>
                             <el-switch v-model="model.${column.fieldName}" active-text="已${column.remarkName}" inactive-text="未${column.remarkName}"<#if column.hiddenForSubmit> :disabled="true"<#else> </#if>/>
             <#elseif column.dateType>
@@ -130,12 +144,35 @@ const rules = {
         { required: true, message: '请输入${column.remark}', trigger: 'blur' },
         </#if>
         <#if column.stringType>
-        { min: 2, max: ${column.length?c}, message: '${column.remark}长度在 2 到 ${column.length} 个字符', trigger: 'blur' },
+        { min: 1, max: ${column.length?c}, message: '${column.remark}长度在 1 到 ${column.length} 个字符', trigger: 'blur' },
         </#if>
     ],
     </#if>
 </#list>
 };
+<#if table.hasColumnEnums>
+const enums = {
+    <#list table.columns as column>
+        <#if column.hasEnums>
+    ${column.fieldName}: [
+        <#assign index = 0/>
+            <#list column.enums as enum>
+                <#if index < enum.value>
+                    <#list index..(enum.value-1) as i>
+        '',
+                    </#list>
+        '${enum.name}',
+                    <#assign index = enum.value + 1/>
+                <#else>
+        '${enum.name}',
+                    <#assign index = index + 1/>
+                </#if>
+            </#list>
+    ],
+        </#if>
+    </#list>
+}
+</#if>
 
 @Component${r"<"}${className}Module${r">"}({
     components: { ViewFrame }
@@ -159,6 +196,9 @@ export default class ${className}Module extends Vue {
     private modal${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}: Array<${key.pkTable.className}> = []
 </#list>
 
+<#if table.hasColumnEnums>
+    private enums = enums
+</#if>
     private rules = rules
     private model: ${className} = {}
     private items: Array<${className}> = []
@@ -190,7 +230,7 @@ export default class ${className}Module extends Vue {
             const result = await api${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}.list(params);
             this.modal${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} = result.list;
         } catch (error) {
-            this.$message.error(error);
+            this.$message.error(`${r"${error}"}}`);
         } finally {
             this.loading${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} = false;
         }
@@ -208,7 +248,7 @@ export default class ${className}Module extends Vue {
             this.items = result.list;
             this.pageTotal = result.totalRecord;
         } catch (error) {
-            this.$message.error(error);
+            this.$message.error(`${r"${error}"}}`);
         } finally {
             this.loadingList = false;
         }
@@ -225,7 +265,7 @@ export default class ${className}Module extends Vue {
             this.$message.success('保存成功');
             this.loadList(this.page);
         } catch (error) {
-            this.$message.error(error)
+            this.$message.error(`${r"${error}"}}`);
         } finally {
             this.loadingModel = false;
         }
@@ -238,7 +278,7 @@ export default class ${className}Module extends Vue {
             this.$message.success('删除成功');
             this.loadList(this.page);
         } catch (error) {
-            this.$message.error(error);
+            this.$message.error(`${r"${error}"}}`);
         } finally {
             this.loadingList = false;
         }
@@ -299,6 +339,17 @@ export default class ${className}Module extends Vue {
             return valid;
         });
     }
+<#if table.hasColumnEnums>
+    showEnum(value: number, enums: Array<string>): string {
+        if (value >= enums.length) {
+            return `${r"${value}"}`;
+        }
+        if (enums[value]) {
+            return enums[value];
+        }
+        return `${r"${value}"}`;
+    }
+</#if>
 };
 </script>
 <style>

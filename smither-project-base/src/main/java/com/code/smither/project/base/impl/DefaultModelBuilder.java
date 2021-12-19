@@ -458,9 +458,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 		Class<?> javaType = programLang.getJavaType(column);
 		column.setStringType(String.class.equals(javaType));//(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
 		column.setDateType(Date.class.isAssignableFrom(javaType));//(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
-		column.setBoolType(Boolean.class.equals(javaType));
-		column.setIntType(Integer.class.equals(javaType));
-		column.setLongType(Long.class.equals(javaType));
+		column.setLongType(Long.class.equals(javaType) || long.class.equals(javaType));
+		column.setIntType(Integer.class.equals(javaType) || int.class.equals(javaType));
+		column.setBoolType(Boolean.class.equals(javaType) || boolean.class.equals(javaType));
 
 		if (column.getDefValue() != null) {
 			column.setDefValue(column.getDefValue().replaceAll("\n$", ""));

@@ -164,4 +164,11 @@ public class Table implements Model, MetaDataTable {
         return importCascadeKeys != null && importCascadeKeys.size() > 0;
     }
 
+    public boolean isHasColumnEnums() {
+        if (this.columns != null) {
+            return this.columns.stream().anyMatch(TableColumn::isHasEnums);
+        }
+        return false;
+    }
+
 }

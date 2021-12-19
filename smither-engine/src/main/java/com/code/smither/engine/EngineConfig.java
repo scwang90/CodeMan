@@ -28,7 +28,7 @@ public class EngineConfig implements Config {
 
     private String includeFile = "*.*";
     private String includePath = "*";
-    private String filterFile = "*.classes;*.jar;";
+    private String filterFile = "*.classes";
     private String filterPath = "bin;build";
 
     private transient TaskLoader taskLoader;
