@@ -74,11 +74,22 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn) && model.isHasLogin());
 		//项目总特性中 是否包含机构，需要同时含有登录、并且登录表中含有机构Id 才算
 		model.setHasOrgan(model.isHasOrgan() && model.isHasLogin() && model.getLoginTable().isHasOrgan());
-		checkForeginKey(model, config, tables);
+		checkIndexedKey(tables);
+		checkForeignKey(model, config, tables);
 		return model;
 	}
 
-	private static void checkForeginKey(SourceModel model, ProjectConfig config, List<Table> tables) {
+	private static void checkIndexedKey(List<Table> tables) {
+		for (Table table : tables) {
+			table.setIndexedKeys(table.getIndexKeys().stream().filter(i->{
+				i.setTable(table);
+				i.setColumn(table.getColumns().stream().filter(c->c.getName().equals(i.getColumnName())).findFirst().orElse(null));
+				return i.getColumn() != table.getIdColumn() && table.getImportedKeys().stream().noneMatch(k->k.getFkColumnName().equals(i.getColumnName()));
+			}).collect(Collectors.toList()));
+		}
+	}
+
+	private static void checkForeignKey(SourceModel model, ProjectConfig config, List<Table> tables) {
 		for (Table table : tables) {
 			table.setImportCascadeKeys(table.getImportedKeys().stream().filter(key->{
 				key.setFkTable(table);
@@ -270,22 +281,22 @@ public class DefaultModelBuilder implements ModelBuilder {
     protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
 
 		Set<String> keys = tableSource.queryPrimaryKeys(tableMate);
-		List<? extends MetaDataIndex> indexedKyes = tableSource.queryIndexKeys(table);
-		List<IndexedKey> indexedKeys = new ArrayList<>(indexedKyes.size());
-		for (MetaDataIndex index : indexedKyes) {
-			indexedKeys.add(tableSource.buildIndexedKey(index));
+		List<? extends MetaDataIndex> indexedMetas = tableSource.queryIndexKeys(table);
+		List<IndexedKey> indexKeys = new ArrayList<>(indexedMetas.size());
+		for (MetaDataIndex index : indexedMetas) {
+			indexKeys.add(tableSource.buildIndexedKey(index));
 		}
-		table.setIndexedKeys(indexedKeys);
+		table.setIndexKeys(indexKeys);
 		List<? extends MetaDataForegin> importedKeys = tableSource.queryImportedKeys(tableMate);
 		List<ForeignKey> importedForeignKeys = new ArrayList<>(importedKeys.size());
 		for (MetaDataForegin key : importedKeys) {
-			importedForeignKeys.add(tableSource.buildForeginKey(key));
+			importedForeignKeys.add(tableSource.buildForeignKey(key));
 		}
 		table.setImportedKeys(importedForeignKeys);
 		List<? extends MetaDataForegin> exportedKeys = tableSource.queryExportedKeys(tableMate);
 		List<ForeignKey> exportedForeignKeys = new ArrayList<>(exportedKeys.size());
 		for (MetaDataForegin key : exportedKeys) {
-			exportedForeignKeys.add(tableSource.buildForeginKey(key));
+			exportedForeignKeys.add(tableSource.buildForeignKey(key));
 		}
 		table.setExportedKeys(exportedForeignKeys);
 		List<? extends MetaDataColumn> listMetaData = tableSource.queryColumns(tableMate);

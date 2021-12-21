@@ -17,7 +17,7 @@ public interface DbDataSource {
 
     ResultSet queryPrimaryKeys(String name) throws SQLException;
 
-    ResultSet querIndexedKeys(String name) throws SQLException;
+    ResultSet queryIndexedKeys(String name) throws SQLException;
 
     ResultSet queryImportedKeys(String name) throws SQLException;
 

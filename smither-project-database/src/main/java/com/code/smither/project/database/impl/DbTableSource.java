@@ -136,7 +136,7 @@ public class DbTableSource implements TableSource {
 	@Override
 	public List<? extends MetaDataIndex> queryIndexKeys(MetaDataTable table) throws Exception {
 		List<IndexedKey> keys = new LinkedList<>();
-		try (ResultSet result = this.dataSource.queryImportedKeys(table.getName())) {
+		try (ResultSet result = this.dataSource.queryIndexedKeys(table.getName())) {
 			while (result.next()) {
 				keys.add(indexFromResultSet(result));
 			}
@@ -159,7 +159,7 @@ public class DbTableSource implements TableSource {
 		// }
         try (ResultSet result = this.dataSource.queryImportedKeys(table.getName())) {
 			while (result.next()) {
-				keys.add(foreginFromResultSet(result));
+				keys.add(foreignFromResultSet(result));
 			}
 		}
 		List<ForeignKey> list = keys.stream().distinct().collect(Collectors.toList());
@@ -180,7 +180,7 @@ public class DbTableSource implements TableSource {
 		// }
 		try (ResultSet result = this.dataSource.queryExportedKeys(table.getName())) {
 			while (result.next()) {
-				keys.add(foreginFromResultSet(result));
+				keys.add(foreignFromResultSet(result));
 			}
 		}
 		List<ForeignKey> list = keys.stream().distinct().collect(Collectors.toList());
@@ -192,32 +192,37 @@ public class DbTableSource implements TableSource {
 	}
 
 	private IndexedKey indexFromResultSet(ResultSet result) throws SQLException {
-		//TODO 添加数据库索引解析的实现
 		IndexedKey index = new IndexedKey();
-//		index.setIndex(result.getInt("KEY_SEQ"));
-//		index.setFkName(result.getString("FK_NAME"));
-//		index.setPkName(result.getString("PK_NAME"));
-//		index.setPkTableName(result.getString("PKTABLE_NAME"));
-//		index.setPkColumnName(result.getString("PKCOLUMN_NAME"));
-//		index.setFkTableName(result.getString("FKTABLE_NAME"));
-//		index.setFkColumnName(result.getString("FKCOLUMN_NAME"));
-//		index.setUpdateRule(result.getInt("UPDATE_RULE"));
-//		index.setDeleteRule(result.getInt("DELETE_RULE"));
+
+		index.setTableCat(result.getString("TABLE_CAT"));							//(FIELD_TYPE_CHAR)
+		index.setTableSchem(result.getString("TABLE_SCHEM"));							//(FIELD_TYPE_CHAR)
+		index.setTableName(result.getString("TABLE_NAME"));							//(FIELD_TYPE_CHAR)
+		index.setNonUnique(result.getBoolean("NON_UNIQUE"));							//(FIELD_TYPE_BOOLEAN)
+		index.setIndexQualifier(result.getString("INDEX_QUALIFIER"));							//(FIELD_TYPE_CHAR)
+		index.setIndexName(result.getString("INDEX_NAME"));							//(FIELD_TYPE_CHAR)
+		index.setType(result.getInt("TYPE"));							//(FIELD_TYPE_SMALLINT)
+		index.setOrdinalPosition(result.getInt("ORDINAL_POSITION"));							//(FIELD_TYPE_SMALLINT)
+		index.setColumnName(result.getString("COLUMN_NAME"));							//(FIELD_TYPE_CHAR)
+		index.setAscOrDesc(result.getString("ASC_OR_DESC"));							//(FIELD_TYPE_CHAR)
+		index.setCardinality(result.getLong("CARDINALITY"));							//(FIELD_TYPE_BIGINT)
+		index.setPages(result.getLong("PAGES"));							//(FIELD_TYPE_BIGINT)
+		index.setFilterCondition(result.getString("FILTER_CONDITION"));							//(FIELD_TYPE_CHAR)
+
 		return index;
 	}
 
-	private ForeignKey foreginFromResultSet(ResultSet result) throws SQLException {
-		ForeignKey foregin = new ForeignKey();
-		foregin.setIndex(result.getInt("KEY_SEQ"));
-		foregin.setFkName(result.getString("FK_NAME"));
-		foregin.setPkName(result.getString("PK_NAME"));
-		foregin.setPkTableName(result.getString("PKTABLE_NAME"));
-		foregin.setPkColumnName(result.getString("PKCOLUMN_NAME"));
-		foregin.setFkTableName(result.getString("FKTABLE_NAME"));
-		foregin.setFkColumnName(result.getString("FKCOLUMN_NAME"));
-		foregin.setUpdateRule(result.getInt("UPDATE_RULE"));
-		foregin.setDeleteRule(result.getInt("DELETE_RULE"));
-		return foregin;
+	private ForeignKey foreignFromResultSet(ResultSet result) throws SQLException {
+		ForeignKey foreign = new ForeignKey();
+		foreign.setIndex(result.getInt("KEY_SEQ"));
+		foreign.setFkName(result.getString("FK_NAME"));
+		foreign.setPkName(result.getString("PK_NAME"));
+		foreign.setPkTableName(result.getString("PKTABLE_NAME"));
+		foreign.setPkColumnName(result.getString("PKCOLUMN_NAME"));
+		foreign.setFkTableName(result.getString("FKTABLE_NAME"));
+		foreign.setFkColumnName(result.getString("FKCOLUMN_NAME"));
+		foreign.setUpdateRule(result.getInt("UPDATE_RULE"));
+		foreign.setDeleteRule(result.getInt("DELETE_RULE"));
+		return foreign;
 	}
 
 	@Override
@@ -245,7 +250,7 @@ public class DbTableSource implements TableSource {
 	}
 
 	@Override
-	public ForeignKey buildForeginKey(MetaDataForegin foregin) {
+	public ForeignKey buildForeignKey(MetaDataForegin foregin) {
 		if (foregin instanceof ForeignKey) {
 			return ((ForeignKey) foregin);
 		}

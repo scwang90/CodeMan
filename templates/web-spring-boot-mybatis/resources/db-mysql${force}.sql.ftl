@@ -1,5 +1,7 @@
+SET NAMES utf8mb4;
 
 <#list tables as table>
+
 CREATE TABLE ${table.nameSql}
 (
     <#assign maxName = 0/>
@@ -79,8 +81,18 @@ COMMENT '${table.comment}' COLLATE = utf8mb4_unicode_ci;
 
 </#list>
 
+# 开始添加索引
+<#list tables as table>
+    <#list table.indexedKeys as index>
+
+CREATE<#if index.nonUnique> UNIQUE</#if> INDEX ${index.name} ON ${table.nameSql} (${index.columnName});
+    </#list>
+</#list>
+
+# 开始添加外健
 <#list tables as table>
     <#if table.importedKeys?size gt 0>
+
 # ${table.remarkName} 外键定义
         <#list table.importedKeys as key>
             <#assign updateRule = ''/>

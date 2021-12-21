@@ -58,9 +58,10 @@ public class Table implements Model, MetaDataTable {
     private boolean relateTable = false;            // 是否是关联表
 
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> columns;              // 表字段
-    @ToString.Exclude @EqualsAndHashCode.Exclude private List<IndexedKey> indexedKeys;           // 索引（数据库原始）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<IndexedKey> indexKeys;             // 索引（数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportedKeys;          // 外键（导出，数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importedKeys;          // 外键（导入，数据库原始）
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<IndexedKey> indexedKeys;           // 索引（排除主键之后的索引）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportCascadeKeys;     // 外键（导出，级联，一对多，配置过滤过的）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importCascadeKeys;     // 外键（导入，级联，一对一，配置过滤过的）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<RelatedKey> relateCascadeKeys;     // 外键（关联，级联，多对多，配置过滤过的）
@@ -146,6 +147,10 @@ public class Table implements Model, MetaDataTable {
     public void setPasswordColumn(TableColumn passwordColumn) {
         passwordColumn.setHiddenForClient(true);
         this.passwordColumn = passwordColumn;
+    }
+
+    public boolean isHasIndexedKey() {
+        return indexedKeys != null && indexedKeys.size() > 0;
     }
 
     public boolean isHasCascadeKey() {

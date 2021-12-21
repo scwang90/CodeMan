@@ -22,7 +22,7 @@ public interface TableSource {
     Table buildTable(MetaDataTable table);
     TableColumn buildColumn(MetaDataColumn column);
     IndexedKey buildIndexedKey(MetaDataIndex index);
-    ForeignKey buildForeginKey(MetaDataForegin foregin);
+    ForeignKey buildForeignKey(MetaDataForegin foregin);
 
     List<? extends MetaDataTable> queryTables() throws Exception;
     List<? extends MetaDataColumn> queryColumns(MetaDataTable table) throws Exception;

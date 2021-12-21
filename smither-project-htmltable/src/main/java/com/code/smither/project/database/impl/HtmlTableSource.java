@@ -149,7 +149,7 @@ public class HtmlTableSource implements TableSource {
     }
 
     @Override
-    public ForeignKey buildForeginKey(MetaDataForegin foregin) {
+    public ForeignKey buildForeignKey(MetaDataForegin foregin) {
         return null;
     }
 
