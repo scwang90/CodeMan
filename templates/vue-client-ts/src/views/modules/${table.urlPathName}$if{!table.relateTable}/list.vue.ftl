@@ -130,7 +130,15 @@ import api${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} f
 </#list>
 import ${className} from '@/model/auto/${table.urlPathName}';
 <#list table.importCascadeKeys as key>
+    <#list table.importCascadeKeys as key1>
+        <#if key.pkTable.className == key1.pkTable.className>
+            <#if key_index == key1_index>
 import ${key.pkTable.className} from '@/model/auto/${key.pkTable.urlPathName}';
+            <#else >
+                <#break >
+            </#if>
+        </#if>
+    </#list>
 </#list>
 import ViewFrame from '@/components/ViewFrame.vue';
 import { Route } from 'vue-router';

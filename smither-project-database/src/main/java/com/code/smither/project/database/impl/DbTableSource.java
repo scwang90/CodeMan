@@ -192,6 +192,7 @@ public class DbTableSource implements TableSource {
 	}
 
 	private IndexedKey indexFromResultSet(ResultSet result) throws SQLException {
+		//TODO 添加数据库索引解析的实现
 		IndexedKey index = new IndexedKey();
 //		index.setIndex(result.getInt("KEY_SEQ"));
 //		index.setFkName(result.getString("FK_NAME"));
