@@ -303,7 +303,7 @@ export default class ${className}Module extends Vue {
         this.selections = selections;
     }
     onSearchClick() {
-        this.loadList(this.page);
+        this.loadList(this.page = 1); //修复搜索跳转首页
     }
     onAddClick() {
         this.model = {};

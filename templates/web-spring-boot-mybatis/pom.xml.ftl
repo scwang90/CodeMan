@@ -39,10 +39,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<#if hasLogin>
@@ -106,12 +102,6 @@
         </dependency>
 		</#if>
 
-		<!--jackson JSON -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-
 		<!--spring 配置-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -132,25 +122,30 @@
 		</dependency>
 
 		<!--swagger 文档-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.10.5</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.10.5</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spring-webmvc</artifactId>
-            <version>2.10.5</version>
-        </dependency>
+<#--        <dependency>-->
+<#--            <groupId>io.springfox</groupId>-->
+<#--            <artifactId>springfox-swagger-ui</artifactId>-->
+<#--            <version>2.10.5</version>-->
+<#--        </dependency>-->
+<#--        <dependency>-->
+<#--            <groupId>io.springfox</groupId>-->
+<#--            <artifactId>springfox-swagger2</artifactId>-->
+<#--            <version>2.10.5</version>-->
+<#--        </dependency>-->
+<#--        <dependency>-->
+<#--            <groupId>io.springfox</groupId>-->
+<#--            <artifactId>springfox-spring-webmvc</artifactId>-->
+<#--            <version>2.10.5</version>-->
+<#--        </dependency>-->
+<#--		<dependency>-->
+<#--			<groupId>com.github.xiaoymin</groupId>-->
+<#--			<artifactId>swagger-bootstrap-ui</artifactId>-->
+<#--			<version>1.9.6</version>-->
+<#--		</dependency>-->
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>swagger-bootstrap-ui</artifactId>
-			<version>1.9.6</version>
+			<artifactId>knife4j-spring-boot-starter</artifactId>
+			<version>2.0.9</version>
 		</dependency>
 		<#if hasLogin>
 
@@ -189,15 +184,20 @@
 		<#if features.has('network')>
 
 		<!-- OK HTTP 网络请求-->
+<#--		<dependency>-->
+<#--			<groupId>com.squareup.retrofit2</groupId>-->
+<#--			<artifactId>retrofit</artifactId>-->
+<#--			<version>2.9.0</version>-->
+<#--		</dependency>-->
+<#--		<dependency>-->
+<#--			<groupId>com.squareup.retrofit2</groupId>-->
+<#--			<artifactId>converter-jackson</artifactId>-->
+<#--			<version>2.9.0</version>-->
+<#--		</dependency>-->
 		<dependency>
-			<groupId>com.squareup.retrofit2</groupId>
-			<artifactId>retrofit</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.squareup.retrofit2</groupId>
-			<artifactId>converter-jackson</artifactId>
-			<version>2.9.0</version>
+			<groupId>com.github.lianjiatech</groupId>
+			<artifactId>retrofit-spring-boot-starter</artifactId>
+			<version>2.2.17</version>
 		</dependency>
 		</#if>
 
@@ -233,7 +233,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<#else >
+			</#if>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -241,11 +241,13 @@
 					<source>${r"${java.version}"}</source>
 					<target>${r"${java.version}"}</target>
 					<annotationProcessorPaths>
+						<#if lang=="java">
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>${r'${org.projectlombok.version}'}</version>
 						</path>
+						</#if>
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
@@ -254,7 +256,6 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
-			</#if>
 		</plugins>
 	</build>
 

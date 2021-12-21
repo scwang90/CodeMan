@@ -36,6 +36,12 @@ import ${packageName}.security.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+<#list loginTables as table>
+    <#if table.hasPassword >
+
+import java.util.Objects;
+    </#if>
+</#list>
 
 /**
  * 登录认证
@@ -46,8 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class AuthService {
 
+    private final AuthConfig config;
     private final Algorithm jwtAlgorithm;
-    private final AuthConfig authConfig;
 <#if hasMultiLogin>
     <#list loginTables as table>
     private final ${table.className}AutoMapper ${table.classNameCamel}Mapper;
@@ -95,6 +101,12 @@ public class AuthService {
             }
             throw new ClientException("用户名或密码错误");
         }
+    <#if table.hasPassword>
+        if (!Objects.equals(${table.classNameCamel}.get${table.passwordColumn.fieldNameUpper}(), config.passwordHash(password))) {
+            throw new ClientException("用户名或密码错误");
+        }
+    </#if>
+
         //if ("1".equals(${table.classNameCamel}.getEfficet())) {
         //    throw new ClientException("当前用户帐号已被停用，请联系技术服务人员！");
         //}
@@ -106,7 +118,7 @@ public class AuthService {
     <#else>
         JwtBearer bearer = new JwtBearer(UserType.${table.className}.name(), ${table.classNameCamel}.get${table.idColumn.fieldNameUpper}());
     </#if>
-        String token = JwtUtils.createToken(bearer, jwtAlgorithm, authConfig.getExpiryTime());
+        String token = JwtUtils.createToken(bearer, jwtAlgorithm, config.getExpiryTime());
         return new LoginInfo<>(token, ${table.classNameCamel});
     }
 
@@ -123,7 +135,7 @@ public class AuthService {
         </#if>
     </#list>
     @Transactional(rollbackFor = Throwable.class)
-    public LoginInfo login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldTypePrimitive} ${loginTable.orgColumn.fieldName}, </#if>String username, String password) {
+    public LoginInfo<${loginTable.className}> login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldTypePrimitive} ${loginTable.orgColumn.fieldName}, </#if>String username, String password) {
     <#if hasUsernameColumn>
         <#assign prefix=""/>
     <#else>
@@ -142,17 +154,22 @@ public class AuthService {
         if (${loginTable.classNameCamel} == null) {
             if ("admin".equals(username) && "654321".equals(password)) {
                 //项目刚刚生成，数据库可能没有${loginTable.remarkName}数据，本代码可以提前体登录成功，并体验其他接口
-                return new LoginInfo(buildToken(new ${loginTable.className}()), new ${loginTable.className}());
+                return new LoginInfo<>(buildToken(new ${loginTable.className}()), new ${loginTable.className}());
             }
             throw new ClientException("用户名或密码错误");
         }
+    <#if loginTable.hasPassword>
+        if (!Objects.equals(${loginTable.classNameCamel}.get${loginTable.passwordColumn.fieldNameUpper}(), config.passwordHash(password))) {
+            throw new ClientException("用户名或密码错误");
+        }
+    </#if>
         //if ("1".equals(${loginTable.classNameCamel}.getEfficet())) {
         //    throw new ClientException("当前用户帐号已被停用，请联系技术服务人员！");
         //}
     <#if table.hasPassword>
         ${loginTable.classNameCamel}.set${table.passwordColumn.fieldNameUpper}("");
     </#if>
-        return new LoginInfo(buildToken(${loginTable.classNameCamel}), ${loginTable.classNameCamel});
+        return new LoginInfo<>(buildToken(${loginTable.classNameCamel}), ${loginTable.classNameCamel});
     }
 
     private String buildToken(${loginTable.className} ${loginTable.classNameCamel}) {
@@ -161,7 +178,7 @@ public class AuthService {
 <#else>
         JwtBearer bearer = new JwtBearer(UserType.Admin.name(), ${loginTable.classNameCamel}.get${loginTable.idColumn.fieldNameUpper}());
 </#if>
-        return JwtUtils.createToken(bearer, jwtAlgorithm, authConfig.getExpiryTime());
+        return JwtUtils.createToken(bearer, jwtAlgorithm, config.getExpiryTime());
     }
 
 </#if>

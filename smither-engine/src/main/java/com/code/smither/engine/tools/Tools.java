@@ -1,6 +1,17 @@
 package com.code.smither.engine.tools;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public class Tools {
+
+    public boolean or(Boolean... conditions) {
+        return Arrays.stream(conditions).anyMatch(c->c);
+    }
+
+    public boolean and(Boolean... conditions) {
+        return Arrays.stream(conditions).allMatch(c->c);
+    }
 
     public String idToModel(String key) {
         if (key == null) {

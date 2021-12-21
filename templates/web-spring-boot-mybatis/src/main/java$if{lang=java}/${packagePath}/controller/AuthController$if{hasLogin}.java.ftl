@@ -3,11 +3,9 @@ package ${packageName}.controller;
 import ${packageName}.constant.ResultCode;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.api.LoginInfo;
-<#if hasMultiLogin>
-    <#list loginTables as table>
+<#list loginTables as table>
 import ${packageName}.model.db.${table.className};
-    </#list>
-</#if>
+</#list>
 import ${packageName}.service.AuthService;
 import ${packageName}.security.JwtUtils;
 import io.swagger.annotations.Api;
@@ -68,8 +66,8 @@ public class AuthController {
         @ApiImplicitParam(paramType = "form", name = "${loginTable.orgColumn.fieldName}", value = "${table.orgColumn.remarkName}", required = true),
     </#if>
     })
-    public ApiResult<LoginInfo> login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldType} ${loginTable.orgColumn.fieldName}, </#if>String username, String password, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        LoginInfo info = service.login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password);
+    public ApiResult<LoginInfo<${loginTable.className}>> login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldType} ${loginTable.orgColumn.fieldName}, </#if>String username, String password, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        LoginInfo<${loginTable.className}> info = service.login(<#if loginTable.hasOrgan>${loginTable.orgColumn.fieldName}, </#if>username, password);
         JwtUtils.writeToHeader(info.token, request, response);
         return ApiResult.success(info);
     }

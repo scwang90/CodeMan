@@ -9,7 +9,7 @@ logging.level.root = info
 logging.level.${packageName}.mapper = debug
 logging.level.${packageName}.controller = info
 <#if features.has('network')>
-logging.level.com.auction.ok-http = debug
+logging.level.${packageName}.ok-http = debug
 </#if>
 logging.level.org.apache.coyote.http11 = debug
 logging.level.org.springframework.web.method = trace

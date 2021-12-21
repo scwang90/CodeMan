@@ -190,17 +190,21 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         try(Writer out = getFileWriter(file)) {
             Template template = getTemplate(templateFile);
             ObjectWrapper wrapper = template.getObjectWrapper();
-            template.process(new StringModel(root, (BeansWrapper) wrapper) {
-                @Override
-                public TemplateModel get(String key) throws TemplateModelException {
-                    TemplateModel model = super.get(key);
-                    if (model == null && "tools".equals(key)) {
-                        return new StringModel(getTools(), wrapper);
-                    }
-                    return model;
-                }
-            }, out);
+            template.process(getDataModel(root, (BeansWrapper) wrapper), out);
         }
+    }
+
+    private StringModel getDataModel(RootModel root, BeansWrapper wrapper) {
+        return new StringModel(root, wrapper) {
+            @Override
+            public TemplateModel get(String key) throws TemplateModelException {
+                TemplateModel model = super.get(key);
+                if (model == null && "tools".equals(key)) {
+                    return new StringModel(getTools(), wrapper);
+                }
+                return model;
+            }
+        };
     }
 
     protected Tools getTools() {
@@ -233,8 +237,9 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                         .replaceAll("\\b=\\b", "==")
                         .replaceAll("==(\\w+)$", "=='$1'");
                 Template nameTemplate = getTemplate("${(" + magic + ")?c}");
+                ObjectWrapper wrapper = nameTemplate.getObjectWrapper();
                 StringWriter writer = new StringWriter();
-                nameTemplate.process(rootModel, writer);
+                nameTemplate.process(getDataModel(rootModel,  (BeansWrapper)wrapper), writer);
                 String value = writer.getBuffer().toString();
                 if (value.equals("true")) {
                     conditionMap.put(group, "");
