@@ -4,6 +4,9 @@ import com.code.smither.engine.EngineConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +21,9 @@ public class ConfigFactory {
                 throw new RuntimeException("找不到配置文件：" + path);
             }
             Properties property = new Properties();
-            property.load(stream);
+            try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                property.load(reader);
+            }
             logger.log(Level.CONFIG, "加载配置文件：{0}", path);
             return property;
         } catch (IOException e) {

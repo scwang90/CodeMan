@@ -31,11 +31,11 @@ import java.util.function.Predicate;
 @Configuration
 @EnableSwagger2WebMvc
 @ConditionalOnProperty(name = "enabled", prefix = "app.swagger", havingValue = "true")
-public class SwaggerConfigurer {
+public class SwaggerConfiguration {
 
     final AppConfig config;
 
-    public SwaggerConfigurer(AppConfig config) {
+    public SwaggerConfiguration(AppConfig config) {
         if (!StringUtils.hasText(config.getSwaggerHost()) && StringUtils.hasText(config.getVisitHost())) {
             config.setSwaggerHost(config.getVisitHost().replaceAll("https?://", ""));
         }

@@ -29,7 +29,7 @@ public class ProjectConfigFactory {
         config.setTableDivision(properties.getProperty("code.man.database.table.division",config.getTableDivision()));
         config.setTableOrgan(properties.getProperty("code.man.database.table.organ",config.getTableOrgan()));
         config.setTableLogin(properties.getProperty("code.man.database.table.login",config.getTableLogin()));
-        config.setTableNoCascade(properties.getProperty("code.man.database.table.nocascade",config.getTableNoCascade()));
+        config.setTableNoCascade(properties.getProperty("code.man.database.table.no-cascade",config.getTableNoCascade()));
 
         config.setColumnPrefix(properties.getProperty("code.man.database.column.prefix",config.getColumnPrefix()));
         config.setColumnSuffix(properties.getProperty("code.man.database.column.suffix",config.getColumnSuffix()));

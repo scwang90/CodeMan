@@ -1,7 +1,11 @@
 package ${packageName}.model.api;
 
 import ${packageName}.constant.UploadType;
+<#if hasStringId>
 import ${packageName}.util.ID22;
+<#else >
+import ${packageName}.util.SnowflakeUtil;
+</#if>
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +30,11 @@ public class Upload {
     @ApiModelProperty("文件大小")
     private long size = 0;
     @ApiModelProperty("文件 Id")
+<#if hasStringId>
     private String id = null;
+<#else >
+    private long id = 0;
+</#if>
     @ApiModelProperty("文件名称")
     private String name = null;
     @ApiModelProperty("存储路径")
@@ -42,11 +50,19 @@ public class Upload {
     public Upload(int type) {
         this.setType(type);
         this.setTime(new Date());
+<#if hasStringId>
         this.setId(ID22.random());
+<#else >
+        this.setId(SnowflakeUtil.nextId());
+</#if>
     }
 
     public Upload(MultipartFile file) {
+<#if hasStringId>
         this.setId(ID22.random());
+<#else >
+        this.setId(SnowflakeUtil.nextId());
+</#if>
         this.setTime(new Date());
         this.setSize(file.getSize());
         this.setName(file.getOriginalFilename());

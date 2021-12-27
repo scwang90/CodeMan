@@ -30,7 +30,7 @@ const routes: Array<RouteConfig> = [
             {
                 path: 'home',
                 component: Home,
-<#list tables as table>
+<#list tablesForRoute as table>
             },{
                 path: '${table.urlPathName}-:page',
                 name: '${table.urlPathName}-page',

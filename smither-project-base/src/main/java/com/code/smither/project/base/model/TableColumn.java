@@ -33,6 +33,7 @@ public class TableColumn implements MetaDataColumn {
 	private int length;//列长度
 	private int typeInt;//数据库列类型
 	private int decimalDigits;//小数位数
+	private int clientLength;//客户端长度（用于指导前端模板填写预留长度）
 
 	private String fieldName;// 字段
 	private String fieldNameUpper;// 首字母大写
@@ -102,6 +103,12 @@ public class TableColumn implements MetaDataColumn {
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
+		}
+		Pattern pattern = Pattern.compile("[(（]length=(\\d+)[)）]");
+		Matcher matcher = pattern.matcher(remark);
+		if (matcher.find()) {
+			remark = remark.replaceAll("[(（]length=(\\d+)[)）]", "");
+			this.clientLength = Integer.parseInt(matcher.group(1));
 		}
 		this.remark = remark;
 		this.remarkName = remark;
@@ -177,6 +184,10 @@ public class TableColumn implements MetaDataColumn {
 			fieldCSharpType = "";
 		}
 		this.fieldCSharpType = fieldCSharpType;
+	}
+
+	public int getClientLength() {
+		return clientLength == 0 ? length : clientLength;
 	}
 
 	public boolean isNotNull() {

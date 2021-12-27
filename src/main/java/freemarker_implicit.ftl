@@ -20,6 +20,7 @@
 [#-- @ftlvariable name="dbType" type="String" --]
 [#-- @ftlvariable name="lang" type="String" --]
 [#-- @ftlvariable name="tables" type="java.util.List<com.code.smither.project.base.model.Table>" --]
+[#-- @ftlvariable name="tablesForRoute" type="java.util.List<com.code.smither.project.base.model.Table>" --]
 [#-- @ftlvariable name="loginTables" type="java.util.List<com.code.smither.project.base.model.Table>" --]
 [#-- @ftlvariable name="features" type="com.code.smither.project.base.model.Features" --]
 [#-- @ftlvariable name="tools" type="com.code.smither.project.base.util.BaseTools" --]

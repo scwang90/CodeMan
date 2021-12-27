@@ -149,7 +149,7 @@ public class ${className}AutoService {
 <#if table.hasOrgan && hasLogin>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
 </#if>
-<#if table.hasCode>
+<#if table.hasCode && table.codeColumn.stringType>
 	<#if table.hasOrgan && hasLogin>
 		int code = commonMapper.maxCodeByTableAndOrg(Tables.${table.className}.name, ${table.orgColumn.fieldName});
 	<#else>

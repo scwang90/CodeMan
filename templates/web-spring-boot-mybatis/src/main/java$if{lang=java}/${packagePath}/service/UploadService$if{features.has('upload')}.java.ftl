@@ -75,7 +75,11 @@ public class UploadService {
      */
     @NonNull
     public File getFileByUpload(Upload upload) {
+<#if hasStringId>
         return new File(new File("upload", upload.getPath()), upload.getId()).getAbsoluteFile();
+<#else >
+        return new File(new File("upload", upload.getPath()), String.valueOf(upload.getId())).getAbsoluteFile();
+</#if>
     }
 
     /**

@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ public class SourceModel implements LangRootModel {
     private Table loginTable;            //用户登录表
     private List<Table> loginTables;     //用户登录表（多表登录）
     private List<Table> tables;          //数据库所有表
+    private List<Table> tablesForRoute;  //数据库所有表（前端路由排序优化）
     private TableColumn orgColumn;       //机构所在列
     private TableColumn codeColumn;      //编码所在列
     private DatabaseJdbc jdbc;
@@ -126,6 +128,16 @@ public class SourceModel implements LangRootModel {
             return projectRemark;
         }
         return projectName;
+    }
+
+    public void setTables(List<Table> tables) {
+        this.tables = tables;
+        this.tablesForRoute = tables.stream().sorted(new Comparator<Table>() {
+            @Override
+            public int compare(Table l, Table r) {
+                return -l.getUrlPathName().compareTo(r.getUrlPathName());
+            }
+        }).collect(Collectors.toList());
     }
 
     //<editor-fold desc="接口实现">

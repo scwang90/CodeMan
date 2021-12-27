@@ -50,7 +50,11 @@ public class UploadController {
 		Upload upload = new Upload(multipart);
 		upload.setPath(service.pathWith(null, UploadType.from(multipart)));
 		service.saveFile(multipart, upload);
+<#if hasStringId>
 		upload.setPath(urlWithToken(request, upload.getId()));
+<#else >
+		upload.setPath(urlWithToken(request, String.valueOf(upload.getId())));
+</#if>
 		return ApiResult.success(upload);
 	}
 
