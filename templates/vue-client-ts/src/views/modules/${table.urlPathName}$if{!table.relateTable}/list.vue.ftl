@@ -238,7 +238,7 @@ export default class ${className}Module extends Vue {
             const result = await api${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first}.list(params);
             this.modal${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} = result.list;
         } catch (error) {
-            this.$message.error(`${r"${error}"}}`);
+            this.$message.error(`${r"${error}"}`);
         } finally {
             this.loading${tools.toPlural(tools.idToModel(key.fkColumn.fieldName))?cap_first} = false;
         }
@@ -256,7 +256,7 @@ export default class ${className}Module extends Vue {
             this.items = result.list;
             this.pageTotal = result.totalRecord;
         } catch (error) {
-            this.$message.error(`${r"${error}"}}`);
+            this.$message.error(`${r"${error}"}`);
         } finally {
             this.loadingList = false;
         }
@@ -273,7 +273,7 @@ export default class ${className}Module extends Vue {
             this.$message.success('保存成功');
             this.loadList(this.page);
         } catch (error) {
-            this.$message.error(`${r"${error}"}}`);
+            this.$message.error(`${r"${error}"}`);
         } finally {
             this.loadingModel = false;
         }
@@ -286,7 +286,7 @@ export default class ${className}Module extends Vue {
             this.$message.success('删除成功');
             this.loadList(this.page);
         } catch (error) {
-            this.$message.error(`${r"${error}"}}`);
+            this.$message.error(`${r"${error}"}`);
         } finally {
             this.loadingList = false;
         }

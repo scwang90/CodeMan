@@ -22,9 +22,9 @@ public interface UploadMapper {
     int insert(Upload file);
 
     @Select("SELECT * FROM upload_file WHERE id=${r"#"}{id} LIMIT 1")
-    Upload findById(@Param("id") String id);
+    Upload findById(@Param("id") Object id);
 
     @Delete("DELETE FROM upload_file WHERE id=${r"#"}{id}")
-    int deleteById(@Param("id") String id);
+    int deleteById(@Param("id") Object id);
 
 }

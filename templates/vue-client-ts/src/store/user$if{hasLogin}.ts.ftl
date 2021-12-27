@@ -18,7 +18,7 @@ const store: Module<UserState, RootState> =  {
     state: {
         token: "",
         userInfo: {
-            name: "",
+            ${loginTable.nameColumn.fieldName}: "",
             avatar: "",
             userId: "",
             companyId: "",

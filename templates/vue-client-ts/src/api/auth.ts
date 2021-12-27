@@ -6,7 +6,7 @@ import { LoginResult } from "../model/api/login";
 // @Param data body {username:"string",password:"string"}
 // @Router 'auth/login' [post]
 export const login = (data: {username:string,password:string}): Promise<LoginResult> => {
-    return request.post<LoginResult>('api/v1/auth/login', data);
+    return request.post<LoginResult>('v1/auth/login', data);
 }
 
 // @Summary 注销登录
@@ -14,7 +14,7 @@ export const login = (data: {username:string,password:string}): Promise<LoginRes
 // @Param data body {}
 // @Router 'auth/logout' [post]
 export const logout = () => {
-    return request.post('api/v1/auth/logout', {});
+    return request.post('v1/auth/logout', {});
 }
 
 export default {

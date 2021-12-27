@@ -1,6 +1,8 @@
 import Vue from "Vue"
 import * as Api from '@/constant/api'
 
+let $baseUrl = '';
+
 function request(method: Api.HTTP_METHOD, url: string, data?: any, headers: Record<string, string> = {}): Promise<Response> {
     
     let body: any = data;
@@ -17,7 +19,7 @@ function request(method: Api.HTTP_METHOD, url: string, data?: any, headers: Reco
         body = JSON.stringify(body);
         headers['Content-Type'] = 'application/json;charset=UTF-8';
     }
-    return fetch(url, {
+    return fetch($baseUrl + url, {
         method,
         headers,
         body
@@ -75,9 +77,12 @@ export default {
     delete<T>(path: string, data?: any): Promise<T> {
         return requestLogic<T>('DELETE', path, data);
     },
-    install(Vue: VueType) {
+    install(Vue: VueType, { baseUrl }: { baseUrl: string}) {
         if (Vue && Vue.prototype) {
             Vue.prototype.$request = this;
+        }
+        if (baseUrl) {
+            $baseUrl = baseUrl;
         }
     }
 }

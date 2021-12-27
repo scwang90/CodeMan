@@ -1,7 +1,7 @@
 import Vuex, { Module } from 'vuex';
 import { RootState } from "./types";
 
-const apiBase = '/';//process.env.SETTING_API_BASE;
+const apiBase = process.env.SETTING_API_BASE || '/';
 const baseUrl = apiBase.replace(/\/$/,'')
 
 export interface SettingState {

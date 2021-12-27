@@ -202,6 +202,7 @@
         <include refid="include.sql_order">
             <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSqlInStr}<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSqlInStr} DESC</#if>"/>
         </include>
+        LIMIT 1
     </select>
 
     <!-- 批量查询（<#if bean?length gt 0>包括外键，</#if>灵活构建查询条件） -->

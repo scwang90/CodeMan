@@ -29,7 +29,7 @@
                         <img class="avatar" v-if="userInfo.avatar" :src="userInfo.avatar" alt="" srcset="">
                         <img class="avatar" v-else src="../../public/images/common/image-avatar.jpg" alt="" srcset="">
                         <div class="content">
-                            <span class="name">{{userInfo.name}}</span>
+                            <span class="name">{{userInfo.${loginTable.nameColumn.fieldName}}}</span>
                             <span class="role">{{userInfo.type}}</span>
                         </div>
                     </template>
