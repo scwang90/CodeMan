@@ -10,32 +10,41 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import Vuex from 'vuex'
-export default Vue.extend({
-    props:{
-    },
-    data() {
-        return {
-            menus:[
+import Component from 'vue-class-component';
+<#if hasLogin>
+import { namespace } from 'vuex-class';
+import { UserInfo } from '@/constant/states';
+
+const user = namespace('user');
+</#if>
+
+interface MenuItem {
+    name: string
+    path: string
+    icon: string
+}
+
+@Component({})
+export default class Sidebar extends Vue {
+    <#if hasLogin>
+
+    @user.State("userInfo") userInfo!: UserInfo
+    </#if>
+
+    private menus: Array<MenuItem> = [
 <#list tables as table>
     <#if table.relateTable == false>
-                {name:'${table.remarkName}管理', path:'${table.urlPathName}', icon:'menu'},
+        {name:'${table.remarkName}管理', path:'${table.urlPathName}', icon:'menu'},
     </#if>
 </#list>
-            ]
-        }
-    },
-    computed: {
-        ...Vuex.mapState('user', ['userInfo']),
-    },
-    methods: {
-        onMenuSelected(index: string) {
-            if (index) {
-                this.$router.push({path:index});
-            }
+    ]
+
+    onMenuSelected(index: string) {
+        if (index) {
+            this.$router.push({path:index});
         }
     }
-});
+}
 </script>
 <style>
 .sidebar .el-menu-item i {

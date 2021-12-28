@@ -35,11 +35,21 @@ public class JwtUtils {
     }
 
     public static JwtBearer loadBearer(DecodedJWT jwt) {
+<#assign asUserId='asInt'/>
+<#assign asOrganId='asInt'/>
 <#if loginTable.idColumn.stringType>
-        return new JwtBearer(jwt.getClaim("type").asString(), jwt.getClaim("userId").asString()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asString()</#if>);
-<#else >
-        return new JwtBearer(jwt.getClaim("type").asString(), jwt.getClaim("userId").asInt()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").asInt()</#if>);
+    <#assign asUserId='asString'/>
+<#elseif loginTable.idColumn.longType>
+    <#assign asUserId='asLong'/>
 </#if>
+<#if loginTable.hasOrgan>
+    <#if loginTable.orgColumn.stringType>
+        <#assign asOrganId='asString'/>
+    <#elseif loginTable.orgColumn.longType>
+        <#assign asOrganId='asLong'/>
+    </#if>
+</#if>
+        return new JwtBearer(jwt.getClaim("type").asString(), jwt.getClaim("userId").${asUserId}()<#if loginTable.hasOrgan>, jwt.getClaim("${loginTable.orgColumn.fieldName}").${asOrganId}()</#if>);
     }
 
     public static JwtBearer currentBearer() {

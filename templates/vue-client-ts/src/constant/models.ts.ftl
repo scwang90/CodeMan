@@ -1,18 +1,20 @@
-export type HTTP_METHOD = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export interface Page {
-    size:number
-    page?:number
-    skip?:number
+<#list tables as table>
+/**
+ * ${table.remark}
+    <#list table.descriptions as description>
+ * ${description}
+    </#list>
+ */
+export interface ${table.className} {
+    <#list table.columns as column>
+        <#if !column.hiddenForClient>
+            <#if column.stringType || column.timeType || column.dateType || (column.longType && !column.forceUseLong)>
+    ${column.fieldName}?: string
+            <#else >
+    ${column.fieldName}?: number
+            </#if>
+        </#if>
+    </#list>
 }
-
-export interface Result<T> {
-    code: number
-    message: string
-    result: T
-}
-
-export interface Paged<T> {
-    list: Array<T>
-    totalRecord: number
-}
+</#list>

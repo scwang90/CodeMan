@@ -1,27 +1,20 @@
 
 import apiAuth from '@/api/auth'
-import Vuex, { Module } from 'vuex';
+import { Module } from 'vuex';
 import { RootState } from "./types";
-
-export interface UserState {
-    token: string
-    userInfo: {
-        name?: string
-        avatar?: string
-        userId?: string
-        companyId?: string
-    }
-}
+import { UserState } from '@/constant/states';
 
 const store: Module<UserState, RootState> =  {
     namespaced: true,
     state: {
-        token: "",
+        token: '',
         userInfo: {
-            ${loginTable.nameColumn.fieldName}: "",
-            avatar: "",
-            userId: "",
-            companyId: "",
+            ${loginTable.nameColumn.fieldName}: '',
+            avatar: '',
+            userId: '',
+<#if loginTable.hasOrgan>
+            ${loginTable.orgColumn.fieldName}: <#if loginTable.orgColumn.stringType>''<#else >0</#if>
+</#if>
         },
     },
     mutations: {
@@ -34,7 +27,7 @@ const store: Module<UserState, RootState> =  {
             state.token = token;
         },
         logout(state: UserState) {
-            state.token = "";
+            state.token = '';
             state.userInfo = {};
             sessionStorage.clear();
             window.location.reload();

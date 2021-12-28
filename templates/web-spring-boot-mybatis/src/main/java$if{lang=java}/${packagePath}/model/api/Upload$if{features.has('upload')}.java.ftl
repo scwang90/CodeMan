@@ -7,6 +7,11 @@ import ${packageName}.util.ID22;
 import ${packageName}.util.SnowflakeUtil;
 </#if>
 
+<#if !hasStringId>
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+</#if>
+
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +19,6 @@ import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 
 /**
  * 文件上传实体
@@ -33,6 +37,7 @@ public class Upload {
 <#if hasStringId>
     private String id = null;
 <#else >
+    @JsonSerialize(using = ToStringSerializer.class)
     private long id = 0;
 </#if>
     @ApiModelProperty("文件名称")

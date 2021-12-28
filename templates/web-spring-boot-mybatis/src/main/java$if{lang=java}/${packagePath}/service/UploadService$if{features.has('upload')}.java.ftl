@@ -7,6 +7,12 @@ import ${packageName}.mapper.UploadMapper;
 import ${packageName}.model.api.Upload;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.util.URLEncoder;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -17,6 +23,10 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static ${packageName}.service.HostService.urlSchemeHostPort;
 
 /**
  * 文件上传服务
@@ -115,4 +125,74 @@ public class UploadService {
         }
         mapper.insert(upload);
     }
+
+
+    /**
+     * 接受上传文件并存储
+     * @param multipart 表单文件
+     * @param request HTTP 请求
+     */
+    public synchronized Upload upload(MultipartFile multipart, HttpServletRequest request) {
+        Upload upload = new Upload(multipart);
+        upload.setPath(this.pathWith(null, UploadType.from(multipart)));
+        this.saveFile(multipart, upload);
+<#if hasStringId>
+        upload.setPath(urlWithToken(request, upload.getId()));
+<#else >
+        upload.setPath(urlWithToken(request, String.valueOf(upload.getId())));
+</#if>
+        return upload;
+    }
+
+    /**
+     * 文件下载
+     * @param id 文件ID
+     * @param request Http请求
+     */
+    public ResponseEntity<FileSystemResource> download(Object id, HttpServletRequest request) {
+        Upload upload = mapper.findById(id);
+        if (upload == null) {
+            throw new ClientException(ResultCode.LostUploadData);
+        }
+
+        File file = this.getFileByUpload(upload);
+        if (!file.exists()) {
+            throw new ServiceException(ResultCode.LostUploadFile);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(upload.getMimeType()));
+        if (request.getServletPath().contains("download")) {
+            String name = URLEncoder.QUERY.encode(upload.getName(), StandardCharsets.UTF_8);
+            headers.setContentDispositionFormData("attachment", name);
+        }
+        return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.OK);
+    }
+
+    /**
+     * 根据图片 token 获取下载链接
+     * @param request 请求对象
+     * @param token 图片 token
+     * @return url
+     */
+    public static String urlWithToken(HttpServletRequest request, @Nullable String token) {
+        if (token == null || token.startsWith("http")) {
+            return token;
+        }
+        return String.format("%s/api/v1/file/download/%s", urlSchemeHostPort(request), token);
+    }
+
+    /**
+     * 根据图片Url 获取图片 token
+     * @param request 请求对象
+     * @param url 图片Url
+     * @return token
+     */
+    public static String tokenWithUrl(HttpServletRequest request, @Nullable String url) {
+        if (url == null) {
+            return null;
+        }
+        return url.replace(urlSchemeHostPort(request) + "/api/v1/file/download/", "");
+    }
+
 }

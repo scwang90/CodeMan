@@ -152,7 +152,11 @@ const rules = {
         { required: true, message: '请输入${column.remark}', trigger: 'blur' },
         </#if>
         <#if column.stringType>
-        { min: 1, max: ${column.length?c}, message: '${column.remark}长度在 1 到 ${column.length} 个字符', trigger: 'blur' },
+            <#assign minLength=1/>
+            <#if column == table.passwordColumn || column == table.usernameColumn>
+                <#assign minLength=6/>
+            </#if>
+        { min: ${minLength}, max: ${column.length?c}, message: '${column.remark}长度在 ${minLength} 到 ${column.length} 个字符', trigger: 'blur' },
         </#if>
     ],
     </#if>
@@ -187,7 +191,7 @@ const enums = {
 })
 export default class ${className}Module extends Vue {
     $refs!: {
-        form: HTMLFormElement
+        form?: HTMLFormElement
     }
 
     private page: number = 1
@@ -308,6 +312,7 @@ export default class ${className}Module extends Vue {
     onAddClick() {
         this.model = {};
         this.showDialog = true;
+        this.$refs.form?.resetFields();
     }
     onRemoveClick() {
         if (!this.selections || !this.selections.length) {
@@ -327,6 +332,7 @@ export default class ${className}Module extends Vue {
     onItemEditClick(item: ${className}) {
         this.model = {...item};
         this.showDialog = true;
+        this.$refs.form?.resetFields();
     }
     onItemRemoveClick(item: ${className}) {
         this.$confirm('此操作将永久删除该, 是否继续?', '提示', {
@@ -340,7 +346,7 @@ export default class ${className}Module extends Vue {
         });
     }
     onSubmitClick() {
-        this.$refs.form.validate((valid: boolean) => {
+        this.$refs.form?.validate((valid: boolean) => {
             if (valid) {
                 this.postSubmit();
             }

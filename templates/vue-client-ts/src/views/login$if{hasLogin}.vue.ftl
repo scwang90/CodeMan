@@ -84,8 +84,8 @@ export default class LoginModule extends Vue {
     <#if hasOrgan>
         ${orgColumn.fieldName}: <#if orgColumn.stringType>''<#else>1</#if>,
     </#if>
-        username: 'admin',
-        password: 'admin'
+            username: 'admin',
+            password: 'admin'
     }
     @user.Action("login") login: any
     @setting.State("appTitle") appTitle: any

@@ -17,6 +17,9 @@ import ${packageName}.mapper.auto.${className}AutoMapper;
 import ${packageName}.mapper.intent.api.WhereQuery;
 import ${packageName}.model.api.Paged;
 import ${packageName}.model.api.Paging;
+<#if table == loginTable && table.hasPassword>
+import ${packageName}.model.conf.AuthConfig;
+</#if>
 import ${packageName}.model.db.${className};
 <#if table.hasCascadeKey>
 import ${packageName}.model.db.${className}Bean;
@@ -61,6 +64,9 @@ import java.util.stream.Collectors;
 @Service("auto${className}Service")
 public class ${className}AutoService {
 
+<#if table == loginTable && table.hasPassword>
+	private final AuthConfig config;
+</#if>
 <#if table.hasCode>
 	private final CommonMapper commonMapper;
 </#if>
@@ -172,6 +178,11 @@ public class ${className}AutoService {
 		</#if>
 	</#if>
 </#list>
+<#if table == loginTable && table.hasPassword>
+		if (model.get${table.passwordColumn.fieldNameUpper}() != null) {
+			model.set${table.passwordColumn.fieldNameUpper}(config.passwordHash(model.get${table.passwordColumn.fieldNameUpper}()));
+		}
+</#if>
         mapper.insert(model);
 		return model.get${table.idColumn.fieldNameUpper}();
 	}
@@ -244,9 +255,9 @@ public class ${className}AutoService {
 		<#if table == loginTable>
 			${className} model = this.findById(ids);
 			<#if table.idColumn.stringType>
-			if (JwtUtils.currentBearer().userId.equals(model.get${table.idColumn.fieldNameUpper}())) {
+			if (model != null && JwtUtils.currentBearer().userId.equals(model.get${table.idColumn.fieldNameUpper}())) {
 			<#else>
-			if (JwtUtils.currentBearer().userId == model.get${table.idColumn.fieldNameUpper}()) {
+			if (model != null && JwtUtils.currentBearer().userId == model.get${table.idColumn.fieldNameUpper}()) {
 			</#if>
 				throw new ClientException("不能删除自己！");
 			}

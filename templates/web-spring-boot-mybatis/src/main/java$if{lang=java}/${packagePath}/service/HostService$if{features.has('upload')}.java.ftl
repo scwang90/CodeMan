@@ -1,6 +1,6 @@
-package com.updater.service;
+package ${packageName}.service;
 
-import com.updater.model.conf.AppConfig;
+import ${packageName}.model.conf.AppConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Host 服务配置
- * @author 树朾
- * @since 2021-12-27 中国标准时间
+ * @author ${author}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Service
 public class HostService {

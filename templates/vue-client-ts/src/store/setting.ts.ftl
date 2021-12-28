@@ -1,16 +1,9 @@
 import Vuex, { Module } from 'vuex';
 import { RootState } from "./types";
+import { SettingState } from '@/constant/states';
 
 const apiBase = process.env.SETTING_API_BASE || '/';
 const baseUrl = apiBase.replace(/\/$/,'')
-
-export interface SettingState {
-    baseApi: string
-    baseUrl: string
-    appName: string
-    appTitle: string
-    appDetail: string
-}
 
 const store: Module<SettingState, RootState> =  {
     namespaced: true,
