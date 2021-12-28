@@ -1,11 +1,11 @@
-package com.generator.poetry.drawable2svg;
+package com.generator.drawable2svg;
 
 import com.code.smither.engine.EngineConfig;
 import com.code.smither.engine.api.*;
 import com.code.smither.engine.impl.DefaultTask;
-import com.generator.poetry.drawable2svg.model.Drawable;
-import com.generator.poetry.drawable2svg.model.Path;
-import com.generator.poetry.drawable2svg.model.Root;
+import com.generator.drawable2svg.model.Drawable;
+import com.generator.drawable2svg.model.Path;
+import com.generator.drawable2svg.model.Root;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;

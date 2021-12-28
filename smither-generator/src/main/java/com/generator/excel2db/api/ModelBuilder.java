@@ -1,6 +1,6 @@
-package com.generator.yxtech.app$house.excel2db.api;
+package com.generator.excel2db.api;
 
-import com.generator.yxtech.app$house.excel2db.model.Service;
+import com.generator.excel2db.model.Service;
 
 import java.util.List;
 

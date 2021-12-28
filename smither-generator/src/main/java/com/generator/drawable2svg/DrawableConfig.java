@@ -1,4 +1,4 @@
-package com.generator.poetry.drawable2svg;
+package com.generator.drawable2svg;
 
 import com.code.smither.engine.EngineConfig;
 

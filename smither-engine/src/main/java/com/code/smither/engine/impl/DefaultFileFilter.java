@@ -29,7 +29,7 @@ public class DefaultFileFilter implements FileFilter {
     }
 
     public static String[] regexFilter(String filter) {
-        String[] filters = filter.split(";");
+        String[] filters = filter.split("[,;]");
         for (int i = 0; i < filters.length; i++) {
             String regex = filters[i];
             if (regex.isEmpty()) {

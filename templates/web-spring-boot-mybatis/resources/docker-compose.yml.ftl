@@ -2,6 +2,7 @@
 version: '3'
 services:
   ${projectName}:
+    restart: always
     image: openjdk:11
     working_dir: /app
     command: java -jar app.jar

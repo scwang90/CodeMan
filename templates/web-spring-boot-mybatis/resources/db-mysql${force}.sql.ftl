@@ -16,7 +16,7 @@ CREATE TABLE ${table.nameSql}
         <#if column.length gt 0 && column.stringType && column.typeInt != -1>
             <#assign tempType = tempType + (column.length?c)?length + '()'?length/>
         </#if>
-        <#if column.defValue?length gt 0>
+        <#if column.defValue??>
             <#if column.stringType || column.dateType || column.timeType>
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT ""'?length/>
             <#else >

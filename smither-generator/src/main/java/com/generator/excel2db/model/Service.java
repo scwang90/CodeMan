@@ -1,4 +1,4 @@
-package com.generator.yxtech.app$house.excel2db.model;
+package com.generator.excel2db.model;
 
 import java.util.Arrays;
 import java.util.List;

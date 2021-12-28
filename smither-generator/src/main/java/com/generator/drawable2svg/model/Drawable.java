@@ -1,4 +1,4 @@
-package com.generator.poetry.drawable2svg.model;
+package com.generator.drawable2svg.model;
 
 import com.code.smither.engine.api.Model;
 

@@ -64,7 +64,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
 		
-		model.setFeatures(new Features(Arrays.asList(config.getTargetFeatures().split(","))));
+		model.setFeatures(new Features(Arrays.asList(config.getTargetFeatures().split("[,;]"))));
 
 		model.setOrganTable(findTable(tables, config.getTableOrgan(), model::setHasOrgan));
 		model.setLoginTable(findTable(tables, config.getTableLogin(), model::setHasLogin));
@@ -97,8 +97,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 				tables.stream().filter(t->t.getName().equals(key.getPkTableName())).findFirst().ifPresent(pkTable -> {
 					key.setPkTable(pkTable);
 					pkTable.getColumns().stream().filter(c->c.getName().equals(key.getPkColumnName())).findFirst().ifPresent(key::setPkColumn);
-					if (key.getPkColumn().isPrimaryKey() && Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(table.getName(), k))) {
-						key.setCascade(pkTable != model.getOrganTable() && Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(pkTable.getName(), k)));
+					if (key.getPkColumn().isPrimaryKey() && Arrays.stream(config.getTableNoCascade().split("[,;]")).noneMatch(k -> matchNames(table.getName(), k))) {
+						key.setCascade(pkTable != model.getOrganTable() && Arrays.stream(config.getTableNoCascade().split("[,;]")).noneMatch(k -> matchNames(pkTable.getName(), k)));
 					}
 				});
 				return key.isCascade();
@@ -111,8 +111,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 					fkTable.getColumns().stream().filter(c->c.getName().equals(key.getFkColumnName())).findFirst().ifPresent(key::setFkColumn);
 					if (key.getDeleteRule() != DatabaseMetaData.importedKeySetDefault
 							|| key.getDeleteRule() != DatabaseMetaData.importedKeySetNull) {
-						if (Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(table.getName(), k))) {
-							key.setCascade(!fkTable.isRelateTable() && table != model.getOrganTable() && Arrays.stream(config.getTableNoCascade().split(",")).noneMatch(k -> matchNames(fkTable.getName(), k)));
+						if (Arrays.stream(config.getTableNoCascade().split("[,;]")).noneMatch(k -> matchNames(table.getName(), k))) {
+							key.setCascade(!fkTable.isRelateTable() && table != model.getOrganTable() && Arrays.stream(config.getTableNoCascade().split("[,;]")).noneMatch(k -> matchNames(fkTable.getName(), k)));
 						}
 					}
 				});
@@ -139,7 +139,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	}
 
 	private static Table findTable(List<Table> tables, String tableKey, Action<Boolean> success) {
-		Stream<String> keys = Arrays.stream(tableKey.split(","));
+		Stream<String> keys = Arrays.stream(tableKey.split("[,;]"));
 		Optional<Table> find = keys.map(key -> {
 			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
 		}).filter(Objects::nonNull).findFirst();
@@ -147,7 +147,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 			success.onAction(true);
 			return find.get();
 		}
-		keys = Arrays.stream(tableKey.split(","));
+		keys = Arrays.stream(tableKey.split("[,;]"));
 		find = keys.map(key -> {
 			return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
 		}).filter(Objects::nonNull).findFirst();
@@ -159,11 +159,11 @@ public class DefaultModelBuilder implements ModelBuilder {
 	}
 
 	private static List<Table> findTables(List<Table> tables, String tableKey, Action<Integer> success) {
-		List<Table> find = Arrays.stream(tableKey.split(",")).map(key -> {
+		List<Table> find = Arrays.stream(tableKey.split("[,;]")).map(key -> {
 			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 		if (find.isEmpty()) {
-			find = Arrays.stream(tableKey.split(",")).map(key -> {
+			find = Arrays.stream(tableKey.split("[,;]")).map(key -> {
 				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
 			}).filter(Objects::nonNull).collect(Collectors.toList());
 		}
@@ -398,10 +398,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 	private void initTableColumn(List<TableColumn> columns, String keys, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
 		if (!StringUtil.isNullOrBlank(keys)) {
-			String[] columnNames = keys.split(",");
+			String[] columnNames = keys.split("[,;]");
 			matchColumn(columns, columnNames, get, set, success);
 			if (get != null && get.get() == null && keys.contains("_")) {
-				columnNames = keys.replace("_", "").split(",");
+				columnNames = keys.replace("_", "").split("[,;]");
 				matchColumn(columns, columnNames, get, set, success);
 			}
 		}

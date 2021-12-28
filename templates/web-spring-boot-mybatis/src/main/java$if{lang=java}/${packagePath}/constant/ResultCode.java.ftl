@@ -23,7 +23,7 @@ public enum ResultCode {
     LostToDeleteFile(524, "文件删除失败"),
 <#if features.has('network')>
 
-    RemoteServerFailCode(531, "远程服务器返失败状态吗"),
+    RemoteServerFailCode(531, "远程服务器返失败状态码"),
     RemoteServerReturnEmpty(532, "远程服务器返回空")
 </#if>
     ;

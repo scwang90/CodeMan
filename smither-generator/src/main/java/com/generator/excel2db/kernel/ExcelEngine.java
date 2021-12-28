@@ -1,9 +1,10 @@
-package com.generator.yxtech.app$house.excel2db.kernel;
+package com.generator.excel2db.kernel;
 
-import com.generator.database.c3p0.C3P0Factory;
-import com.generator.yxtech.app$house.excel2db.api.ModelBuilder;
-import com.generator.yxtech.app$house.excel2db.model.Service;
-import com.generator.yxtech.app$house.excel2db.reader.ExcelReader;
+import com.code.smither.project.database.api.DbFactory;
+import com.code.smither.project.database.factory.C3P0Factory;
+import com.generator.excel2db.api.ModelBuilder;
+import com.generator.excel2db.model.Service;
+import com.generator.excel2db.reader.ExcelReader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +22,7 @@ public class ExcelEngine {
 
     public class Clear {
         public void clear() throws SQLException {
-            C3P0Factory instance = C3P0Factory.getInstance(mDbInstance);
+            DbFactory instance = C3P0Factory.getInstance(mDbInstance);
             try (Connection connection = instance.getConnection()){
                 String sql = String.format("DELETE from %s WHERE Id LIKE '%s-%%'", TABLENAME, mRootId);
                 try (PreparedStatement statement = connection.prepareStatement(sql)){
@@ -53,7 +54,7 @@ public class ExcelEngine {
         List<Service> services = mBuilder.build(reader.loadData());
         System.out.println(Arrays.toString(services.toArray()));
 
-        C3P0Factory instance = C3P0Factory.getInstance(mDbInstance);
+        DbFactory instance = C3P0Factory.getInstance(mDbInstance);
         try (Connection connection = instance.getConnection()){
             for (int i = 0; i < services.size(); i++) {
                 Service service = services.get(i);
