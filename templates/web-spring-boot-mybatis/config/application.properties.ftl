@@ -11,9 +11,11 @@ logging.level.${packageName}.controller = info
 <#if features.has('network')>
 logging.level.${packageName}.ok-http = debug
 </#if>
-logging.level.org.apache.coyote.http11 = debug
-logging.level.org.springframework.web.method = trace
-logging.level.org.springframework.web.servlet = trace
+logging.level.${packageName}.model.api.ApiResult = trace
+logging.level.org.apache.coyote.http11.Http11InputBuffer = debug
+logging.level.org.springframework.web.method.HandlerMethod = trace
+logging.level.org.springframework.web.servlet.DispatcherServlet = trace
+logging.level.org.springframework.web.servlet.mvc.method.annotation = trace
 
 spring.datasource.url = ${jdbc.url}?serverTimezone=Asia/Shanghai
 spring.datasource.username = ${jdbc.username}

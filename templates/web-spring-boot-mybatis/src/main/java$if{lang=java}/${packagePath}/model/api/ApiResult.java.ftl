@@ -3,14 +3,18 @@ package ${packageName}.model.api;
 import ${packageName}.constant.ResultCode;
 import ${packageName}.exception.ClientException;
 import ${packageName}.exception.CodeException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Api 通用返回格式实体类
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Slf4j
 @ApiModel(description = "通用返回格式")
 public class ApiResult<T> {
 
@@ -103,4 +107,23 @@ public class ApiResult<T> {
         return new ApiResult<>(null, ResultCode.ServerError, message);
     }
 
+    @Override
+    public String toString() {
+        if (log.isDebugEnabled()) {
+            try {
+                if (log.isTraceEnabled()) {
+                    return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+                }
+                return new ObjectMapper().writeValueAsString(this);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        return "ApiResult{" +
+            "payload=" + payload +
+            ", code=" + code +
+            ", message='" + message + '\'' +
+            ", errors=" + errors +
+        '}';
+    }
 }

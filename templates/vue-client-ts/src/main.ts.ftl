@@ -18,8 +18,9 @@ Vue.use(Logger);
 import Bus from './plugins/bus';
 Vue.use(Bus);
 
+import Config from '@/constant/config';
 import Request from './plugins/request';
-Vue.use(Request, { baseUrl: process.env.SETTING_API_BASE || '/api/' });
+Vue.use(Request, { baseUrl: Config.appBaseUrl });
 
 Vue.config.productionTip = false;
 

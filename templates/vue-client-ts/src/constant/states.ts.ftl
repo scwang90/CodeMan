@@ -1,10 +1,9 @@
 
 export interface SettingState {
-    baseApi: string
-    baseUrl: string
     appName: string
     appTitle: string
     appDetail: string
+    appBaseUrl: string
 }
 <#if hasLogin>
 /**

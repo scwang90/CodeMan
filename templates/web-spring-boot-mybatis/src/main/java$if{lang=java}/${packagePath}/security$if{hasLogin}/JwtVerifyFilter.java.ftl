@@ -39,35 +39,33 @@ public class JwtVerifyFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = JwtUtils.fromHeader(request);
-        if (!ObjectUtils.isEmpty(token)) {
-            try {
-                /*
-                 * 验证Token
-                 */
-                DecodedJWT jwt = JWT.require(jwtAlgorithm).build().verify(token);
-                JwtBearer bearer = JwtUtils.loadBearer(jwt);
-                Authentication auth = new RememberMeAuthenticationToken(token, bearer, null);
-                auth.setAuthenticated(true);
-                SecurityContextHolder.getContext().setAuthentication(auth);
+        String servletPath = request.getServletPath();
+        if (servletPath.startsWith("/api/v1/")) {
+            if (!servletPath.startsWith("/api/v1/auth")) {
+                String token = JwtUtils.fromHeader(request);
+                if (!ObjectUtils.isEmpty(token)) {
+                    try {
+                        /*
+                         * 验证Token
+                         */
+                        DecodedJWT jwt = JWT.require(jwtAlgorithm).build().verify(token);
+                        JwtBearer bearer = JwtUtils.loadBearer(jwt);
+                        Authentication auth = new RememberMeAuthenticationToken(token, bearer, null);
+                        auth.setAuthenticated(true);
+                        SecurityContextHolder.getContext().setAuthentication(auth);
 
-                /*
-                 * 刷新Token
-                 */
-                Date issuedAt = jwt.getIssuedAt();
-                if (System.currentTimeMillis() - issuedAt.getTime() > authConfig.getRefreshTime() && authConfig.getRefreshTime() > 0) {
-                    String jwtToken = JwtUtils.createToken(bearer, jwtAlgorithm, authConfig.getExpiryTime());
-                    JwtUtils.writeToHeader(jwtToken, request, response);
+                        /*
+                         * 刷新Token
+                         */
+                        Date issuedAt = jwt.getIssuedAt();
+                        if (System.currentTimeMillis() - issuedAt.getTime() > authConfig.getRefreshTime() && authConfig.getRefreshTime() > 0) {
+                            String jwtToken = JwtUtils.createToken(bearer, jwtAlgorithm, authConfig.getExpiryTime());
+                            JwtUtils.writeToHeader(jwtToken, request, response);
+                        }
+                    } catch (Exception e) {
+                        logger.warn("token校验失败："+ token, e);
+                    }
                 }
-
-            } catch (TokenExpiredException e) {
-                if (StringUtils.hasText(request.getHeader("Authorization"))) {
-                    request.getRequestDispatcher("/api/v1/auth/expired").forward(request, response);
-                    return;
-                }
-            } catch (JWTVerificationException e) {
-                request.getRequestDispatcher("/api/v1/auth/failed").forward(request, response);
-                return;
             }
         }
         chain.doFilter(request, response);
