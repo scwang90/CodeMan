@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Jwt 凭证持有者信息
+ * Jwt 凭证过滤器
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
@@ -40,8 +40,8 @@ public class JwtVerifyFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String servletPath = request.getServletPath();
-        if (servletPath.startsWith("/api/v1/")) {
-            if (!servletPath.startsWith("/api/v1/auth")) {
+        if (servletPath.startsWith("/api/")) {
+            if (!servletPath.startsWith("/api/v1/auth") || servletPath.startsWith("/api/v1/auth/logout")) {
                 String token = JwtUtils.fromHeader(request);
                 if (!ObjectUtils.isEmpty(token)) {
                     try {

@@ -9,6 +9,6 @@ public enum UserType implements ShortEnum {
 <#if hasMultiLogin>
     <#list loginTables as table>${table.className}<#if table_has_next>, </#if></#list>
 <#else >
-    Admin, User
+    Other, Admin, User
 </#if>
 }

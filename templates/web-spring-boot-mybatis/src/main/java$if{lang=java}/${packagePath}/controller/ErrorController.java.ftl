@@ -3,6 +3,7 @@ package ${packageName}.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ${packageName}.exception.ClientException;
 import ${packageName}.exception.CodeException;
+import ${packageName}.mapper.HashErrorMapper;
 import ${packageName}.model.api.ApiResult;
 import ${packageName}.model.conf.AppConfig;
 
@@ -44,16 +45,18 @@ import javax.validation.ValidationException;
 @ApiIgnore
 @RestControllerAdvice
 public class ErrorController extends BasicErrorController {
-    
+
+    private final AppConfig config;
     private final ObjectMapper mapper;
     private final ErrorAttributes error;
-    private final AppConfig config;
+    private final HashErrorMapper errorMapper;
 
-    public ErrorController(ObjectMapper mapper, AppConfig config, ErrorAttributes error, ServerProperties server, ObjectProvider<ErrorViewResolver> errorView) {
+    public ErrorController(@Autowired(required = false) HashErrorMapper errorMapper, ObjectMapper mapper, AppConfig config, ErrorAttributes error, ServerProperties server, ObjectProvider<ErrorViewResolver> errorView) {
         super(error, server.getError(), errorView.stream().collect(Collectors.toList()));
         this.error = error;
         this.config = config;
         this.mapper = mapper;
+        this.errorMapper = errorMapper;
     }
 
     @ExceptionHandler(CodeException.class)
@@ -131,12 +134,27 @@ public class ErrorController extends BasicErrorController {
         }
         if (error instanceof CodeException) {
             status = HttpStatus.valueOf(((CodeException) error).getCode());
-        } else if (!config.isOriginalError() && error != null) {
-            message = new StringBuilder("服务器内部错误");
-        } else if (cause instanceof SQLTransientConnectionException) {
-            message = new StringBuilder("连接数据库异常：" + cause.getMessage());
-        } else if (cause != null) {
-            message.append(" <- ").append(cause.getMessage());
+        } else {
+            String errorHash = null;
+            if (errorMapper != null && error != null) {
+                try {
+                    errorHash = errorMapper.persistException(error, "服务器内部错误");
+                } catch (Exception e) {
+                    message.insert(0, "计算异常哈希失败：" + e.getMessage() + "\n");
+                }
+            }
+            if (!config.isOriginalError() && error != null) {
+                if (errorHash != null) {
+                    message = new StringBuilder("错误代码:");
+                    message.append(errorHash);
+                } else {
+                    message = new StringBuilder("服务器内部错误");
+                }
+            } else if (cause instanceof SQLTransientConnectionException) {
+                message = new StringBuilder("连接数据库异常：" + cause.getMessage());
+            } else if (cause != null) {
+                message.append(" <- ").append(cause.getMessage());
+            }
         }
         try {
             ApiResult<?> result = new ApiResult<>(null, status.value(), message.toString(), errors);

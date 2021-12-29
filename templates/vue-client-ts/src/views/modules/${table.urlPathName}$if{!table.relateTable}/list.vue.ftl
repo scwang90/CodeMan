@@ -142,7 +142,11 @@ import ${key.pkTable.className} from '@/model/auto/${key.pkTable.urlPathName}';
 </#list>
 import ViewFrame from '@/components/ViewFrame.vue';
 import { Route } from 'vue-router';
+import { namespace } from 'vuex-class';
+import { UserInfo } from '@/constant/states';
 import { Component, Vue, Watch } from 'vue-property-decorator';
+
+const user = namespace('user');
 
 const rules = {
 <#list table.columns as column>
@@ -153,7 +157,10 @@ const rules = {
         </#if>
         <#if column.stringType>
             <#assign minLength=1/>
-            <#if column == table.passwordColumn || column == table.usernameColumn>
+            <#if column == table.usernameColumn>
+                <#assign minLength=5/>
+            </#if>
+            <#if column == table.passwordColumn>
                 <#assign minLength=6/>
             </#if>
         { min: ${minLength}, max: ${column.length?c}, message: '${column.remark}长度在 ${minLength} 到 ${column.length} 个字符', trigger: 'blur' },
@@ -215,6 +222,8 @@ export default class ${className}Module extends Vue {
     private model: ${className} = {}
     private items: Array<${className}> = []
     private selections: Array<${className}> = []
+
+    @user.State('userInfo') userInfo!: UserInfo
 
     @Watch("$route")
     watchRoute(to: Route, from: Route) {
