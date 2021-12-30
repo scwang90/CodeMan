@@ -120,7 +120,7 @@ public class ApiResult<T> {
             }
         }
         return "ApiResult{" +
-            "payload=" + payload +
+            "result=" + result +
             ", code=" + code +
             ", message='" + message + '\'' +
             ", errors=" + errors +

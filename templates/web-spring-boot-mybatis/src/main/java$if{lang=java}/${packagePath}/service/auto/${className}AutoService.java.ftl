@@ -81,7 +81,7 @@ public class ${className}AutoService {
 	</#if>
 	 */
     public Paged<${className}${bean}> list${bean}(Paging paging<#if table.hasSearches>, String key</#if>) {
-	<#if table.hasOrgan && hasOrgan>
+	<#if table.hasOrgan && hasOrgan && hasLogin>
 		${table.orgColumn.fieldTypeObject} ${table.orgColumn.fieldName} = JwtUtils.currentBearer().${table.orgColumn.fieldName};
 		WhereQuery<${className}> where = Tables.${table.className}.${table.orgColumn.fieldNameUpper}.eq(${table.orgColumn.fieldName});
 	<#else>
@@ -223,7 +223,7 @@ public class ${className}AutoService {
 	 × @return 数据实体对象
 	 */
     public ${className}${bean} find${bean}ById(Object id) {
-	<#if table.hasOrgan && hasOrgan>
+	<#if table.hasOrgan && hasOrgan && hasLogin>
 		${className}${bean} model = mapper.find${bean}ById(id);
 		if (model == null) {
 			throw new ClientException("无效的${table.remarkName}Id");

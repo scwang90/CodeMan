@@ -71,9 +71,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setLoginTables(findTables(tables, config.getTableLogin(), size -> model.setHasMultiLogin(size > 1)));
 
 		model.setHasCode(findColumn(tables, Table::isHasCode, Table::getCodeColumn, model::setCodeColumn));
-		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn) && model.isHasLogin());
+		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn));
 		//项目总特性中 是否包含机构，需要同时含有登录、并且登录表中含有机构Id 才算
-		model.setHasOrgan(model.isHasOrgan() && model.isHasLogin() && model.getLoginTable().isHasOrgan());
+		model.setHasOrgan(model.isHasOrgan() && (!model.isHasLogin() || model.getLoginTable().isHasOrgan()));
 		checkIndexedKey(tables);
 		checkForeignKey(model, config, tables);
 		return model;
