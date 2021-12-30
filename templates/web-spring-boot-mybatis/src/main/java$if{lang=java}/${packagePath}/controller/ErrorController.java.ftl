@@ -162,10 +162,16 @@ public class ErrorController extends BasicErrorController {
         Object errors = body.get("errors");
         Throwable error = this.error.getError(new ServletWebRequest(request));
         Throwable cause = error;
-        while (cause != null && cause.getCause() != null && cause.getCause() != cause) {
+
+        while (cause != null) {
             message.append(" <- ").append(cause.getMessage());
-            cause = cause.getCause();
+            if (cause.getCause() == cause) {
+                break;
+            } else {
+                cause = cause.getCause();
+            }
         }
+
         if (error instanceof CodeException) {
             status = HttpStatus.valueOf(((CodeException) error).getCode());
         } else if (cause instanceof CodeException) {
@@ -188,8 +194,6 @@ public class ErrorController extends BasicErrorController {
                 }
             } else if (cause instanceof SQLTransientConnectionException) {
                 message = new StringBuilder("连接数据库异常：" + cause.getMessage());
-            } else if (cause != null) {
-                message.append(" <- ").append(cause.getMessage());
             }
         }
         try {
