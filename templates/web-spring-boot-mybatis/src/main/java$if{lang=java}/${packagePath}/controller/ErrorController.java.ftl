@@ -19,9 +19,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.multipart.MultipartException;
 import springfox.documentation.annotations.ApiIgnore;
 import java.sql.SQLTransientConnectionException;
 import java.util.LinkedList;
@@ -111,7 +114,38 @@ public class ErrorController extends BasicErrorController {
         }
         return ApiResult.fail(HttpStatus.BAD_REQUEST.value(), message);
     }
-    
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ApiResult<Object> handler(MissingRequestHeaderException ex) {
+        log.debug(ex.getMessage());
+        String message = ex.getMessage();
+        if (StringUtils.hasText(ex.getHeaderName())) {
+            message = "缺少Header参数：" + ex.getHeaderName();
+        }
+        return new ApiResult<>(null, HttpStatus.BAD_REQUEST.value(), message, null);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ApiResult<Object> handler(MissingServletRequestParameterException ex) {
+        log.debug(ex.getMessage());
+        String message = ex.getMessage();
+        if (StringUtils.hasText(ex.getParameterName())) {
+            message = "缺少Query参数：" + ex.getParameterName();
+        }
+        return new ApiResult<>(null, HttpStatus.BAD_REQUEST.value(), message, null);
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ApiResult<Object> handler(Throwable ex) {
+        log.debug(ex.getMessage());
+        String message = ex.getMessage();
+        while (ex.getCause() != null && ex.getCause() != ex) {
+            ex = ex.getCause();
+            message = ex.getMessage();
+        }
+        return new ApiResult<>(null, HttpStatus.BAD_REQUEST.value(), message, null);
+    }
+
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
@@ -134,7 +168,9 @@ public class ErrorController extends BasicErrorController {
         }
         if (error instanceof CodeException) {
             status = HttpStatus.valueOf(((CodeException) error).getCode());
-        } else {
+        } else if (cause instanceof CodeException) {
+            status = HttpStatus.valueOf(((CodeException) cause).getCode());
+        } else if (status.value() >= 500){
             String errorHash = null;
             if (errorMapper != null && error != null) {
                 try {
