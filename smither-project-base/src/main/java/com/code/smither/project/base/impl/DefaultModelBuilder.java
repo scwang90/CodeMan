@@ -360,8 +360,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 		initTableColumn(columns, config.getColumnHideForSubmit(), null, column -> column.setHiddenForSubmit(true), null);
 		initTableColumn(columns, config.getColumnSearch(), null, column -> {
 			if (column.isStringType()) {
-				table.getSearchColumns().add(column);
-				table.setHasSearches(true);
+				if (column != table.getOrgColumn()) {
+					table.getSearchColumns().add(column);
+					table.setHasSearches(true);
+				} else {
+					logger.warn("【" + table.getRemarkName() + "表】【" + column.getRemarkName() + "列】已经是机构列，不能成为搜索列");
+				}
 			} else {
 				logger.warn("【" + table.getRemarkName() + "表】【" + column.getRemarkName() + "列】不是字符串类型，不能成为搜索列");
 			}

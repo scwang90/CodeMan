@@ -14,5 +14,5 @@ export interface Result<T> {
 
 export interface Paged<T> {
     list: Array<T>
-    totalRecord: number
+    total: number
 }

@@ -170,6 +170,7 @@ const rules = {
 </#list>
 };
 <#if table.hasColumnEnums>
+
 const enums = {
     <#list table.columns as column>
         <#if column.hasEnums>
@@ -267,7 +268,7 @@ export default class ${className}Module extends Vue {
             this.loadingList = true;
             const result = await api.list(params);
             this.items = result.list;
-            this.pageTotal = result.totalRecord;
+            this.pageTotal = result.total;
         } catch (error) {
             this.$message.error(`${r"${error}"}`);
         } finally {

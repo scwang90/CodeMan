@@ -199,7 +199,7 @@ export default {
                     this.loadingList = true;
                     const result = await api.list(params);
                     this.items = result.list;
-                    this.pageTotal = result.totalRecord;
+                    this.pageTotal = result.total;
                 } catch (error) {
                     this.$message.error(error);
                 } finally {
