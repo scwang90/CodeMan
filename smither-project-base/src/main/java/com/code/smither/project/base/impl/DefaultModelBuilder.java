@@ -6,6 +6,7 @@ import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.api.internel.*;
 import com.code.smither.project.base.constant.AbstractProgramLang;
+import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.constant.JdbcLang;
 import com.code.smither.project.base.model.*;
 import com.code.smither.project.base.util.PinYinUtil;
@@ -139,34 +140,41 @@ public class DefaultModelBuilder implements ModelBuilder {
 	}
 
 	private static Table findTable(List<Table> tables, String tableKey, Action<Boolean> success) {
-		Stream<String> keys = Arrays.stream(tableKey.split("[,;]"));
-		Optional<Table> find = keys.map(key -> {
-			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
-		}).filter(Objects::nonNull).findFirst();
-		if (find.isPresent()) {
+		Table table = matchTable(tables, tableKey.split("[,;]"));
+		if (table.getName() != null) {
 			success.onAction(true);
-			return find.get();
 		}
-		keys = Arrays.stream(tableKey.split("[,;]"));
-		find = keys.map(key -> {
-			return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
-		}).filter(Objects::nonNull).findFirst();
-		if (find.isPresent()) {
-			success.onAction(true);
-			return find.get();
-		}
-		return new Table();
+		return table;
+//		Stream<String> keys = Arrays.stream(tableKey.split("[,;]"));
+//		Optional<Table> find = keys.map(key -> {
+//			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
+//		}).filter(Objects::nonNull).findFirst();
+//		if (find.isPresent()) {
+//			success.onAction(true);
+//			return find.get();
+//		}
+//		if (fuzzy) {
+//			keys = Arrays.stream(tableKey.split("[,;]"));
+//			find = keys.map(key -> {
+//				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
+//			}).filter(Objects::nonNull).findFirst();
+//			if (find.isPresent()) {
+//				success.onAction(true);
+//				return find.get();
+//			}
+//		}
+//		return new Table();
 	}
 
 	private static List<Table> findTables(List<Table> tables, String tableKey, Action<Integer> success) {
 		List<Table> find = Arrays.stream(tableKey.split("[,;]")).map(key -> {
 			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
 		}).filter(Objects::nonNull).collect(Collectors.toList());
-		if (find.isEmpty()) {
-			find = Arrays.stream(tableKey.split("[,;]")).map(key -> {
-				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
-			}).filter(Objects::nonNull).collect(Collectors.toList());
-		}
+//		if (find.isEmpty()) {
+//			find = Arrays.stream(tableKey.split("[,;]")).map(key -> {
+//				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
+//			}).filter(Objects::nonNull).collect(Collectors.toList());
+//		}
 		success.onAction(find.size());
 		return find;
 	}
@@ -221,6 +229,11 @@ public class DefaultModelBuilder implements ModelBuilder {
 		table.setClassNameCamel(StringUtil.lowerFirst(table.getClassName()));
 
 		table.setUrlPathName(buildUrlPath(table));
+
+		Database database = this.tableSource.getDatabase();
+		if (database != null && database.isKeyword(table.getName())) {
+			table.setNameSql(database.wrapperKeyword(table.getName()));
+		}
 
 		if (StringUtil.isNullOrBlank(table.getRemark())) {
 			table.setRemark(tableSource.queryTableRemark(tableMate));
@@ -430,6 +443,16 @@ public class DefaultModelBuilder implements ModelBuilder {
 		return name.equalsIgnoreCase(pattern);
 	}
 
+	private static Table matchTable(List<Table> tables, String[] tablesNames) {
+		for (String tableName : tablesNames) {
+			Optional<Table> stream = tables.stream().filter(t ->  matchNames(t.getName(), tableName)).findFirst();
+			if (stream.isPresent()) {
+				return stream.get();
+			}
+		}
+		return new Table();
+	}
+
 	private static void matchColumn(List<TableColumn> columns, String[] columnNames, GetTableColumn get, SetTableColumn set, Action<Boolean> success) {
 		for (String columnName : columnNames) {
 			Stream<TableColumn> stream = columns.stream().filter(c ->  matchNames(c.getName(), columnName));
@@ -464,6 +487,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setFieldType(this.classConverter.converterFieldType(column));
 		column.setFieldTypeObject(this.classConverter.converterFieldType(column, ClassConverter.DataType.object));
 		column.setFieldTypePrimitive(this.classConverter.converterFieldType(column, ClassConverter.DataType.primitive));
+
+		Database database = this.tableSource.getDatabase();
+		if (database != null && database.isKeyword(column.getName())) {
+			column.setNameSql(database.wrapperKeyword(column.getName()));
+		}
+
 		if (column.isNullable()) {
 			column.setFieldType(column.getFieldTypeObject());
 		} else {

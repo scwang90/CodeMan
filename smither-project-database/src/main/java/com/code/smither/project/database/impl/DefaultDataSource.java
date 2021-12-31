@@ -101,21 +101,18 @@ public class DefaultDataSource implements DbDataSource {
 	public MetaDataTable tableFromResultSet(ResultSet tableResult, MetaDataTable table) throws SQLException {
 		// table.setName(tableResult.getString("TABLE_NAME"), getDatabase());
         table.setName(tableResult.getString("TABLE_NAME"));
-		// table.setRemark(tableResult.getString("REMARKS"));
 		table.setComment(tableResult.getString("REMARKS"));
 		return table;
 	}
 
     @Override
 	public MetaDataColumn columnFromResultSet(ResultSet result, MetaDataColumn column) throws SQLException {
-//		column.setName(result.getString("COLUMN_NAME"), getDatabase());
         column.setName(result.getString("COLUMN_NAME"));
 		column.setType(result.getString("TYPE_NAME"));
 		column.setTypeInt(result.getInt("DATA_TYPE"));
 		column.setLength(result.getInt("COLUMN_SIZE"));
 		column.setDefValue(result.getString("COLUMN_DEF"));
 		column.setNullable(result.getBoolean("NULLABLE"));
-		column.setRemark(result.getString("REMARKS"));
 		column.setComment(result.getString("REMARKS"));
 		column.setDecimalDigits(result.getInt("DECIMAL_DIGITS"));
 		return column;

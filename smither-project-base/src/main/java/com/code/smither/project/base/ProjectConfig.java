@@ -20,16 +20,16 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class ProjectConfig extends EngineConfig implements FilterConfig, TableFilterConfig {
 
-    protected String tablePrefix = "";
+    protected String tablePrefix = "t_";
     protected String tableSuffix = "";
-    protected String tableDivision = "";
+    protected String tableDivision = "_";
     protected String tableOrgan = "company,organ,hospital,school";        //机构表
-    protected String tableLogin = "login,user,admin,account";             //登录表
-    protected String tableNoCascade = "*log,*msg,*message,*order,*file";  //不级联查询的表
+    protected String tableLogin = "login,user,admin,account,*user";       //登录表
+    protected String tableNoCascade = "*log,log*,*msg,*message,*order,*file";  //不级联查询的表
 
     protected String columnPrefix = "";
     protected String columnSuffix = "";
-    protected String columnDivision = "";
+    protected String columnDivision = "_";
     protected String columnOrg = "company_id,org_id";
     protected String columnCode = "code,no";
     protected String columnName = "name,*name,title,*title";
@@ -40,7 +40,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnCreator = "creator_id,author_id";
     protected String columnPassword = "password,pwd";
     protected String columnUsername = "account,username,phone*,name";
-    protected String columnSearch = "*name,*type,*topic,title,remark,content,code,account,username,phone*";
+    protected String columnSearch = "*name,*type,*topic,title,remark,content,*code,account,username,phone*";
     protected String columnHideForTables = "*avatar,*headUrl,content,description,address,update_time,update_date,update_at,updated_at,create_time,create_date,create_at,created_at";
     protected String columnHideForClient = "";
     protected String columnHideForSubmit = "";

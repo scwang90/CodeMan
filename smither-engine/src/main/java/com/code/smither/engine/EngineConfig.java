@@ -21,15 +21,15 @@ public class EngineConfig implements Config {
 
     private String targetPath;
     private String templatePath;
-    private String templateCharset;
-    private String targetCharset;
+    private String templateCharset = "UTF-8";
+    private String targetCharset = "UTF-8";
     private boolean forceOverwrite = false;         //强制覆盖所有文件
     private boolean templateProcessAll = false;     //对所有文件执行模板替换
 
     private String includeFile = "*.*";
     private String includePath = "*";
     private String filterFile = "*.classes";
-    private String filterPath = "bin;build";
+    private String filterPath = "bin;build;target";
 
     private transient TaskLoader taskLoader;
     private transient FieldFiller fieldFiller;

@@ -33,7 +33,6 @@ public class MySqlTableSource extends DefaultDataSource implements Database {
         return this;
     }
 
-
     @Override
     public boolean isKeyword(String value) {
         for (String keyword : keywords) {

@@ -65,19 +65,9 @@ public class Table implements Model, MetaDataTable {
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<RelatedKey> relateCascadeKeys;     // 外键（关联，级联，多对多，配置过滤过的）
 
     @Setter(AccessLevel.PROTECTED)
-    @ToString.Exclude @EqualsAndHashCode.Exclude private Database database = null;              //数据库配置
-    @Setter(AccessLevel.PROTECTED)
     @ToString.Exclude @EqualsAndHashCode.Exclude private Set<TableColumn> searchColumns = new LinkedHashSet<>();// 搜索列
 
     private List<String> descriptions;      // 多行详细描述
-
-    public Table() {
-
-    }
-
-    public Table(Database database) {
-        this.database = database;
-    }
 
     @Override
     public String getName() {
@@ -87,15 +77,15 @@ public class Table implements Model, MetaDataTable {
     @Override
     public void setName(String name) {
         this.name = name;
-        this.nameSql = name;
-        this.nameSqlInStr = name;
-        if (database != null && database.isKeyword(name)) {
-            this.nameSql = database.wrapperKeyword(name);
-            this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
-        }
+        this.setNameSql(name);
     }
 
-//    public void setName(String name, Database database) {
+    public void setNameSql(String nameSql) {
+        this.nameSql = nameSql;
+        this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
+    }
+
+    //    public void setName(String name, Database database) {
 //        this.setName(name);
 //        if (database != null && database.isKeyword(name)) {
 //            this.nameSql = database.wrapperKeyword(name);
@@ -103,12 +93,23 @@ public class Table implements Model, MetaDataTable {
 //        }
 //    }
 
+    @Override
+    public void setComment(String comment) {
+        this.comment = comment;
+        this.setRemark(comment);
+    }
+
     public void setRemark(String remark) {
+        if (remark != null) {
+            if (remark.endsWith("表") && remark.length() > 1) {
+                remark = remark.substring(0, remark.length() - 1);
+            }
+            if (remark.endsWith("信息") && remark.length() > 2) {
+                remark = remark.substring(0, remark.length() - 2);
+            }
+        }
         this.remark = remark;
         this.remarkName = remark;
-        if (remark != null && remark.endsWith("表")) {
-            this.remarkName = remark.substring(0, remark.length() - 1);
-        }
     }
 
     public void setDescription(String description) {

@@ -14,8 +14,6 @@ public interface MetaDataColumn extends MetaData {
 
     void setNullable(boolean boolean1);
 
-    void setRemark(String string);
-
     void setComment(String string);
 
     void setDecimalDigits(int int1);

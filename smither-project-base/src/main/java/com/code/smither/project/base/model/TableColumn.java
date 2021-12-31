@@ -61,17 +61,6 @@ public class TableColumn implements MetaDataColumn {
 	private List<EnumValue> enums;		//枚举值
 	private List<String> descriptions;	//多行详细描述
 
-	@Setter(AccessLevel.PROTECTED)
-	@ToString.Exclude @EqualsAndHashCode.Exclude private Database database = null;              //数据库配置
-
-	public TableColumn() {
-
-	}
-
-	public TableColumn(Database database) {
-		this.database = database;
-	}
-
 	@Override
 	public String getName() {
 		return name;
@@ -83,12 +72,12 @@ public class TableColumn implements MetaDataColumn {
 			name = "";
 		}
 		this.name = name;
-		this.nameSql = nameSql == null ? name : nameSql;
-		this.nameSqlInStr = nameSql;
-		if (database != null && database.isKeyword(name)) {
-			this.nameSql = database.wrapperKeyword(name);
-			this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
-		}
+		this.setNameSql(name);
+	}
+
+	public void setNameSql(String nameSql) {
+		this.nameSql = nameSql;
+		this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
 	}
 
 //	public void setName(String name, Database database) {
@@ -117,6 +106,11 @@ public class TableColumn implements MetaDataColumn {
 	}
 
 	@Override
+	public void setComment(String comment) {
+		this.comment = comment;
+		this.setRemark(comment);
+	}
+
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
@@ -139,14 +133,6 @@ public class TableColumn implements MetaDataColumn {
 		} else if (remark.startsWith("是否")) {
 			this.remarkName = remark.substring(2);
 		}
-	}
-
-	@Override
-	public void setComment(String comment) {
-		if (comment == null) {
-			comment = "";
-		}
-		this.comment = comment;
 	}
 
 	@Override

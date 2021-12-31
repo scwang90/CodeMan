@@ -1,5 +1,6 @@
 package com.code.smither.project.database.impl;
 
+import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.database.api.DbFactory;
 
@@ -8,6 +9,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 import com.mchange.v2.c3p0.impl.NewProxyConnection;
 import oracle.jdbc.OracleConnection;
@@ -107,29 +109,4 @@ public class OracleTableSource extends DefaultDataSource implements Database {
         return super.ensureMetaData();
     }
 
-    // @Override
-    // public List<? extends MetaDataTable> queryTables() throws SQLException {
-    //     if (this.connection == null) {
-    //         this.connection = dbFactory.getConnection();
-    //         if (this.connection instanceof NewProxyConnection) {
-    //             Arrays.stream(NewProxyConnection.class.getDeclaredFields())
-    //                     .filter(f-> Connection.class.equals(f.getType()))
-    //                     .findFirst().ifPresent(field->{
-    //                 try {
-    //                     field.setAccessible(true);
-    //                     Object con = field.get(this.connection);
-    //                     if (con instanceof OracleConnection) {
-    //                         ((OracleConnection)con).setRemarksReporting(true);
-    //                     }
-    //                 } catch (IllegalAccessException e) {
-    //                     e.printStackTrace();
-    //                 }
-    //             });
-
-    //         } else if (this.connection instanceof OracleConnection) {
-    //             ((OracleConnection)connection).setRemarksReporting(true);
-    //         }
-    //     }
-    //     return super.queryTables();
-    // }
 }
