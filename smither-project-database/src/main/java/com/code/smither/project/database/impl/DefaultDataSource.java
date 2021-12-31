@@ -108,7 +108,7 @@ public class DefaultDataSource implements DbDataSource {
 
     @Override
 	public MetaDataColumn columnFromResultSet(ResultSet result, MetaDataColumn column) throws SQLException {
-		// column.setName(result.getString("COLUMN_NAME"), getDatabase());
+//		column.setName(result.getString("COLUMN_NAME"), getDatabase());
         column.setName(result.getString("COLUMN_NAME"));
 		column.setType(result.getString("TYPE_NAME"));
 		column.setTypeInt(result.getInt("DATA_TYPE"));

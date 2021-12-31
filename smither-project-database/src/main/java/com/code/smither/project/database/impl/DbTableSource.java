@@ -299,11 +299,11 @@ public class DbTableSource implements TableSource {
 	// }
 
 	protected MetaDataTable newMetaDataTable() {
-        return new Table();
+        return new Table(getDatabase());
     }
 
 	protected MetaDataColumn newMetaDataColumn() {
-        return new TableColumn();
+        return new TableColumn(getDatabase());
     }
 
     @SuppressWarnings("unused")

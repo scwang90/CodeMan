@@ -5,9 +5,7 @@ import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 模板Model-table
@@ -67,28 +65,43 @@ public class Table implements Model, MetaDataTable {
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<RelatedKey> relateCascadeKeys;     // 外键（关联，级联，多对多，配置过滤过的）
 
     @Setter(AccessLevel.PROTECTED)
-    @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> searchColumns = new ArrayList<>();// 搜索列
+    @ToString.Exclude @EqualsAndHashCode.Exclude private Database database = null;              //数据库配置
+    @Setter(AccessLevel.PROTECTED)
+    @ToString.Exclude @EqualsAndHashCode.Exclude private Set<TableColumn> searchColumns = new LinkedHashSet<>();// 搜索列
 
     private List<String> descriptions;      // 多行详细描述
+
+    public Table() {
+
+    }
+
+    public Table(Database database) {
+        this.database = database;
+    }
 
     @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
         this.nameSql = name;
         this.nameSqlInStr = name;
-    }
-
-    public void setName(String name, Database database) {
-        this.setName(name);
         if (database != null && database.isKeyword(name)) {
             this.nameSql = database.wrapperKeyword(name);
             this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
         }
     }
+
+//    public void setName(String name, Database database) {
+//        this.setName(name);
+//        if (database != null && database.isKeyword(name)) {
+//            this.nameSql = database.wrapperKeyword(name);
+//            this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
+//        }
+//    }
 
     public void setRemark(String remark) {
         this.remark = remark;

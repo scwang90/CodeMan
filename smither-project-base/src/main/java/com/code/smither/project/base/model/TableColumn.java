@@ -2,8 +2,7 @@ package com.code.smither.project.base.model;
 
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.constant.Database;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -62,11 +61,23 @@ public class TableColumn implements MetaDataColumn {
 	private List<EnumValue> enums;		//枚举值
 	private List<String> descriptions;	//多行详细描述
 
+	@Setter(AccessLevel.PROTECTED)
+	@ToString.Exclude @EqualsAndHashCode.Exclude private Database database = null;              //数据库配置
+
+	public TableColumn() {
+
+	}
+
+	public TableColumn(Database database) {
+		this.database = database;
+	}
+
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		if (name == null) {
 			name = "";
@@ -74,18 +85,23 @@ public class TableColumn implements MetaDataColumn {
 		this.name = name;
 		this.nameSql = nameSql == null ? name : nameSql;
 		this.nameSqlInStr = nameSql;
-	}
-
-	public void setName(String name, Database database) {
-		this.name = name;
-		this.nameSql = name;
-		this.nameSqlInStr = name;
 		if (database != null && database.isKeyword(name)) {
 			this.nameSql = database.wrapperKeyword(name);
 			this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
 		}
 	}
 
+//	public void setName(String name, Database database) {
+//		this.name = name;
+//		this.nameSql = name;
+//		this.nameSqlInStr = name;
+//		if (database != null && database.isKeyword(name)) {
+//			this.nameSql = database.wrapperKeyword(name);
+//			this.nameSqlInStr = this.nameSql.replace("\"","\\\"");
+//		}
+//	}
+
+	@Override
 	public void setType(String type) {
 		if (type == null) {
 			type = "";
@@ -100,6 +116,7 @@ public class TableColumn implements MetaDataColumn {
 		this.typeJdbc = typeJdbc;
 	}
 
+	@Override
 	public void setRemark(String remark) {
 		if (remark == null) {
 			remark = "";
@@ -124,6 +141,7 @@ public class TableColumn implements MetaDataColumn {
 		}
 	}
 
+	@Override
 	public void setComment(String comment) {
 		if (comment == null) {
 			comment = "";
@@ -131,6 +149,7 @@ public class TableColumn implements MetaDataColumn {
 		this.comment = comment;
 	}
 
+	@Override
 	public void setDefValue(String defValue) {
 		if (defValue == null) {
 			defValue = "";
