@@ -6,6 +6,10 @@ export interface Page {
     skip?:number
 }
 
+export interface SearchKey {
+    key: string
+}
+
 export interface Result<T> {
     code: number
     message: string

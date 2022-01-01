@@ -53,6 +53,16 @@ public class ${className} {
 		<#if column.name!=column.fieldName>
 	 * 数据库名称 ${column.name}
 		</#if>
+		<#list table.importCascadeKeys as key>
+			<#if key.fkColumn == column>
+	 * 数据库外健 ${key.name} ${key.pkTable.className}.${key.pkColumn.fieldName}
+			</#if>
+		</#list>
+		<#list table.relateCascadeKeys as key>
+			<#if key.localColumn == column>
+	 * 数据库关联 ${key.relateTable.className} ${key.targetTable.className}.${key.targetColumn.fieldName}
+			</#if>
+		</#list>
 	 */
 	<#if column.hiddenForClient>
 	@JsonIgnore

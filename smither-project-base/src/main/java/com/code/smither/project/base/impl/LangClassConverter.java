@@ -9,7 +9,7 @@ import com.code.smither.project.base.model.TableColumn;
  * 根据表名和列名转成类名和字段名
  * Created by SCWANG on 2015-07-04.
  */
-public abstract class LangClassConverter implements ClassConverter {
+public class LangClassConverter implements ClassConverter {
 
 	protected AbstractProgramLang lang;
 

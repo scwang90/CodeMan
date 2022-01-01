@@ -19,7 +19,7 @@
             <el-table-column fixed="left" type="index" label="序号" width="50"> </el-table-column>
             <#list table.columns as column>
             <#if !column.hiddenForClient && !column.hiddenForTables && !column.name?lower_case?ends_with("id")>
-            <el-table-column prop="${column.fieldName}" label="${column.remarkName}" ><#-- width="${min(max(column.clientLength*180/32, 80), 400)}" -->
+            <el-table-column prop="${column.fieldName}" label="${column.remarkName}"<#if column==table.codeColumn> width="150"</#if>><#-- width="${min(max(column.clientLength*180/32, 80), 400)}" -->
                 <#if column == table.genderColumn>
                 <template #default="scope">
                     <span>{{scope.row.${column.fieldName}|gender}}</span>
@@ -104,7 +104,7 @@
             <#elseif column.dateType>
                             <el-date-picker type="${(column.timeType==true)?string('datetime','date')}" v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> placeholder="选择日期" value-format="yyyy-MM-dd"</#if>></el-date-picker>
             <#elseif (column.clientLength > 64)>
-                            <el-input v-model="model.${column.fieldName}" type="textarea"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
+                            <el-input v-model="model.${column.fieldName}" type="textarea" :autosize="{minRows:${column.clientLength}/64, maxRows:6}"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             <#else>
                             <el-input v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> <#if (column.length > 32)>maxlength="${column.length}" show-word-limit</#if> @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             </#if>

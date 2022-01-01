@@ -1,9 +1,6 @@
 package com.code.smither.project.base.api;
 
-import com.code.smither.project.base.constant.AbstractProgramLang;
-import com.code.smither.project.base.constant.CSharpLang;
-import com.code.smither.project.base.constant.JavaLang;
-import com.code.smither.project.base.constant.KotlinLang;
+import com.code.smither.project.base.constant.*;
 import com.code.smither.project.base.model.TableColumn;
 
 /**
@@ -12,7 +9,10 @@ import com.code.smither.project.base.model.TableColumn;
 public interface ProgramLang {
 
     enum Lang {
-        Java("java", new JavaLang()), CSharp("C#", new CSharpLang()), Kotlin("kotlin", new KotlinLang()),;
+        Java("java", new JavaLang()),
+        CSharp("C#", new CSharpLang()),
+        Kotlin("kotlin", new KotlinLang()),
+        TypeScript("ts", new TypeScriptLang()),;
 
         public final String value;
         public final AbstractProgramLang lang;

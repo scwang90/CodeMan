@@ -30,9 +30,13 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final TableFilter tableFilter;
 	protected final WordBreaker wordBreaker;
 	protected final WordReplacer wordReplacer;
-	protected final ClassConverter classConverter;
 	protected final ProgramLang programLang;
 	protected final JdbcLang jdbcLang = new JdbcLang();
+	protected final ClassConverter classConverter;
+	protected final LangClassConverter converterJava = new LangClassConverter(ProgramLang.Lang.Java.lang);
+	protected final LangClassConverter converterCSharp = new LangClassConverter(ProgramLang.Lang.CSharp.lang);
+	protected final LangClassConverter converterKotlin = new LangClassConverter(ProgramLang.Lang.Kotlin.lang);
+	protected final LangClassConverter converterTypeScript = new LangClassConverter(ProgramLang.Lang.TypeScript.lang);
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultModelBuilder.class);
 	private static final Pattern regex = Pattern.compile("^(\\S{2,}?)(?::\\n|：\\n|\\s+|:|：|,|，|\\n|\\(|（)((?:.|\\n)+?)[)）]?$");
@@ -487,6 +491,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setFieldType(this.classConverter.converterFieldType(column));
 		column.setFieldTypeObject(this.classConverter.converterFieldType(column, ClassConverter.DataType.object));
 		column.setFieldTypePrimitive(this.classConverter.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldJavaType(this.converterJava.converterFieldType(column));
+		column.setFieldCSharpType(this.converterCSharp.converterFieldType(column));
+		column.setFieldKotlinType(this.converterKotlin.converterFieldType(column));
+		column.setFieldTypeScriptType(this.converterTypeScript.converterFieldType(column));
 
 		Database database = this.tableSource.getDatabase();
 		if (database != null && database.isKeyword(column.getName())) {

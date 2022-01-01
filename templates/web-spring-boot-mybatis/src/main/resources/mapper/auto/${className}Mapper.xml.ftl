@@ -200,7 +200,7 @@
         SELECT * FROM ${table.nameSql}
         <include refid="include.sql_where"/>
         <include refid="include.sql_order">
-            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSqlInStr}<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSqlInStr} DESC</#if>"/>
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSqlInStr} DESC<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSqlInStr} DESC</#if>"/>
         </include>
         LIMIT 1
     </select>
@@ -210,7 +210,7 @@
         SELECT * FROM ${table.nameSql}
         <include refid="include.sql_where"/>
         <include refid="include.sql_order">
-            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSqlInStr}<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSqlInStr} DESC</#if>"/>
+            <property name="defaultOrder" value="<#if table.hasCode>ORDER BY ${table.codeColumn.nameSqlInStr} DESC<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSqlInStr} DESC</#if>"/>
         </include>
     </select>
     <#assign deleteWhere = ''/>
@@ -229,7 +229,7 @@
 
     <!-- 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}）-->
     <select id="select${bean}By${key.fkColumn.fieldNameUpper}" resultMap="MAP<#if bean?length gt 0>-INFO</#if>">
-        SELECT * FROM ${table.nameSql} WHERE ${deleteWhere}${key.fkColumn.nameSql}=${r"#"}{${key.fkColumn.fieldName}}<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} </#if>
+        SELECT * FROM ${table.nameSql} WHERE ${deleteWhere}${key.fkColumn.nameSql}=${r"#"}{${key.fkColumn.fieldName}}<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} DESC<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSql} DESC</#if>
     </select>
     </#list>
     <#list table.relateCascadeKeys as key>
@@ -248,7 +248,7 @@
         </#if>
     <!-- 级联查询（<#if bean?length gt 0>包括外键，</#if>根据${key.targetTable.remarkName}${key.targetColumn.remarkName}）-->
     <select id="select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}" resultMap="MAP<#if bean?length gt 0>-INFO</#if>">
-        SELECT * FROM ${table.nameSql} WHERE ${deleteWhere}${key.localColumn.nameSql} IN (SELECT ${key.relateLocalColumn.nameSql} FROM ${key.relateTable.nameSql} WHERE ${relateDeleteWhere}${key.relateTargetColumn.nameSql}=${r"#"}{${key.relateTargetColumn.fieldName}})<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} </#if>
+        SELECT * FROM ${table.nameSql} WHERE ${deleteWhere}${key.localColumn.nameSql} IN (SELECT ${key.relateLocalColumn.nameSql} FROM ${key.relateTable.nameSql} WHERE ${relateDeleteWhere}${key.relateTargetColumn.nameSql}=${r"#"}{${key.relateTargetColumn.fieldName}})<#if table.hasCode> ORDER BY ${table.codeColumn.nameSql} DESC<#elseif table.hasCreate>ORDER BY ${table.createColumn.nameSql} DESC</#if>
     </select>
     </#list>
 </#list>
