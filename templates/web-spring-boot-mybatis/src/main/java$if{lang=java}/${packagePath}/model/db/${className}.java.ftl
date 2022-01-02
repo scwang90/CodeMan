@@ -23,6 +23,8 @@ import javax.validation.constraints.Size;
         <#assign hasStringType=true>
 	</#if>
 </#list>
+
+import lombok.Data;
 <#assign hasDateTimeType=false>
 <#list table.columns as column>
 	<#if (column.dateType || column.timeType) && hasDateTimeType==false>
@@ -42,6 +44,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
+@Data
 public class ${className} {
 
 	<#list table.columns as column>
@@ -87,16 +90,16 @@ public class ${className} {
 	private <#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> ${column.fieldName};
 	</#list>
 
-	public ${className}() {
-	}
+	//public ${className}() {
+	//}
 	<#list table.columns as column>
 
-	public <#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> get${column.fieldNameUpper}() {
-		return this.${column.fieldName};
-	}
+	//public <#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> get${column.fieldNameUpper}() {
+	//	return this.${column.fieldName};
+	//}
 
-	public void set${column.fieldNameUpper}(<#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> ${column.fieldName}) {
-		this.${column.fieldName} = ${column.fieldName};
-	}
+	//public void set${column.fieldNameUpper}(<#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> ${column.fieldName}) {
+	//	this.${column.fieldName} = ${column.fieldName};
+	//}
 	</#list>
 }

@@ -1,12 +1,12 @@
 package ${packageName}.service.auto;
 
-<#if table.hasSearches>
+<#if table.hasSearches || (loginTables?seq_contains(table) && table.hasUsername && table.hasId)>
 import com.github.pagehelper.util.StringUtil;
 </#if>
 <#if table == organTable && hasLogin>
 import ${packageName}.exception.AccessException;
 </#if>
-<#if (table.hasOrgan && hasLogin) || table == loginTable>
+<#if (table.hasOrgan && hasLogin) || (loginTables?seq_contains(table) && table.hasUsername)>
 import ${packageName}.exception.ClientException;
 </#if>
 <#if table.hasCode>
@@ -142,6 +142,11 @@ public class ${className}AutoService {
 	 × @return 返回新数据的Id
 	 */
 	public ${table.idColumn.fieldType} insert(${className} model) {
+<#if loginTables?seq_contains(table) && table.hasUsername>
+		if (mapper.countWhere(Tables.${className}.${table.usernameColumn.fieldNameUpper}.eq(model.get${table.usernameColumn.fieldNameUpper}())) > 0) {
+			throw new ClientException("已经存在用户名：" + model.get${table.usernameColumn.fieldNameUpper}());
+		}
+</#if>
 <#if table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType>
 		if(model.get${table.idColumn.fieldNameUpper}() == null) {
 			model.set${table.idColumn.fieldNameUpper}(ID22.random());
@@ -204,6 +209,13 @@ public class ${className}AutoService {
 			throw new AccessException("权限不足");
 		}
 	</#if>
+<#if loginTables?seq_contains(table) && table.hasUsername && table.hasId>
+		if (StringUtil.isNotEmpty(model.get${table.usernameColumn.fieldNameUpper}())) {
+			if (mapper.countWhere(Tables.${className}.${table.usernameColumn.fieldNameUpper}.eq(model.get${table.usernameColumn.fieldNameUpper}()).and(Tables.${className}.${table.idColumn.fieldNameUpper}.ne(model.get${table.idColumn.fieldNameUpper}()))) > 0) {
+				throw new ClientException("已经存在用户名：" + model.get${table.usernameColumn.fieldNameUpper}());
+			}
+		}
+</#if>
 	<#list table.columns as column>
 		<#if column == table.updateColumn>
 			<#if column.fieldType == 'long'>
