@@ -74,6 +74,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setOrganTable(findTable(tables, config.getTableOrgan(), model::setHasOrgan));
 		model.setLoginTable(findTable(tables, config.getTableLogin(), model::setHasLogin));
 		model.setLoginTables(findTables(tables, config.getTableLogin(), size -> model.setHasMultiLogin(size > 1)));
+		//标记表为登录表
+		model.getLoginTable().setLoginTable(true);
+		model.getLoginTables().forEach(t->t.setLoginTable(true));
 
 		model.setHasCode(findColumn(tables, Table::isHasCode, Table::getCodeColumn, model::setCodeColumn));
 		model.setHasOrgan(findColumn(tables, Table::isHasOrgan, Table::getOrgColumn, model::setOrgColumn));

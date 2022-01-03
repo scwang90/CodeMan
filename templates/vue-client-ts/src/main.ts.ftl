@@ -18,9 +18,14 @@ Vue.use(Logger);
 import Bus from './plugins/bus';
 Vue.use(Bus);
 
+import * as Api from '@/constant/api'
 import Config from '@/constant/config';
 import Request from './plugins/request';
-Vue.use(Request, { baseUrl: Config.appBaseUrl });
+Vue.use(Request, { baseUrl: Config.appBaseUrl, hookResponse: (result:Api.Result<any>) =>{
+  if (result.code == 401) {
+    Bus.emit('net.auth.401');//发送登录失效事件
+  }
+}});
 
 Vue.config.productionTip = false;
 

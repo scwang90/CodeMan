@@ -2,10 +2,11 @@ package com.code.smither.project.base.model;
 
 import com.code.smither.engine.api.Model;
 import com.code.smither.project.base.api.MetaDataTable;
-import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.base.util.StringUtil;
 import lombok.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * 模板Model-table
@@ -33,6 +34,7 @@ public class Table implements Model, MetaDataTable {
     private TableColumn idColumn;                   // ID列
     private TableColumn orgColumn;                  // 机构列
     private TableColumn codeColumn;                 // 编号构列
+    private TableColumn nameColumn;                 // 名称列
     private TableColumn genderColumn;               // 性别列
     private TableColumn createColumn;               // 创建日志列
     private TableColumn updateColumn;               // 更新日志列
@@ -40,7 +42,6 @@ public class Table implements Model, MetaDataTable {
     private TableColumn creatorColumn;              // 创建者列
     private TableColumn usernameColumn;             // 账户列（登录表）
     private TableColumn passwordColumn;             // 密码列（登录表）
-    private TableColumn nameColumn;                 // 名称列
 
     private boolean hasId = false;                  // 是否有ID列
     private boolean hasOrgan = false;               // 是否有机构列
@@ -50,10 +51,11 @@ public class Table implements Model, MetaDataTable {
     private boolean hasGender = false;              // 是否有性别列
     private boolean hasRemove = false;              // 是否有删除列
     private boolean hasCreator = false;             // 是否有创建者列
-    private boolean hasUsername = false;            // 是否有账户列（登录表）
-    private boolean hasPassword = false;            // 是否有密码列（登录表）
     private boolean hasSearches = false;            // 收费有搜索列
     private boolean relateTable = false;            // 是否是关联表
+    private boolean hasUsername = false;            // 是否有账户列（登录表）
+    private boolean hasPassword = false;            // 是否有密码列（登录表）
+    private boolean isLoginTable = false;           // 是否是登录表
 
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> columns;              // 表字段
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<IndexedKey> indexKeys;             // 索引（数据库原始）
@@ -190,4 +192,28 @@ public class Table implements Model, MetaDataTable {
         return false;
     }
 
+    public boolean isHasPassword() {
+        return hasPassword && isLoginTable;
+    }
+
+    public boolean isHasUsername() {
+        return hasUsername && isLoginTable;
+    }
+
+    public TableColumn getUsernameColumn() {
+        return getLoginTableColumn(usernameColumn);
+    }
+
+    public TableColumn getPasswordColumn() {
+        return getLoginTableColumn(passwordColumn);
+    }
+
+    private TableColumn getLoginTableColumn(TableColumn column) {
+        if (!isLoginTable && column != null && !StringUtil.isNullOrBlank(column.getName())) {
+            return Stream.of(orgColumn, codeColumn, nameColumn, genderColumn,
+                    createColumn, updateColumn, removeColumn,
+                    creatorColumn).filter(c -> StringUtil.isNullOrBlank(c.getName())).findFirst().orElse(new TableColumn());
+        }
+        return column;
+    }
 }

@@ -2,6 +2,7 @@ import Vue from "Vue"
 import * as Api from '@/constant/api'
 
 let $baseUrl = '';
+let $hookResponse: ((result:Api.Result<any>)=>void)|undefined = undefined;
 
 function request(method: Api.HTTP_METHOD, url: string, data?: any, headers: Record<string, string> = {}): Promise<Response> {
     
@@ -55,6 +56,9 @@ async function requestJson<T>(method: Api.HTTP_METHOD, url: string, data?: any, 
 
 async function requestLogic<T>(method: Api.HTTP_METHOD, url: string, data?: any): Promise<T> {
     const result = await requestJson<Api.Result<T>>(method, url, data, {});
+    if ($hookResponse) {
+        $hookResponse(result);
+    }
     if (result.code != 0 && result.code != 200) {
         throw new Error(result.message);
     } else {
@@ -77,12 +81,15 @@ export default {
     delete<T>(path: string, data?: any): Promise<T> {
         return requestLogic<T>('DELETE', path, data);
     },
-    install(Vue: VueType, { baseUrl }: { baseUrl: string}) {
+    install(Vue: VueType, { baseUrl, hookResponse }: { baseUrl: string, hookResponse?: (result:Api.Result<any>)=>void}) {
         if (Vue && Vue.prototype) {
             Vue.prototype.$request = this;
         }
         if (baseUrl) {
             $baseUrl = baseUrl;
+        }
+        if (hookResponse) {
+            $hookResponse = hookResponse;
         }
     }
 }

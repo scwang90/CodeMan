@@ -104,9 +104,9 @@
             <#elseif column.dateType>
                             <el-date-picker type="${(column.timeType==true)?string('datetime','date')}" v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> placeholder="选择日期" value-format="yyyy-MM-dd"</#if>></el-date-picker>
             <#elseif (column.clientLength > 64)>
-                            <el-input v-model="model.${column.fieldName}" type="textarea" :autosize="{minRows:${column.clientLength}/64, maxRows:6}"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
+                            <el-input v-model="model.${column.fieldName}" type="textarea" :autosize="{minRows:${column.clientLength?c}/64, maxRows:6}"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length?c}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             <#else>
-                            <el-input v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> <#if (column.length > 32)>maxlength="${column.length}" show-word-limit</#if> @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
+                            <el-input v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> <#if (column.length > 32)>maxlength="${column.length?c}" show-word-limit</#if> @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             </#if>
                         </el-form-item>
                     </el-col>
