@@ -14,6 +14,9 @@ import java.util.List;
  * 添加接口要求验证非空字段
  * 更新接口任何字段都可以为空
  * 要求：需要在 Model 中对非空字段添加 ApiModelProperty 注解，并设置 required=true
+ *
+ * 由代码生成器生成，可以修改
+ * 但是如果删除，下次继续生成时，又会出现
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

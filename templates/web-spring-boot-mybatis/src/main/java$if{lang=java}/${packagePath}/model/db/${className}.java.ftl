@@ -41,6 +41,9 @@ import org.springframework.format.annotation.DateTimeFormat;
     <#if table.name!=table.className>
  * 数据库名称 ${table.name}
     </#if>
+ *
+ * 由代码生成器生成，不要修改
+ * 当数据库有更新，使用生成器再次生成时，会覆盖所有修改
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

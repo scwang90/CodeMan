@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 文件上传接口
+ * 由代码生成器生成，可以修改
+ * 但是如果删除，下次继续生成时，又会出现
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

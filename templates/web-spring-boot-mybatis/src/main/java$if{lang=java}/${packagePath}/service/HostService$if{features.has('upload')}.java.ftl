@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Host 服务配置
+ *
+ * 根据请求计算客户端访问到URL，如：http://127.0.0.1:8080
+ * 如果配置文件中直接配置了 Host，则直接读取配置文件的配置
+ * 主要用于文件下载功能，返回客户端文件下载地址
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

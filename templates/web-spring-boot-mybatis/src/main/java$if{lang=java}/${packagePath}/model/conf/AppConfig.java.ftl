@@ -18,6 +18,7 @@ public class AppConfig {
     private Client client = new Client();
     private Swagger swagger = new Swagger();
     private CorsConfig cors = new CorsConfig();
+    private AutoConfig auto = new AutoConfig();
 
     public String getVisitHost() {
         return client.visitHost;
@@ -33,6 +34,11 @@ public class AppConfig {
 
     public boolean isOriginalError() {
         return error.original;
+    }
+
+    @Data
+    public static class AutoConfig {
+        private boolean apiDisable = true;
     }
 
     @Data
