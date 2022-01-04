@@ -212,7 +212,7 @@ public class Table implements Model, MetaDataTable {
         if (!isLoginTable && column != null && !StringUtil.isNullOrBlank(column.getName())) {
             return Stream.of(orgColumn, codeColumn, nameColumn, genderColumn,
                     createColumn, updateColumn, removeColumn,
-                    creatorColumn).filter(c -> StringUtil.isNullOrBlank(c.getName())).findFirst().orElse(new TableColumn());
+                    creatorColumn).filter(c -> c!= null&&StringUtil.isNullOrBlank(c.getName())).findFirst().orElse(new TableColumn());
         }
         return column;
     }

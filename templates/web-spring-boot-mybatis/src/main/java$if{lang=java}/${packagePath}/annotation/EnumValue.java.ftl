@@ -18,6 +18,9 @@ import javax.validation.Payload;
  * 自己写验证代码太麻烦，如果一个枚举之在很多API都要传送，每个API都要手动检查很麻烦，现在直接给参数加上注解
  * ApiResult createUser(String name, @EnumValue(Sex.class) int Sex)
  * Spring 将会自动根据 Sex 枚举值来判断 客户端传送参数是否有效，无效自动返回 400 错误
+ *
+ * 由代码生成器生成，可以修改
+ * 但是如果删除，下次继续生成时，又会出现
  * @author ${author}
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */

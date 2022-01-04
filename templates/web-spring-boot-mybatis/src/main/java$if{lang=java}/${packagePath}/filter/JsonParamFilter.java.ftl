@@ -23,11 +23,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
-* Json参数解析过滤器
-* 过滤器可以让 表单参数也可以接收 Json 请求
-* @author ${author}
-* @since ${now?string("yyyy-MM-dd zzzz")}
-*/
+ * Json参数解析过滤器
+ * 过滤器可以让 表单参数也可以接收 Json 请求
+ *
+ * 由代码生成器生成，可以修改
+ * 但是如果删除，下次继续生成时，又会出现
+ * @author ${author}
+ * @since ${now?string("yyyy-MM-dd zzzz")}
+ */
 @Slf4j
 @AllArgsConstructor
 public class JsonParamFilter implements Filter {

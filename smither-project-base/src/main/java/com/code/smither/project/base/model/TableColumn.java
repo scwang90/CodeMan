@@ -123,7 +123,7 @@ public class TableColumn implements MetaDataColumn {
 			this.clientLength = Integer.parseInt(matcher.group(1));
 		}
 		this.remark = remark;
-		this.remarkName = remark;
+		this.remarkName = remark.trim();
 		if (remark.endsWith("列")) {
 			this.remarkName = remark.substring(0, remark.length() - 1);
 		}
