@@ -3,6 +3,8 @@ package com.generator.replace;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.api.MetaDataTable;
+import com.code.smither.project.base.model.Table;
+import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.database.api.DbDataSource;
 import com.code.smither.project.database.impl.DbTableSource;
 import com.generator.replace.model.ReplaceColumn;
@@ -15,12 +17,12 @@ public class ReplaceTableSource extends DbTableSource {
     }
 
     @Override
-    protected MetaDataTable newMetaDataTable() {
+    protected Table newMetaDataTable() {
         return new ReplaceTable();
     }
 
     @Override
-    protected MetaDataColumn newMetaDataColumn() {
+    protected TableColumn newMetaDataColumn() {
         return new ReplaceColumn();
     }
     

@@ -1,8 +1,6 @@
 package com.generator.replace;
 
-import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.api.WordReplacer;
-import com.code.smither.project.base.impl.DefaultWordReplacer;
 import com.code.smither.project.base.model.SourceModel;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.util.StringUtil;
@@ -15,7 +13,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -34,9 +31,9 @@ public class ReplaceBuilder extends DbModelBuilder {
     }
 
     @Override
-    protected Table tableCompute(Table table, MetaDataTable tableMate) throws Exception {
+    protected Table tableCompute(Table table) throws Exception {
         isIgnoreCurrentTable = replaceConfig.getDictTableIgnore().containsKey(table.getName());
-        return super.tableCompute(table, tableMate);
+        return super.tableCompute(table);
     }
 
     @Override

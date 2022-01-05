@@ -7,6 +7,8 @@ import com.code.smither.project.base.model.IndexedKey;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
 import com.code.smither.project.htmltable.HtmlTableConfig;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -42,7 +44,7 @@ public class HtmlTableSource implements TableSource {
         boolean getColumnPrimaryKey(Elements columnMetaData);
     }
 
-    protected HashMap<String, Integer> DbTypeMap = new HashMap<String, Integer>() {
+    protected HashMap<String, Integer> DbTypeMap = new HashMap<>() {
         {
             //mysql
             put("bit", Types.BIT);
@@ -127,34 +129,25 @@ public class HtmlTableSource implements TableSource {
         return null;
     }
 
-    @Override
-    public Table buildTable(MetaDataTable tableMate) {
-        if (tableMate instanceof TableMetaData) {
-            return buildTableMetaData(((TableMetaData) tableMate).element);
-        }
-        return null;
-    }
+//    @Override
+//    public Table buildTable(MetaDataTable tableMate) {
+//        if (tableMate instanceof TableMetaData) {
+//            return buildTableMetaData(((TableMetaData) tableMate).element);
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public TableColumn buildColumn(MetaDataColumn columnMate) {
+//        if (columnMate instanceof ColumnMetaData) {
+//            return buildColumnMetaData(((ColumnMetaData) columnMate).columnMetaData);
+//        }
+//        return null;
+//    }
+
 
     @Override
-    public TableColumn buildColumn(MetaDataColumn columnMate) {
-        if (columnMate instanceof ColumnMetaData) {
-            return buildColumnMetaData(((ColumnMetaData) columnMate).columnMetaData);
-        }
-        return null;
-    }
-
-    @Override
-    public IndexedKey buildIndexedKey(MetaDataIndex index) {
-        return null;
-    }
-
-    @Override
-    public ForeignKey buildForeignKey(MetaDataForegin foregin) {
-        return null;
-    }
-
-    @Override
-    public List<? extends MetaDataTable> queryTables() throws Exception {
+    public List<? extends Table> queryTables() throws Exception {
         List<Document> documents = new ArrayList<>();
         for (File file : htmlFiles) {
             documents.add(Jsoup.parse(file, charset));
@@ -163,64 +156,69 @@ public class HtmlTableSource implements TableSource {
         for (Document document : documents) {
             tableElements.addAll(metaData.getTables(document));
         }
-        List<TableMetaData> tables = new ArrayList<>();
+        List<Table> tables = new ArrayList<>();
         for (Element tableElement : tableElements) {
-            tables.add(new TableMetaData(tableElement));
+            Table table = buildTableMetaData(tableElement);
+            List<TableColumn> columnList = new ArrayList<>();
+            Elements columnElements = metaData.getTableColumns(tableElement);
+            for (Element columnElement : columnElements) {
+                Elements columnMetaData = metaData.getColumnMetaData(columnElement);
+                TableColumn tableColumn = buildColumnMetaData(columnMetaData);
+                if (metaData.getColumnPrimaryKey(columnMetaData) && table.getIdColumn() == null) {
+                    table.setIdColumn(tableColumn);
+                }
+                columnList.add(tableColumn);
+            }
+            table.setColumns(columnList);
+            tables.add(table);
         }
         return tables;
     }
 
     @Override
-    public List<? extends MetaDataColumn> queryColumns(MetaDataTable tableMate) {
-        List<ColumnMetaData> columnList = new ArrayList<>();
-        if (tableMate instanceof TableMetaData) {
-            TableMetaData table = ((TableMetaData) tableMate);
-            Elements columnElements = metaData.getTableColumns(table.element);
-            for (Element columnElement : columnElements) {
-                columnList.add(new ColumnMetaData(columnElement));
-            }
-        }
-        return columnList;
+    public List<? extends TableColumn> queryColumns(Table table) {
+        return table.getColumns();
     }
 
     @Override
-    public Set<String> queryPrimaryKeys(MetaDataTable tableMate) {
-        Set<String> keys = new LinkedHashSet<>();
-        if (tableMate instanceof TableMetaData) {
-            TableMetaData table = ((TableMetaData) tableMate);
-            Elements columns = metaData.getTableColumns(table.element);
-            for (Element column : columns) {
-                Elements meta = metaData.getColumnMetaData(column);
-                if (metaData.getColumnPrimaryKey(meta)) {
-                    keys.add(metaData.getColumnName(meta));
-                }
-            }
-        }
-        return keys;
+    public Set<String> queryPrimaryKeys(Table table) {
+        return Set.of(table.getIdColumn().getName());
+//        Set<String> keys = new LinkedHashSet<>();
+//        if (tableMate instanceof TableMetaData) {
+//            TableMetaData table = ((TableMetaData) tableMate);
+//            Elements columns = metaData.getTableColumns(table.element);
+//            for (Element column : columns) {
+//                Elements meta = metaData.getColumnMetaData(column);
+//                if (metaData.getColumnPrimaryKey(meta)) {
+//                    keys.add(metaData.getColumnName(meta));
+//                }
+//            }
+//        }
+//        return keys;
     }
 
     @Override
-    public List<? extends MetaDataIndex> queryIndexKeys(MetaDataTable table) throws Exception {
+    public List<? extends IndexedKey> queryIndexKeys(Table table) throws Exception {
         return Collections.emptyList();
     }
 
     @Override
-    public List<? extends MetaDataForegin> queryImportedKeys(MetaDataTable table) throws Exception {
+    public List<? extends ForeignKey> queryImportedKeys(Table table) throws Exception {
         return Collections.emptyList();
     }
 
     @Override
-    public List<? extends MetaDataForegin> queryExportedKeys(MetaDataTable table) throws Exception {
+    public List<? extends ForeignKey> queryExportedKeys(Table table) throws Exception {
         return Collections.emptyList();
     }
 
     @Override
-    public String queryColumnRemark(MetaDataColumn columnMate) {
+    public String queryTableRemark(Table tableMate) {
         return null;
     }
 
     @Override
-    public String queryTableRemark(MetaDataTable tableMate) {
+    public String queryColumnRemark(TableColumn columnMate) {
         return null;
     }
 
@@ -246,25 +244,15 @@ public class HtmlTableSource implements TableSource {
         return column;
     }
 
-    protected class TableMetaData implements MetaDataTable {
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    protected class TableMetaData extends Table {
 
         public final Element element;
 
         public TableMetaData(Element element) {
             this.element = element;
-        }
-
-        @Override
-        public String getName() {
-            return metaData.getTableName(element);
-        }
-
-        @Override
-        public void setName(String string) {
-        }
-
-        @Override
-        public void setComment(String string) {
+            this.setName(metaData.getTableName(element));
         }
     }
 
@@ -303,24 +291,27 @@ public class HtmlTableSource implements TableSource {
         }
 
         @Override
-        public void setRemark(String string) {
-        }
-
-        @Override
         public void setDecimalDigits(int int1) {
         }
 
         @Override
         public void setAutoIncrement(boolean b) {
         }
+
+        @Override
+        public void setHasDefValue(boolean b) {
+
+        }
     }
 
     protected class HtmlTableMetaDataImpl implements HtmlTableMetaData {
 
+        @Override
         public Elements getTables(Document document) {
             return document.select("table");
         }
 
+        @Override
         public Elements getTableColumns(Element tableElement) {
             Elements tr = tableElement.select("tr");
             if (tr.size() > 0) {
@@ -329,6 +320,7 @@ public class HtmlTableSource implements TableSource {
             return tr;
         }
 
+        @Override
         public Elements getColumnMetaData(Element columnElement) {
             return columnElement.select("td");
         }

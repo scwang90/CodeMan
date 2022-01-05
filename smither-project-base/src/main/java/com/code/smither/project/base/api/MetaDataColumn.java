@@ -20,4 +20,6 @@ public interface MetaDataColumn extends MetaData {
 
     void setAutoIncrement(boolean b);
 
+    void setHasDefValue(boolean b);
+
 }

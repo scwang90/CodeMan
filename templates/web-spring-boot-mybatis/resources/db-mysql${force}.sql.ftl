@@ -40,7 +40,7 @@ CREATE TABLE ${table.nameSql}
             <#assign type = type + '(${column.length?c})'/>
             <#assign tempType = tempType + (column.length?c)?length + '()'?length/>
         </#if>
-        <#if column.defValue?length gt 0>
+        <#if column.hasDefValue>
             <#if column.stringType || column.dateType || column.timeType>
                 <#assign type = type + " DEFAULT '${column.defValue}'"/>
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT ""'?length/>

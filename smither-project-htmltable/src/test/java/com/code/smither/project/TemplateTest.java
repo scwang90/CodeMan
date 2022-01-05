@@ -27,7 +27,7 @@ public class TemplateTest {
             super(config);
         }
         @Override
-        public Set<String> queryPrimaryKeys(MetaDataTable tableMate) {
+        public Set<String> queryPrimaryKeys(Table tableMate) {
             Set<String> keys = super.queryPrimaryKeys(tableMate);
             if (tableMate instanceof HtmlTableSource.TableMetaData) {
                 HtmlTableSource.TableMetaData table = ((HtmlTableSource.TableMetaData) tableMate);

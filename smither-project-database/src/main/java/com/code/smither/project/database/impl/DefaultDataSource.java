@@ -46,10 +46,13 @@ public class DefaultDataSource implements DbDataSource {
 
 	@Override
 	protected void finalize() throws Throwable {
-		if (autoClose && this.connection != null) {
-			this.connection.close();
+		try {
+			if (autoClose && this.connection != null) {
+				this.connection.close();
+			}
+		} finally {
+			super.finalize();
 		}
-		super.finalize();
 	}
 
 	@Override
@@ -98,7 +101,7 @@ public class DefaultDataSource implements DbDataSource {
     }
     
     @Override
-	public MetaDataTable tableFromResultSet(ResultSet tableResult, MetaDataTable table) throws SQLException {
+	public <T extends MetaDataTable> T tableFromResultSet(ResultSet tableResult, T table) throws SQLException {
 		// table.setName(tableResult.getString("TABLE_NAME"), getDatabase());
         table.setName(tableResult.getString("TABLE_NAME"));
 		table.setComment(tableResult.getString("REMARKS"));
@@ -106,7 +109,7 @@ public class DefaultDataSource implements DbDataSource {
 	}
 
     @Override
-	public MetaDataColumn columnFromResultSet(ResultSet result, MetaDataColumn column) throws SQLException {
+	public <T extends MetaDataColumn> T columnFromResultSet(ResultSet result, T column) throws SQLException {
         column.setName(result.getString("COLUMN_NAME"));
 		column.setType(result.getString("TYPE_NAME"));
 		column.setTypeInt(result.getInt("DATA_TYPE"));
@@ -115,12 +118,13 @@ public class DefaultDataSource implements DbDataSource {
 		column.setNullable(result.getBoolean("NULLABLE"));
 		column.setComment(result.getString("REMARKS"));
 		column.setDecimalDigits(result.getInt("DECIMAL_DIGITS"));
+		column.setHasDefValue(result.getObject("COLUMN_DEF") != null);
 		return column;
 	}
 
 	public static class DefaultDatabase implements Database {
 
-		private String[] keywords;
+		private final String[] keywords;
 
 		DefaultDatabase(String[] keywords) {
 			this.keywords = keywords;

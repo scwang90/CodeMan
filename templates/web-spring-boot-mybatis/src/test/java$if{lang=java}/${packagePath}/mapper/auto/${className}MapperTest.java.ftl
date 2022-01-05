@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-<#if find1>
+<#if find2>
 import java.util.Arrays;
 </#if>
 import java.util.List;

@@ -19,19 +19,14 @@ public interface TableSource {
 
     @Nullable Database getDatabase();
 
-    Table buildTable(MetaDataTable table);
-    TableColumn buildColumn(MetaDataColumn column);
-    IndexedKey buildIndexedKey(MetaDataIndex index);
-    ForeignKey buildForeignKey(MetaDataForegin foregin);
+    List<? extends Table> queryTables() throws Exception;
+    List<? extends TableColumn> queryColumns(Table table) throws Exception;
+    List<? extends IndexedKey> queryIndexKeys(Table table) throws Exception;
+    List<? extends ForeignKey> queryImportedKeys(Table table) throws Exception;
+    List<? extends ForeignKey> queryExportedKeys(Table table) throws Exception;
 
-    List<? extends MetaDataTable> queryTables() throws Exception;
-    List<? extends MetaDataColumn> queryColumns(MetaDataTable table) throws Exception;
-    List<? extends MetaDataIndex> queryIndexKeys(MetaDataTable table) throws Exception;
-    List<? extends MetaDataForegin> queryImportedKeys(MetaDataTable table) throws Exception;
+    String queryColumnRemark(TableColumn column) throws Exception;
+    String queryTableRemark(Table table) throws Exception;
 
-    List<? extends MetaDataForegin> queryExportedKeys(MetaDataTable table) throws Exception;
-    String queryColumnRemark(MetaDataColumn column) throws Exception;
-    String queryTableRemark(MetaDataTable table) throws Exception;
-
-    Set<String> queryPrimaryKeys(MetaDataTable table) throws Exception;
+    Set<String> queryPrimaryKeys(Table table) throws Exception;
 }

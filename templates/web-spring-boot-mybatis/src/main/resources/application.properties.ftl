@@ -9,6 +9,7 @@ server.servlet.encoding.enabled = true
 logging.level.root = info
 logging.level.${packageName}.mapper = info
 logging.level.${packageName}.controller = info
+logging.level.io.swagger.models.parameters = error
 logging.level.org.apache.shiro = error
 
 spring.datasource.url = jdbc:mysql://localhost:3306/database?serverTimezone=Asia/Shanghai

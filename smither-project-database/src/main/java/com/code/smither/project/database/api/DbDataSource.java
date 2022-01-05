@@ -23,9 +23,9 @@ public interface DbDataSource {
 
     ResultSet queryExportedKeys(String name) throws SQLException;
     
-    MetaDataTable tableFromResultSet(ResultSet tableResult, MetaDataTable table) throws SQLException;
-    
-    MetaDataColumn columnFromResultSet(ResultSet resultColumn, MetaDataColumn column) throws SQLException;
+    <T extends MetaDataTable> T  tableFromResultSet(ResultSet tableResult, T table) throws SQLException;
+
+    <T extends MetaDataColumn> T columnFromResultSet(ResultSet resultColumn, T column) throws SQLException;
 
     String queryTableRemark(MetaDataTable tableMate) throws SQLException;
 

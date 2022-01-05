@@ -152,36 +152,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 			success.onAction(true);
 		}
 		return table;
-//		Stream<String> keys = Arrays.stream(tableKey.split("[,;]"));
-//		Optional<Table> find = keys.map(key -> {
-//			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
-//		}).filter(Objects::nonNull).findFirst();
-//		if (find.isPresent()) {
-//			success.onAction(true);
-//			return find.get();
-//		}
-//		if (fuzzy) {
-//			keys = Arrays.stream(tableKey.split("[,;]"));
-//			find = keys.map(key -> {
-//				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
-//			}).filter(Objects::nonNull).findFirst();
-//			if (find.isPresent()) {
-//				success.onAction(true);
-//				return find.get();
-//			}
-//		}
-//		return new Table();
 	}
 
 	private static List<Table> findTables(List<Table> tables, String tableKey, Action<Integer> success) {
-		List<Table> find = Arrays.stream(tableKey.split("[,;]")).map(key -> {
-			return tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null);
-		}).filter(Objects::nonNull).collect(Collectors.toList());
-//		if (find.isEmpty()) {
-//			find = Arrays.stream(tableKey.split("[,;]")).map(key -> {
-//				return tables.stream().filter(t -> t.getName().toLowerCase().contains(key.toLowerCase())).findFirst().orElse(null);
-//			}).filter(Objects::nonNull).collect(Collectors.toList());
-//		}
+		List<Table> find = Arrays.stream(tableKey.split("[,;]")).map(key ->
+				tables.stream().filter(t -> matchNames(t.getName(), key)).findFirst().orElse(null))
+				.filter(Objects::nonNull).collect(Collectors.toList());
 		success.onAction(find.size());
 		return find;
 	}
@@ -205,17 +181,17 @@ public class DefaultModelBuilder implements ModelBuilder {
 	}
 
 	protected List<Table> buildTables() throws Exception {
-		List<? extends MetaDataTable> listMetaData = tableSource.queryTables();
+		List<? extends Table> listMetaData = tableSource.queryTables();
 		List<Table> tables = new ArrayList<>(listMetaData.size());
-		for (MetaDataTable metaData : listMetaData) {
+		for (Table table : listMetaData) {
 			logger.info("");
-			if (tableFilter != null && tableFilter.isNeedFilterTable(metaData.getName())) {
-				logger.info("跳过表【" + metaData.getName() + "】");
+			if (tableFilter != null && tableFilter.isNeedFilterTable(table.getName())) {
+				logger.info("跳过表【" + table.getName() + "】");
 				continue;
 			}
-			logger.trace("构建表【"+metaData.getName()+"】模型开始（" + tables.size() + "）");
-			tables.add(tableCompute(tableSource.buildTable(metaData), metaData));
-			logger.trace("构建表【"+metaData.getName()+"】模型完成（" + tables.size() + "）");
+			logger.trace("构建表【"+table.getName()+"】模型开始（" + tables.size() + "）");
+			tables.add(tableCompute(table));
+			logger.trace("构建表【"+table.getName()+"】模型完成（" + tables.size() + "）");
 		}
 		return tables;
 	}
@@ -224,11 +200,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * 完善 table 模型
 	 * 根据配置文件完善：类名、小写、大写、骆驼峰、列模型 等信息
 	 * @param table 根据数据库表信息初步构建的 table 模型
-	 * @param tableMate JDBC 查询出的 表元数据
 	 * @return 返回完整信息的 table 模型
 	 * @throws Exception 数据库读取异常
 	 */
-	protected Table tableCompute(Table table, MetaDataTable tableMate) throws Exception {
+	protected Table tableCompute(Table table) throws Exception {
 		String name = this.convertTableIfNeed(table.getName());
 		table.setClassName(this.classConverter.converterClassName(name));
 		table.setClassNameUpper(table.getClassName().toUpperCase());
@@ -243,12 +218,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 
 		if (StringUtil.isNullOrBlank(table.getRemark())) {
-			table.setRemark(tableSource.queryTableRemark(tableMate));
+			table.setRemark(tableSource.queryTableRemark(table));
 		}
 
 		String remark = table.getRemark();
 		if (StringUtil.isNullOrBlank(remark)) {
-			table.setRemark(tableMate.getName());
+			table.setRemark(table.getName());
 		} else {
 			Matcher matcher = regex.matcher(remark);
 			if (matcher.find()) {
@@ -260,7 +235,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 			}
 		}
 		//继续完善 数据表列名数据
-		return tableComputeColumn(table, tableMate);
+		return tableComputeColumn(table);
 	}
 
 	/**
@@ -269,13 +244,6 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * @return url 路径
 	 */
     protected String buildUrlPath(Table table) {
-//        String division = this.config.getTableDivision();
-//        if (division == null || division.length() == 0) {
-//            division = "_";
-//        }
-//        if (table.getName().contains(division)) {
-//            return table.getName().toLowerCase().replace(division, "-");
-//        }
         StringBuilder builder = new StringBuilder();
         String className = table.getClassName();
         for (int i = 0, lc = 0; i < className.length(); i++) {
@@ -294,35 +262,17 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * 完善表模型的列列表
 	 * 根据 表模型 元数据 构建 列模型列表 并完善列模型
 	 * @param table 表模型
-	 * @param tableMate 表元数据
 	 * @return 表模型
 	 * @throws Exception 数据库读取异常
 	 */
-    protected Table tableComputeColumn(Table table, MetaDataTable tableMate) throws Exception {
-
-		Set<String> keys = tableSource.queryPrimaryKeys(tableMate);
-		List<? extends MetaDataIndex> indexedMetas = tableSource.queryIndexKeys(table);
-		List<IndexedKey> indexKeys = new ArrayList<>(indexedMetas.size());
-		for (MetaDataIndex index : indexedMetas) {
-			indexKeys.add(tableSource.buildIndexedKey(index));
-		}
-		table.setIndexKeys(indexKeys);
-		List<? extends MetaDataForegin> importedKeys = tableSource.queryImportedKeys(tableMate);
-		List<ForeignKey> importedForeignKeys = new ArrayList<>(importedKeys.size());
-		for (MetaDataForegin key : importedKeys) {
-			importedForeignKeys.add(tableSource.buildForeignKey(key));
-		}
-		table.setImportedKeys(importedForeignKeys);
-		List<? extends MetaDataForegin> exportedKeys = tableSource.queryExportedKeys(tableMate);
-		List<ForeignKey> exportedForeignKeys = new ArrayList<>(exportedKeys.size());
-		for (MetaDataForegin key : exportedKeys) {
-			exportedForeignKeys.add(tableSource.buildForeignKey(key));
-		}
-		table.setExportedKeys(exportedForeignKeys);
-		List<? extends MetaDataColumn> listMetaData = tableSource.queryColumns(tableMate);
+    protected Table tableComputeColumn(Table table) throws Exception {
+		Set<String> keys = tableSource.queryPrimaryKeys(table);
+		table.setIndexKeys(tableSource.queryIndexKeys(table).stream().map(k->(IndexedKey)k).collect(Collectors.toList()));
+		table.setImportedKeys(tableSource.queryImportedKeys(table).stream().map(k->(ForeignKey)k).collect(Collectors.toList()));
+		table.setExportedKeys(tableSource.queryExportedKeys(table).stream().map(k->(ForeignKey)k).collect(Collectors.toList()));
+		List<? extends TableColumn> listMetaData = tableSource.queryColumns(table);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
-		for (MetaDataColumn columnMate : listMetaData) {
-			TableColumn column = tableSource.buildColumn(columnMate);
+		for (TableColumn column : listMetaData) {
 			if (keys.contains(column.getName())) {
 				if (table.getIdColumn() == null) {
 					table.setIdColumn(column);
@@ -332,8 +282,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 					column.setTypeInt(Types.BIGINT);
 				}
 			}
-			column.setPrimaryKey(keys.contains(columnMate.getName()));
-			columns.add(columnCompute(column, columnMate));
+			column.setPrimaryKey(keys.contains(column.getName()));
+			columns.add(columnCompute(column));
 			logger.info("构建列【" + table.getName() + "】【" + column.getName() + "】模型完成（" + columns.size() + "）");
 		}
         if (table.getIdColumn() == null) {
@@ -481,11 +431,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * 完善列模型
 	 * 根据 初始列模型 和 列元数据 完善列模型
 	 * @param column 初始列模型
-	 * @param columnMate 列元数据
 	 * @return 返回 完整列模型
 	 * @throws Exception 数据库读取异常
 	 */
-	protected TableColumn columnCompute(TableColumn column, MetaDataColumn columnMate) throws Exception {
+	protected TableColumn columnCompute(TableColumn column) throws Exception {
 		String name = this.convertColumnIfNeed(column.getName());
 		column.setTypeJdbc(jdbcLang.getType(column));
 		column.setFieldName(this.classConverter.converterFieldName(name));
@@ -522,12 +471,12 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 
 		if (StringUtil.isNullOrBlank(column.getRemark())) {
-			column.setRemark(tableSource.queryColumnRemark(columnMate));
+			column.setRemark(tableSource.queryColumnRemark(column));
 		}
 
 		String remark = column.getRemark();
 		if (StringUtil.isNullOrBlank(remark)) {
-			column.setRemark(columnMate.getName());
+			column.setRemark(column.getName());
 		} else {
 			Matcher matcher = regex.matcher(remark);
 			if (matcher.find()) {

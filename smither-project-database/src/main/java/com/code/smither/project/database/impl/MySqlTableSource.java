@@ -3,6 +3,7 @@ package com.code.smither.project.database.impl;
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.base.model.Table;
 import com.code.smither.project.database.api.DbFactory;
 
 import java.sql.ResultSet;
@@ -70,7 +71,7 @@ public class MySqlTableSource extends DefaultDataSource implements Database {
     }
 
     @Override
-    public MetaDataColumn columnFromResultSet(ResultSet resultSet, MetaDataColumn column) throws SQLException {
+    public <T extends MetaDataColumn> T columnFromResultSet(ResultSet resultSet, T column) throws SQLException {
         column = super.columnFromResultSet(resultSet, column);
 
         Object is_autoincrement = resultSet.getObject("IS_AUTOINCREMENT");
