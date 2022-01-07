@@ -41,7 +41,7 @@ fun ${table.className}AutoMapper.select${bean}(rows: RowBounds, where: ${table.c
 fun ${table.className}AutoMapper.select${bean}One(where: ${table.classNameUpper}.()-> Query<${table.className}>): ${table.className}${bean}? {
     return this.select${bean}OneWhere(where.invoke(Tables.${table.className}))
 }
-        <#list table.importCascadeKeys as key>
+        <#list table.importedKeys as key>
 
             <#assign removeWhere = ''/>
             <#if table.hasRemove>

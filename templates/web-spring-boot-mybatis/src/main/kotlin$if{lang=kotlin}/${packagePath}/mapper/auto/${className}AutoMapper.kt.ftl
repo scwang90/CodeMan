@@ -132,7 +132,7 @@ interface ${className}AutoMapper {
 	 * @return empty 或者 匹配条件的数据
 	 */
 	fun select${bean}Where(where: Query<${table.className}>?, rows: RowBounds): List<${className}${bean}>
-	<#list table.importCascadeKeys as key>
+	<#list table.importedKeys as key>
 
 	/**
 	 * 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}）
@@ -167,7 +167,7 @@ interface ${className}AutoMapper {
 	fun select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(@Param("${key.relateTargetColumn.fieldName}") ${key.relateTargetColumn.fieldName}: ${key.relateTargetColumn.fieldType}, rows: RowBounds): List<${table.className}${bean}>
 	</#list>
 </#list>
-<#if table.idColumn.autoIncrement>
+<#if table.idColumn.autoIncrement && (dbType!"")=="mysql">
 
 	/**
 	 * 重置表自增编号

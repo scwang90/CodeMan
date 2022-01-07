@@ -78,7 +78,7 @@ public class ${className}AutoController {
 		return ApiResult.success(new Paged<>(paging, list));
 	</#if>
     }
-	<#list table.importCascadeKeys as key>
+	<#list table.importedKeys as key>
 
 	@GetMapping("${bean?lower_case}/by/${key.fkColumn.fieldName}")
 	@ApiOperation(value = "根据${key.pkTable.remarkName}获取${value}", notes = "${notes}")

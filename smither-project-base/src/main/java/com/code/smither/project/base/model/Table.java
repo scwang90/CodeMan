@@ -185,6 +185,18 @@ public class Table implements Model, MetaDataTable {
         return importCascadeKeys != null && importCascadeKeys.size() > 0;
     }
 
+    public boolean isHasForeignKey() {
+        return isHasExportKey() || isHasImportKey();
+    }
+
+    public boolean isHasExportKey() {
+        return exportedKeys != null && exportedKeys.size() > 0;
+    }
+
+    public boolean isHasImportKey() {
+        return importedKeys != null && importedKeys.size() > 0;
+    }
+
     public boolean isHasColumnEnums() {
         if (this.columns != null) {
             return this.columns.stream().anyMatch(TableColumn::isHasEnums);

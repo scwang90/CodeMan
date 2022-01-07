@@ -108,7 +108,7 @@ class ${className}AutoService {
 		return Paged(paging, mapper.select${bean}Where(null, paging.toRowBounds()))
 	</#if>
     }
-	<#list table.importCascadeKeys as key>
+	<#list table.importedKeys as key>
 
 	/**
 	 * 根据${key.pkTable.remarkName}获取${table.remarkName}列表<#if bean?length gt 0>（包括外键）</#if>

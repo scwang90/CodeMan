@@ -137,7 +137,7 @@ public interface ${className}AutoMapper {
 	 * @return null 或者 匹配条件的数据
 	 */
 	List<${className}${bean}> select${bean}Where(Query<${table.className}> where, RowBounds rows);
-	<#list table.importCascadeKeys as key>
+	<#list table.importedKeys as key>
 
 	/**
 	 * 批量查询（<#if bean?length gt 0>包括外键，</#if>根据${key.pkTable.remarkName}）
@@ -172,7 +172,7 @@ public interface ${className}AutoMapper {
 	List<${table.className}${bean}> select${bean}ByRelate${key.relateTargetColumn.fieldNameUpper}(@Param("${key.relateTargetColumn.fieldName}") ${key.relateTargetColumn.fieldType} ${key.relateTargetColumn.fieldName}, RowBounds rows);
 	</#list>
 </#list>
-<#if table.idColumn.autoIncrement>
+<#if table.idColumn.autoIncrement && (dbType!"")=="mysql">
 
 	/**
 	 * 重置表自增编号
