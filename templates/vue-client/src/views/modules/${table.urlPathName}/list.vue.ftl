@@ -19,10 +19,14 @@
             <el-table-column fixed="left" type="index" label="序号" width="50"> </el-table-column>
             <#list table.columns as column>
             <#if !column.hiddenForClient && !column.hiddenForTables && !column.name?lower_case?ends_with("id")>
-            <el-table-column prop="${column.fieldName}" label="${column.remarkName}" ><#-- width="${min(max(column.length*180/32, 80), 400)}" -->
+            <el-table-column prop="${column.fieldName}" label="${column.remarkName}"<#if column==table.codeColumn> width="150"</#if>><#-- width="${min(max(column.clientLength*180/32, 80), 400)}" -->
                 <#if column == table.genderColumn>
                 <template #default="scope">
                     <span>{{scope.row.${column.fieldName}|gender}}</span>
+                </template>
+                <#elseif column.hasEnums>
+                <template #default="scope">
+                    <span>{{showEnum(scope.row.${column.fieldName}, enums.${column.fieldName})}}</span>
                 </template>
                 <#elseif column.boolType>
                 <template #default="scope">
@@ -77,7 +81,7 @@
                         </el-form-item>
                     </el-col>
         <#else>
-                    <el-col :span="<#if (column.length > 32)>21<#else>10</#if>" :offset="1"<#if column.hiddenForSubmit> v-if="model.${table.idColumn.fieldName}"</#if>>
+                    <el-col :span="<#if (column.clientLength > 32)>21<#else>10</#if>" :offset="1"<#if column.hiddenForSubmit> v-if="model.${table.idColumn.fieldName}"</#if>>
                         <el-form-item label="${column.remarkName}" prop="${column.fieldName}">
             <#if column == table.genderColumn>
                             <el-radio-group v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"</#if>>
@@ -85,12 +89,22 @@
                                 <el-radio :label="1">男</el-radio>
                                 <el-radio :label="2">女</el-radio>
                             </el-radio-group>
+            <#elseif column.hasEnums>
+                            <el-select v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"</#if> placeholder="请选择">
+                                <template v-for="(item,index) in enums.${column.fieldName}">
+                                <el-option v-if="!!item"
+                                           :key="index"
+                                           :label="item"
+                                           :value="index">
+                                </el-option>
+                                </template>
+                            </el-select>
             <#elseif column.boolType>
                             <el-switch v-model="model.${column.fieldName}" active-text="已${column.remarkName}" inactive-text="未${column.remarkName}"<#if column.hiddenForSubmit> :disabled="true"<#else> </#if>/>
             <#elseif column.dateType>
                             <el-date-picker type="${(column.timeType==true)?string('datetime','date')}" v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> placeholder="选择日期" value-format="yyyy-MM-dd"</#if>></el-date-picker>
-            <#elseif (column.length > 64)>
-                            <el-input v-model="model.${column.fieldName}" type="textarea"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
+            <#elseif (column.clientLength > 64)>
+                            <el-input v-model="model.${column.fieldName}" type="textarea" :autosize="{minRows:${column.clientLength?c}/64, maxRows:6}"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             <#else>
                             <el-input v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> <#if (column.length > 32)>maxlength="${column.length}" show-word-limit</#if> @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             </#if>
@@ -124,12 +138,43 @@ const rules = {
         { required: true, message: '请输入${column.remark}', trigger: 'blur' },
         </#if>
         <#if column.stringType>
-        { min: 2, max: ${column.length?c}, message: '${column.remark}长度在 2 到 ${column.length} 个字符', trigger: 'blur' },
+            <#assign minLength=1/>
+            <#if column == table.usernameColumn>
+                <#assign minLength=5/>
+            </#if>
+            <#if column == table.passwordColumn>
+                <#assign minLength=6/>
+            </#if>
+        { min: ${minLength}, max: ${column.length?c}, message: '${column.remark}长度在 ${minLength} 到 ${column.length} 个字符', trigger: 'blur' },
         </#if>
     ],
     </#if>
 </#list>
 };
+<#if table.hasColumnEnums>
+
+const enums = {
+    <#list table.columns as column>
+        <#if column.hasEnums>
+    ${column.fieldName}: [
+            <#assign index = 0/>
+            <#list column.enums as enum>
+                <#if index < enum.value>
+                    <#list index..(enum.value-1) as i>
+        '',
+                    </#list>
+        '${enum.name}',
+                    <#assign index = enum.value + 1/>
+                <#else>
+        '${enum.name}',
+                    <#assign index = index + 1/>
+                </#if>
+            </#list>
+    ],
+        </#if>
+    </#list>
+}
+</#if>
 
 export default {
     components: { ViewFrame },
@@ -152,6 +197,9 @@ export default {
             model: {},
             items: [],
             selections: [],
+<#if table.hasColumnEnums>
+            enums: enums,
+</#if>
             rules: rules
         };
     },
@@ -199,7 +247,7 @@ export default {
                     this.loadingList = true;
                     const result = await api.list(params);
                     this.items = result.list;
-                    this.pageTotal = result.total;
+                    this.pageTotal = result.totalRecord;
                 } catch (error) {
                     this.$message.error(error);
                 } finally {
@@ -292,6 +340,17 @@ export default {
                     }
                     return valid;
                 });
+<#if table.hasColumnEnums>
+            },
+            showEnum(value, enums) {
+                if (value >= enums.length) {
+                    return `${r"${value}"}`;
+                }
+                if (enums[value]) {
+                    return enums[value];
+                }
+                return `${r"${value}"}`;
+</#if>
             }
         }),
     }
