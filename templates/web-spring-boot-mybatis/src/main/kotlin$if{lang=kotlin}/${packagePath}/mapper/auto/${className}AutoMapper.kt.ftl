@@ -10,7 +10,9 @@ import ${packageName}.model.db.${className}Bean
 
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
+<#if table.idColumn.autoIncrement && (dbType!"")=="mysql">
 import org.apache.ibatis.annotations.Update
+</#if>
 import org.apache.ibatis.session.RowBounds
 import org.springframework.stereotype.Component
 
