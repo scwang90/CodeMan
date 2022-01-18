@@ -37,6 +37,7 @@ class AppConfig {
         var mappging:String = "/api/**"
         var allowedMethods:String = "*"
         var allowCredentials:Boolean = true
+        var exposedHeaders:String = "x-auth-token;Content-Type"
         var allowedOriginPatterns:String = "*localhost*;*127.0.0.1*;*0.0.0.0*"
     }
 }
