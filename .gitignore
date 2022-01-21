@@ -6,6 +6,7 @@ target/
 .idea/
 .classpath
 .project
+.DS_Store
 /src/main/resources/c3p0.properties
 /src/main/resources/config.properties
 /src/test/resources/c3p0-config.xml

@@ -143,7 +143,9 @@ import ${key.pkTable.className} from '@/model/auto/${key.pkTable.urlPathName}';
 import ViewFrame from '@/components/ViewFrame.vue';
 import { Route } from 'vue-router';
 import { namespace } from 'vuex-class';
+<#if hasLogin>
 import { UserInfo } from '@/constant/states';
+</#if>
 import { Component, Vue, Watch } from 'vue-property-decorator';
 
 const user = namespace('user');
@@ -224,7 +226,9 @@ export default class ${className}Module extends Vue {
     private items: Array<${className}> = []
     private selections: Array<${className}> = []
 
+<#if hasLogin>
     @user.State('userInfo') userInfo!: UserInfo
+</#if>
 
     @Watch("$route")
     watchRoute(to: Route, from: Route) {
