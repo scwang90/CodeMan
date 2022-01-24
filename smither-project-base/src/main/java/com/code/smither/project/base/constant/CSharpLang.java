@@ -116,11 +116,6 @@ public class CSharpLang extends AbstractProgramLang {
     @Override
     public String getType(TableColumn column) {
         switch (column.getTypeInt()) {
-            case Types.DISTINCT:
-            case Types.REF:
-            case Types.NULL:
-            case Types.STRUCT:
-                break;
             case Types.BINARY:
             case Types.VARBINARY:
             case Types.LONGVARBINARY:
@@ -132,41 +127,34 @@ public class CSharpLang extends AbstractProgramLang {
             case Types.BIGINT:
                 return Long.class.getSimpleName();
             case Types.BIT:
+            case Types.BOOLEAN:
                 return Boolean.class.getSimpleName();
             case Types.BLOB:
                 return Blob.class.getSimpleName();
-            case Types.BOOLEAN:
-                return Boolean.class.getSimpleName();
             case Types.CHAR:
+            case Types.LONGNVARCHAR:
+            case Types.LONGVARCHAR:
+            case Types.NCHAR:
+            case Types.NVARCHAR:
+            case Types.VARCHAR:
                 return String.class.getSimpleName();
             case Types.CLOB:
                 return Clob.class.getSimpleName();
             case Types.DECIMAL:
+            case Types.NUMERIC:
                 return BigDecimal.class.getSimpleName();
             case Types.DOUBLE:
                 return Double.class.getSimpleName();
             case Types.FLOAT:
+            case Types.REAL:
                 return Float.class.getSimpleName();
             case Types.INTEGER:
                 return Integer.class.getSimpleName();
             case Types.JAVA_OBJECT:
-                return Object.class.getSimpleName();
-            case Types.LONGVARCHAR:
-                return String.class.getSimpleName();
-            case Types.LONGNVARCHAR:
-                return String.class.getSimpleName();
-            case Types.NCHAR:
-                return String.class.getSimpleName();
-            case Types.NCLOB:
-                return NClob.class.getSimpleName();
-            case Types.NUMERIC:
-                return BigDecimal.class.getSimpleName();
-            case Types.NVARCHAR:
-                return String.class.getSimpleName();
             case Types.OTHER:
                 return Object.class.getSimpleName();
-            case Types.REAL:
-                return Float.class.getSimpleName();
+            case Types.NCLOB:
+                return NClob.class.getSimpleName();
             case Types.ROWID:
                 return RowId.class.getSimpleName();
             case Types.SMALLINT:
@@ -179,8 +167,6 @@ public class CSharpLang extends AbstractProgramLang {
                 return java.util.Date.class.getSimpleName();
             case Types.TINYINT:
                 return Byte.class.getSimpleName();
-            case Types.VARCHAR:
-                return String.class.getSimpleName();
             default:
                 break;
         }

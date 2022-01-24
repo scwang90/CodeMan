@@ -18,11 +18,13 @@ public class ConfigClassConverter extends LangClassConverter {
     public ConfigClassConverter(ProjectConfig config) {
         super(ProgramLang.Lang.getLang(config.getTemplateLang()));
         this.config = config;
+        this.lang.bindConfig(config);
     }
 
     public ConfigClassConverter(ProjectConfig config, AbstractProgramLang lang) {
         super(lang);
         this.config = config;
+        this.lang.bindConfig(config);
     }
 
     @Override

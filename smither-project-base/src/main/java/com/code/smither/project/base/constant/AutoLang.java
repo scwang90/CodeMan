@@ -62,7 +62,7 @@ public class AutoLang extends AbstractProgramLang {
 
     @Override
     public void bindConfig(ProjectConfig config) {
-        def = Lang.getLang(config.getTemplateSecondaryLang());
+        lang = def = Lang.getLang(config.getTemplateSecondaryLang());
     }
 
 }
