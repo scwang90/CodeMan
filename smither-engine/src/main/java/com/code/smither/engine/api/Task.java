@@ -23,4 +23,9 @@ public interface Task {
      * 是否强制覆盖
      */
     boolean forceOverWrite();
+
+    /**
+     * 获取模版替换后的目标扩展名
+     */
+    String getTargetFileExtension();
 }

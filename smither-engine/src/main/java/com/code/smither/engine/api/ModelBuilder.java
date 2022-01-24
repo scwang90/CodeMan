@@ -6,4 +6,8 @@ package com.code.smither.engine.api;
  */
 public interface ModelBuilder {
     RootModel build() throws Exception;
+
+    default void preRunTask(Task task, RootModel root) {
+
+    }
 }

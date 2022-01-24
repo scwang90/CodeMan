@@ -44,6 +44,10 @@ public class TableColumn implements MetaDataColumn {
 	private String fieldCSharpType;//C# 字段类型
 	private String fieldKotlinType;//kotlin 字段类型
 	private String fieldTypeScriptType;//TypeScript 字段类型
+	private String fieldJavaTypePrimitive;//java 字段类型
+	private String fieldCSharpTypePrimitive;//C# 字段类型
+	private String fieldKotlinTypePrimitive;//kotlin 字段类型
+	private String fieldTypeScriptTypePrimitive;//TypeScript 字段类型
 
 	private boolean nullable;//允许null
 	private boolean autoIncrement;//是否自增

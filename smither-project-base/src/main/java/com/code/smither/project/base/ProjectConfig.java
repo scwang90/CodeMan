@@ -46,7 +46,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String columnHideForSubmit = "";
     protected String columnForceUseLong = "*time";
 
-    protected String templateLang = ProgramLang.Lang.Java.value;
+    protected String templateLang = ProgramLang.Lang.Auto.value;
     protected String templatePath = "../templates/web-spring-boot-mybatis";
     protected String templateCharset = "UTF-8";
 
@@ -294,9 +294,21 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 //        this.columnHideForSubmit = columnHideForSubmit;
 //    }
 //
-//    public String getTemplateLang() {
-//        return templateLang;
-//    }
+    public String getTemplateLang() {
+        int index = templateLang.indexOf(',');
+        if (index > 0) {
+            return templateLang.substring(0, index);
+        }
+        return templateLang;
+    }
+
+    public String getTemplateSecondaryLang() {
+        int index = templateLang.indexOf(',');
+        if (index > 0) {
+            return templateLang.substring(index + 1);
+        }
+        return templateLang;
+    }
 //
 //    public void setTemplateLang(String templateLang) {
 //        this.templateLang = templateLang;

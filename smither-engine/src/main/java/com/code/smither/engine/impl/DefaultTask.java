@@ -54,4 +54,14 @@ public class DefaultTask implements Task {
     public boolean forceOverWrite() {
         return forceOverWrite;
     }
+
+    @Override
+    public String getTargetFileExtension() {
+        String name = target.getName().replaceAll("\\.ftl[xh]?$", "");
+        int i = name.lastIndexOf('.');
+        if (i >= 0) {
+            return name.substring(i);
+        }
+        return "null";
+    }
 }

@@ -13,15 +13,6 @@ import java.sql.*;
  */
 public abstract class AbstractProgramLang implements ProgramLang {
 
-    public static AbstractProgramLang getLang(String programLang) {
-        for (Lang lang : Lang.values()) {
-            if (lang.value.equalsIgnoreCase(programLang) || lang.name().equalsIgnoreCase(programLang)) {
-                return lang.lang;
-            }
-        }
-        return Lang.Java.lang;
-    }
-
     @Override
     public Class<?> getJavaType(TableColumn column) {
         switch (column.getTypeInt()) {
@@ -113,4 +104,5 @@ public abstract class AbstractProgramLang implements ProgramLang {
     public String wrapperKeyword(String classname) {
         return classname + "Ex";
     }
+
 }

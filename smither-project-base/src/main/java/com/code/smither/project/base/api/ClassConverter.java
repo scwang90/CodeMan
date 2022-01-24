@@ -1,5 +1,6 @@
 package com.code.smither.project.base.api;
 
+import com.code.smither.engine.api.Task;
 import com.code.smither.project.base.model.TableColumn;
 
 /**
@@ -10,8 +11,15 @@ import com.code.smither.project.base.model.TableColumn;
 public interface ClassConverter {
 
     enum DataType {
-        none, primitive, object
+        none, primitive, object;
     }
+
+    /**
+     * 绑定到具体到 Task
+     * 可以根据 Task 的文件信息配置一些语言特性功能
+     * @param task 任务
+     */
+    default void bindTask(Task task) {}
 
     /**
      * 根据表名转换成类名

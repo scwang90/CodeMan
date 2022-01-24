@@ -1,5 +1,6 @@
 package com.code.smither.project.base.api;
 
+import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.*;
 import com.code.smither.project.base.model.TableColumn;
 
@@ -9,6 +10,7 @@ import com.code.smither.project.base.model.TableColumn;
 public interface ProgramLang {
 
     enum Lang {
+        Auto("auto", new AutoLang()),
         Java("java", new JavaLang()),
         CSharp("C#", new CSharpLang()),
         Kotlin("kotlin", new KotlinLang()),
@@ -20,6 +22,15 @@ public interface ProgramLang {
         Lang(String value, AbstractProgramLang lang) {
             this.value = value;
             this.lang = lang;
+        }
+
+        public static AbstractProgramLang getLang(String programLang) {
+            for (Lang lang : Lang.values()) {
+                if (lang.value.equalsIgnoreCase(programLang) || lang.name().equalsIgnoreCase(programLang)) {
+                    return lang.lang;
+                }
+            }
+            return Lang.Java.lang;
         }
     }
 
@@ -71,4 +82,15 @@ public interface ProgramLang {
      */
     String converterFieldName(String columnName);
 
+    /**
+     * 绑定文件扩展名
+     * @param fileExtension 扩展名
+     */
+    default void bindFileExtension(String fileExtension) {}
+
+    /**
+     * 绑定配置信息
+     * @param config 配置信息
+     */
+    default void bindConfig(ProjectConfig config) {}
 }

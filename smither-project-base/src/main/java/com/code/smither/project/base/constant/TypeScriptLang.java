@@ -14,7 +14,7 @@ import java.util.Map;
 public class TypeScriptLang extends JavaLang {
 
     private static final String[] extensions = {
-            ".ts"
+            ".ts",".tsx",".vue",
     };
 
     private static final String[] keywords = {

@@ -2,6 +2,7 @@ package com.code.smither.project.base.impl;
 
 import com.code.smither.engine.api.ModelBuilder;
 import com.code.smither.engine.api.RootModel;
+import com.code.smither.engine.api.Task;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.api.internel.*;
@@ -31,8 +32,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final WordBreaker wordBreaker;
 	protected final WordReplacer wordReplacer;
 	protected final ProgramLang programLang;
-	protected final JdbcLang jdbcLang = new JdbcLang();
 	protected final ClassConverter classConverter;
+	protected final JdbcLang jdbcLang = new JdbcLang();
 	protected final LangClassConverter converterJava = new LangClassConverter(ProgramLang.Lang.Java.lang);
 	protected final LangClassConverter converterCSharp = new LangClassConverter(ProgramLang.Lang.CSharp.lang);
 	protected final LangClassConverter converterKotlin = new LangClassConverter(ProgramLang.Lang.Kotlin.lang);
@@ -48,12 +49,20 @@ public class DefaultModelBuilder implements ModelBuilder {
 		this.classConverter = config.getClassConverter();
 		this.wordBreaker = config.getWordBreaker();
 		this.wordReplacer = config.getWordReplacer();
-		this.programLang = AbstractProgramLang.getLang(config.getTemplateLang());
+		this.programLang = ProgramLang.Lang.getLang(config.getTemplateLang());
 	}
 
 	@Override
 	public RootModel build() throws Exception {
 		return build(new SourceModel(), config, buildTables());
+	}
+
+	@Override
+	public void preRunTask(Task task, RootModel root) {
+		if (root instanceof SourceModel) {
+			classConverter.bindTask(task);
+			((SourceModel) root).bindClassConverter(classConverter);
+		}
 	}
 
 	public static SourceModel build(SourceModel model, ProjectConfig config, List<Table> tables) {
@@ -447,6 +456,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setFieldCSharpType(this.converterCSharp.converterFieldType(column));
 		column.setFieldKotlinType(this.converterKotlin.converterFieldType(column));
 		column.setFieldTypeScriptType(this.converterTypeScript.converterFieldType(column));
+		column.setFieldJavaTypePrimitive(this.converterJava.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldCSharpTypePrimitive(this.converterCSharp.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldKotlinTypePrimitive(this.converterKotlin.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldTypeScriptTypePrimitive(this.converterTypeScript.converterFieldType(column, ClassConverter.DataType.primitive));
 
 		Database database = this.tableSource.getDatabase();
 		if (database != null && database.isKeyword(column.getName())) {

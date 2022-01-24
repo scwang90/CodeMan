@@ -1,5 +1,6 @@
 package com.code.smither.project.base.impl;
 
+import com.code.smither.engine.api.Task;
 import com.code.smither.project.base.api.ClassConverter;
 import com.code.smither.project.base.constant.AbstractProgramLang;
 import com.code.smither.project.base.model.TableColumn;
@@ -15,6 +16,11 @@ public class LangClassConverter implements ClassConverter {
 
 	public LangClassConverter(AbstractProgramLang lang) {
 		this.lang = lang;
+	}
+
+	@Override
+	public void bindTask(Task task) {
+		lang.bindFileExtension(task.getTargetFileExtension());
 	}
 
 	@Override

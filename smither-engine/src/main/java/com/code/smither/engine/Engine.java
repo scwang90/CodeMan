@@ -30,6 +30,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
     protected File target;
     protected File templates;
     protected RootModel rootModel;
+    protected ModelBuilder modelBuilder;
     protected Map<String, ConditionTask> conditionTaskMap;
     protected Set<ConditionTask> overwriteConditionTask;
 
@@ -55,7 +56,8 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
     public void launch(ModelBuilder modelBuilder, ProgressListener listener) throws Exception {
         checkWorkspace();
 
-        rootModel = config.getFieldFiller().fill(modelBuilder.build());
+        this.modelBuilder = modelBuilder;
+        this.rootModel = config.getFieldFiller().fill(modelBuilder.build());
 
         if (rootModel.getModels().size() == 0) {
             logger.warn("构建模型数据为空");
@@ -113,6 +115,8 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
 
         //定义生成目标文件集合（用于防止重复生产相同的文件）
         Set<String> set = new LinkedHashSet<>();
+
+        this.modelBuilder.preRunTask(task, root);
 
         logger.info(task.getTemplateFile().getAbsolutePath());
         if (root.getModels() != null && root.getModels().size() > 0) {
@@ -190,6 +194,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         try(Writer out = getFileWriter(file)) {
             Template template = getTemplate(templateFile);
             ObjectWrapper wrapper = template.getObjectWrapper();
+
             template.process(getDataModel(root, (BeansWrapper) wrapper), out);
         }
     }
@@ -241,7 +246,7 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
                 StringWriter writer = new StringWriter();
                 nameTemplate.process(getDataModel(rootModel,  (BeansWrapper)wrapper), writer);
                 String value = writer.getBuffer().toString();
-                if (value.equals("true")) {
+                if ("true".equals(value)) {
                     conditionMap.put(group, "");
                 } else {
                     return false;
@@ -331,6 +336,22 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
             return this.targetFile;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            ConditionTask that = (ConditionTask) o;
+            return Objects.equals(targetFile, that.targetFile);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(targetFile);
+        }
     }
 
 }
