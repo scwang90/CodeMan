@@ -9,6 +9,9 @@ import com.code.smither.engine.impl.DefaultFileFilter;
 import com.code.smither.engine.impl.DefaultTaskLoader;
 import lombok.Data;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * 配置信息
  * Created by SCWANG on 2016/8/18.
@@ -30,6 +33,8 @@ public class EngineConfig implements Config {
     private String includePath = "*";
     private String filterFile = "*.classes";
     private String filterPath = "bin;build;target";
+
+    private Map<String, Object> customModel = new LinkedHashMap<>();
 
     private transient TaskLoader taskLoader;
     private transient FieldFiller fieldFiller;

@@ -13,6 +13,9 @@ public class Tools {
         return Arrays.stream(conditions).allMatch(c->c);
     }
 
+    /**
+     * 根据ID列名转换Model名称（表名）
+     */
     public String idToModel(String key) {
         if (key == null) {
             return null;
@@ -21,23 +24,22 @@ public class Tools {
         if (low.endsWith("id") && key.length() > 2) {
             return key.replaceAll("_?(id|Id|ID)$", "");
         }
-        return key;
+        else if (low.endsWith("no") && key.length() > 2) {
+            return key.replaceAll("_?(no|No|NO)$", "");
+        }
+        else if (low.endsWith("code") && key.length() > 4) {
+            return key.replaceAll("_?(code|Code|CODE)$", "");
+        }
+        return key + "Model";
     }
 
+    /**
+     * 英文单词变复数
+     */
     public String toPlural(String name) {
         if (name == null) {
             return null;
         }
         return Inflector.getInstance().pluralize(name);
-//        if (name.endsWith("y")) {
-//            return name.replaceAll("y$", "ies");
-//        }
-//        if (name.matches(".+?(ch|sh|s|x|o)$")) {
-//            return name + "es";
-//        }
-//        if (name.matches(".+?e?f$")) {
-//            return name.replaceAll("e?f$", "ves");
-//        }
-//        return name + 's';
     }
 }

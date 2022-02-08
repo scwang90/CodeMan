@@ -1,12 +1,14 @@
 package com.code.smither.engine.factory;
 
 import com.code.smither.engine.EngineConfig;
+import com.code.smither.engine.tools.CustomModel;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +50,8 @@ public class ConfigFactory {
         config.setIncludePath(properties.getProperty("code.man.template.include.path",config.getIncludePath()));
         config.setFilterFile(properties.getProperty("code.man.template.exclude.file",config.getFilterFile()));
         config.setFilterPath(properties.getProperty("code.man.template.exclude.path",config.getFilterPath()));
+
+        CustomModel.load(config.getCustomModel(), properties, "code.man.model.custom");
 
         return config;
     }

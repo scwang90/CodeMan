@@ -11,10 +11,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,6 +55,7 @@ public class SourceModel implements LangRootModel {
     private boolean hasLongId;          //时候含有整形Long Id
     private boolean hasStringId;        //是否含有字符串Id
     private boolean hasAutoIncrementId; //时候含有整形自增 Id
+    private Map<String, Object> custom = new LinkedHashMap<>();
 
     public SourceModel() {
     }

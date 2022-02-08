@@ -19,4 +19,6 @@ src/test/resources/*.properties
 /templates/web-spring-boot-wd/
 /templates/web-spring-boot-traveler/
 /templates/web-spring-boot-midaier/
+/templates/his-templates/
+/templates/auto-*/
 /smither-parent/smither-parent.iml

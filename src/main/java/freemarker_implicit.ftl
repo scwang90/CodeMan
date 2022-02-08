@@ -31,6 +31,4 @@
 [#-- @ftlvariable name="hasStringId" type="boolean" --]
 [#-- @ftlvariable name="isHasAutoIncrementId" type="boolean" --]
 [#-- @ftlvariable name="hasMultiLogin" type="boolean" --]
-
-
-
+[#-- @ftlvariable name="custom" type="java.util.Map<java.lang.String,java.lang.Object>" --]

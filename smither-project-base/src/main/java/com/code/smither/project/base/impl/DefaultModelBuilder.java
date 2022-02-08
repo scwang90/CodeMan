@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import java.sql.DatabaseMetaData;
 import java.sql.Types;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -77,6 +79,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		model.setJdbc(new DatabaseJdbc());
 		model.setLang(config.getTemplateLang());
 		model.setTables(tables);
+		model.setCustom(config.getCustomModel());
 		
 		model.setFeatures(new Features(Arrays.asList(config.getTargetFeatures().split("[,;]"))));
 
@@ -118,6 +121,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 						key.setCascade(pkTable != model.getOrganTable() && Arrays.stream(config.getTableNoCascade().split("[,;]")).noneMatch(k -> matchNames(pkTable.getName(), k)));
 					}
 				});
+				if (key.getPkColumn() == null || key.getFkColumn() == null) {
+					logger.warn("构建表【"+table.getName()+"】导入外键不匹配（" + key + "）");
+					return false;
+				}
 				return key.isCascade();
 			}).collect(Collectors.toList()));
 			table.setExportCascadeKeys(table.getExportedKeys().stream().filter(key->{
@@ -133,8 +140,14 @@ public class DefaultModelBuilder implements ModelBuilder {
 						}
 					}
 				});
+				if (key.getPkColumn() == null || key.getFkColumn() == null) {
+					logger.warn("构建表【"+table.getName()+"】导出外键不匹配（" + key + "）");
+					return false;
+				}
 				return key.isCascade();
 			}).collect(Collectors.toList()));
+			table.setImportedKeys(table.getImportedKeys().stream().filter(key -> key.getPkColumn() != null && key.getFkColumn() != null).collect(Collectors.toList()));
+			table.setExportedKeys(table.getExportedKeys().stream().filter(key -> key.getPkColumn() != null && key.getFkColumn() != null).collect(Collectors.toList()));
 		}
 		for (Table table : tables) {
 			table.setRelateCascadeKeys(table.getExportedKeys().stream().filter(key->key.getFkTable().isRelateTable()).map(key->{
@@ -279,6 +292,35 @@ public class DefaultModelBuilder implements ModelBuilder {
 		table.setIndexKeys(tableSource.queryIndexKeys(table).stream().map(k->(IndexedKey)k).collect(Collectors.toList()));
 		table.setImportedKeys(tableSource.queryImportedKeys(table).stream().map(k->(ForeignKey)k).collect(Collectors.toList()));
 		table.setExportedKeys(tableSource.queryExportedKeys(table).stream().map(k->(ForeignKey)k).collect(Collectors.toList()));
+
+		Map<String, ForeignKey> importedKeyMap = new LinkedHashMap<>();
+		Map<String, ForeignKey> exportedKeyMap = new LinkedHashMap<>();
+
+		Map<String, ForeignKey> importedKeyReduced = tableSource.queryImportedKeys(table).stream().reduce(importedKeyMap, (BiFunction<Map<String, ForeignKey>, ForeignKey, Map<String, ForeignKey>>) (map, key) -> {
+			map.put(key.getFkTableName() + key.getFkColumnName(), key);
+			return map;
+		}, (map1, map2) -> {
+			map1.putAll(map2);
+			return map1;
+		});
+		if (table.getImportedKeys().size() != importedKeyReduced.size()) {
+			logger.info("构建表【" + table.getName() + "】imported 排重（" + table.getImportedKeys().size() + " -> " + importedKeyReduced.size() + "）");
+		}
+
+		Map<String, ForeignKey> exportedKeyReduced = tableSource.queryImportedKeys(table).stream().reduce(exportedKeyMap, (BiFunction<Map<String, ForeignKey>, ForeignKey, Map<String, ForeignKey>>) (map, key) -> {
+			map.put(key.getPkTableName() + key.getPkColumnName(), key);
+			return map;
+		}, (map1, map2) -> {
+			map1.putAll(map2);
+			return map1;
+		});
+		if (table.getImportedKeys().size() != importedKeyReduced.size()) {
+			logger.info("构建表【" + table.getName() + "】exported 排重（" + table.getImportedKeys().size() + " -> " + importedKeyReduced.size() + "）");
+		}
+
+		table.setImportedKeys(new ArrayList<>(importedKeyReduced.values()));
+		table.setExportedKeys(new ArrayList<>(exportedKeyReduced.values()));
+
 		List<? extends TableColumn> listMetaData = tableSource.queryColumns(table);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
 		for (TableColumn column : listMetaData) {
@@ -317,8 +359,9 @@ public class DefaultModelBuilder implements ModelBuilder {
         TableColumn id = table.getIdColumn();
         if (id != null) {
             if (id.getTypeInt() == Types.DECIMAL || id.getTypeInt() == Types.NUMERIC || id.getTypeInt() == Types.DOUBLE) {
-                id.setTypeInt(Types.BIGINT);
-				id.setFieldType(this.classConverter.converterFieldType(id));
+				logger.warn("构建列【" + table.getName() + "】【" + id.getName() + "】主键纠正为LONG（" + id.getFieldType() + "）");
+				id.setTypeInt(Types.BIGINT);
+				bindColumnFieldType(id);
             }
             table.setHasId(true);
         }
@@ -449,17 +492,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setFieldName(this.classConverter.converterFieldName(name));
 		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 		column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
-		column.setFieldType(this.classConverter.converterFieldType(column));
-		column.setFieldTypeObject(this.classConverter.converterFieldType(column, ClassConverter.DataType.object));
-		column.setFieldTypePrimitive(this.classConverter.converterFieldType(column, ClassConverter.DataType.primitive));
-		column.setFieldJavaType(this.converterJava.converterFieldType(column));
-		column.setFieldCSharpType(this.converterCSharp.converterFieldType(column));
-		column.setFieldKotlinType(this.converterKotlin.converterFieldType(column));
-		column.setFieldTypeScriptType(this.converterTypeScript.converterFieldType(column));
-		column.setFieldJavaTypePrimitive(this.converterJava.converterFieldType(column, ClassConverter.DataType.primitive));
-		column.setFieldCSharpTypePrimitive(this.converterCSharp.converterFieldType(column, ClassConverter.DataType.primitive));
-		column.setFieldKotlinTypePrimitive(this.converterKotlin.converterFieldType(column, ClassConverter.DataType.primitive));
-		column.setFieldTypeScriptTypePrimitive(this.converterTypeScript.converterFieldType(column, ClassConverter.DataType.primitive));
+		bindColumnFieldType(column);
 
 		Database database = this.tableSource.getDatabase();
 		if (database != null && database.isKeyword(column.getName())) {
@@ -511,7 +544,21 @@ public class DefaultModelBuilder implements ModelBuilder {
 		return column;
 	}
 
-    protected String convertTableIfNeed(String name) {
+	private void bindColumnFieldType(TableColumn column) {
+		column.setFieldType(this.classConverter.converterFieldType(column));
+		column.setFieldTypeObject(this.classConverter.converterFieldType(column, ClassConverter.DataType.object));
+		column.setFieldTypePrimitive(this.classConverter.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldJavaType(this.converterJava.converterFieldType(column));
+		column.setFieldCSharpType(this.converterCSharp.converterFieldType(column));
+		column.setFieldKotlinType(this.converterKotlin.converterFieldType(column));
+		column.setFieldTypeScriptType(this.converterTypeScript.converterFieldType(column));
+		column.setFieldJavaTypePrimitive(this.converterJava.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldCSharpTypePrimitive(this.converterCSharp.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldKotlinTypePrimitive(this.converterKotlin.converterFieldType(column, ClassConverter.DataType.primitive));
+		column.setFieldTypeScriptTypePrimitive(this.converterTypeScript.converterFieldType(column, ClassConverter.DataType.primitive));
+	}
+
+	protected String convertTableIfNeed(String name) {
         return convertIfNeed(name);
     }
 
@@ -570,10 +617,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 		column.setRemark("没有主键");
 		column.setTypeInt(java.sql.Types.VARCHAR);
 
-		column.setFieldName(this.classConverter.converterFieldName(column.getName()));
-		column.setFieldType(this.classConverter.converterFieldType(column));
 		column.setFieldNameUpper(StringUtil.upperFirst(column.getFieldName()));
 		column.setFieldNameLower(StringUtil.lowerFirst(column.getFieldName()));
+
+		bindColumnFieldType(column);
 		return column;
 	}
 

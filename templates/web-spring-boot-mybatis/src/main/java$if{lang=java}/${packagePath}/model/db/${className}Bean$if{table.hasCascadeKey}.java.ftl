@@ -2,6 +2,7 @@ package ${packageName}.model.db;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 <#if table.hasExportCascadeKey || table.hasRelatedCascadeKey>
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * @since ${now?string("yyyy-MM-dd zzzz")}
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ${className}Bean extends ${className} {
 <#list table.importCascadeKeys as key>
 
