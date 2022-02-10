@@ -57,6 +57,9 @@ public class ProjectConfigFactory {
 
         config.setWordBreakDictPath(properties.getProperty("code.man.word.break.dict.path", config.getWordBreakDictPath()));
         config.setWordReplaceDictPath(properties.getProperty("code.man.word.replace.dict.path", config.getWordReplaceDictPath()));
+
+        config.setSmartFindId("true".equalsIgnoreCase(properties.getProperty("code.man.project.smart-find-id", "true")));
+
         return config;
     }
 }

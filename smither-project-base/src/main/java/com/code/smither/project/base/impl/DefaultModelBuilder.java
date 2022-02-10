@@ -211,9 +211,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 				logger.info("跳过表【" + table.getName() + "】");
 				continue;
 			}
-			logger.trace("构建表【"+table.getName()+"】模型开始（" + tables.size() + "）");
+			logger.debug("构建表【"+table.getName()+"】模型开始（" + (tables.size() + 1) + "）");
 			tables.add(tableCompute(table));
-			logger.trace("构建表【"+table.getName()+"】模型完成（" + tables.size() + "）");
+			logger.info("构建表【"+table.getName()+"】模型完成（" + tables.size() + "）");
 		}
 		return tables;
 	}
@@ -328,29 +328,29 @@ public class DefaultModelBuilder implements ModelBuilder {
 				if (table.getIdColumn() == null) {
 					table.setIdColumn(column);
 				}
-				if (column.getTypeInt() == Types.DECIMAL || column.getTypeInt() == Types.NUMERIC || column.getTypeInt() == Types.DOUBLE) {
-					//主键不应该是小数
-					column.setTypeInt(Types.BIGINT);
-				}
+//				if (column.getTypeInt() == Types.DECIMAL || column.getTypeInt() == Types.NUMERIC || column.getTypeInt() == Types.DOUBLE) {
+//					//主键不应该是小数
+//					column.setTypeInt(Types.BIGINT);
+//				}
 			}
 			column.setPrimaryKey(keys.contains(column.getName()));
 			columns.add(columnCompute(column));
 			logger.info("构建列【" + table.getName() + "】【" + column.getName() + "】模型完成（" + columns.size() + "）");
 		}
-        if (table.getIdColumn() == null) {
+        if (table.getIdColumn() == null && config.isSmartFindId()) {
             columns.stream().filter(c->!c.isNullable()&&c.getName().toLowerCase().endsWith("id")).findFirst().ifPresent(table::setIdColumn);
         }
-        if (table.getIdColumn() == null) {
+        if (table.getIdColumn() == null && config.isSmartFindId()) {
             columns.stream().filter(c->!c.isNullable()).findFirst().ifPresent(table::setIdColumn);
         }
-        if (table.getIdColumn() == null) {
+        if (table.getIdColumn() == null && config.isSmartFindId()) {
             columns.stream().filter(c->c.getName().toLowerCase().endsWith("id")).findFirst().ifPresent(table::setIdColumn);
         }
         if (table.getIdColumn() == null) {
 			/*
 			 * 主键是一定要有到
 			 */
-			if (columns.size() > 0) {
+			if (columns.size() > 0 && config.isSmartFindId()) {
                 table.setIdColumn(columns.get(0));
             } else {
                 table.setIdColumn(columnKeyDefault(columns));
@@ -358,7 +358,7 @@ public class DefaultModelBuilder implements ModelBuilder {
         }
         TableColumn id = table.getIdColumn();
         if (id != null) {
-            if (id.getTypeInt() == Types.DECIMAL || id.getTypeInt() == Types.NUMERIC || id.getTypeInt() == Types.DOUBLE) {
+            if (id.getTypeInt() == Types.DECIMAL || (id.getTypeInt() == Types.NUMERIC && !id.isLongType() && !id.isIntType()) || id.getTypeInt() == Types.DOUBLE) {
 				logger.warn("构建列【" + table.getName() + "】【" + id.getName() + "】主键纠正为LONG（" + id.getFieldType() + "）");
 				id.setTypeInt(Types.BIGINT);
 				bindColumnFieldType(id);

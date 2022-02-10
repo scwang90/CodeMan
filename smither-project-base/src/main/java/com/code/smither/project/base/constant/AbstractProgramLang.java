@@ -70,8 +70,10 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.JAVA_OBJECT:
                 return Object.class;
             case Types.NUMERIC:
-                if (column.getDecimalDigits() == 0) {
-                    if (column.getLength() < 4) {
+                if (column.getDecimalDigits() <= 0) {
+                    if (column.getLength() == 0) {
+                        return BigInteger.class;
+                    } else if (column.getLength() < 4) {
                         return Short.class;
                     } else if (column.getLength() < 8) {
                         return Integer.class;
@@ -81,7 +83,9 @@ public abstract class AbstractProgramLang implements ProgramLang {
                         return BigInteger.class;
                     }
                 } else {
-                    if (column.getLength() < 8) {
+                    if (column.getLength() == 0) {
+                        return BigDecimal.class;
+                    } else if (column.getLength() < 4) {
                         return Float.class;
                     } else if (column.getLength() < 16) {
                         return Double.class;

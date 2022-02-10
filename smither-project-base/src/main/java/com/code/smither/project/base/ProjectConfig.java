@@ -62,6 +62,8 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String targetProjectAuthor = "unset";
     protected String targetProjectPackage = "com.code.smither.target";
 
+    protected boolean smartFindId = true;             //智能查找ID
+
     protected String wordBreakDictPath = "";
     protected String wordReplaceDictPath = "";
 
