@@ -144,7 +144,7 @@ public class ${className}AutoService {
 	 * @param model 实体对象
 	 × @return 返回新数据的Id
 	 */
-	public ${table.idColumn.fieldType} insert(${className} model) {
+	public <#if table.hasId>${table.idColumn.fieldType}<#else>int</#if> insert(${className} model) {
 <#if loginTables?seq_contains(table) && table.hasUsername>
 		if (mapper.countWhere(Tables.${className}.${table.usernameColumn.fieldNameUpper}.eq(model.get${table.usernameColumn.fieldNameUpper}())) > 0) {
 			throw new ClientException("已经存在用户名：" + model.get${table.usernameColumn.fieldNameUpper}());
@@ -191,8 +191,12 @@ public class ${className}AutoService {
 			model.set${table.passwordColumn.fieldNameUpper}(config.passwordHash(model.get${table.passwordColumn.fieldNameUpper}()));
 		}
 </#if>
+<#if table.hasId>
         mapper.insert(model);
 		return model.get${table.idColumn.fieldNameUpper}();
+<#else>
+		return mapper.insert(model);
+</#if>
 	}
 
 <#if table.hasId>

@@ -346,15 +346,11 @@ public class DefaultModelBuilder implements ModelBuilder {
         if (table.getIdColumn() == null && config.isSmartFindId()) {
             columns.stream().filter(c->c.getName().toLowerCase().endsWith("id")).findFirst().ifPresent(table::setIdColumn);
         }
-        if (table.getIdColumn() == null) {
+        if (table.getIdColumn() == null && config.isSmartFindId() && columns.size() > 0) {
 			/*
 			 * 主键是一定要有到
 			 */
-			if (columns.size() > 0 && config.isSmartFindId()) {
-                table.setIdColumn(columns.get(0));
-            } else {
-                table.setIdColumn(columnKeyDefault(columns));
-            }
+			table.setIdColumn(columns.get(0));
         }
         TableColumn id = table.getIdColumn();
         if (id != null) {
@@ -364,7 +360,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 				bindColumnFieldType(id);
             }
             table.setHasId(true);
-        }
+        } else {
+			table.setIdColumn(columnKeyDefault());
+		}
 
 		initTableColumn(columns, config.getColumnOrg(), table::getOrgColumn, table::setOrgColumn, table::setHasOrgan);
 		initTableColumn(columns, config.getColumnCode(), table::getCodeColumn, table::setCodeColumn, table::setHasCode);
@@ -603,10 +601,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 	 * @param columns 表模型列列表
 	 * @return 主键列
 	 */
-	protected TableColumn columnKeyDefault(List<TableColumn> columns) {
-		if (columns.size() > 0) {
-			return columns.get(0);
-		}
+	protected TableColumn columnKeyDefault() {
 		TableColumn column = new TableColumn();
 		column.setName("hasNoPrimaryKey");
 		column.setType("VARCHAR");

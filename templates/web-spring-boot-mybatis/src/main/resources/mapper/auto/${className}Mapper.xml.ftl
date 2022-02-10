@@ -10,12 +10,14 @@
     <!-- ${description} -->
 </#list>
     <resultMap id="MAP" type="${packageName}.model.db.${className}">
-        <!-- ${table.idColumn.remark} -->
-        <id column="${table.idColumn.name}" jdbcType="${table.idColumn.typeJdbc}" property="${table.idColumn.fieldName}" />
+<#if table.hasId>
+        <!-- ${table.idColumn.remark?replace("-","~")} -->
+        <id column="${table.idColumn.name}" <#if table.idColumn.typeJdbc?length != 0>jdbcType="${table.idColumn.typeJdbc}"</#if> property="${table.idColumn.fieldName}" />
+</#if>
 <#list table.columns as column>
     <#if column != table.idColumn>
         <!-- ${column.remark?replace("-","~")} -->
-        <result column="${column.name}" jdbcType="${column.typeJdbc}" property="${column.fieldName}" />
+        <result column="${column.name}" <#if column.typeJdbc?length != 0>jdbcType="${column.typeJdbc}"</#if> property="${column.fieldName}" />
     </#if>
 </#list>
     </resultMap>
@@ -101,6 +103,7 @@
         </foreach>
     </insert>
 </#if>
+<#if table.hasId>
 
     <!-- 更新一条数据（非空更新）-->
     <update id="update" parameterType="${packageName}.model.db.${className}">
@@ -127,6 +130,7 @@
         </set>
         WHERE ${table.idColumn.nameSql}=${r"#"}{${table.idColumn.fieldName}}
     </update>
+</#if>
 
     <!-- 更新一条数据（全更新）-->
     <update id="updateFull" parameterType="${packageName}.model.db.${className}">

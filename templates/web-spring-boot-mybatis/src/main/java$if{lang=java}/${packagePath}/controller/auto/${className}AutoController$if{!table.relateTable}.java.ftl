@@ -115,13 +115,22 @@ public class ${className}AutoController {
 	</#if>
 </#list>
     })
-	public ApiResult<${table.idColumn.fieldTypeObject}> insert(@Validated @ApiIgnore ${className} model) {
+	public ApiResult<<#if table.hasId>${table.idColumn.fieldTypeObject}<#else>Integer</#if>> insert(@Validated @ApiIgnore ${className} model) {
 <#if table.hasOrgan || table.hasCode || table.hasCreate || table.hasUpdate || (table.hasId && !table.idColumn.autoIncrement && table.idColumn.stringType)>
+	<#if table.hasId>
 		service.insert(model);
-<#else>
-        mapper.insert(model);
-</#if>
 		return ApiResult.success(model.get${table.idColumn.fieldNameUpper}());
+	<#else >
+		return ApiResult.success(service.insert(model));
+	</#if>
+<#else>
+	<#if table.hasId>
+		mapper.insert(model);
+		return ApiResult.success(model.get${table.idColumn.fieldNameUpper}());
+	<#else >
+		return ApiResult.success(mapper.insert(model));
+	</#if>
+</#if>
 	}
 
 <#if table.hasId>
