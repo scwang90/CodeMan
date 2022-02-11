@@ -14,3 +14,10 @@ spring.jackson.time-zone=GMT+8
 
 mybatis.configuration.map-underscore-to-camel-case=true
 mybatis.mapper-locations=classpath:/mapper/*.xml,classpath:/mapper/**/*.xml
+<#if hasLogin>
+
+#凭证有效时间 (秒钟)
+app.auth.token.expiry = 36000
+#凭证刷新间隔 (秒钟)
+app.auth.token.refresh = 30
+</#if>

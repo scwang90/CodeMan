@@ -52,15 +52,16 @@ public class ${className}ControllerTest extends BaseControllerTests {
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print());
 	}
+<#if table.hasId>
 
 	@Test
 	@Disabled
 	@DisplayName("更新测试方法")
     public void update() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/${table.urlPathName}")
-<#if hasLogin>
+	<#if hasLogin>
 				.cookie(getLoginCookie())
-</#if>
+	</#if>
 				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
@@ -72,9 +73,9 @@ public class ${className}ControllerTest extends BaseControllerTests {
 	@DisplayName("获取测试方法")
     public void get() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/${table.urlPathName}/{id}")
-<#if hasLogin>
+	<#if hasLogin>
 				.cookie(getLoginCookie())
-</#if>
+	</#if>
 				.accept(APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
@@ -94,5 +95,6 @@ public class ${className}ControllerTest extends BaseControllerTests {
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andDo(print());
 	}
+</#if>
 
 }
