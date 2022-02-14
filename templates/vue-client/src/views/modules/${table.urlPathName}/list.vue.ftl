@@ -28,6 +28,10 @@
                 <template #default="scope">
                     <span>{{showEnum(scope.row.${column.fieldName}, enums.${column.fieldName})}}</span>
                 </template>
+                <#elseif column.hasEnumMap>
+                <template #default="scope">
+                    <span>{{showEnumMap(scope.row.${column.fieldName}, enumMap.${column.fieldName})}}</span>
+                </template>
                 <#elseif column.boolType>
                 <template #default="scope">
                     <span v-text="scope.row.${column.fieldName} ? '是' : '否'"></span>
@@ -99,6 +103,16 @@
                                 </el-option>
                                 </template>
                             </el-select>
+            <#elseif column.hasEnumMap>
+                            <el-select v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"</#if> placeholder="请选择">
+                                <template v-for="(item,index) in enumMap.${column.fieldName}">
+                                    <el-option v-if="!!item"
+                                               :key="index"
+                                               :label="enumMap.${column.fieldName}[item]"
+                                               :value="item">
+                                    </el-option>
+                                </template>
+                            </el-select>
             <#elseif column.boolType>
                             <el-switch v-model="model.${column.fieldName}" active-text="已${column.remarkName}" inactive-text="未${column.remarkName}"<#if column.hiddenForSubmit> :disabled="true"<#else> </#if>/>
             <#elseif column.dateType>
@@ -156,6 +170,12 @@ const rules = {
 const enums = {
     <#list table.columns as column>
         <#if column.hasEnums>
+    /**
+     * ${column.remark}
+     <#list column.descriptions as description>
+     * ${description}
+     </#list>
+     */
     ${column.fieldName}: [
             <#assign index = 0/>
             <#list column.enums as enum>
@@ -172,6 +192,27 @@ const enums = {
             </#list>
     ],
         </#if>
+    </#list>
+}
+</#if>
+<#if table.hasColumnEnumMap>
+
+const enumMap = {
+    <#list table.columns as column>
+        <#if column.hasEnumMap>
+    /**
+     * ${column.remark}
+     <#list column.descriptions as description>
+     * ${description}
+     </#list>
+     */
+    ${column.fieldName}: {
+        <#assign index = 0/>
+        <#list column.enumMap?keys as key>
+        '${key}': '${column.enumMap[key]}',
+        </#list>
+    },
+    </#if>
     </#list>
 }
 </#if>
@@ -199,6 +240,9 @@ export default {
             selections: [],
 <#if table.hasColumnEnums>
             enums: enums,
+</#if>
+<#if table.hasColumnEnumMap>
+            enumMap: enumMap,
 </#if>
             rules: rules
         };
@@ -346,6 +390,14 @@ export default {
                 if (value >= enums.length) {
                     return `${r"${value}"}`;
                 }
+                if (enums[value]) {
+                    return enums[value];
+                }
+                return `${r"${value}"}`;
+</#if>
+<#if table.hasColumnEnumMap>
+            },
+            showEnumMap(value, enums) {
                 if (enums[value]) {
                     return enums[value];
                 }

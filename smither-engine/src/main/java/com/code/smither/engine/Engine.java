@@ -70,6 +70,10 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         TaskLoader taskLoader = config.getTaskLoader();
         List<Task> tasks = taskLoader.loadTask(templates, target, fileFilter, this);
 
+        if (tasks.isEmpty()) {
+            logger.warn("目标模板文件为空");
+        }
+
         if (!overwriteConditionTask.isEmpty()) {
             for (int i = 0; i < tasks.size(); i++) {
                 Task task = tasks.get(i);

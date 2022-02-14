@@ -204,6 +204,13 @@ public class Table implements Model, MetaDataTable {
         return false;
     }
 
+    public boolean isHasColumnEnumMap() {
+        if (this.columns != null) {
+            return this.columns.stream().anyMatch(TableColumn::isHasEnumMap);
+        }
+        return false;
+    }
+
     public boolean isHasPassword() {
         return hasPassword && isLoginTable;
     }

@@ -296,8 +296,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 		Map<String, ForeignKey> importedKeyMap = new LinkedHashMap<>();
 		Map<String, ForeignKey> exportedKeyMap = new LinkedHashMap<>();
 
-		Map<String, ForeignKey> importedKeyReduced = tableSource.queryImportedKeys(table).stream().reduce(importedKeyMap, (BiFunction<Map<String, ForeignKey>, ForeignKey, Map<String, ForeignKey>>) (map, key) -> {
-			map.put(key.getFkTableName() + key.getFkColumnName(), key);
+		Map<String, ForeignKey> importedKeyReduced = table.getImportedKeys().stream().reduce(importedKeyMap, (BiFunction<Map<String, ForeignKey>, ForeignKey, Map<String, ForeignKey>>) (map, key) -> {
+			map.put(key.getFkName(), key);
 			return map;
 		}, (map1, map2) -> {
 			map1.putAll(map2);
@@ -307,14 +307,14 @@ public class DefaultModelBuilder implements ModelBuilder {
 			logger.info("构建表【" + table.getName() + "】imported 排重（" + table.getImportedKeys().size() + " -> " + importedKeyReduced.size() + "）");
 		}
 
-		Map<String, ForeignKey> exportedKeyReduced = tableSource.queryImportedKeys(table).stream().reduce(exportedKeyMap, (BiFunction<Map<String, ForeignKey>, ForeignKey, Map<String, ForeignKey>>) (map, key) -> {
-			map.put(key.getPkTableName() + key.getPkColumnName(), key);
+		Map<String, ForeignKey> exportedKeyReduced = table.getExportedKeys().stream().reduce(exportedKeyMap, (BiFunction<Map<String, ForeignKey>, ForeignKey, Map<String, ForeignKey>>) (map, key) -> {
+			map.put(key.getFkName(), key);
 			return map;
 		}, (map1, map2) -> {
 			map1.putAll(map2);
 			return map1;
 		});
-		if (table.getImportedKeys().size() != importedKeyReduced.size()) {
+		if (table.getExportedKeys().size() != exportedKeyReduced.size()) {
 			logger.info("构建表【" + table.getName() + "】exported 排重（" + table.getImportedKeys().size() + " -> " + importedKeyReduced.size() + "）");
 		}
 
