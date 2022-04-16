@@ -6,6 +6,10 @@ package com.code.smither.engine.api;
  */
 public interface FilterConfig {
     /**
+     * 获取路径根目录（用于Path判断时，向上搜索，时达到root停止搜索）
+     */
+    String getPathRoot();
+    /**
      * 获取要过滤的目录配置信息（;分割）
      */
     String getFilterPath();

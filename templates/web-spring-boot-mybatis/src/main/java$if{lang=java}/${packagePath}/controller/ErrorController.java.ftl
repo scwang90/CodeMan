@@ -81,6 +81,9 @@ public class ErrorController extends BasicErrorController {
         return ApiResult.fail(ex, message);
     }
 
+    /**
+     * Post Json 参数娇艳异常
+     */
     @ExceptionHandler(BindException.class)
     public ApiResult<Object> handler(BindException ex) {
         log.debug(ex.getMessage());

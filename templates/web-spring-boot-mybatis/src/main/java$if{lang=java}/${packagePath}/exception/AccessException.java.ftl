@@ -14,12 +14,12 @@ import org.springframework.http.HttpStatus;
 public class AccessException extends CodeException {
     
     public AccessException() {
-        setCode(HttpStatus.FORBIDDEN.value());
+        setCode(ResultCode.Forbidden.code);
     }
 
     public AccessException(String s) {
         super(s);
-        setCode(HttpStatus.FORBIDDEN.value());
+        setCode(ResultCode.Forbidden.code);
     }
 
     public AccessException(int code, String s) {
@@ -29,12 +29,12 @@ public class AccessException extends CodeException {
 
     public AccessException(String s, Throwable throwable) {
         super(s, throwable);
-        setCode(HttpStatus.FORBIDDEN.value());
+        setCode(ResultCode.Forbidden.code);
     }
 
     public AccessException(Throwable throwable) {
         super(throwable);
-        setCode(HttpStatus.FORBIDDEN.value());
+        setCode(ResultCode.Forbidden.code);
     }
 
     public AccessException(ResultCode resultCode) {

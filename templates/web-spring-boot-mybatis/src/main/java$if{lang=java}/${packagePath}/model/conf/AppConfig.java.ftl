@@ -46,6 +46,9 @@ public class AppConfig {
 
     @Data
     public static class Client {
+        /**
+         * 服务对外域名（结尾不包含'/'，用于内网穿透等场景）
+         */
         private String visitHost;
     }
     @Data

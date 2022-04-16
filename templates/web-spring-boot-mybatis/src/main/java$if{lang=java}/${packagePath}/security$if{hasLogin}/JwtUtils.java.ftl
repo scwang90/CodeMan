@@ -64,9 +64,12 @@ public class JwtUtils {
     }
 
     public static void writeToHeader(String token, HttpServletRequest request, HttpServletResponse response) {
+        DecodedJWT jwt = JWT.decode(token);
+        long maxage = jwt.getExpiresAt().getTime() - jwt.getIssuedAt().getTime();
         String path = request.getContextPath();
         Cookie cookie = new Cookie("Bearer", token);
         cookie.setPath(path.isEmpty() ? "/" : path);
+        cookie.setMaxAge((int)(maxage / 1000));
         response.addCookie(cookie);
         response.setHeader("x-auth-token", token);
     }

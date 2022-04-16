@@ -40,7 +40,12 @@ public class EngineConfig implements Config {
     private transient FieldFiller fieldFiller;
     private transient FileFilter fileFilter;
 
-//    @Override
+    @Override
+    public String getPathRoot() {
+        return this.getTemplatePath();
+    }
+
+    //    @Override
 //    public boolean isTemplateProcessAll() {
 //        return templateProcessAll;
 //    }

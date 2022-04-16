@@ -15,12 +15,12 @@ import org.springframework.http.HttpStatus;
 public class ClientException extends CodeException {
 
     public ClientException() {
-        setCode(HttpStatus.BAD_REQUEST.value());
+        setCode(ResultCode.BadRequest.code);
     }
 
     public ClientException(String s) {
         super(s);
-        setCode(HttpStatus.BAD_REQUEST.value());
+        setCode(ResultCode.BadRequest.code);
     }
 
     public ClientException(int code, String s) {
@@ -30,12 +30,12 @@ public class ClientException extends CodeException {
 
     public ClientException(String s, Throwable throwable) {
         super(s, throwable);
-        setCode(HttpStatus.BAD_REQUEST.value());
+        setCode(ResultCode.BadRequest.code);
     }
 
     public ClientException(Throwable throwable) {
         super(throwable);
-        setCode(HttpStatus.BAD_REQUEST.value());
+        setCode(ResultCode.BadRequest.code);
     }
 
     public ClientException(ResultCode resultCode) {

@@ -31,25 +31,55 @@ public class DefaultTaskLoader implements TaskLoader {
         return loadTask(templates, target, filter, templates, tasks, builder);
     }
 
-
     protected List<Task> loadTask(File templates, File target, FileFilter filter, File path, List<Task> tasks, TaskBuilder builder) {
+//        return loadTask(templates, target, filter, path, tasks, builder, true);
+        boolean run = filter == null || !filter.isNeedFilterPath(path) || path == templates;
         File[] files = path.listFiles();
         if (files != null && files.length > 0) {
             for (File file : files) {
                 if (file.isFile()) {
-                    if (filter == null || !filter.isNeedFilterFile(file)) {
+                    if (run && (filter == null || !filter.isNeedFilterFile(file))) {
                         Task task = builder.build(file, templates, target);
                         if (task != null) {
                             tasks.add(task);
                         }
                     }
-                } else if (file.isDirectory()) {
-                    if (filter == null || !filter.isNeedFilterPath(file)) {
-                        loadTask(templates, target, filter, file, tasks, builder);
-                    }
+                } else {
+                    loadTask(templates, target, filter, file, tasks, builder);
                 }
             }
         }
         return tasks;
     }
+
+//    protected List<Task> loadTask(File templates, File target, FileFilter filter, File path, List<Task> tasks, TaskBuilder builder, boolean loadfile) {
+//        File[] files = path.listFiles();
+//        if (files != null && files.length > 0) {
+//            for (File file : files) {
+//                if (file.isFile()) {
+//                    if (filter == null || !filter.isNeedFilterFile(file)) {
+//                        Task task = builder.build(file, templates, target);
+//                        if (task != null) {
+//                            tasks.add(task);
+//                        }
+//                    }
+//                } else if (file.isDirectory()) {
+//                    if (filter == null || !filter.isNeedFilterPath(file)) {
+//                        loadTask(templates, target, filter, file, tasks, builder);
+//                    } else {
+//                        File[] listFiles = file.listFiles();
+//                        if (listFiles != null) {
+//                            for (File listFile : listFiles) {
+//                                if (listFile.isDirectory()) {
+//                                    loadTask(templates, target, filter, file, tasks, builder, false);
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return tasks;
+//    }
 }

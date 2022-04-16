@@ -16,15 +16,16 @@ public class DefaultFileFilter implements FileFilter {
 
     public DefaultFileFilter(FilterConfig config) {
         if (config != null) {
+            File root = new File(config.getPathRoot());
             String[] filterPaths = regexFilter(config.getFilterPath());
             String[] filterFiles = regexFilter(config.getFilterFile());
             String[] includePaths = regexFilter(config.getIncludePath());
             String[] includeFiles = regexFilter(config.getIncludeFile());
-            this.include = new FileIncludeFilter(includeFiles, includePaths);
-            this.exclude = new FileExcludeFilter(filterFiles, filterPaths);
+            this.include = new FileIncludeFilter(includeFiles, includePaths, root);
+            this.exclude = new FileExcludeFilter(filterFiles, filterPaths, root);
         } else {
-            this.include = new FileIncludeFilter(new String[]{".*\\..*"}, new String[]{".*"});
-            this.exclude = new FileExcludeFilter(new String[0], new String[0]);
+            this.include = new FileIncludeFilter(new String[]{".*\\..*"}, new String[]{".*"}, new File(""));
+            this.exclude = new FileExcludeFilter(new String[0], new String[0], new File(""));
         }
     }
 
@@ -67,10 +68,12 @@ public class DefaultFileFilter implements FileFilter {
      */
     public static class FileExcludeFilter implements FileFilter {
 
+        private final File root;
         private String[] fileRegex = {};
         private String[] pathRegex = {};
 
-        FileExcludeFilter(String[] fileRegex, String[] pathRegex){
+        FileExcludeFilter(String[] fileRegex, String[] pathRegex, File root) {
+            this.root = root;
             this.fileRegex = fileRegex;
             this.pathRegex = pathRegex;
         }
@@ -78,17 +81,22 @@ public class DefaultFileFilter implements FileFilter {
         @Override
         public boolean isNeedFilterFile(File file) {
             for (String regex : fileRegex) {
-                if (file.getName().matches(regex))
+                if (file.getName().matches(regex)) {
                     return true;
+                }
             }
             return false;
         }
 
         @Override
         public boolean isNeedFilterPath(File path) {
-            for (String regex : pathRegex) {
-                if (path.getName().matches(regex))
-                    return true;
+            while (path != null && !root.equals(path)) {
+                for (String regex : pathRegex) {
+                    if (path.getName().matches(regex)) {
+                        return true;
+                    }
+                }
+                path = path.getParentFile();
             }
             return false;
         }
@@ -101,8 +109,8 @@ public class DefaultFileFilter implements FileFilter {
 
         FileExcludeFilter exclude;
 
-        FileIncludeFilter(String[] fileRegexs, String[] pathRegexs){
-            exclude = new FileExcludeFilter(fileRegexs,pathRegexs);
+        FileIncludeFilter(String[] fileRegexs, String[] pathRegexs, File root){
+            exclude = new FileExcludeFilter(fileRegexs,pathRegexs, root);
         }
 
         @Override
