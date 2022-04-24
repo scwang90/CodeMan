@@ -6,6 +6,7 @@ server.servlet.encoding.charset = UTF-8
 server.servlet.encoding.force = true
 server.servlet.encoding.enabled = true
 
+logging.file.path = logs
 logging.level.root = info
 logging.level.${packageName}.mapper = info
 logging.level.${packageName}.controller = info
