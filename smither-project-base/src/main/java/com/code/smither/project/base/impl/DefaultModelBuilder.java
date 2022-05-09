@@ -323,11 +323,13 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 		List<? extends TableColumn> listMetaData = tableSource.queryColumns(table);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
+		List<TableColumn> idColumns = new ArrayList<>(listMetaData.size());
 		for (TableColumn column : listMetaData) {
 			if (keys.contains(column.getName())) {
 				if (table.getIdColumn() == null) {
 					table.setIdColumn(column);
 				}
+				idColumns.add(column);
 //				if (column.getTypeInt() == Types.DECIMAL || column.getTypeInt() == Types.NUMERIC || column.getTypeInt() == Types.DOUBLE) {
 //					//主键不应该是小数
 //					column.setTypeInt(Types.BIGINT);
@@ -405,6 +407,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 
 		table.setColumns(columns);
+		table.setIdColumns(idColumns);
+		table.setHasIds(idColumns.size() > 1);
 
 		table.setRelateTable(isRelateTable(table));
 		return table;
@@ -598,7 +602,6 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 	/**
 	 * 构建默认的 主键列
-	 * @param columns 表模型列列表
 	 * @return 主键列
 	 */
 	protected TableColumn columnKeyDefault() {

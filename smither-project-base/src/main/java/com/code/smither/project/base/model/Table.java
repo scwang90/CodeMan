@@ -44,6 +44,7 @@ public class Table implements Model, MetaDataTable {
     private TableColumn passwordColumn;             // 密码列（登录表）
 
     private boolean hasId = false;                  // 是否有ID列
+    private boolean hasIds = false;                 // 是否有ID列
     private boolean hasOrgan = false;               // 是否有机构列
     private boolean hasCode = false;                // 是否有编号构列
     private boolean hasCreate = false;              // 是否有创建日志列
@@ -58,6 +59,7 @@ public class Table implements Model, MetaDataTable {
     private boolean isLoginTable = false;           // 是否是登录表
 
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> columns;              // 表字段
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> idColumns;            // 多主键字段
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<IndexedKey> indexKeys;             // 索引（数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportedKeys;          // 外键（导出，数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importedKeys;          // 外键（导入，数据库原始）
