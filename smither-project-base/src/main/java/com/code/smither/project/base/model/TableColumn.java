@@ -63,8 +63,8 @@ public class TableColumn implements MetaDataColumn {
 	private boolean hiddenForTables;//是否对前端需要隐藏 - 表格
 
 	private List<EnumValue> enums;		//枚举值
-	private Map<String, String> enumMap;//枚举值(健值对)
 	private List<String> descriptions;	//多行详细描述
+	private Map<String, String> enumMap;//枚举值(健值对)
 
 	@Override
 	public String getName() {

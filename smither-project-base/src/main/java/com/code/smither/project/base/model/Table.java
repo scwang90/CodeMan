@@ -44,7 +44,7 @@ public class Table implements Model, MetaDataTable {
     private TableColumn passwordColumn;             // 密码列（登录表）
 
     private boolean hasId = false;                  // 是否有ID列
-    private boolean hasIds = false;                 // 是否有ID列
+    private boolean hasIds = false;                 // 是否有联合主键
     private boolean hasOrgan = false;               // 是否有机构列
     private boolean hasCode = false;                // 是否有编号构列
     private boolean hasCreate = false;              // 是否有创建日志列
