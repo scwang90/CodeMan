@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<poi.version>3.9</poi.version>
+		<poi.version>4.1.1</poi.version>
 		<junit.version>4.11</junit.version>
 <!--		<mysql.version>6.0.6</mysql.version>-->
 		<mysql.version>8.0.20</mysql.version>
