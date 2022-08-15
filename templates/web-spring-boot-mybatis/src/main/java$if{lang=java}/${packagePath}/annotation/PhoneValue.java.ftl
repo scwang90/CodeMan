@@ -28,6 +28,7 @@ public @interface PhoneValue {
     // 默认错误消息
     String message() default "无效的手机号码";
 
+    boolean noblank() default true;
     boolean required() default false;
 
     // 约束注解在验证时所属的组别
@@ -40,19 +41,22 @@ public @interface PhoneValue {
 
     class ValueValidator implements ConstraintValidator<PhoneValue, String> {
 
-        private boolean required;
+        private PhoneValue annotation;
         //这个方法做一些初始化校验
         @Override
         public void initialize(PhoneValue constraintAnnotation) {
-            required = constraintAnnotation.required();
+            annotation = constraintAnnotation;
         }
 
         @Override
         public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-            if (required && value == null) {
+            if (annotation.required() && value == null) {
                 return false;
             }
-            if (value != null) {
+            if (annotation.noblank() && value.length() == 0) {
+                return false;
+            }
+            if (value != null && value.length() > 0) {
                 return value.matches("^1\\d{10}$");
             }
             return true;

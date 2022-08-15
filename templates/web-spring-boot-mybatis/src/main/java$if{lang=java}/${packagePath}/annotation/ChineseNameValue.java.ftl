@@ -28,6 +28,7 @@ public @interface ChineseNameValue {
     // 默认错误消息
     String message() default "无效中文姓名";
 
+    boolean noblank() default true;
     boolean required() default false;
 
     // 约束注解在验证时所属的组别
@@ -40,19 +41,22 @@ public @interface ChineseNameValue {
 
     class ValueValidator implements ConstraintValidator<ChineseNameValue, String> {
 
-        private boolean required;
+        private ChineseNameValue annotation;
         //这个方法做一些初始化校验
         @Override
         public void initialize(ChineseNameValue constraintAnnotation) {
-            required = constraintAnnotation.required();
+            annotation = constraintAnnotation;
         }
 
         @Override
         public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-            if (required && value == null) {
+            if (annotation.required() && value == null) {
                 return false;
             }
-            if (value != null) {
+            if (annotation.noblank() && value.length() == 0) {
+                return false;
+            }
+            if (value != null && value.length() > 0) {
                 return value.matches("^[\\u4E00-\\u9FA5][\\u4E00-\\u9FA5|·]*[\\u4E00-\\u9FA5]$");
             }
             return true;

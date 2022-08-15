@@ -222,7 +222,7 @@ export default class ${className}Module extends Vue {
     private enums = enums
 </#if>
     private rules = rules
-    private model: ${className} = {}
+    private model: ${className} = {} as ${className}
     private items: Array<${className}> = []
     private selections: Array<${className}> = []
 

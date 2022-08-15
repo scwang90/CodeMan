@@ -28,6 +28,7 @@ public @interface CompanyNameValue {
     // 默认错误消息
     String message() default "无效企业/公司名称";
 
+    boolean noblank() default true;
     boolean required() default false;
 
     // 约束注解在验证时所属的组别
@@ -40,19 +41,22 @@ public @interface CompanyNameValue {
 
     class ValueValidator implements ConstraintValidator<CompanyNameValue, String> {
 
-        private boolean required;
+        private CompanyNameValue annotation;
         //这个方法做一些初始化校验
         @Override
         public void initialize(CompanyNameValue constraintAnnotation) {
-            required = constraintAnnotation.required();
+            annotation = constraintAnnotation;
         }
 
         @Override
         public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-            if (required && value == null) {
+            if (annotation.required() && value == null) {
                 return false;
             }
-            if (value != null) {
+            if (annotation.noblank() && value.length() == 0) {
+                return false;
+            }
+            if (value != null && value.length() > 0) {
                 return value.matches("^[\\u4e00-\\u9fa5][\\u4e00-\\u9fa5()（）\\da-zA-Z&]{2,49}$");
             }
             return true;
