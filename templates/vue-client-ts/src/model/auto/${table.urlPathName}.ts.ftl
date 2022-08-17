@@ -2,15 +2,16 @@
 
 export default interface ${className} {
 <#list table.columns as column>
-    <#assign options=column.nullable ? string('?','')/>
     <#if !column.hiddenForClient>
+        <#assign type="any"/>
         <#if column.stringType || column.timeType || column.dateType || (column.longType && !column.forceUseLong)>
-    ${column.fieldName}${options}: string
+            <#assign type="string"/>
         <#elseif column.boolType>
-    ${column.fieldName}${options}: boolean
+            <#assign type="boolean"/>
         <#else >
-    ${column.fieldName}${options}: number
+            <#assign type="number"/>
         </#if>
+    ${column.fieldName}${column.nullable ? string('?','')}: ${type}      //${column.remark}
     </#if>
 </#list>
 }
