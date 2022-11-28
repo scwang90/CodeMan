@@ -30,7 +30,8 @@ public interface ProgramLang {
                     return lang.lang;
                 }
             }
-            return Lang.Java.lang;
+            throw new RuntimeException("不支持的模版语言：" + programLang);
+//            return Lang.Java.lang;
         }
     }
 

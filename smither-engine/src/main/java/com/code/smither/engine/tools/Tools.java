@@ -42,4 +42,16 @@ public class Tools {
         }
         return Inflector.getInstance().pluralize(name);
     }
+
+    /**
+     * 模板字符串出现在字符串内部是，特殊支付需要转义
+     */
+    public String toInStr(String value) {
+        if (value == null) {
+            return null;
+        }
+        return value.replace("\"","\\\"")
+                .replace("\\","\\\\");
+    }
+
 }

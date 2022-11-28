@@ -6,6 +6,7 @@ import com.code.smither.project.base.model.ForeignKey;
 import com.code.smither.project.base.model.IndexedKey;
 import com.code.smither.project.base.model.Table;
 import com.code.smither.project.base.model.TableColumn;
+import com.code.smither.project.base.util.StringUtil;
 import com.code.smither.project.htmltable.HtmlTableConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +32,7 @@ public class HtmlTableSource implements TableSource {
         Elements getColumnMetaData(Element columnElement);
 
         String getTableName(Element tableElement);
+        String getTableSchema(Element tableElement);
         String getTableRemark(Element tableElement);
 
         int getColumnTypeInt(Elements columnMetaData);
@@ -42,6 +44,7 @@ public class HtmlTableSource implements TableSource {
         boolean getColumnNullable(Elements columnMetaData);
         boolean getColumnAutoIncrement(Elements columnMetaData);
         boolean getColumnPrimaryKey(Elements columnMetaData);
+
     }
 
     protected HashMap<String, Integer> DbTypeMap = new HashMap<>() {
@@ -55,6 +58,7 @@ public class HtmlTableSource implements TableSource {
             put("varchar", Types.VARCHAR);
             put("nvarchar", Types.NVARCHAR);
             put("varbinary", Types.VARBINARY);
+            put("text",Types.LONGVARCHAR);
             //oracle
             put("BFILE",Types.BINARY);
             put("BINARY_DOUBLE",Types.BINARY);
@@ -96,6 +100,7 @@ public class HtmlTableSource implements TableSource {
             put("UROWID",Types.BIGINT);
             put("VARCHAR",Types.VARCHAR);
             put("VARCHAR2",Types.VARCHAR);
+            put("TEXT",Types.LONGVARCHAR);
         }
     };
 
@@ -225,6 +230,7 @@ public class HtmlTableSource implements TableSource {
     protected Table buildTableMetaData(Element tableElement) {
         Table table = new Table();
         table.setName(metaData.getTableName(tableElement));
+        table.setSchema(metaData.getTableSchema(tableElement));
         table.setRemark(metaData.getTableRemark(tableElement));
         table.setComment(metaData.getTableRemark(tableElement));
         return table;
@@ -241,6 +247,7 @@ public class HtmlTableSource implements TableSource {
         column.setRemark    (metaData.getColumnRemark  (columnMetaData));
         column.setComment   (metaData.getColumnRemark  (columnMetaData));
         column.setAutoIncrement(metaData.getColumnAutoIncrement(columnMetaData));
+        column.setHasDefValue(!StringUtil.isNullOrBlank(column.getDefValue()));
         return column;
     }
 
@@ -328,6 +335,11 @@ public class HtmlTableSource implements TableSource {
         @Override
         public String getTableName(Element tableElement) {
             return tableElement.attr("name");
+        }
+
+        @Override
+        public String getTableSchema(Element tableElement) {
+            return tableElement.attr("schema");
         }
 
         @Override

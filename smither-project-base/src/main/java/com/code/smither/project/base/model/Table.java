@@ -2,6 +2,7 @@ package com.code.smither.project.base.model;
 
 import com.code.smither.engine.api.Model;
 import com.code.smither.project.base.api.MetaDataTable;
+import com.code.smither.project.base.util.Remarker;
 import com.code.smither.project.base.util.StringUtil;
 import lombok.*;
 
@@ -19,6 +20,8 @@ public class Table implements Model, MetaDataTable {
     private String name;                    // 原表名称
     private String nameSql;                 // SQL语句中使用的名称
     private String nameSqlInStr;            // SQL语句中使用的名称（在字符串拼接中使用）
+
+    private String schema;                  //表 schema
     private String remark;                  // 字段注释
     private String description;             //详细描述（分析得到）
     private String comment;                 //原始备注（remark+description）
@@ -118,7 +121,7 @@ public class Table implements Model, MetaDataTable {
 
     public void setDescription(String description) {
         this.description = description;
-        this.descriptions = Arrays.asList(description.split("\n"));
+        this.descriptions = Remarker.findDescriptions(description);
     }
 
     public void setIdColumn(TableColumn idColumn) {

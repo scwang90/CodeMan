@@ -19,14 +19,14 @@ public class DefaultTaskLoader implements TaskLoader {
     public List<Task> loadTask(File templates, File target, FileFilter filter, TaskBuilder builder) {
         List<Task> tasks = new ArrayList<>();
         if (templates.isFile()) {
-            throw new RuntimeException("模板必须是目录！" + templates.getAbsolutePath());
-//            if (filter == null || !filter.isNeedFilterFile(templates)) {
-//                Task task = builder.build(templates, templates, target);
-//                if (task != null) {
-//                    tasks.add(task);
-//                }
-//            }
-//            return tasks;
+//            throw new RuntimeException("模板必须是目录！" + templates.getAbsolutePath());
+            if ((filter == null || !filter.isNeedFilterFile(templates))) {
+                Task task = builder.build(templates, templates.getParentFile(), target);
+                if (task != null) {
+                    tasks.add(task);
+                }
+            }
+            return tasks;
         }
         return loadTask(templates, target, filter, templates, tasks, builder);
     }

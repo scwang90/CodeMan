@@ -1,7 +1,7 @@
 package com.code.smither.project.base.model;
 
 import com.code.smither.project.base.api.MetaDataColumn;
-import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.base.util.Remarker;
 import lombok.*;
 
 import java.util.*;
@@ -65,6 +65,8 @@ public class TableColumn implements MetaDataColumn {
 	private List<EnumValue> enums;		//枚举值
 	private List<String> descriptions;	//多行详细描述
 	private Map<String, String> enumMap;//枚举值(健值对)
+
+	private String enumClass;//枚举类型对应的类
 
 	@Override
 	public String getName() {
@@ -150,9 +152,9 @@ public class TableColumn implements MetaDataColumn {
 
 	public void setDescription(String description) {
 		this.description = description;
-		this.descriptions = Arrays.asList(description.split("\n"));
-		this.enums = findEnums(this.descriptions);
-		this.enumMap = findEnumMap(this.descriptions);
+		this.descriptions = Remarker.findDescriptions(description);
+		this.enums = Remarker.findEnums(this.descriptions);
+		this.enumMap = Remarker.findEnumMap(this.descriptions);
 	}
 
 	public void setFieldName(String fieldName) {
@@ -209,40 +211,4 @@ public class TableColumn implements MetaDataColumn {
 
 	public boolean isHasEnumMap() { return isStringType() && this.enumMap != null && this.enumMap.size() > 1; }
 
-	private static Pattern enumPattern = Pattern.compile("(\\d+)[ :：]?(\\S+?)\\b");
-	private static Pattern enumMapPattern = Pattern.compile("(\\w+)[ :：]?(\\S+?)\\b");
-
-	private List<EnumValue> findEnums(List<String> descriptions) {
-		//操作类型(1注册,2登录,3重置密码,4修改手机)
-		List<EnumValue> enums = new LinkedList<>();
-		for (String desc : descriptions) {
-			Matcher matcher = enumPattern.matcher(desc);
-			while (matcher.find()) {
-				enums.add(new EnumValue(Integer.parseInt(matcher.group(1)), matcher.group(2)));
-			}
-			if (enums.size() > 1) {
-				break;
-			} else {
-				enums.clear();
-			}
-		}
-		return enums;
-	}
-
-	private Map<String, String> findEnumMap(List<String> descriptions) {
-		//操作类型(app:手机应用,applet:小程序)
-		Map<String, String> map = new LinkedHashMap<>();
-		for (String desc : descriptions) {
-			Matcher matcher = enumMapPattern.matcher(desc);
-			while (matcher.find()) {
-				map.put(matcher.group(1), matcher.group(2));
-			}
-			if (map.size() > 1) {
-				break;
-			} else {
-				map.clear();
-			}
-		}
-		return map;
-	}
 }

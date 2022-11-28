@@ -92,6 +92,13 @@
 			<scope>runtime</scope>
         </dependency>
 		</#if>
+		<#if (dbType!"")=="postgresql">
+		<!-- postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		</#if>
 		<#if (dbType!"")=="sqlite">
 		<!-- sqlite-jdbc -->
 		<dependency>

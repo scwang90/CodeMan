@@ -6,10 +6,10 @@ import com.code.smither.engine.api.Task;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.*;
 import com.code.smither.project.base.api.internel.*;
-import com.code.smither.project.base.constant.AbstractProgramLang;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.constant.JdbcLang;
 import com.code.smither.project.base.model.*;
+import com.code.smither.project.base.util.ModelUtil;
 import com.code.smither.project.base.util.PinYinUtil;
 import com.code.smither.project.base.util.StringUtil;
 import org.slf4j.Logger;
@@ -18,8 +18,10 @@ import org.slf4j.LoggerFactory;
 import java.sql.DatabaseMetaData;
 import java.sql.Types;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,7 +44,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 	protected final LangClassConverter converterTypeScript = new LangClassConverter(ProgramLang.Lang.TypeScript.lang);
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultModelBuilder.class);
-	private static final Pattern regex = Pattern.compile("^(\\S{2,}?)(?::\\n|：\\n|\\s+|:|：|,|，|\\n|\\(|（)((?:.|\\n)+?)[)）]?$");
+
+	private static final Pattern remarkRegex = Pattern.compile("^(\\S{2,}?)((?::\\n|：\\n|\\s+|:|：|,|，|\\n|\\(|（)(?:.|\\n)+?[)）]?)$");
 
 	public DefaultModelBuilder(ProjectConfig config, TableSource tableSource) {
 		this.config = config;
@@ -215,7 +218,13 @@ public class DefaultModelBuilder implements ModelBuilder {
 			tables.add(tableCompute(table));
 			logger.info("构建表【"+table.getName()+"】模型完成（" + tables.size() + "）");
 		}
-		return tables;
+
+		return ModelUtil.distinctTables(tables);
+	}
+
+	public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+		Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 	}
 
 	/**
@@ -247,7 +256,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		if (StringUtil.isNullOrBlank(remark)) {
 			table.setRemark(table.getName());
 		} else {
-			Matcher matcher = regex.matcher(remark);
+			Matcher matcher = remarkRegex.matcher(remark);
 			if (matcher.find()) {
 				table.setRemark(matcher.group(1));
 				table.setDescription(matcher.group(2));
@@ -406,8 +415,8 @@ public class DefaultModelBuilder implements ModelBuilder {
 			}
 		}
 
-		table.setColumns(columns);
 		table.setIdColumns(idColumns);
+		table.setColumns(ModelUtil.distinctColumns(columns));
 		table.setHasIds(idColumns.size() > 1);
 
 		table.setRelateTable(isRelateTable(table));
@@ -526,7 +535,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		if (StringUtil.isNullOrBlank(remark)) {
 			column.setRemark(column.getName());
 		} else {
-			Matcher matcher = regex.matcher(remark);
+			Matcher matcher = remarkRegex.matcher(remark);
 			if (matcher.find()) {
 				column.setRemark(matcher.group(1));
 				column.setDescription(matcher.group(2));

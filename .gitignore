@@ -21,4 +21,6 @@ src/test/resources/*.properties
 /templates/web-spring-boot-midaier/
 /templates/his-templates/
 /templates/auto-*/
+/templates/temp-*/
+/templates-temp/
 /smither-parent/smither-parent.iml

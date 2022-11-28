@@ -78,13 +78,13 @@ public class ${className} {
 	<#elseif column.dateType>
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	</#if>
-	<#if column.stringType>
-	@Size(max = ${column.length?c}, message = "【${column.remark}】不能超过${column.length}个字符")
+	<#if column.stringType && (column.length > 0)>
+	@Size(max = ${column.length?c}, message = "【${tools.toInStr(column.remark)}】不能超过${column.length}个字符")
 	</#if>
 	<#if column.longType && !column.forceUseLong>
 	@JsonSerialize(using = ToStringSerializer.class)// Long返回前端JS，与 number 精度不匹配，会导致信息丢失，需要序列化为String
 	</#if>
-	@ApiModelProperty(value = "${column.remark}"<@compress single_line=true>
+	@ApiModelProperty(value = "${tools.toInStr(column.remark)}"<@compress single_line=true>
 		<#if column.nullable != true>, required = true</#if>
 		<#if column.hiddenForClient>, hidden = true</#if>
 		<#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"<#elseif column.defValue?length != 0>, example = "${column.defValue?trim}"<#elseif column.intType && !column.primaryKey>, example = "0"</#if>
