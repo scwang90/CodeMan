@@ -105,6 +105,7 @@ public class DefaultDataSource implements DbDataSource {
 		// table.setName(tableResult.getString("TABLE_NAME"), getDatabase());
         table.setName(tableResult.getString("TABLE_NAME"));
 		table.setComment(tableResult.getString("REMARKS"));
+		table.setSchema(tableResult.getString("table_schem"));
 		return table;
 	}
 

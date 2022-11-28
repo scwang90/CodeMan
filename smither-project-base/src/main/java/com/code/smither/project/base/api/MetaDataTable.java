@@ -6,4 +6,5 @@ public interface MetaDataTable extends MetaData {
 
     void setComment(String string);
 
+    void setSchema(String schema);
 }
