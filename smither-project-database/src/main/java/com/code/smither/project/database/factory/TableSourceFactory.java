@@ -15,6 +15,7 @@ public class TableSourceFactory {
     private static final String PATTERN_ORACLE = "jdbc:oracle:.*";
     private static final String PATTERN_SQL_LITE = "jdbc:sqlite:.*";
     private static final String PATTERN_SQL_SERVER = "jdbc:sqlserver:.*";
+    private static final String PATTERN_POSTGRESQL = "jdbc:postgresql:.*";
 
 
     public static DbTableSource getInstance(ProjectConfig config, DbFactory factory) {
@@ -31,6 +32,8 @@ public class TableSourceFactory {
             return new SqlServerTableSource(factory);
         } else if (jdbcUrl.matches(PATTERN_SQL_LITE)) {
             return new SqLiteTableSource(factory);
+        } else if (jdbcUrl.matches(PATTERN_POSTGRESQL)) {
+            return new PostgreSqlTableSource(factory);
         }
         return new DefaultDataSource(factory);
     }

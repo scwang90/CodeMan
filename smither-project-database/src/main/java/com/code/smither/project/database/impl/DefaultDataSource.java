@@ -120,6 +120,7 @@ public class DefaultDataSource implements DbDataSource {
 		column.setComment(result.getString("REMARKS"));
 		column.setDecimalDigits(result.getInt("DECIMAL_DIGITS"));
 		column.setHasDefValue(result.getObject("COLUMN_DEF") != null);
+		column.setAutoIncrement("YES".equals(result.getObject("IS_AUTOINCREMENT")));
 		return column;
 	}
 
