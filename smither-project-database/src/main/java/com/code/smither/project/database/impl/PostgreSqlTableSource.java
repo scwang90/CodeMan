@@ -1,5 +1,6 @@
 package com.code.smither.project.database.impl;
 
+import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
@@ -15,12 +16,12 @@ import java.sql.Statement;
  */
 public class PostgreSqlTableSource extends DefaultDataSource implements Database {
 
-    public PostgreSqlTableSource(DbFactory dbFactory) {
-        this(dbFactory, false);
+    public PostgreSqlTableSource(ProjectConfig config, DbFactory dbFactory) {
+        this(config, dbFactory, false);
     }
 
-    public PostgreSqlTableSource(DbFactory dbFactory, boolean autoclose) {
-        super(dbFactory, autoclose);
+    public PostgreSqlTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+        super(config, dbFactory, autoclose);
     }
 
     @Override

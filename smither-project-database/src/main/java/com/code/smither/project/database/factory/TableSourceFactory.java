@@ -19,22 +19,22 @@ public class TableSourceFactory {
 
 
     public static DbTableSource getInstance(ProjectConfig config, DbFactory factory) {
-        return new DbTableSource(config, getDataSource(factory));
+        return new DbTableSource(config, getDataSource(config, factory));
     }
 
-    public static DbDataSource getDataSource(DbFactory factory) {
+    public static DbDataSource getDataSource(ProjectConfig config, DbFactory factory) {
         String jdbcUrl = factory.getJdbcUrl();
         if (jdbcUrl.matches(PATTERN_MYSQL)) {
-            return new MySqlTableSource(factory);
+            return new MySqlTableSource(config, factory);
         } else if (jdbcUrl.matches(PATTERN_ORACLE)) {
-            return new OracleTableSource(factory);
+            return new OracleTableSource(config, factory);
         } else if (jdbcUrl.matches(PATTERN_SQL_SERVER)) {
-            return new SqlServerTableSource(factory);
+            return new SqlServerTableSource(config, factory);
         } else if (jdbcUrl.matches(PATTERN_SQL_LITE)) {
-            return new SqLiteTableSource(factory);
+            return new SqLiteTableSource(config, factory);
         } else if (jdbcUrl.matches(PATTERN_POSTGRESQL)) {
-            return new PostgreSqlTableSource(factory);
+            return new PostgreSqlTableSource(config, factory);
         }
-        return new DefaultDataSource(factory);
+        return new DefaultDataSource(config, factory);
     }
 }

@@ -46,7 +46,7 @@ public class ReplaceConfig extends DataBaseConfig {
             replacerTableRemark = new DefaultWordReplacer(replaceTableRemark);
         }
         if (!(tableSource instanceof ReplaceTableSource)) {
-            tableSource = new ReplaceTableSource(this, TableSourceFactory.getDataSource(getDbFactory()));
+            tableSource = new ReplaceTableSource(this, TableSourceFactory.getDataSource(this, getDbFactory()));
         }
         return this;
     }

@@ -88,7 +88,7 @@ public class ${className} {
 		<#if column.nullable != true>, required = true</#if>
 		<#if column.hiddenForClient>, hidden = true</#if>
 		<#if column.dateType>, example = "yyyy-MM-dd HH:mm:ss"<#elseif column.defValue?length != 0>, example = "${column.defValue?trim}"<#elseif column.intType && !column.primaryKey>, example = "0"</#if>
-		<#if (column.description?trim?length > 0)>, notes = "${column.description?replace("\n","\\n")}"</#if>
+		<#if (column.description?trim?length > 0)>, notes = "${tools.toInStr(column.description?replace("\n","\\n"))}"</#if>
 	</@compress>)
 	private <#if column == table.idColumn>${column.fieldTypePrimitive}<#else>${column.fieldTypeObject}</#if> ${column.fieldName};
 	</#list>

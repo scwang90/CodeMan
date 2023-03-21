@@ -28,9 +28,6 @@
 		<module>smither-apidoc</module>
 
 		<module>smither-generator</module>
-<!--		<module>smither-generator-fecred</module>-->
-<!--		<module>smither-generator-meteor</module>-->
-<!--		<module>smither-generator-yxtech</module>-->
 	</modules>
 
 	<dependencies>
@@ -41,7 +38,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.9</version>
+			<version>1.4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.code.smither</groupId>

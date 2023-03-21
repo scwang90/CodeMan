@@ -45,7 +45,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultModelBuilder.class);
 
-	private static final Pattern remarkRegex = Pattern.compile("^(\\S{2,}?)((?::\\n|：\\n|\\s+|:|：|,|，|\\n|\\(|（)(?:.|\\n)+?[)）]?)$");
+	private static final Pattern remarkRegex = Pattern.compile("^(\\S{2,}?)((?::\\r?\\n|：\\r?\\n|\\s+|:|：|,|，|\\r?\\n|\\(|（)(?:.|\\r?\\n)+?[)）]?)$");
 
 	public DefaultModelBuilder(ProjectConfig config, TableSource tableSource) {
 		this.config = config;

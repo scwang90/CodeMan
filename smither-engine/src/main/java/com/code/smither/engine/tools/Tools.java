@@ -1,7 +1,6 @@
 package com.code.smither.engine.tools;
 
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class Tools {
 
@@ -52,6 +51,14 @@ public class Tools {
         }
         return value.replace("\"","\\\"")
                 .replace("\\","\\\\");
+    }
+
+    public int max(int l, int r) {
+        return Math.max(l, r);
+    }
+
+    public int min(int l, int r) {
+        return Math.min(l, r);
     }
 
 }

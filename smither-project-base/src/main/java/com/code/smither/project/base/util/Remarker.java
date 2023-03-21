@@ -21,7 +21,7 @@ public class Remarker {
     // 单行 description 优化
     private static Pattern[] descriptionPatterns = new Pattern[] {
             Pattern.compile("^\\s*[(（]([^)）]+)[)）]\\s*$"),
-            Pattern.compile("^(?::\\n|：\\n|\\s+|:|：|,|，|\\n)(.+)$")
+            Pattern.compile("^(?::\\r?\\n|：\\r?\\n|\\s+|:|：|,|，|\\r?\\n)(.+)$")
     };
     //多行 description 优化
     private static Pattern[] descriptionsPatterns = new Pattern[]{
@@ -31,7 +31,7 @@ public class Remarker {
 
 
     public static List<String> findDescriptions(String description) {
-        List<String> list = Arrays.asList(description.split("\n"));
+        List<String> list = Arrays.asList(description.split("\r?\n"));
         if (list.size() == 1) {
             //多行匹配
             for (Pattern descriptionPattern : descriptionsPatterns) {

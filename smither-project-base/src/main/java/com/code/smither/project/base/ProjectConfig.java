@@ -50,6 +50,7 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String templatePath = "../templates/web-spring-boot-mybatis";
     protected String templateCharset = "UTF-8";
 
+    protected String schemaTable = null;
     protected String filterTable = "";
     protected String includeTable = "*";
 
@@ -123,6 +124,15 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 //    }
 
     //<editor-fold desc="接口实现">
+
+
+    public String getSchemaTable() {
+        return schemaTable;
+    }
+
+    public void setSchemaTable(String schemaTable) {
+        this.schemaTable = schemaTable;
+    }
 
     @Override
     public String getFilterTable() {

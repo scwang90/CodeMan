@@ -1,5 +1,6 @@
 package com.code.smither.project.database.impl;
 
+import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.database.api.DbFactory;
 import com.mchange.v2.c3p0.impl.NewProxyConnection;
@@ -17,12 +18,12 @@ import java.util.Arrays;
  */
 public class OracleTableSource extends DefaultDataSource implements Database {
 
-    public OracleTableSource(DbFactory dbFactory) {
-        this(dbFactory, false);
+    public OracleTableSource(ProjectConfig config, DbFactory dbFactory) {
+        this(config, dbFactory, false);
     }
 
-    public OracleTableSource(DbFactory dbFactory, boolean autoclose) {
-        super(dbFactory, autoclose);
+    public OracleTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+        super(config, dbFactory, autoclose);
     }
 
     @Override

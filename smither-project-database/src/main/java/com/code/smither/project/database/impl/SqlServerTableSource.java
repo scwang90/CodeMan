@@ -1,6 +1,7 @@
 package com.code.smither.project.database.impl;
 
 
+import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.database.api.DbFactory;
@@ -14,12 +15,12 @@ import java.sql.SQLException;
  */
 public class SqlServerTableSource extends DefaultDataSource implements Database {
 
-    public SqlServerTableSource(DbFactory dbFactory) {
-        this(dbFactory, false);
+    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory) {
+        this(config, dbFactory, false);
     }
 
-    public SqlServerTableSource(DbFactory dbFactory, boolean autoclose) {
-        super(dbFactory, autoclose);
+    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+        super(config, dbFactory, autoclose);
     }
 
     @Override

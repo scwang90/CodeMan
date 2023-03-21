@@ -5,6 +5,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
@@ -19,14 +20,16 @@ public class DefaultDataSource implements DbDataSource {
 	protected boolean autoClose;
 	protected DbFactory dbFactory;
 	protected Connection connection = null;
+	protected ProjectConfig dbConfig = null;
 	protected DatabaseMetaData databaseMetaData = null;
 
-	public DefaultDataSource(DbFactory dbFactory) {
-		this(dbFactory, false);
+	public DefaultDataSource(ProjectConfig config, DbFactory dbFactory) {
+		this(config, dbFactory, false);
 	}
 
-	public DefaultDataSource(DbFactory dbFactory, boolean autoClose) {
+	public DefaultDataSource(ProjectConfig config, DbFactory dbFactory, boolean autoClose) {
 		super();
+		this.dbConfig = config;
 		this.dbFactory = dbFactory;
 		this.autoClose = autoClose;
 	}
@@ -62,7 +65,7 @@ public class DefaultDataSource implements DbDataSource {
 
 	@Override
     public ResultSet queryTables() throws SQLException {
-		return ensureMetaData().getTables(connection.getCatalog(), null, null, new String[] { "TABLE" });
+		return ensureMetaData().getTables(connection.getCatalog(), dbConfig.getSchemaTable(), null, new String[] { "TABLE" });
 	}
 
 	@Override

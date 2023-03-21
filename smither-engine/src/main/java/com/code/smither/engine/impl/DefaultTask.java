@@ -12,6 +12,7 @@ import java.io.File;
  */
 public class DefaultTask implements Task {
 
+    private static final String tagWeak = "${weak}";
     private static final String tagForce = "${force}";
 
     private final File templates;
@@ -25,8 +26,8 @@ public class DefaultTask implements Task {
 
     public DefaultTask(File file, File templates, File target, EngineConfig config, RootModel root) {
         this.templates = checkPath(file);
-        this.target = checkPath(new File(file.getAbsolutePath().replace(templates.getAbsolutePath(), target.getAbsolutePath()).replace(tagForce,"")));
-        this.forceOverWrite = this.templates.getAbsolutePath().contains(tagForce) || config.isForceOverwrite() || root.isModelTask(this);
+        this.target = checkPath(new File(file.getAbsolutePath().replace(templates.getAbsolutePath(), target.getAbsolutePath()).replace(tagForce,"").replace(tagWeak,"")));
+        this.forceOverWrite = !this.templates.getAbsolutePath().contains(tagWeak) && (this.templates.getAbsolutePath().contains(tagForce) || config.isForceOverwrite() || root.isModelTask(this));
     }
 
     private File checkPath(File file) {

@@ -1,5 +1,6 @@
 package com.code.smither.project.database.impl;
 
+import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.database.api.DbFactory;
 
@@ -12,12 +13,12 @@ public class SqLiteTableSource extends DefaultDataSource {
 
     private Database database = new SqLiteDatabase();
 
-    public SqLiteTableSource(DbFactory dbFactory) {
-        this(dbFactory, false);
+    public SqLiteTableSource(ProjectConfig config, DbFactory dbFactory) {
+        this(config, dbFactory, false);
     }
 
-    private SqLiteTableSource(DbFactory dbFactory, boolean autoclose) {
-        super(dbFactory, autoclose);
+    private SqLiteTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+        super(config, dbFactory, autoclose);
     }
 
     @Override
