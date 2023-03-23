@@ -70,8 +70,11 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.JAVA_OBJECT:
                 return Object.class;
             case Types.NUMERIC:
-                if (column.getDecimalDigits() <= 0) {
+                if (column.getDecimalDigits() <= 0 || column.getDecimalDigits() > column.getLength()) {
                     if (column.getLength() == 0) {
+                        if (column.getDecimalDigits() > 0) {
+                            return BigDecimal.class;
+                        }
                         return BigInteger.class;
                     } else if (column.getLength() < 4) {
                         return Short.class;
