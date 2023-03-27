@@ -57,12 +57,12 @@ public class PostgreSqlTableSource extends DefaultDataSource implements Database
     @Override
     public <T extends MetaDataColumn> T columnFromResultSet(ResultSet result, T column) throws SQLException {
         column = super.columnFromResultSet(result, column);
-        if ("numeric".equals(result.getString("TYPE_NAME")) && result.getInt("DECIMAL_DIGITS") == 0) {
-            // 不知道为什么 PostgreSQL 的 numeric 获取的 DecimalDigits 总是 0，导致 本应该是 float 的变成了 int
-            // 暂时还不知道怎么去获取 证券的 DecimalDigits，现在的方案是发现是 numeric 类型直接设置设置小数位数为 6
-            // 防止 出现 浮点型变整形的问题
-            column.setDecimalDigits(6);
-        }
+//        if ("numeric".equals(result.getString("TYPE_NAME")) && result.getInt("DECIMAL_DIGITS") == 0) {
+//            // 不知道为什么 PostgreSQL 的 numeric 获取的 DecimalDigits 总是 0，导致 本应该是 float 的变成了 int
+//            // 暂时还不知道怎么去获取 证券的 DecimalDigits，现在的方案是发现是 numeric 类型直接设置设置小数位数为 6
+//            // 防止 出现 浮点型变整形的问题
+//            column.setDecimalDigits(6);
+//        }
         return column;
     }
 

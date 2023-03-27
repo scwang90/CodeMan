@@ -76,11 +76,11 @@ public abstract class AbstractProgramLang implements ProgramLang {
                             return BigDecimal.class;
                         }
                         return BigInteger.class;
-                    } else if (column.getLength() < 4) {
+                    } else if (column.getLength() < 5) {
                         return Short.class;
-                    } else if (column.getLength() < 8) {
+                    } else if (column.getLength() < 10) {
                         return Integer.class;
-                    } else if (column.getLength() < 16) {
+                    } else if (column.getLength() < 19) {
                         return Long.class;
                     } else {
                         return BigInteger.class;
