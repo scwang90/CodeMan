@@ -2,6 +2,7 @@ package com.code.smither.project.base.model;
 
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.util.Remarker;
+import com.code.smither.project.base.util.StringUtil;
 import lombok.*;
 
 import java.util.*;
@@ -211,4 +212,20 @@ public class TableColumn implements MetaDataColumn {
 
 	public boolean isHasEnumMap() { return isStringType() && this.enumMap != null && this.enumMap.size() > 1; }
 
+	public String buildDefaultForSql() {
+		if (isStringType()) {
+			if (StringUtil.isNotNullAndBlank(defValue)) {
+				if (defValue.startsWith("'")) {
+					return defValue;
+				} else {
+					return "'" + defValue + "'";
+				}
+			} else {
+				return "''";
+			}
+		} else if (isDateType()) {
+			return "'1970-01-01'";
+		}
+		return "0";
+	}
 }

@@ -9,7 +9,7 @@
 
 <#list tables as table>
 
-## 表 ${table.name} ${table.comment}
+## 表 ${table.name} 【${table.comment}】
 
 |  序号  | 名称 | 数据类型 | 长度 | 默认值 | 非空 | 主键 | 自动递增 | 备注 |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:----:|:---:|

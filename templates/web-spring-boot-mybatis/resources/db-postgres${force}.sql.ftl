@@ -51,7 +51,7 @@ CREATE TABLE ${table.nameSql}
             <#assign type = 'SERIAL'/>
         </#if>
         <#assign end = ''/>
-        <#if column.primaryKey>
+        <#if column.primaryKey && table.idColumns?size == 1>
             <#assign end = '${end} PRIMARY KEY'/>
         <#else >
             <#if column.nullable>
@@ -66,8 +66,11 @@ CREATE TABLE ${table.nameSql}
                 <#assign end = end + ' NOT NULL'/>
             </#if>
         </#if>
-    ${name} ${type}${''?right_pad(maxType-tempType)} ${end}<#if column_has_next>,</#if>
+    ${name} ${type}${''?right_pad(maxType-tempType)} ${end}<#if column_has_next || table.idColumns?size &gt; 1>,</#if>
     </#list>
+    <#if table.idColumns?size &gt; 1>
+        PRIMARY KEY (<#list table.idColumns as idColumn>${idColumn.name}<#if idColumn_has_next>, </#if></#list>)
+    </#if>
 );
 
 COMMENT ON TABLE ${table.nameSql} IS '${table.comment}';

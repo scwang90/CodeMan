@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.sql.Types;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * HTML Table 表源
@@ -59,6 +60,17 @@ public class HtmlTableSource implements TableSource {
             put("nvarchar", Types.NVARCHAR);
             put("varbinary", Types.VARBINARY);
             put("text",Types.LONGVARCHAR);
+
+            put("BIT", Types.BIT);
+//            put("REAL", Types.REAL);
+            put("DATETIME", Types.DATE);
+//            put("INT", Types.INTEGER);
+            put("BIGINT", Types.BIGINT);
+//            put("VARCHAR", Types.VARCHAR);
+            put("NVARCHAR", Types.NVARCHAR);
+            put("VARBINARY", Types.VARBINARY);
+//            put("TEXT",Types.LONGVARCHAR);
+
             //oracle
             put("BFILE",Types.BINARY);
             put("BINARY_DOUBLE",Types.BINARY);
@@ -165,16 +177,21 @@ public class HtmlTableSource implements TableSource {
         for (Element tableElement : tableElements) {
             Table table = buildTableMetaData(tableElement);
             List<TableColumn> columnList = new ArrayList<>();
+            List<TableColumn> idColumns = new ArrayList<>();
             Elements columnElements = metaData.getTableColumns(tableElement);
             for (Element columnElement : columnElements) {
                 Elements columnMetaData = metaData.getColumnMetaData(columnElement);
                 TableColumn tableColumn = buildColumnMetaData(columnMetaData);
-                if (metaData.getColumnPrimaryKey(columnMetaData) && table.getIdColumn() == null) {
-                    table.setIdColumn(tableColumn);
+                if (metaData.getColumnPrimaryKey(columnMetaData)) {
+                    if (table.getIdColumn() == null) {
+                        table.setIdColumn(tableColumn);
+                    }
+                    idColumns.add(tableColumn);
                 }
                 columnList.add(tableColumn);
             }
             table.setColumns(columnList);
+            table.setIdColumns(idColumns);
             tables.add(table);
         }
         return tables;
@@ -187,6 +204,12 @@ public class HtmlTableSource implements TableSource {
 
     @Override
     public Set<String> queryPrimaryKeys(Table table) {
+        if (table.getIdColumn() == null) {
+            return Collections.emptySet();
+        }
+        if (table.getIdColumns().size() > 1) {
+            return table.getIdColumns().stream().map(TableColumn::getName).collect(Collectors.toSet());
+        }
         return Set.of(table.getIdColumn().getName());
 //        Set<String> keys = new LinkedHashSet<>();
 //        if (tableMate instanceof TableMetaData) {
@@ -263,53 +286,53 @@ public class HtmlTableSource implements TableSource {
         }
     }
 
-    protected class ColumnMetaData extends TableMetaData implements MetaDataColumn {
-
-        public final Elements columnMetaData;
-
-        public ColumnMetaData(Element element) {
-            super(element);
-            columnMetaData = metaData.getColumnMetaData(element);
-        }
-
-        @Override
-        public String getName() {
-            return metaData.getColumnName(columnMetaData);
-        }
-
-        @Override
-        public void setType(String string) {
-        }
-
-        @Override
-        public void setTypeInt(int int1) {
-        }
-
-        @Override
-        public void setLength(int int1) {
-        }
-
-        @Override
-        public void setDefValue(String string) {
-        }
-
-        @Override
-        public void setNullable(boolean boolean1) {
-        }
-
-        @Override
-        public void setDecimalDigits(int int1) {
-        }
-
-        @Override
-        public void setAutoIncrement(boolean b) {
-        }
-
-        @Override
-        public void setHasDefValue(boolean b) {
-
-        }
-    }
+//    protected class ColumnMetaData extends TableMetaData implements MetaDataColumn {
+//
+//        public final Elements columnMetaData;
+//
+//        public ColumnMetaData(Element element) {
+//            super(element);
+//            columnMetaData = metaData.getColumnMetaData(element);
+//        }
+//
+//        @Override
+//        public String getName() {
+//            return metaData.getColumnName(columnMetaData);
+//        }
+//
+//        @Override
+//        public void setType(String string) {
+//        }
+//
+//        @Override
+//        public void setTypeInt(int int1) {
+//        }
+//
+//        @Override
+//        public void setLength(int int1) {
+//        }
+//
+//        @Override
+//        public void setDefValue(String string) {
+//        }
+//
+//        @Override
+//        public void setNullable(boolean boolean1) {
+//        }
+//
+//        @Override
+//        public void setDecimalDigits(int int1) {
+//        }
+//
+//        @Override
+//        public void setAutoIncrement(boolean b) {
+//        }
+//
+//        @Override
+//        public void setHasDefValue(boolean b) {
+//
+//        }
+//    }
 
     protected class HtmlTableMetaDataImpl implements HtmlTableMetaData {
 

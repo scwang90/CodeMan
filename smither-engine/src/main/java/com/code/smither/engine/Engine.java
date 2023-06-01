@@ -150,7 +150,8 @@ public class Engine<T extends EngineConfig> implements TaskRunner, TaskBuilder {
         Template nameTemplate = getTemplate(task.getTargetFile().getAbsolutePath());
 
         StringWriter writer = new StringWriter();
-        nameTemplate.process(root, writer);
+        ObjectWrapper wrapper = nameTemplate.getObjectWrapper();
+        nameTemplate.process(getDataModel(root, (BeansWrapper) wrapper), writer);
         String path = writer.getBuffer().toString();
         boolean isFtlFile = false;
         if (!path.replaceAll("\\.ftl[xh]?$", "").equals(path)) {

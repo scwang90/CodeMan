@@ -22,6 +22,8 @@ public class Table implements Model, MetaDataTable {
     private String nameSqlInStr;            // SQL语句中使用的名称（在字符串拼接中使用）
 
     private String schema;                  //表 schema
+
+    private String schemaName;              //经过处理的 schema 名称，可以在代码中
     private String remark;                  // 字段注释
     private String description;             //详细描述（分析得到）
     private String comment;                 //原始备注（remark+description）
@@ -33,7 +35,6 @@ public class Table implements Model, MetaDataTable {
     private String classNameCamel;                  // 骆驼峰类名（首字母小写）
     private String classNameUpper;                  // 类名全大写
     private String classNameLower;                  // 类名全小写
-
     private TableColumn idColumn;                   // ID列
     private TableColumn orgColumn;                  // 机构列
     private TableColumn codeColumn;                 // 编号构列
@@ -63,6 +64,7 @@ public class Table implements Model, MetaDataTable {
 
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> columns;              // 表字段
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> idColumns;            // 多主键字段
+    @ToString.Exclude @EqualsAndHashCode.Exclude private List<TableColumn> notNullColumns;       // 非空字段
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<IndexedKey> indexKeys;             // 索引（数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> exportedKeys;          // 外键（导出，数据库原始）
     @ToString.Exclude @EqualsAndHashCode.Exclude private List<ForeignKey> importedKeys;          // 外键（导入，数据库原始）
@@ -222,6 +224,58 @@ public class Table implements Model, MetaDataTable {
 
     public boolean isHasUsername() {
         return hasUsername && isLoginTable;
+    }
+
+    /**
+     * 包含
+     */
+    public boolean isContainsColumn(String name) {
+        for (TableColumn column : this.columns) {
+            if (name.equals(column.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 包含其中一个
+     */
+    public boolean isContainsOneOfColumns(String... names) {
+        for (TableColumn column : this.columns) {
+            for (String name : names) {
+                if (name.equals(column.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 包含全部
+     */
+    public boolean isContainsAllOfColumns(String... names) {
+        if (names.length == 0) {
+            return false;
+        }
+        boolean[] findes = new boolean[names.length]; // 初始化 boolean 数组
+        Arrays.fill(findes, false); // 将数组中所有元素全部赋值为 false\
+        for (int i = 0; i < names.length; i++) {
+            String name = names[i];
+            for (TableColumn column : this.columns) {
+                if (name.equals(column.getName())) {
+                    findes[i] = true;
+                    break;
+                }
+            }
+        }
+        for (boolean finde : findes) {
+            if (!finde) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public TableColumn getUsernameColumn() {

@@ -60,14 +60,46 @@ public class StringUtil {
 		return builder.toString();
 	}
 
-	public static boolean isNullOrBlank(String remark) {
-		if (remark == null) {
+	public static boolean isNotNullAndEmpty(String... strings) {
+		for (String string : strings) {
+			if (string == null || string.length() == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isNotNullAndBlank(String... strings) {
+		if (!isNotNullAndEmpty(strings)) {
+			return false;
+		}
+		for (String string : strings) {
+			if (string.trim().length() == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isNullOrEmpty(String... strings) {
+		for (String string : strings) {
+			if (string == null || string.length() == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isNullOrBlank(String... strings) {
+		if (isNullOrEmpty(strings)) {
 			return true;
 		}
-		if (remark.length() == 0) {
-			return true;
+		for (String string : strings) {
+			if (string.trim().length() == 0) {
+				return true;
+			}
 		}
-		return remark.trim().length() == 0;
+		return false;
 	}
 
 	public static boolean equals(CharSequence a, CharSequence b) {
@@ -85,4 +117,5 @@ public class StringUtil {
 		}
 		return false;
 	}
+
 }

@@ -15,7 +15,7 @@ public class HtmlTableConfig extends ProjectConfig {
     protected String htmlTablePath = "";
     protected String htmlTableCharset = "UTF-8";
 
-    protected String jdbcUrl;
+    protected String jdbcUrl = "jdbc:mysql://[IP地址|域名]:[端口]/[数据库名称]?tinyInt1isBit=false";
     protected String jdbcDriver;
     protected String jdbcUsername;
     protected String jdbcPassword;

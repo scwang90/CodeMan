@@ -43,7 +43,8 @@ public class Remarker {
                 if (matchs.size() > 1 && matchs.stream().anyMatch(m->m.length() > 5)) {
                     return matchs;
                 }
-            }//（正常：0；已删除：1）同步的数据不可物理删除，如需删除，标志记为1。
+            }
+            //（正常：0；已删除：1）同步的数据不可物理删除，如需删除，标志记为1。
             //多行匹配失败开始匹配单行
             for (Pattern descriptionPattern : descriptionPatterns) {
                 Matcher matcher = descriptionPattern.matcher(description);

@@ -51,6 +51,8 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
     protected String templateCharset = "UTF-8";
 
     protected String schemaTable = null;
+    protected String schemaTablePattern = null;
+    protected String schemaTableExtract = null;
     protected String filterTable = "";
     protected String includeTable = "*";
 
@@ -132,6 +134,22 @@ public class ProjectConfig extends EngineConfig implements FilterConfig, TableFi
 
     public void setSchemaTable(String schemaTable) {
         this.schemaTable = schemaTable;
+    }
+
+    public String getSchemaTablePattern() {
+        return schemaTablePattern;
+    }
+
+    public void setSchemaTablePattern(String schemaTablePattern) {
+        this.schemaTablePattern = schemaTablePattern;
+    }
+
+    public String getSchemaTableExtract() {
+        return schemaTableExtract;
+    }
+
+    public void setSchemaTableExtract(String schemaTableExtract) {
+        this.schemaTableExtract = schemaTableExtract;
     }
 
     @Override

@@ -21,9 +21,11 @@ public class ProjectConfigFactory {
         config.setTargetProjectAuthor(properties.getProperty("code.man.target.project.author",config.getTargetProjectAuthor()));
         config.setTargetProjectPackage(properties.getProperty("code.man.target.project.package",config.getTargetProjectPackage()));
 
-        config.setSchemaTable(properties.getProperty("code.man.database.schema", config.getSchemaTable()));
         config.setFilterTable(properties.getProperty("code.man.database.table.filter", config.getFilterTable()));
         config.setIncludeTable(properties.getProperty("code.man.database.table.include", config.getIncludeTable()));
+        config.setSchemaTable(properties.getProperty("code.man.database.table.schema", config.getSchemaTable()));
+        config.setSchemaTablePattern(properties.getProperty("code.man.database.table.schema.pattern", config.getSchemaTablePattern()));
+        config.setSchemaTableExtract(properties.getProperty("code.man.database.table.schema.extract", config.getSchemaTableExtract()));
 
         config.setTablePrefix(properties.getProperty("code.man.database.table.prefix",config.getTablePrefix()));
         config.setTableSuffix(properties.getProperty("code.man.database.table.suffix",config.getTableSuffix()));

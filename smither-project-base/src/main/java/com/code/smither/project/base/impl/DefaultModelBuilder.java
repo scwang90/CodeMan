@@ -265,6 +265,10 @@ public class DefaultModelBuilder implements ModelBuilder {
 				table.setRemark(table.getName());
 			}
 		}
+
+		if (StringUtil.isNotNullAndBlank(table.getSchema(), config.getSchemaTablePattern(), config.getSchemaTableExtract())) {
+			table.setSchemaName(table.getSchema().replaceAll(config.getSchemaTablePattern(), config.getSchemaTableExtract()));
+		}
 		//继续完善 数据表列名数据
 		return tableComputeColumn(table);
 	}
@@ -333,6 +337,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		List<? extends TableColumn> listMetaData = tableSource.queryColumns(table);
 		List<TableColumn> columns = new ArrayList<>(listMetaData.size());
 		List<TableColumn> idColumns = new ArrayList<>(listMetaData.size());
+		List<TableColumn> notNullColumns = new ArrayList<>(listMetaData.size());
 		for (TableColumn column : listMetaData) {
 			if (keys.contains(column.getName())) {
 				if (table.getIdColumn() == null) {
@@ -343,6 +348,9 @@ public class DefaultModelBuilder implements ModelBuilder {
 //					//主键不应该是小数
 //					column.setTypeInt(Types.BIGINT);
 //				}
+			}
+			if (column.isNotNull()) {
+				notNullColumns.add(column);
 			}
 			column.setPrimaryKey(keys.contains(column.getName()));
 			columns.add(columnCompute(column));
@@ -416,6 +424,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		}
 
 		table.setIdColumns(idColumns);
+		table.setNotNullColumns(notNullColumns);
 		table.setColumns(ModelUtil.distinctColumns(columns));
 		table.setHasIds(idColumns.size() > 1);
 
