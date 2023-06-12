@@ -145,7 +145,7 @@ public class Table implements Model, MetaDataTable {
     }
 
     public void setCreateColumn(TableColumn createColumn) {
-        createColumn.setTimeType(true);
+        createColumn.setDateTimeType(true);
         createColumn.setHiddenForSubmit(true);
         this.createColumn = createColumn;
     }
@@ -162,7 +162,7 @@ public class Table implements Model, MetaDataTable {
     }
 
     public void setUpdateColumn(TableColumn updateColumn) {
-        updateColumn.setTimeType(true);
+        updateColumn.setDateTimeType(true);
         updateColumn.setHiddenForSubmit(true);
         this.updateColumn = updateColumn;
     }

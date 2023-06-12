@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 <#assign hasDateTimeType=false>
 <#list table.columns as column>
-	<#if (column.dateType || column.timeType) && hasDateTimeType==false>
+	<#if (column.dateType || column.timeType || column.dateTimeType) && hasDateTimeType==false>
 import org.springframework.format.annotation.DateTimeFormat;
 		<#assign hasDateTimeType=true>
 	</#if>
@@ -74,6 +74,8 @@ public class ${className} {
 	@JsonIgnore
 	</#if>
 	<#if column.timeType>
+	@DateTimeFormat(pattern = "HH:mm:ss")
+	<#elseif column.dateTimeType>
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	<#elseif column.dateType>
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

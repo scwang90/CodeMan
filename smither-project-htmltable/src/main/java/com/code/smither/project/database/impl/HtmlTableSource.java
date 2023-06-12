@@ -70,6 +70,7 @@ public class HtmlTableSource implements TableSource {
             put("NVARCHAR", Types.NVARCHAR);
             put("VARBINARY", Types.VARBINARY);
 //            put("TEXT",Types.LONGVARCHAR);
+            put("TIME", Types.TIME);
 
             //oracle
             put("BFILE",Types.BINARY);

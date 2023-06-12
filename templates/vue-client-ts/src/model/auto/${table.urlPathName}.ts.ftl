@@ -4,7 +4,7 @@ export default interface ${className} {
 <#list table.columns as column>
     <#if !column.hiddenForClient>
         <#assign type="any"/>
-        <#if column.stringType || column.timeType || column.dateType || (column.longType && !column.forceUseLong)>
+        <#if column.stringType || column.dateTimeType || column.dateType || column.timeType || (column.longType && !column.forceUseLong)>
             <#assign type="string"/>
         <#elseif column.boolType>
             <#assign type="boolean"/>

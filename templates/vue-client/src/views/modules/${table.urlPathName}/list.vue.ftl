@@ -116,7 +116,7 @@
             <#elseif column.boolType>
                             <el-switch v-model="model.${column.fieldName}" active-text="已${column.remarkName}" inactive-text="未${column.remarkName}"<#if column.hiddenForSubmit> :disabled="true"<#else> </#if>/>
             <#elseif column.dateType>
-                            <el-date-picker type="${(column.timeType==true)?string('datetime','date')}" v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> placeholder="选择日期" value-format="yyyy-MM-dd"</#if>></el-date-picker>
+                            <el-date-picker type="${(column.dateTimeType==true)?string('datetime','date')}" v-model="model.${column.fieldName}"<#if column.hiddenForSubmit> :disabled="true"<#else> placeholder="选择日期" value-format="yyyy-MM-dd"</#if>></el-date-picker>
             <#elseif (column.clientLength > 64)>
                             <el-input v-model="model.${column.fieldName}" type="textarea" :autosize="{minRows:${column.clientLength?c}/64, maxRows:6}"<#if column.hiddenForSubmit> :disabled="true"<#else> maxlength="${column.length}" show-word-limit @keyup.ctrl.enter.native="onSubmitClick"</#if>></el-input>
             <#else>

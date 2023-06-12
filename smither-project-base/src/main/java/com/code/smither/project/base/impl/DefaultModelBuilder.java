@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.DatabaseMetaData;
+import java.sql.Time;
 import java.sql.Types;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -528,6 +529,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 		Class<?> javaType = programLang.getJavaType(column);
 		column.setStringType(String.class.equals(javaType));//(column.getTypeJdbc().contains("CHAR"));//是否是字符串类型
 		column.setDateType(Date.class.isAssignableFrom(javaType));//(column.getTypeInt() == Types.DATE || column.getTypeInt() == Types.TIMESTAMP);
+		column.setTimeType(Time.class.isAssignableFrom(javaType));//(column.getTypeInt() == Types.TIME);
 		column.setLongType(Long.class.equals(javaType) || long.class.equals(javaType));
 		column.setIntType(Integer.class.equals(javaType) || int.class.equals(javaType));
 		column.setBoolType(Boolean.class.equals(javaType) || boolean.class.equals(javaType));
@@ -558,7 +560,7 @@ public class DefaultModelBuilder implements ModelBuilder {
 			}
 		}
 
-		column.setTimeType(column.isDateType()&&(column.getName().toLowerCase().contains("time")
+		column.setDateTimeType(column.isDateType()&&(column.getName().toLowerCase().contains("time")
 				||column.getRemarkName().toLowerCase().contains("time")
 				||column.getRemarkName().toLowerCase().contains("时间")));
 		return column;

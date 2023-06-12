@@ -15,7 +15,7 @@ CREATE TABLE ${table.nameSql}
             <#assign tempType = tempType + (column.length?c)?length + '()'?length/>
         </#if>
         <#if column.defValue?length gt 0>
-            <#if column.stringType || column.dateType || column.timeType>
+            <#if column.stringType || column.dateType || column.timeType || column.dateTimeType>
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT ""'?length/>
             <#else >
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT '?length/>
@@ -39,7 +39,7 @@ CREATE TABLE ${table.nameSql}
             <#assign tempType = tempType + (column.length?c)?length + '()'?length/>
         </#if>
         <#if column.defValue?length gt 0>
-            <#if column.stringType || column.dateType || column.timeType>
+            <#if column.stringType || column.dateType || column.timeType || column.dateTimeType>
                 <#assign type = type + " DEFAULT '${column.defValue}'"/>
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT ""'?length/>
             <#else >
@@ -64,6 +64,12 @@ CREATE TABLE ${table.nameSql}
                     <#else>
                         <#assign end = end + ' NULL'/>
                     </#if>
+                <#else>
+                    <#if hasNonNullble>
+                        <#assign end = end + '         '/>
+                    <#else>
+                        <#assign end = end + '     '/>
+                    </#if>
                 </#if>
             <#else>
                 <#assign end = end + ' NOT NULL'/>
@@ -75,7 +81,7 @@ CREATE TABLE ${table.nameSql}
     ${name} ${type}${''?right_pad(maxType-tempType)} ${end}<#if column_has_next || table.idColumns?size &gt; 1>,</#if>
     </#list>
     <#if table.idColumns?size &gt; 1>
-        PRIMARY KEY (<#list table.idColumns as idColumn>${idColumn.name}<#if idColumn_has_next>, </#if></#list>)
+    PRIMARY KEY (<#list table.idColumns as idColumn>${idColumn.name}<#if idColumn_has_next>, </#if></#list>)
     </#if>
 )
 COMMENT '${table.comment}' COLLATE = utf8mb4_unicode_ci;

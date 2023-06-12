@@ -70,7 +70,10 @@ public abstract class AbstractProgramLang implements ProgramLang {
             case Types.JAVA_OBJECT:
                 return Object.class;
             case Types.NUMERIC:
-                if (column.getDecimalDigits() <= 0 || column.getDecimalDigits() > column.getLength()) {
+                if (column.getDecimalDigits() == 0 && column.getLength() == 0) {
+                    //两个都为0，说吗只是指定了 NUMERIC 但没有配置具体的长度和小数位数
+                    return Double.class;//给一个不小不大的兼容双精度类型
+                } else if (column.getDecimalDigits() <= 0 || column.getDecimalDigits() > column.getLength()) {
                     if (column.getLength() == 0) {
                         if (column.getDecimalDigits() > 0) {
                             return BigDecimal.class;
