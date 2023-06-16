@@ -2,6 +2,7 @@ package com.code.smither.project.database.impl;
 
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.api.DbFactory;
 
 /**
@@ -13,11 +14,11 @@ public class SqLiteTableSource extends DefaultDataSource {
 
     private Database database = new SqLiteDatabase();
 
-    public SqLiteTableSource(ProjectConfig config, DbFactory dbFactory) {
+    public SqLiteTableSource(DataBaseConfig config, DbFactory dbFactory) {
         this(config, dbFactory, false);
     }
 
-    private SqLiteTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+    private SqLiteTableSource(DataBaseConfig config, DbFactory dbFactory, boolean autoclose) {
         super(config, dbFactory, autoclose);
     }
 

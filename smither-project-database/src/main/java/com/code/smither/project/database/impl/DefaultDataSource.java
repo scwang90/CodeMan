@@ -1,18 +1,17 @@
 package com.code.smither.project.database.impl;
 
+import com.code.smither.project.base.api.MetaDataColumn;
+import com.code.smither.project.base.api.MetaDataTable;
+import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.database.DataBaseConfig;
+import com.code.smither.project.database.api.DbDataSource;
+import com.code.smither.project.database.api.DbFactory;
+import lombok.Data;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import com.code.smither.project.base.ProjectConfig;
-import com.code.smither.project.base.api.MetaDataColumn;
-import com.code.smither.project.base.api.MetaDataTable;
-import com.code.smither.project.base.constant.Database;
-import com.code.smither.project.database.api.DbDataSource;
-import com.code.smither.project.database.api.DbFactory;
-
-import lombok.Data;
 
 @Data
 public class DefaultDataSource implements DbDataSource {
@@ -20,14 +19,14 @@ public class DefaultDataSource implements DbDataSource {
 	protected boolean autoClose;
 	protected DbFactory dbFactory;
 	protected Connection connection = null;
-	protected ProjectConfig dbConfig = null;
+	protected DataBaseConfig dbConfig = null;
 	protected DatabaseMetaData databaseMetaData = null;
 
-	public DefaultDataSource(ProjectConfig config, DbFactory dbFactory) {
+	public DefaultDataSource(DataBaseConfig config, DbFactory dbFactory) {
 		this(config, dbFactory, false);
 	}
 
-	public DefaultDataSource(ProjectConfig config, DbFactory dbFactory, boolean autoClose) {
+	public DefaultDataSource(DataBaseConfig config, DbFactory dbFactory, boolean autoClose) {
 		super();
 		this.dbConfig = config;
 		this.dbFactory = dbFactory;

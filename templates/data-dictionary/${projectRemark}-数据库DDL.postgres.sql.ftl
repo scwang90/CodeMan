@@ -1,6 +1,7 @@
 <#list tables as table>
 
-CREATE TABLE ${table.nameSql}
+-- DROP TABLE ${table.schema}.${table.nameSql};
+CREATE TABLE ${table.schema}.${table.nameSql}
 (
     <#assign maxName = 0/>
     <#assign maxType = 0/>
@@ -39,7 +40,7 @@ CREATE TABLE ${table.nameSql}
             <#assign tempType = tempType + (column.length?c)?length + '()'?length/>
         </#if>
         <#if column.hasDefValue>
-            <#if column.stringType || column.dateType || column.timeType || column.dateTimeType>
+            <#if (column.stringType && !column.defValue?contains("'")) || column.dateType || column.timeType || column.dateTimeType>
                 <#assign type = type + " DEFAULT '${column.defValue}'"/>
                 <#assign tempType = tempType + column.defValue?length + ' DEFAULT ""'?length/>
             <#else >
@@ -79,10 +80,10 @@ CREATE TABLE ${table.nameSql}
     </#if>
 );
 
-COMMENT ON TABLE ${table.nameSql} IS '${table.comment}';
+COMMENT ON TABLE ${table.schema}.${table.nameSql} IS '${table.comment}';
 <#list table.columns as column>
     <#assign name = column.nameSql?right_pad(maxName)/>
-COMMENT ON COLUMN ${table.nameSql}.${name} IS '${column.comment}';
+COMMENT ON COLUMN ${table.schema}.${table.nameSql}.${name} IS '${column.comment}';
 </#list>
 
 </#list>
@@ -91,7 +92,7 @@ COMMENT ON COLUMN ${table.nameSql}.${name} IS '${column.comment}';
 <#list tables as table>
     <#list table.indexedKeys as index>
 
-CREATE<#if index.nonUnique> UNIQUE</#if> INDEX ${index.name} ON ${table.nameSql} (${index.columnName});
+CREATE<#if index.nonUnique> UNIQUE</#if> INDEX ${index.name} ON ${table.schema}.${table.nameSql} (${index.columnName});
     </#list>
 </#list>
 
@@ -117,7 +118,7 @@ CREATE<#if index.nonUnique> UNIQUE</#if> INDEX ${index.name} ON ${table.nameSql}
             <#elseif key.updateSetNull>
                 <#assign deleteRule = 'ON UPDATE SET NULL'/>
             </#if>
-ALTER TABLE ${table.nameSql}
+ALTER TABLE ${table.schema}.${table.nameSql}
     ADD CONSTRAINT ${key.fkName}
         FOREIGN KEY (${key.fkColumnName}) REFERENCES ${key.pkTable.nameSql} (${key.pkColumnName})<#if updateRule?length==0&&deleteRule?length==0>;</#if>
             <#if updateRule?length gt 0 || deleteRule?length gt 0>

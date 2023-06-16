@@ -1,6 +1,7 @@
 package com.code.smither.project.database.factory;
 
 import com.code.smither.project.base.ProjectConfig;
+import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.api.DbDataSource;
 import com.code.smither.project.database.api.DbFactory;
 import com.code.smither.project.database.impl.*;
@@ -18,12 +19,12 @@ public class TableSourceFactory {
     private static final String PATTERN_POSTGRESQL = "jdbc:postgresql:.*";
 
 
-    public static DbTableSource getInstance(ProjectConfig config, DbFactory factory) {
+    public static DbTableSource getInstance(DataBaseConfig config, DbFactory factory) {
         return new DbTableSource(config, getDataSource(config, factory));
     }
 
-    public static DbDataSource getDataSource(ProjectConfig config, DbFactory factory) {
-        String jdbcUrl = factory.getJdbcUrl();
+    public static DbDataSource getDataSource(DataBaseConfig config, DbFactory factory) {
+        String jdbcUrl = config.getDbUrl();
         if (jdbcUrl.matches(PATTERN_MYSQL)) {
             return new MySqlTableSource(config, factory);
         } else if (jdbcUrl.matches(PATTERN_ORACLE)) {

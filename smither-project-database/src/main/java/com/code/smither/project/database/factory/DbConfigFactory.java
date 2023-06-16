@@ -26,6 +26,11 @@ public class DbConfigFactory {
 		config.setDbUsername(properties.getProperty("code.man.database.username", config.getDbUsername()));
 		config.setDbPassword(properties.getProperty("code.man.database.password", config.getDbPassword()));
 		config.setDbConfigName(properties.getProperty("code.man.database.config.name", config.getDbConfigName()));
+
+		config.setSshPort(Integer.parseInt(properties.getProperty("code.man.database.ssh.port", "22")));
+		config.setSshHost(properties.getProperty("code.man.database.ssh.host", config.getSshHost()));
+		config.setSshUser(properties.getProperty("code.man.database.ssh.user", config.getSshUser()));
+		config.setSshPassword(properties.getProperty("code.man.database.ssh.password", config.getSshPassword()));
 	}
 
 }

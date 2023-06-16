@@ -9,11 +9,6 @@ import java.sql.SQLException;
  */
 public interface DbFactory {
 
-    String getJdbcUrl() ;
-    String getDriver() ;
-    String getPassword() ;
-    String getUsername() ;
-
     /**
      * 从数据源中获取数据库连接
      */

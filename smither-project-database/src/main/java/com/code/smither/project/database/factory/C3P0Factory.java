@@ -37,29 +37,29 @@ public class C3P0Factory implements DbFactory {
         return c3P0Factory;
     }
 
-    @Override
-    public String getJdbcUrl() {
-        if (dataSource == null) return "";
-        return dataSource.getJdbcUrl();
-    }
-
-    @Override
-    public String getDriver() {
-        if (dataSource == null) return "";
-        return dataSource.getDriverClass();
-    }
-
-    @Override
-    public String getPassword() {
-        if (dataSource == null) return "";
-        return dataSource.getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        if (dataSource == null) return "";
-        return dataSource.getUser();
-    }
+//    @Override
+//    public String getJdbcUrl() {
+//        if (dataSource == null) return "";
+//        return dataSource.getJdbcUrl();
+//    }
+//
+//    @Override
+//    public String getDriver() {
+//        if (dataSource == null) return "";
+//        return dataSource.getDriverClass();
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        if (dataSource == null) return "";
+//        return dataSource.getPassword();
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        if (dataSource == null) return "";
+//        return dataSource.getUser();
+//    }
 
     /**
      * 从数据源中获取数据库连接

@@ -6,6 +6,7 @@ import com.code.smither.project.base.util.StringUtil;
 import com.code.smither.project.database.api.DbFactory;
 import com.code.smither.project.database.factory.C3P0Factory;
 import com.code.smither.project.database.factory.DefaultFactory;
+import com.code.smither.project.database.factory.SshDbFactory;
 import com.code.smither.project.database.factory.TableSourceFactory;
 import com.code.smither.project.database.impl.DbTableSource;
 import lombok.Data;
@@ -26,6 +27,11 @@ public class DataBaseConfig extends ProjectConfig {
     protected String dbPassword;
     protected String dbConfigName;
 
+    protected int sshPort = 22;
+    protected String sshHost = "";
+    protected String sshUser = "";
+    protected String sshPassword = "";
+
     protected transient DbFactory dbFactory = null;
     protected transient DbTableSource tableSource = null;
 
@@ -34,7 +40,11 @@ public class DataBaseConfig extends ProjectConfig {
         super.initEmptyFieldsWithDefaultValues();
         if (dbFactory == null) {
             if (StringUtil.isNullOrBlank(dbConfigName)) {
-                dbFactory = new DefaultFactory(dbUrl, dbDriver, dbUsername, dbPassword);
+                if (StringUtil.isNotNullAndBlank(sshHost)) {
+                    dbFactory = new SshDbFactory(this);
+                } else {
+                    dbFactory = new DefaultFactory(this);
+                }
             } else {
                 dbFactory = C3P0Factory.getInstance(getDbConfigName());
             }

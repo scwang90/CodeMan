@@ -2,6 +2,7 @@ package com.code.smither.project.database.impl;
 
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.api.DbFactory;
 import com.mchange.v2.c3p0.impl.NewProxyConnection;
 import oracle.jdbc.OracleConnection;
@@ -18,11 +19,11 @@ import java.util.Arrays;
  */
 public class OracleTableSource extends DefaultDataSource implements Database {
 
-    public OracleTableSource(ProjectConfig config, DbFactory dbFactory) {
+    public OracleTableSource(DataBaseConfig config, DbFactory dbFactory) {
         this(config, dbFactory, false);
     }
 
-    public OracleTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+    public OracleTableSource(DataBaseConfig config, DbFactory dbFactory, boolean autoclose) {
         super(config, dbFactory, autoclose);
     }
 
@@ -55,17 +56,17 @@ public class OracleTableSource extends DefaultDataSource implements Database {
 
     @Override
     public ResultSet queryTables() throws SQLException {
-        return ensureMetaData().getTables(null, dbFactory.getUsername(), "%", new String[] { "TABLE" });
+        return ensureMetaData().getTables(null, dbConfig.getDbUsername(), "%", new String[] { "TABLE" });
     }
 
     @Override
     public ResultSet queryColumns(String tableName) throws SQLException {
-        return ensureMetaData().getColumns(null, dbFactory.getUsername(), tableName, "%");
+        return ensureMetaData().getColumns(null, dbConfig.getDbUsername(), tableName, "%");
     }
 
     @Override
     public ResultSet queryPrimaryKeys(String tableName) throws SQLException {
-        return ensureMetaData().getPrimaryKeys(null, dbFactory.getUsername(), tableName);
+        return ensureMetaData().getPrimaryKeys(null, dbConfig.getDbUsername(), tableName);
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "app.okhttp")
+@ConfigurationProperties(prefix = "app.network.okhttp")
 public class OkHttpConfig {
     private int proxyPort = 0;
     private String proxyHost = "";

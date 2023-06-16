@@ -67,10 +67,10 @@ public class ReplaceBuilder extends DbModelBuilder {
     public SourceModel build() throws Exception {
         assert database != null;
         SourceModel model = build(new DbSourceModel(database.name()), config, buildTables());
-        model.getJdbc().setUrl(factory.getJdbcUrl());
-        model.getJdbc().setDriver(factory.getDriver());
-        model.getJdbc().setUsername(factory.getUsername());
-        model.getJdbc().setPassword(factory.getPassword());
+        model.getJdbc().setUrl(replaceConfig.getDbUrl());
+        model.getJdbc().setDriver(replaceConfig.getDbDriver());
+        model.getJdbc().setUsername(replaceConfig.getDbUsername());
+        model.getJdbc().setPassword(replaceConfig.getDbPassword());
 
         WordReplacer replacerTableName = replaceConfig.getReplacerTableName();
         WordReplacer replacerColumnName = replaceConfig.getReplacerColumnName();

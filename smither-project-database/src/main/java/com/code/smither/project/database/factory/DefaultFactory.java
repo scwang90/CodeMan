@@ -1,5 +1,6 @@
 package com.code.smither.project.database.factory;
 
+import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.api.DbFactory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,14 +16,11 @@ import java.sql.SQLException;
 @Setter(AccessLevel.PRIVATE)
 public class DefaultFactory implements DbFactory {
 
-    private String jdbcUrl;
-    private String driver;
-    private String username;
-    private String password;
+    private DataBaseConfig config;
 
     @Override
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(jdbcUrl, username, password);
+        return DriverManager.getConnection(config.getDbUrl(), config.getDbUsername(), config.getDbPassword());
     }
 
 }

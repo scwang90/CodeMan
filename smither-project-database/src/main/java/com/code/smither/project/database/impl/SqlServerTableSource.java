@@ -4,6 +4,7 @@ package com.code.smither.project.database.impl;
 import com.code.smither.project.base.ProjectConfig;
 import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.constant.Database;
+import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.api.DbFactory;
 
 import java.sql.ResultSet;
@@ -15,11 +16,11 @@ import java.sql.SQLException;
  */
 public class SqlServerTableSource extends DefaultDataSource implements Database {
 
-    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory) {
+    public SqlServerTableSource(DataBaseConfig config, DbFactory dbFactory) {
         this(config, dbFactory, false);
     }
 
-    public SqlServerTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+    public SqlServerTableSource(DataBaseConfig config, DbFactory dbFactory, boolean autoclose) {
         super(config, dbFactory, autoclose);
     }
 

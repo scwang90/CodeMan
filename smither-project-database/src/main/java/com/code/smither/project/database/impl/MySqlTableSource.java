@@ -5,6 +5,7 @@ import com.code.smither.project.base.api.MetaDataColumn;
 import com.code.smither.project.base.api.MetaDataTable;
 import com.code.smither.project.base.constant.Database;
 import com.code.smither.project.base.model.Table;
+import com.code.smither.project.database.DataBaseConfig;
 import com.code.smither.project.database.api.DbFactory;
 
 import java.sql.ResultSet;
@@ -17,11 +18,11 @@ import java.sql.Statement;
  */
 public class MySqlTableSource extends DefaultDataSource implements Database {
 
-    public MySqlTableSource(ProjectConfig config, DbFactory dbFactory) {
+    public MySqlTableSource(DataBaseConfig config, DbFactory dbFactory) {
         this(config, dbFactory, false);
     }
 
-    public MySqlTableSource(ProjectConfig config, DbFactory dbFactory, boolean autoclose) {
+    public MySqlTableSource(DataBaseConfig config, DbFactory dbFactory, boolean autoclose) {
         super(config, dbFactory, autoclose);
     }
 
